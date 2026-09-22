@@ -2,150 +2,150 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/help/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/help/faq/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/help/open-questions/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/help/support/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/help/troubleshooting/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/reference/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/reference/cli-checker/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/reference/cli-inference-endpoint/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/reference/cli-submission/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/reference/compliance-checks/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/reference/glossary/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/reference/metrics-and-regions/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/reference/package-layout/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/reference/point-yaml/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/reference/submission-states/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/reference/system-desc-json/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/rules/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/rules/model-equivalence/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/rules/publication-status/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/rules/rejection-reasons/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/rules/requirements/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/understand/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/understand/divisions-and-scenarios/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/understand/eligibility/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/understand/how-submission-works/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/understand/what-is-mlperf-endpoints/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/workflow/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/workflow/after-submission/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/workflow/author-disclosures/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/workflow/before-you-begin/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/workflow/install-tools/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/workflow/plan-your-curve/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/workflow/register/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/workflow/run-the-points/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/workflow/submit/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
     <url>
          <loc>https://anandhu-eng.github.io/endpoints-submission-docs/workflow/validate/</loc>
-         <lastmod>2026-09-18</lastmod>
+         <lastmod>2026-09-22</lastmod>
     </url>
 </urlset>
