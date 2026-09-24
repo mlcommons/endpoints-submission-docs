@@ -9,58 +9,51 @@ The per-measurement-point disclosure file. One per Pareto point, at the top leve
 
 Authored in [step 5](../workflow/author-disclosures.md).
 
-## Required fields
+## Fields
 
-| Field | Description |
+The fields, and what each one means, are defined in [rules §8.3][rules-8.3]. This page doesn't
+repeat that table. It lists the values the checker accepts for the fields it validates by value,
+and where the tooling adds a condition the rules don't state.
+
+| Field | What the checker accepts |
 |---|---|
-| `concurrency` | The target concurrency level for this point |
-| `region` | Which region this point satisfies — `low_latency`, `low_concurrency`, `med_concurrency`, `high_concurrency`, or `submitters_choice` |
-| `runtime_settings` | The settings used for the run: load pattern, `min_duration_ms`, `min_sample_count`, `stream_all_chunks` |
-| `dataset` | Dataset name, and any `n_samples_from_dataset` override |
-| `warmup` | The warmup declaration — see [below](#the-warmup-block) |
+| `region` | `low_latency`, `low_concurrency`, `med_concurrency`, `high_concurrency` or `submitters_choice` (`region-declared`) |
 | `division` | `Standardized`, `Serviced` or `RDI` |
-| `max_supported_concurrency` | Your declared `C_max` |
-| `model_name` | Display name of the model; must be consistent across all external usages |
-| `model_precision` | **Lowest** precision numerical format used for the weights. A model mixing FP16 and FP8 has `model_precision: FP8` |
-| `link_to_model` | Link to the submitted model |
-| `link_to_model_transformation` | Link to the calibration / quantization / transformation write-up |
-| `model_notes` | Free-form supplementary notes |
-| `dataset_name` | Display name of the dataset; consistent across external usages |
-| `dataset_type` | `Accuracy`, `Performance`, or `Accuracy + Performance` — see the warning below |
-| `dataset_link` | Link to the data used |
-| `seed_set` | The seed set this submission is bound to |
-| `target_cohort` | The cohort targeted, as `YYYY-MM-C0` / `YYYY-MM-C1` |
-| `shared_src` | Pointer to the shared `src/` content this point used |
-| `shared_docs` | Pointer to the shared `docs/` content this point used |
-| `steady_state` | The reporting block described [below](#the-steady-state-block) |
-
-## Conditional fields
-
-| Field | When | Description |
-|---|---|---|
-| `offline` | Non-agentic benchmarks | `dedicated` on a dedicated Offline run; `elected` on the `C_max` point when it's elected as the Offline result; absent or `none` on every other point. Exactly one point per curve carries `dedicated` or `elected` |
-| `speculative_decoding` | Points that use it | The drafter's model ID and checksum, precision, public release date, a link to its model card or technical report, and tokenizer-compatibility notes for the drafter/target pair, plus the per-point configuration |
+| `dataset_type` | Any of the §8.3 values, but the bundle builder only uses it when it is exactly `Accuracy` or `Performance`. See [below](#dataset_type-does-real-work) |
+| `offline` | `dedicated`, `elected` or `none`, or absent. `elected` only on the point whose concurrency equals `max_supported_concurrency` (`offline-point-present`) |
+| `target_cohort` | `YYYY-MM-C0` or `YYYY-MM-C1` (`target-cohort`) |
+| `shared_src`, `shared_docs` | Must resolve to directories under the submission root. See [below](#shared_src-and-shared_docs) |
 
 !!! note "`region` on a dedicated Offline run"
     Its `concurrency` is the size of the performance dataset and it counts toward no region, but
     the rules don't say what `region` should hold. `submitters_choice` passes without a placement
     warning. Tracked as **C7** in [Open questions](../help/open-questions.md).
 
-## The steady-state block
+## The `steady_state` block
 
-Added in 2026-09. It records how the point's official numbers were derived — see
+What the block records is defined in [§8.3][rules-8.3], and how the status and verdict are
+decided in [§4.4][rules-4.4]. Background:
 [What your numbers are measured over](metrics-and-regions.md#what-your-numbers-are-measured-over).
 
-| Field | Description |
-|---|---|
-| `status` | `windowable`, `insufficient_duration`, `insufficient_passes` or `partial_dataset` |
-| `verdict` | The detector's shape verdict: `STEADY STATE`, `drifting_up`, `drifting_down`, `anomaly` or `not found`. Read by the checker; not listed in rules §8.3 |
-| `window` | `super_pass_start`, `super_pass_end`, `super_pass_size`, `n_samples`, and `duration_s` — the window's issue-time span, which is what gets checked against the minimum run duration |
-| `state` | Per gating metric: `Plateau`, `Drifting Up` or `Drifting Down` |
-| `anomaly` | Present **only** when the detector confirmed a level shift |
+§8.3 describes the block in prose. The key names the checker actually reads are:
 
-`total` metrics are reported alongside as supplementary. The window sub-field names are the ones
-the checker reads; §8.3 describes them only in prose.
+```yaml
+steady_state:
+  status: windowable        # windowable | insufficient_duration | insufficient_passes | partial_dataset
+  verdict: STEADY STATE     # STEADY STATE | drifting_up | drifting_down | anomaly | not found
+  window:
+    super_pass_start: 1
+    super_pass_end: 4
+    super_pass_size: 1000
+    n_samples: 4000
+    duration_s: 1200.0      # issue-time span, checked against the minimum run duration
+  state:                    # per gating metric: Plateau | Drifting Up | Drifting Down
+    tpot_p50: Plateau
+    tpot_p90: Plateau
+  # anomaly: ...            # only when the detector confirmed a level shift
+```
+
+`verdict` is read by the checker but isn't listed in §8.3.
 
 !!! warning "You run the detector yourself, for now"
     The detector is on `mlcommons/endpoints` `main` as an ad-hoc script,
@@ -70,18 +63,11 @@ the checker reads; §8.3 describes them only in prose.
     agentic runs. A dedicated Offline run sits outside the rules' steady-state scope too.
     Tracked as **B9** in [Open questions](../help/open-questions.md).
 
-## The warmup block
+## The `warmup` block
 
-Required by the run-requirements rules and checked by `warmup-present`.
-
-| Field | Description |
-|---|---|
-| `duration_s` | Seconds from the first warmup request to `TEST_STARTED` |
-| `requests_issued` | Total warmup requests issued |
-| `requests_completed` | Total warmup requests completed |
-| `data_source` | Description of the warmup data and its origin — dataset name and split, synthetic generation method and parameters, or fixed prompt text |
-| `concurrency` | Concurrency level used during warmup |
-| `initialization_steps` | Platform-specific initialization performed (CUDA graph capture, engine loading, JIT triggers), and confirmation it completed before `TEST_STARTED` |
+What it must declare is set by [§6.3.3][rules-6.3.3], and the sub-field names by [§8.3][rules-8.3]:
+`duration_s`, `requests_issued`, `requests_completed`, `data_source`, `concurrency` and
+`initialization_steps`. Checked by `warmup-present`.
 
 !!! warning "Warmup documentation is objection territory"
     Warmup is at your discretion, but because warmup state materially affects the measurement, the
