@@ -14,7 +14,22 @@ Captured at each measurement point, at a specific concurrency level.
 | TPS per user | `tps_per_user` | `1000 / tpot_p90_ms`, where `tpot_p90_ms` is the P90 of valid per-response TPOT samples. Higher is better |
 | Time to first token | `ttft_p90_ms` | P90 milliseconds from query issuance until the client receives the first non-empty text fragment (`len(s) > 0`) in **any** response category — visible output, tool call, or reasoning |
 | E2E average interactivity | `e2e_avg_interactivity` | **Agentic benchmarks only.** Output tokens summed across every completed turn, divided by the summed server-side turn time: `sum(output_tokens_per_turn) / sum(e2e_turn_time_seconds)`. Turn time runs from request receipt to response completion and **excludes tool-call execution**. One scalar per point, across all trajectories |
-| Concurrency | `concurrency` | Target in-flight concurrent queries for this point |
+| Concurrency | `concurrency` | Target in-flight concurrent queries for this point. For a dedicated Offline run, the number of queries in one pass over the performance dataset |
+
+!!! note "TTFT doesn't apply to a dedicated Offline run"
+    Every query is queued at the start, so TTFT is unbounded in principle. `ttft_p90_ms` isn't
+    required for a dedicated Offline run and can't be used as a compliance criterion or an objection
+    against it. An elected `C_max` point reports TTFT as normal.
+
+## Normalized metric
+
+| Metric | Field | Definition |
+|---|---|---|
+| Total system throughput per kilowatt | `system_tps_per_kw` | `system_tps / provisioned_power_kw`, where `provisioned_power_kw` comes from the system's [`system_power.json`](system-power-json.md) |
+
+The denominator is the **provisioned** power of the whole system and is the same at every point.
+The normalized curve is therefore the throughput curve scaled by one constant. Required for
+Standardized, optional for RDI, not yet defined for Serviced.
 
 !!! warning "P90, not P95"
     Only `ttft_p90_ms` is required per point, and only P90 is plotted in the v1.0 publication chart.
@@ -50,11 +65,17 @@ A post-processing step reads the event log (`events.jsonl`) after the run and fi
 the measured path — you don't do anything during the run to produce it. It does change how you plan
 a run, though, because a run can fail to have one.
 
-!!! danger "The detector is not released"
-    The detection methodology and script exist only on an **unmerged branch** of
-    `mlcommons/endpoints`. Nothing matching is on `main`, so you cannot currently run this yourself
-    or fill in the `steady_state` block the rules require. Everything below describes what the
-    rules say will happen, not something you can reproduce today. Tracked as **B9** in
+!!! warning "The detector is an ad-hoc script for now"
+    `scripts/steady_state_diagnostics.py` is on `mlcommons/endpoints` `main` (merged 2026-09-16),
+    and you run it yourself over a run directory or its `events.jsonl`:
+
+    ```bash
+    uv run scripts/steady_state_diagnostics.py <run_dir>/
+    ```
+
+    It isn't wired into `inference-endpoint` yet, so a run doesn't produce the `steady_state`
+    block by itself; you fill it in from the script's output. The script's own documentation scopes it
+    to single-turn workloads; for agentic runs it prints *not yet supported*. Tracked as **B9** in
     [Open questions](../help/open-questions.md).
 
 ### Super-passes
@@ -107,12 +128,14 @@ Separately from coverage, the detector classifies the **shape** of the run and e
 
 !!! warning "Only fixed-concurrency points are in scope"
     `MaxThroughput`, `Poisson` and single-pass agentic workloads are handled only by the ad-hoc
-    diagnostic tool, not by this reporting basis.
+    diagnostic tool, not by this reporting basis. That leaves a dedicated Offline run reporting its
+    whole-run `total` metrics. The rules imply this rather than stating it. Tracked in
+    [Open questions](../help/open-questions.md) under **C7**.
 
-!!! question "Nobody agrees on which metrics gate"
-    Three sources, three answers. The rules' definition table says **TPOT at P50 and P90**. The
-    next paragraph of the same section says **TTFT and TPOT at P50/P90**. The methodology document
-    that section links to says **TTFT/TPOT at p50 and p95**. Tracked as **B8**.
+!!! question "Which metrics gate is still not settled"
+    The rules' definition table and the detector's own documentation on `main` now agree on
+    **TPOT at P50 and P90**, with TTFT as a diagnostic and drift warning only. But the next
+    paragraph of rules §4.4 still says **TTFT and TPOT at P50/P90**. Tracked as **B8**.
 
     Also pending ratification: whether the 4 super-pass floor rises, and whether a `not found` run
     is *invalid* rather than merely reported-with-flags. See
@@ -135,6 +158,10 @@ The official curve is a **step function**. Each point is a discrete step, and be
 curve holds at the last measured value. No interpolation, curve fitting or smoothing. Tools may
 overlay a smoothed curve if labelled *"interpolated (not official)"*, but it cannot replace the
 step function.
+
+A dedicated Offline run appears as the **throughput ceiling**, labelled *Offline* and drawn
+differently from the fixed-concurrency points. It doesn't define a step. An elected Offline result
+adds no marker: the `C_max` point is labelled as the Offline result as well.
 
 ## Token counting
 
@@ -267,10 +294,12 @@ The High Concurrency region carries a margin extending the valid upper bound to
 
 ## Point counts
 
-| | |
-|---|---|
-| Minimum | **7** points, structured 1 + 3 + 3 |
-| Maximum | **32** points total, including any post-submission additions |
-| Spacing | No requirements — cluster or spread as you choose |
+| | Non-agentic | Agentic |
+|---|---|---|
+| Minimum | **8** points, `1 + 3 + 3 + 1`, with a dedicated Offline run. **7** if the `C_max` point is elected as the Offline result | **7** points, `1 + 3 + 3`. No Offline point |
+| Accuracy points | **5**: the four mandatory region points and Offline | **4**: the four mandatory region points |
+| Maximum | **32** points, Offline included | **32** points |
+| Spacing | No requirements — cluster or spread as you choose | Same |
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (a7ec3cc), 2026-09-19.*
+*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef) and
+`mlcommons/endpoints@main` (e71b928), 2026-09-24.*

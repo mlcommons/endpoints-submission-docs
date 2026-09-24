@@ -1,7 +1,7 @@
 # PROVENANCE SNAPSHOT — do not edit.
 # Upstream : endpoints_policies/seedset.yaml
-# Repo     : mlcommons/endpoints_policies @ v1.0_rules_dev@a7ec3cc
-# Captured : 2026-09-19
+# Repo     : mlcommons/endpoints_policies @ v1.0_rules_dev@6b0b1ef
+# Captured : 2026-09-24
 # Purpose  : the published v1.0 seed set (PR #117). Compare against the checker's mirror at
 #            endpoints-submission-cli/src/submission_checker/data/seed_sets.yaml.
 

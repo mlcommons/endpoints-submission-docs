@@ -18,7 +18,7 @@ stateDiagram-v2
     [*] --> REVIEW_PENDING: submissions create
     REVIEW_PENDING --> WITHDRAWN: submissions withdraw<br/>or 10 business days without<br/>responding to an objection
     REVIEW_PENDING --> FINALIZED: all objections resolved<br/>or retracted
-    FINALIZED --> PUBLISHED: next cohort
+    FINALIZED --> PUBLISHED: next cohort<br/>or embargo date
     WITHDRAWN --> [*]
     PUBLISHED --> [*]
 ```
@@ -39,7 +39,10 @@ Status is coarse; the review phase is what actually governs your obligations.
 | Objection resolution | Weeks 4–6 | `REVIEW_PENDING` |
 | Dispute resolution | From Week 6, ~5 weeks | `REVIEW_PENDING` — does not finalize until the dispute concludes |
 | Finalized | — | `FINALIZED` |
-| Published | Next cohort | `PUBLISHED` |
+| Published | Next cohort, or the embargo date | `PUBLISHED` |
+
+Under provisional publication, peer review starts when the result goes public, not when automated
+checks pass. An embargo on a provisional submission therefore delays Week 1 as well.
 
 See [How submission works](../understand/how-submission-works.md) and
 [After you submit](../workflow/after-submission.md).
@@ -52,6 +55,7 @@ Distinct from status. A result can carry:
 |---|---|
 | **peer review pending** | Provisionally published before review completed. Removed at finalization |
 | **Preview — Available by [date]** | Preview publication status, with its 180-day deadline |
+| **MLC Estimated Power** | Some or all of the power figures behind `system_tps_per_kw` were filled in by MLCommons |
 | **Invalidated** | Removed from the active results page, retained in the historical archive with a description of the error |
 | **Withdrawn** | Post-finalization withdrawal — removed from active results, retained in the archive |
 
@@ -90,5 +94,5 @@ MLCommons keeps every version of every Pareto curve, aligned to cohorts. The act
 shows the latest finalized version; older versions remain accessible on request, and superseded
 points are labelled with the cohort in which they were replaced.
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (a7ec3cc) and
-`mlcommons/endpoints-submission-cli@main` (f48ca84), 2026-09-19.*
+*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef) and
+`mlcommons/endpoints-submission-cli@main` (f25f71e), 2026-09-24.*

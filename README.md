@@ -3,7 +3,7 @@
 The submitter-facing documentation site for MLPerf Endpoints: how to prepare, validate and submit a
 benchmark result. Built with MkDocs Material.
 
-**Published at:** <https://anandhu-eng.github.io/endpoints-submission-docs/>
+**Published at:** <https://mlcommons.github.io/endpoints-submission-docs/>
 
 - **Open questions and WIP rules:** [`docs/help/open-questions.md`](docs/help/open-questions.md)
 - **Contributing:** [`CONTRIBUTING.md`](CONTRIBUTING.md)

@@ -9,7 +9,14 @@ Terms used across this site. Most also appear as hover tooltips on their first u
     levels. One curve = one system, one benchmark model, one dataset.
 
 **Measurement point**
-:   One benchmark run at one concurrency level. A submission carries 7–32 of them.
+:   One benchmark run at one concurrency level. A submission carries 7–32 of them, 8 when one is a
+    dedicated Offline run.
+
+**Offline point**
+:   The point that makes the whole performance dataset available at once and measures only
+    throughput. Required for non-agentic benchmarks, not allowed for agentic ones. Either a
+    **dedicated** run, whose concurrency is the dataset size, or the `C_max` point **elected** as
+    the Offline result.
 
 **Step function**
 :   The official curve representation. Each point is a discrete step; between points the curve holds
@@ -33,6 +40,17 @@ Terms used across this site. Most also appear as hover tooltips on their first u
 
 **`tps_per_user`**
 :   Per-user output rate: `1000 / tpot_p90_ms`.
+
+**`system_tps_per_kw`**
+:   `system_tps` divided by the system's provisioned power in kW. The v1.0 normalized metric.
+
+**Provisioned power**
+:   What a system is built to draw, estimated from the rated power of its CPUs, accelerators and
+    scale-up switches plus a cooling-dependent overhead. Fixed for a system across its whole curve.
+    Declared in `system_power.json`.
+
+**MLC Estimated Power**
+:   The tag on a result whose power figures were partly or wholly filled in by MLCommons.
 
 **TTFT**
 :   Time To First Token. Measured to the first **non-empty** text fragment in any response category.
@@ -71,11 +89,17 @@ Terms used across this site. Most also appear as hover tooltips on their first u
 **Cohort**
 :   A publication batch, `YYYY-MM-C0` (1st Wednesday) or `YYYY-MM-C1` (3rd Wednesday), 08:00 Pacific.
 
+**Publication mode**
+:   Confidential review, confidential review with an embargo, or provisional publication. Chosen
+    at submission; irrevocable.
+
 **Provisional publication**
-:   Opting to publish before peer review completes, tagged *peer review pending*. Irrevocable.
+:   Opting to publish before peer review completes, tagged *peer review pending*. Review starts at
+    provisional publication.
 
 **Embargo**
-:   A requested hold on when results become public.
+:   A requested hold on when results become public. Under provisional publication it also delays
+    the start of review.
 
 **Finalization**
 :   The point at which all objections are resolved and the *peer review pending* tag is removed.
@@ -101,7 +125,8 @@ Terms used across this site. Most also appear as hover tooltips on their first u
     division-rule grounds. Reproducibility is not eligible.
 
 **Audit nomination**
-:   The route for a post-finalization reproducibility concern. Committee members only.
+:   Proposing a published result for the quarterly audit vote, open to committee members for 4
+    weeks after publication. Also the route for a post-finalization reproducibility concern.
 
 **Neutral member**
 :   A person with minimal conflict of interest, used to staff dispute panels and screening. Ordinary
@@ -132,13 +157,19 @@ Terms used across this site. Most also appear as hover tooltips on their first u
 :   Post-Training Quantization. The canonical permitted weight transformation.
 
 **Drafter**
-:   The speculative-decoding module (MTP, EAGLE-style head). Frozen, and fixed across the curve.
+:   The speculative-decoding module (MTP, EAGLE-style head, or a self-speculative pass). Chosen
+    from the benchmark's approved list, used unmodified apart from PTQ, and the same across the
+    curve.
+
+**Approved drafter list**
+:   The per-benchmark, per-round list of drafters a Standardized submission may use. None has been
+    published yet.
 
 **ConcurrencyScheduler**
 :   The reference client's fixed-concurrency load pattern — it keeps a set number of queries in
     flight, issuing a replacement as each one completes. The rules now say "the benchmark-defined
-    fixed-concurrency load pattern" rather than naming it. `MaxThroughput` and `Poisson` remain
-    invalid for a Pareto point.
+    fixed-concurrency load pattern" rather than naming it. `Poisson` is invalid for any Pareto
+    point; `MaxThroughput` only for a dedicated Offline run.
 
 **Warmup**
 :   Requests issued before `TEST_STARTED`. Excluded from metrics, but logged, retained and declared.
@@ -173,4 +204,4 @@ Terms used across this site. Most also appear as hover tooltips on their first u
 **TP / EP / PP / DP**
 :   Tensor / Expert / Pipeline / Data parallelism.
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (a7ec3cc), 2026-09-19.*
+*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef), 2026-09-24.*
