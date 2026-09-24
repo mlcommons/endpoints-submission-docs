@@ -2,17 +2,14 @@
 
 ## The v1.0 suite
 
-Six models in two groups. The legacy benchmarks keep the datasets they had in MLPerf Inference.
-All three agentic benchmarks share one pair of datasets.
-
-| Benchmark | Model on Hugging Face | Group | `model_name` the checker accepts |
-|---|---|---|---|
-| Llama 3.1 8B | `meta-llama/Llama-3.1-8B-Instruct` | Legacy | `llama3.1-8b` |
-| GPT-OSS 120B | `openai/gpt-oss-120b` | Legacy | `gpt-oss-120b` |
-| DeepSeek-R1 | `deepseek-ai/DeepSeek-R1` | Legacy | `deepseek-r1` |
-| Kimi K3 | `moonshotai/Kimi-K3` | Agentic | None yet |
-| Qwen3.6-35B-A3B | `Qwen/Qwen3.6-35B-A3B` | Agentic | None yet |
-| DeepSeek V4 *(tentative)* | Not settled, see below | Agentic | None yet |
+| Benchmark | Model on Hugging Face | `model_name` the checker accepts |
+|---|---|---|
+| Llama 3.1 8B | `meta-llama/Llama-3.1-8B-Instruct` | `llama3.1-8b` |
+| GPT-OSS 120B | `openai/gpt-oss-120b` | `gpt-oss-120b` |
+| DeepSeek-R1 | `deepseek-ai/DeepSeek-R1` | `deepseek-r1` |
+| Kimi K3 *(agentic)* | `moonshotai/Kimi-K3` | None yet |
+| Qwen3.6-35B-A3B *(agentic)* | `Qwen/Qwen3.6-35B-A3B` | None yet |
+| DeepSeek V4 *(agentic, tentative)* | Not settled, see below | None yet |
 
 ## Datasets
 
