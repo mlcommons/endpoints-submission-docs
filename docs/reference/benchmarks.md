@@ -23,8 +23,16 @@ All three agentic benchmarks share one pair of datasets.
 | Qwen3.6-35B-A3B | `Qwen/Qwen3.6-35B-A3B` | Agentic | None yet |
 | DeepSeek V4 *(tentative)* | Not settled, see below | Agentic | None yet |
 
-`model_name` goes in `system_desc.json`, and the results directory for the curve must use the same
-name.
+The model is named in a few places, and they don't all take the same form:
+
+- **The client's run config** (`config.yaml`) takes the Hugging Face ID, in `model_params.name`.
+  That's the name the client sends to your endpoint.
+- **`system_desc.json`** takes the short name from the last column, in `model_name`
+  ([§8.2][rules-8.2]). This is the one the checker tests against the list.
+- **The model folder**, `results/<system>/<model_name>/`, has to match the `system_desc.json`
+  name.
+- **`point.yaml`** has its own `model_name` too ([§8.3][rules-8.3]). The rules call it a display
+  name. The checker requires it but doesn't test it against the list.
 
 Being agentic changes what you owe. An agentic benchmark has no Offline point, needs 7 points
 instead of 8 and four accuracy results instead of five ([§5.3][rules-5.3]), and plots
