@@ -34,12 +34,15 @@ Each **group** has:
 | `link` | string | A public specification backing the rating |
 
 !!! warning "The rules and the checker name these differently"
-    Rules §4.5.2 lists the fields as `num_cpu`, `tdp_per_cpu`, `num_accelerator`,
+    [Rules §4.5.2][rules-4.5.2-power-model] lists the fields as `num_cpu`, `tdp_per_cpu`, `num_accelerator`,
     `tdp_per_accelerator`, `num_switches` and `tdp_per_switch`. The released checker reads nested
     groups with `count`, `tdp_per_unit` and `link`, as above. The checker's spelling is what gets
     validated. Tracked as **B10** in [Open questions](../help/open-questions.md).
 
 ## How the total is computed
+
+What the checker computes from the fields above. The power model it implements is in
+[§4.5.2, Power Model][rules-4.5.2-power-model].
 
 ```
 major    = cpu + accelerator + scale_up_network (+ scale_out_network)
@@ -71,38 +74,19 @@ A liquid-cooled node with two CPUs, eight accelerators and one scale-up switch:
 `(700 + 5600 + 3500) × 1.30 = 12,740 W`, so 12.74 kW. A point with `system_tps` of 25,000 reports
 `system_tps_per_kw` of about 1,962.
 
-## Evidence the rules accept
+## Evidence, partial systems and estimates
 
-| Accepted | Not accepted |
-|---|---|
-| A spec sheet on the vendor's website | Media speculation |
-| A disclosure in an academic or technical conference or publication | Third-party social media |
-| A statement to press at a keynote or on an earnings call | Industry analyst blogs, videos and reports |
-| Other public statements officially sanctioned by the submitting organisation | Anything not stated by a representative of the submitting organisation |
+These are policy, and live in the rules:
 
-A component running **below its rated TDP** needs public evidence of the lower rating, such as an
-alternative SKU or a listed operating mode, plus evidence of the cap reproducible by an audit,
-for example `nvidia-smi` or `rocm-smi` output. Custom and low-volume SKUs carry the same burden.
+- **Which sources count as evidence** for a power figure, and what a component running below its
+  rated TDP has to show: [§4.5.2, Methodology][rules-4.5.2-methodology].
+- **How to state the power of a partially populated system**, whether a partial rack, a node with
+  empty accelerator slots, or a system under a TDP cap: [§4.5.2.1][rules-4.5.2.1]. Linear scaling
+  is allowed only at whole-node granularity.
+- **What MLCommons does with values you leave out**, and the **"MLC Estimated Power"** tag the
+  result then carries: [§4.5.2][rules-4.5.2].
 
-## Partially populated systems
-
-| Configuration | How to state its power |
-|---|---|
-| `Y` of `N` identical nodes in a rack | Published power for that configuration, or `P_rack × Y / N` from the published rack figure |
-| A node with some accelerator slots empty | Published power for that configuration, or the component groups with only the installed parts counted. **Not** linear scaling: host CPU, memory, NICs and PSU overhead don't shrink with accelerator count |
-| A node or rack under a TDP cap | Published power for that configuration, or the groups with the capped values, plus the below-TDP evidence above |
-
-Where a published figure is a range, use the upper bound: a rack rated 132–140 kW is 140 kW.
-
-## What happens to values you leave out
-
-MLCommons fills them in, using the architecture, core count and other details in your system
-description to pick a proxy: Intel and AMD parts for x86 CPUs, Arm AGI and Neoverse for Arm,
-Broadcom Tomahawk for Ethernet switching, and public NVLink power figures for NVLink. The rules describe these estimates as deliberately
-conservative. The published result is then tagged **"MLC Estimated Power"**.
-
-If you disagree with an estimate, you have to point to a better public source or publish the figure
-yourself. Non-public information is considered only at MLCommons's discretion.
+Where a published figure is a range, the rules use the upper bound.
 
 ## Checker rules that read this file
 

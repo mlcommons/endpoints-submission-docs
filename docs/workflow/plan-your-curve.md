@@ -23,15 +23,10 @@
 
 ## The coverage rule
 
-A non-agentic submission needs a **minimum of 8** and a **maximum of 32** measurement points,
-structured `1 + 3 + 3 + 1`:
-
-| Points | Placement |
-|---|---|
-| 1 mandatory | In the **Ultra Low Concurrency** region — concurrency 1 to 32 inclusive, fixed for every submission |
-| 3 mandatory | One each in **Low**, **Medium** and **High** Concurrency |
-| 3 submitter's choice | Anywhere in those same three concurrency regions |
-| 1 mandatory **Offline** | Every query available at once rather than a fixed concurrency. See [step 6](#6-decide-how-to-meet-the-offline-requirement) |
+The rule itself is in [§5.3 of the rules][rules-5.3]. In short, a non-agentic submission needs
+at least 8 and at most 32 measurement points, structured `1 + 3 + 3 + 1`: one point in Ultra Low
+Concurrency (1–32), one each in Low, Medium and High Concurrency, three more of your choice in
+those three regions, and one Offline point ([step 6](#6-decide-how-to-meet-the-offline-requirement)).
 
 The minimum drops to **7** in two cases: you elect your `C_max` point as the Offline result, so
 there's no separate Offline run, or the benchmark is **agentic**. Agentic benchmarks have no
@@ -75,21 +70,9 @@ baseline, and the number most often quoted in comparisons.
 
 ### 3. Compute the boundaries
 
-Beyond Ultra Low Concurrency, the space up to `C_max` is divided into **three equal regions in
-log-2 space**:
-
-```
-I = log2(C_max - C_min) / 3
-
-Low Concurrency    : C_min + 1          → round(C_min + 2^I)
-Medium Concurrency : low_end + 1        → round(C_min + 2^(2I))
-High Concurrency   : med_end + 1        → C_max
-```
-
-Boundaries round half-to-even (banker's rounding). Log spacing is used because the difference
-between concurrency 1 and 10 matters far more than between 1000 and 1010.
-
-Don't calculate this by hand. Use the tool:
+Beyond Ultra Low Concurrency, the space up to `C_max` is divided into three equal regions in
+log-2 space. The reference algorithm is in [§5.5 of the rules][rules-5.5]. Don't calculate it by
+hand, because the rounding is easy to get wrong. Use the tool:
 
 ```bash
 submission-checker regions --max-concurrency 1024 --min-concurrency 16
@@ -103,27 +86,26 @@ For `C_min = 16`, `C_max = 1024`:
 |---|---|
 | Ultra Low Concurrency | 1 – 16 |
 | Low Concurrency | 17 – 26 |
-| Medium Concurrency | 27 – 116 |
-| High Concurrency | 117 – 1024 |
+| Medium Concurrency | 27 – 117 |
+| High Concurrency | 118 – 1024 |
 | 10% margin | 1025 – 1127 |
 
 </div>
 
-More pre-computed combinations are in [Metrics and regions](../reference/metrics-and-regions.md).
+Pre-computed boundaries for common combinations are in [Appendix B of the rules][rules-appendix-b].
+
+!!! warning "The rules' Example C is off by one"
+    §5.4's worked example for this same pair gives Medium as 27–116 and High as 117–1,024. That's
+    an arithmetic slip in the example. The algorithm, Appendix B and the checker all put 117 in
+    Medium. Trust the tool. Tracked as **B14** in [Open questions](../help/open-questions.md).
 
 ### 4. Choose your points
 
-Worked examples straight from the rules:
-
-| System | `C_min` | `C_max` | A valid set of 7 fixed-concurrency points |
-|---|---|---|---|
-| Large scale | 32 | 8,192 | `{32, 40, 200, 500, 1000, 2000, 4096}` |
-| Mid-range | 16 | 1,024 | `{16, 24, 64, 96, 128, 256, 1000}` |
-| Smaller | 1 | 256 | `{1, 4, 16, 32, 64, 128, 256}` |
-
-These are the rules' own examples, and they predate the Offline point. Add a dedicated Offline run
-on top, or elect the `C_max` point. The first two sets also stop short of their `C_max` (8,192 and
-1,024), which is fine for region coverage but causes trouble at [step 6](#6-decide-how-to-meet-the-offline-requirement).
+The rules give a worked 7-point set for three system sizes, under
+[Concurrency Regions in §5.4][rules-5.4-concurrency]. Use them as a starting shape, with two
+caveats. They predate the Offline point, so add a dedicated Offline run on top or elect the `C_max`
+point. And the large-scale and mid-range sets stop short of their `C_max`, which is fine for region
+coverage but causes trouble at [step 6](#6-decide-how-to-meet-the-offline-requirement).
 
 ### 5. Note the 10% margin
 
@@ -143,16 +125,12 @@ Skip this step if your benchmark is agentic.
 For every other benchmark you need one Offline result, and there are two ways to supply it.
 
 Either way, **put one of your points at exactly `C_max`**. Both options are defined relative to "the
-`C_max` point", and the rules' own example sets above don't have one.
+`C_max` point", and two of the rules' example sets don't have one.
 
 **Option 1: a dedicated Offline run.** A separate run in which the client makes the whole
 performance dataset available at once and the system drains it as fast as it can. This is your
-eighth point. Two constraints tie it to your `C_max` point:
-
-| Quantity | Must hold |
-|---|---|
-| Throughput | `system_tps(Offline) ≥ 0.98 × system_tps(C_max point)` |
-| Concurrency | `concurrency(Offline) ≥ C_max` |
+eighth point. [§5.7.2 of the rules][rules-5.7.2] ties it to your `C_max` point: its throughput
+has to reach at least 98% of the `C_max` point's, and its concurrency has to be at least `C_max`.
 
 The 2% is there to absorb run-to-run noise. It isn't a target. An Offline run that comes in below
 your `C_max` point usually means the Offline run didn't saturate the system. A failure is flagged

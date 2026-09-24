@@ -6,15 +6,17 @@ Metric definitions and the region-boundary algorithm. Conceptual background:
 
 ## Primary metrics
 
-Captured at each measurement point, at a specific concurrency level.
+Captured at each measurement point, at a specific concurrency level. The definitions, including
+how each one is computed, are in [rules §4.1][rules-4.1]. The field names are the ones in your
+result files:
 
-| Metric | Field | Definition |
-|---|---|---|
-| System tokens per second | `system_tps` | `total_output_tokens / elapsed_duration_seconds` — total output tokens per second across all concurrent users |
-| TPS per user | `tps_per_user` | `1000 / tpot_p90_ms`, where `tpot_p90_ms` is the P90 of valid per-response TPOT samples. Higher is better |
-| Time to first token | `ttft_p90_ms` | P90 milliseconds from query issuance until the client receives the first non-empty text fragment (`len(s) > 0`) in **any** response category — visible output, tool call, or reasoning |
-| E2E average interactivity | `e2e_avg_interactivity` | **Agentic benchmarks only.** Output tokens summed across every completed turn, divided by the summed server-side turn time: `sum(output_tokens_per_turn) / sum(e2e_turn_time_seconds)`. Turn time runs from request receipt to response completion and **excludes tool-call execution**. One scalar per point, across all trajectories |
-| Concurrency | `concurrency` | Target in-flight concurrent queries for this point. For a dedicated Offline run, the number of queries in one pass over the performance dataset |
+| Metric | Field |
+|---|---|
+| System tokens per second | `system_tps` |
+| TPS per user | `tps_per_user` |
+| Time to first token (P90) | `ttft_p90_ms` |
+| E2E average interactivity, **agentic benchmarks only** | `e2e_avg_interactivity` |
+| Concurrency | `concurrency` |
 
 !!! note "TTFT doesn't apply to a dedicated Offline run"
     Every query is queued at the start, so TTFT is unbounded in principle. `ttft_p90_ms` isn't
@@ -23,13 +25,11 @@ Captured at each measurement point, at a specific concurrency level.
 
 ## Normalized metric
 
-| Metric | Field | Definition |
-|---|---|---|
-| Total system throughput per kilowatt | `system_tps_per_kw` | `system_tps / provisioned_power_kw`, where `provisioned_power_kw` comes from the system's [`system_power.json`](system-power-json.md) |
+`system_tps_per_kw` divides `system_tps` by the provisioned power from the system's
+[`system_power.json`](system-power-json.md). Definition and scope: [rules §4.5.3][rules-4.5.3].
 
-The denominator is the **provisioned** power of the whole system and is the same at every point.
-The normalized curve is therefore the throughput curve scaled by one constant. Required for
-Standardized, optional for RDI, not yet defined for Serviced.
+The denominator is the **provisioned** power of the whole system and is the same at every point,
+so the normalized curve is the throughput curve scaled by one constant.
 
 !!! warning "P90, not P95"
     Only `ttft_p90_ms` is required per point, and only P90 is plotted in the v1.0 publication chart.
@@ -86,40 +86,14 @@ sets a different size.
 
 ### When the steady-state result counts as official
 
-All three have to hold:
+[Rules §4.4][rules-4.4] sets the conditions and defines the coverage `status` values and the
+detector's verdicts. In outline: the window has to span at least 4 super-passes, every gating
+metric has to be flat, and the window's issue-time span has to meet the
+[minimum run duration][rules-6.2] for the point's region. When any of that fails, the point's
+official result falls back to the whole-run `total` metrics.
 
-1. The window spans **at least 4 super-passes**. The trend test needs 4 samples (`MIN_TREND_N = 4`),
-   so the run needs more than 4 super-passes in total.
-2. Every gating metric is a **Plateau** — flat, no significant trend across the super-passes — and
-   not drifting up.
-3. The window's **issue-time span** meets the minimum run duration for the point's region: 600 s
-   Ultra Low, 1,200 s elsewhere.
-
-The effective floor is therefore `max(4 super-passes, your region's minimum duration)`. At high
-concurrency the duration binds, because 4 super-passes can finish well inside 1,200 s.
-
-### If it doesn't hold
-
-The point falls back by coverage `status`:
-
-| `status` | When | Official result |
-|---|---|---|
-| `windowable` | ≥ 4 super-pass window in Plateau, **and** its issue-time span meets the minimum duration | Steady-state metrics; `total` supplementary |
-| `insufficient_duration` | ≥ 4 super-passes in Plateau, but the span is under the minimum duration | `total`. Steady-state reported as low-confidence, not official |
-| `insufficient_passes` | ≥ 1 super-pass, but under 4 | `total`. Steady-state reported as low-confidence, not official |
-| `partial_dataset` | Under 1 super-pass | `total` only — no steady-state claim at all |
-
-### What the detector reports
-
-Separately from coverage, the detector classifies the **shape** of the run and emits one verdict:
-
-| Shape | Verdict | What gets reported |
-|---|---|---|
-| Gated metrics stable across the window | `STEADY STATE` | Steady-state metrics; `total` supplementary. **This is the one you want** |
-| A gated metric keeps climbing after the window | `drifting_up` | Reported as a drift range or slope, never a single number. Window flagged *local-plateau only* |
-| A gated metric trends down over the tail | `drifting_down` | Reported as drift, not a single number |
-| The first plateau steps to a later, different one | `anomaly` (staircase) | The **first** plateau is the steady state; the later shift is disclosed as likely degradation |
-| Nothing is steady enough, or the run is too short | `not found` | No steady-state claim. Falls back to whole-run `total` |
+At high concurrency the duration floor is the one that binds, because 4 super-passes can finish
+well inside the minimum.
 
 !!! tip "What this means in practice"
     Run longer than the minimum. A run that only just clears 1,200 s can still come back
@@ -143,24 +117,17 @@ Separately from coverage, the detector classifies the **shape** of the run and e
 
 ## Publication charts
 
-| Chart | Y-axis | X-axis |
-|---|---|---|
-| **Pareto curve** (primary, single-turn) | `system_tps` | `tps_per_user` |
-| **Agentic Pareto curve** (primary, agentic) | `system_tps` | `e2e_avg_interactivity` |
-| System TPS vs. concurrency | `system_tps` | `concurrency` |
-| TTFT (P90) vs. concurrency | `ttft_p90_ms` | `concurrency` |
-| Interactivity vs. concurrency | `tps_per_user` | `concurrency` |
-
-Agentic benchmarks use `e2e_avg_interactivity` in place of `tps_per_user` as the primary chart's
-X-axis. Higher is better on both axes either way.
+The charts, and which metric goes on each axis, are listed in [rules §4.2][rules-4.2]. The primary
+chart plots `system_tps` against `tps_per_user`, or against `e2e_avg_interactivity` for an agentic
+benchmark. Higher is better on both axes.
 
 The official curve is a **step function**. Each point is a discrete step, and between points the
 curve holds at the last measured value. No interpolation, curve fitting or smoothing. Tools may
 overlay a smoothed curve if labelled *"interpolated (not official)"*, but it cannot replace the
 step function.
 
-A dedicated Offline run appears as the **throughput ceiling**, labelled *Offline* and drawn
-differently from the fixed-concurrency points. It doesn't define a step. An elected Offline result
+How the curve is drawn is in [§5.2][rules-5.2]. A dedicated Offline run appears as the
+**throughput ceiling**, labelled *Offline* and drawn differently from the fixed-concurrency points. It doesn't define a step. An elected Offline result
 adds no marker: the `C_max` point is labelled as the Offline result as well.
 
 ## Token counting
@@ -169,17 +136,9 @@ Official output token counts come from the **client-side reference tokenizer**, 
 with the model in its Hugging Face repository. It's applied **once** to the
 reconstructed assistant message through the model's official reference chat template.
 
-| Content category | Counted? | How |
-|---|---|---|
-| Visible output | Yes | Fragments concatenated in arrival order, supplied as assistant `content` |
-| Tool-call content | Yes | Fragments reassembled into structured calls, ordered by ascending tool-call index, supplied as `tool_calls` |
-| Reasoning / thinking | Yes | Fragments concatenated in arrival order, supplied as the reasoning field |
-| Chat-template framing | Conditional | Payload-specific framing is counted; framing present for an *empty* assistant message is subtracted out |
-
-The baseline subtraction is explicit: render and tokenize both (a) a minimal conversation with an
-empty user message followed by the reconstructed assistant response, and (b) the same conversation
-with an empty assistant message. The official count is `max(0, count(a) - count(b))`, both rendered
-with `add_generation_prompt = false`.
+Which parts of a response are counted — visible output, tool calls, reasoning, and chat-template
+framing — and the baseline subtraction that removes empty-message framing are defined in
+[rules §2.8][rules-2.8].
 
 You may use any tokenizer internally; it does not affect scoring, and no equivalence demonstration
 is required for an internal *output* tokenizer. Input tokenization equivalence requirements still
@@ -206,38 +165,11 @@ directly comparable point. One point required.
 
 ### The three concurrency regions
 
-Beyond `C_min`, the space up to `C_max` is divided into three equal regions **in log-2 space**:
+Beyond `C_min`, the space up to `C_max` is divided into three equal regions **in log-2 space**.
+The reference algorithm, including the 10% margin, is in [rules §5.5][rules-5.5]. Rounding is
+half-to-even, which is Python's built-in `round()` and easy to get wrong by hand.
 
-```python
-def compute_regions(C_max: int, C_min: int) -> dict:
-    assert 1 <= C_min <= 32, "Minimum concurrency must be between 1 and 32 (inclusive)"
-    assert C_max > 32,       "Maximum Supported Concurrency must be > 32"
-
-    low_latency = {"start": 1, "end": C_min}
-
-    I = math.log2(C_max - C_min) / 3
-
-    low_conc_end = round(C_min + 2**I)
-    med_conc_end = round(C_min + 2**(2 * I))
-
-    low_concurrency  = {"start": C_min + 1,       "end": low_conc_end}
-    med_concurrency  = {"start": low_conc_end+1,  "end": med_conc_end}
-    high_concurrency = {"start": med_conc_end+1,  "end": C_max}
-
-    margin_end = math.ceil(1.10 * C_max)
-
-    return {
-        "low_latency":      low_latency,
-        "low_concurrency":  low_concurrency,
-        "med_concurrency":  med_concurrency,
-        "high_concurrency": high_concurrency,
-        "margin":           {"start": C_max+1, "end": margin_end},
-    }
-```
-
-Rounding is **half-to-even** (banker's rounding), matching Python's built-in `round()`.
-
-Don't implement this yourself. Use the reference implementation:
+Don't implement it yourself. Use the checker, which implements it:
 
 ```bash
 submission-checker regions --max-concurrency 1024 --min-concurrency 16
@@ -262,44 +194,21 @@ The High Concurrency region carries a margin extending the valid upper bound to
 
 ### Edge cases
 
-| Case | Behaviour |
-|---|---|
-| `C_max` ≤ 33 | All three regions collapse to roughly one level each. You must notify the working group with written justification, and they may request more information before accepting |
-| `C_max` > 100,000 | The algorithm scales correctly. Low Concurrency is narrow; High Concurrency spans most of the range |
-| Boundary collision | If rounding makes two boundaries equal, that region has zero width and a single valid level at the boundary value. One point there satisfies it |
+The rules cover `C_max` ≤ 33, very large `C_max` and boundary collisions at the end of
+[Concurrency Regions in §5.4][rules-5.4-concurrency]. The one that needs action from you is `C_max` ≤ 33: you must notify the working
+group with written justification.
 
 ## Pre-computed boundaries
 
-??? abstract "Quick-reference table by `C_min` and `C_max`"
-
-    | `C_max` | `C_min` | Low | Medium | High | 10% margin |
-    |---|---|---|---|---|---|
-    | 64 | 2 | 3–6 | 7–18 | 19–64 | 65–71 |
-    | 128 | 2 | 3–7 | 8–27 | 28–128 | 129–141 |
-    | 256 | 2 | 3–8 | 9–42 | 43–256 | 257–282 |
-    | 256 | 8 | 9–14 | 15–47 | 48–256 | 257–282 |
-    | 512 | 8 | 9–16 | 17–71 | 72–512 | 513–564 |
-    | 1,024 | 8 | 9–18 | 19–109 | 110–1,024 | 1,025–1,127 |
-    | 512 | 16 | 17–24 | 25–79 | 80–512 | 513–564 |
-    | 1,024 | 16 | 17–26 | 27–117 | 118–1,024 | 1,025–1,127 |
-    | 2,048 | 16 | 17–29 | 30–176 | 177–2,048 | 2,049–2,253 |
-    | 1,024 | 32 | 33–42 | 43–131 | 132–1,024 | 1,025–1,127 |
-    | 2,048 | 32 | 33–45 | 46–192 | 193–2,048 | 2,049–2,253 |
-    | 4,096 | 32 | 33–48 | 49–287 | 288–4,096 | 4,097–4,506 |
-    | 8,192 | 32 | 33–52 | 53–437 | 438–8,192 | 8,193–9,012 |
-    | 16,384 | 32 | 33–57 | 58–676 | 677–16,384 | 16,385–18,023 |
-
-    The Low Latency point is a single point at your `C_min`. All concurrency regions are
-    submission-specific and depend on both values.
+A quick-reference table for common `C_min` and `C_max` combinations is in
+[Appendix B of the rules][rules-appendix-b]. For any other combination, run
+`submission-checker regions`.
 
 ## Point counts
 
-| | Non-agentic | Agentic |
-|---|---|---|
-| Minimum | **8** points, `1 + 3 + 3 + 1`, with a dedicated Offline run. **7** if the `C_max` point is elected as the Offline result | **7** points, `1 + 3 + 3`. No Offline point |
-| Accuracy points | **5**: the four mandatory region points and Offline | **4**: the four mandatory region points |
-| Maximum | **32** points, Offline included | **32** points |
-| Spacing | No requirements — cluster or spread as you choose | Same |
+How many points you need, and how many carry accuracy results, is set by
+[rules §5.3][rules-5.3], with the Offline point in [§5.7][rules-5.7] and the 32-point cap in
+[§5.6][rules-5.6]. [Step 3](../workflow/plan-your-curve.md) walks through applying them.
 
 *Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef) and
 `mlcommons/endpoints@main` (e71b928), 2026-09-24.*
