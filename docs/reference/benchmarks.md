@@ -1,14 +1,5 @@
 # Benchmarks and models
 
-The models you can submit on in v1.0, the datasets each one runs, and the accuracy the checker
-expects.
-
-!!! warning "Not yet the official list"
-    [§3.2 of the rules][rules-3.2] says the model list for each round is published in the reference
-    repository. It hasn't been published for v1.0 yet. This page puts together what the working
-    group presented on 2026-09-22 and what the reference client and the checker ship today. Where
-    they disagree, it says so. When the official list appears, it replaces this page.
-
 ## The v1.0 suite
 
 Six models in two groups. The legacy benchmarks keep the datasets they had in MLPerf Inference.
