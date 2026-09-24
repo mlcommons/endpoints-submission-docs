@@ -38,11 +38,15 @@ Where to get them:
   `1beb24c882122df96571cf11b390acbea388944038bc55c78b891475459014ae`.
 - **SWE-bench Verified**: from Hugging Face, loaded by the client's SWE-bench scorer.
 
-## Accuracy the checker expects
+## Accuracy targets
 
 Rules [§4.3][rules-4.3] leaves the quality target to each benchmark's definition, and those
-definitions aren't published. What the checker enforces today are the MLPerf Inference targets,
-carried over unchanged. Every score has to reach 99% of the reference score.
+definitions aren't published.
+
+### Legacy benchmarks
+
+The checker enforces the MLPerf Inference targets, carried over unchanged. Every score has to reach
+99% of the reference score.
 
 | Benchmark | Metric | Reference | Must reach | Minimum queries |
 |---|---|---|---|---|
@@ -53,20 +57,46 @@ carried over unchanged. Every score has to reach 99% of the reference score.
 | | Generated length, in tokens | 8,167,644 | Within 10% either way | |
 | GPT-OSS 120B | Exact match | 83.13 | 82.30 | 4,395 |
 | DeepSeek-R1 | Exact match | 81.3582 | 80.54 | 4,388 |
-| Agentic | None defined | | | |
 
 For GPT-OSS the query count includes the repeats, so AIME25 counts eight times.
 
-!!! note "No agentic target yet"
-    For a model with no target, the checker reports a warning, `No accuracy thresholds defined`, and
-    skips the check. A clean checker run tells you nothing about your agentic accuracy. Tracked
-    as **C2** in [Open questions](../help/open-questions.md).
+### Agentic benchmarks
+
+These targets come from the client's
+[agentic example README](https://github.com/mlcommons/endpoints/blob/main/examples/10_Agentic_Inference/README.md#accuracy), not
+from the checker. There are three metrics:
+
+- **Inline accuracy** and **OSL per-turn mean** have to pass at every point that carries an
+  accuracy result.
+- **SWE-bench accuracy** is judged on the average of four results, one from each mandatory region.
+
+| Metric | Kimi K3 | Qwen3.6-35B-A3B | DeepSeek-V4.1-Flash *(proposed)* |
+|---|---|---|---|
+| Inline accuracy | At least 58.32% (reference 58.9%) | At least 55.86% (reference 56.43%) | At least 51.7% (reference 53.3%) |
+| OSL per-turn mean, in tokens | 425–520 (reference 472) | 344–422 (reference 383) | 793–970 (reference 882) |
+| SWE-bench accuracy | At least 93.5% (reference 94.83%) | At least 69% (reference 71.7%) | At least 96.4% (reference 97.5%) |
+
+Read the OSL number from `output_sequence_lengths_full_run.output_sequence_lengths.avg` in
+`result_summary.json`. That's the mean over all turns. The plain `output_sequence_lengths.avg`
+leaves out the tail turns, so it changes with concurrency and doesn't count.
+
+The DeepSeek column comes from
+[endpoints#519](https://github.com/mlcommons/endpoints/pull/519), which isn't merged yet. On
+`main` that column still says TBD.
+
+!!! note "Check these yourself"
+    The checker has no agentic targets. It reports `No accuracy thresholds defined` and skips the
+    check, so a clean checker run tells you nothing about your agentic accuracy. Compare your
+    numbers against the table before you submit. Tracked as **C2** in
+    [Open questions](../help/open-questions.md).
 
 ??? info "Caveats"
     - **The third agentic model isn't settled.** The working group's overview lists
-      *DeepSeek-V4.1-Flash* and marks it tentative. The client's example config serves
-      `deepseek-ai/DeepSeek-V4-Pro-0813`. Don't plan around either until the official list is
-      out. Tracked as **C11**.
+      *DeepSeek-V4.1-Flash* and marks it tentative. The client's example on `main` still serves
+      `deepseek-ai/DeepSeek-V4-Pro-0813`, but open PRs in the client
+      ([#519](https://github.com/mlcommons/endpoints/pull/519)) and the checker
+      ([#93](https://github.com/mlcommons/endpoints-submission-cli/pull/93)) both switch to
+      `deepseek-ai/DeepSeek-V4.1-Flash`. Tracked as **C11**.
     - **GPT-OSS runs with two output limits.** The MLPerf reference allows 10,240 output tokens
       with `reasoning_effort` low for performance, and 32,768 with high for accuracy. Reasoning
       effort isn't a client setting: for the performance run it's fixed when the parquet file is
@@ -83,5 +113,6 @@ For GPT-OSS the query count includes the repeats, so AIME25 counts eight times.
       submission model, so more models are likely soon after v1.0 opens.
 
 *Last verified against: the MLPerf Endpoints v1.0 rules overview (2026-09-22),
-`mlcommons/endpoints@main` (e71b928), `mlcommons/endpoints-submission-cli@main` (f25f71e, tag
-`v1.0.1.0`) and `mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef), 2026-09-24.*
+`mlcommons/endpoints@main` (e71b928) and open PR #519, `mlcommons/endpoints-submission-cli@main`
+(f25f71e, tag `v1.0.1.0`) and open PR #93, and `mlcommons/endpoints_policies@v1.0_rules_dev`
+(6b0b1ef), 2026-09-24.*
