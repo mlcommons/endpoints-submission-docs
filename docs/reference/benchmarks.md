@@ -16,7 +16,7 @@
 | Benchmark | Performance dataset | Accuracy dataset | Offline concurrency |
 |---|---|---|---|
 | Llama 3.1 8B | CNN/DailyMail 3.0.0, validation split: 13,368 articles | The same set | 13,368 |
-| GPT-OSS 120B | A prepared parquet file from the LLM task force: 6,396 prompts | AIME25 ×8, GPQA ×5 and LiveCodeBench ×3: 4,395 queries issued | 6,396 |
+| GPT-OSS 120B | The MLPerf GPT-OSS set, `perf/perf_eval_ref.parquet`: 6,396 prompts | AIME25 ×8, GPQA ×5 and LiveCodeBench ×3: 4,395 queries issued | 6,396 |
 | DeepSeek-R1 | The MLPerf DeepSeek-R1 set: 4,388 prompts drawn from GPQA, MMLU-Pro, MATH500, AIME and LiveCodeBench | The same set | 4,388 |
 | All agentic | workato (500) and deepswe (113), shipped as one JSONL file | SWE-bench Verified, first 200 tasks (`princeton-nlp/SWE-bench_Verified`) | No Offline point |
 
@@ -28,8 +28,11 @@ Where to get them:
 
 - **CNN/DailyMail**: the client downloads it when a config names the dataset
   `cnn_dailymail::llama3_8b`.
-- **GPT-OSS performance set**: ask the LLM task force. The client can't fetch it. The accuracy sets
-  come from Hugging Face automatically.
+- **GPT-OSS performance set**: [MLCommons storage](https://inference.mlcommons-storage.org/index.html#gpt-oss-benchmark),
+  under "Dataset for GPT-OSS benchmark". The download holds several files; the one you need is
+  `perf/perf_eval_ref.parquet` (MD5 `e4cd6cef6dd975f3e50c85b3279b358b`). Put it where your config's
+  `path` points. The client's README says the LLM task force is still finalizing this set, so check
+  with them before your final runs. The accuracy sets come from Hugging Face automatically.
 - **DeepSeek-R1**: a pre-tokenized copy ships in the client repository at
   `examples/07_DeepSeekR1_Example/data/deepseek_r1_eval.parquet`, stored with git-LFS.
 - **Agentic performance set**: [MLCommons storage](https://endpoints.mlcommons-storage.org/index.html#mlperf-agentic-inference).
@@ -68,8 +71,8 @@ For GPT-OSS the query count includes the repeats, so AIME25 counts eight times.
       out. Tracked as **C11**.
     - **GPT-OSS runs with two output limits.** The MLPerf reference allows 10,240 output tokens
       with `reasoning_effort` low for performance, and 32,768 with high for accuracy. Reasoning
-      effort isn't a client setting: for the performance run it's fixed when the task force builds
-      the parquet file.
+      effort isn't a client setting: for the performance run it's fixed when the parquet file is
+      built.
     - **DeepSeek-R1 has an unchecked second metric.** The MLPerf spec also bounds tokens per sample
       to within 10% of 3,886.2274. The checker doesn't check it, because the number isn't in
       `results.json`.
