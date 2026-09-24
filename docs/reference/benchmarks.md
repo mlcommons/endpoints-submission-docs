@@ -64,7 +64,8 @@ For GPT-OSS the query count includes the repeats, so AIME25 counts eight times.
 
 These targets come from the client's
 [agentic example README](https://github.com/mlcommons/endpoints/blob/main/examples/10_Agentic_Inference/README.md#accuracy), not
-from the checker. There are three metrics:
+from the checker (this line to be removed when changes are made to the submission checker).
+There are three metrics:
 
 - **Inline accuracy** and **OSL per-turn mean** have to pass at every point that carries an
   accuracy result.
@@ -75,42 +76,6 @@ from the checker. There are three metrics:
 | Inline accuracy | At least 58.32% (reference 58.9%) | At least 55.86% (reference 56.43%) | At least 51.7% (reference 53.3%) |
 | OSL per-turn mean, in tokens | 425–520 (reference 472) | 344–422 (reference 383) | 793–970 (reference 882) |
 | SWE-bench accuracy | At least 93.5% (reference 94.83%) | At least 69% (reference 71.7%) | At least 96.4% (reference 97.5%) |
-
-Read the OSL number from `output_sequence_lengths_full_run.output_sequence_lengths.avg` in
-`result_summary.json`. That's the mean over all turns. The plain `output_sequence_lengths.avg`
-leaves out the tail turns, so it changes with concurrency and doesn't count.
-
-The DeepSeek column comes from
-[endpoints#519](https://github.com/mlcommons/endpoints/pull/519), which isn't merged yet. On
-`main` that column still says TBD.
-
-!!! note "Check these yourself"
-    The checker has no agentic targets. It reports `No accuracy thresholds defined` and skips the
-    check, so a clean checker run tells you nothing about your agentic accuracy. Compare your
-    numbers against the table before you submit. Tracked as **C2** in
-    [Open questions](../help/open-questions.md).
-
-??? info "Caveats"
-    - **The third agentic model isn't settled.** The working group's overview lists
-      *DeepSeek-V4.1-Flash* and marks it tentative. The client's example on `main` still serves
-      `deepseek-ai/DeepSeek-V4-Pro-0813`, but open PRs in the client
-      ([#519](https://github.com/mlcommons/endpoints/pull/519)) and the checker
-      ([#93](https://github.com/mlcommons/endpoints-submission-cli/pull/93)) both switch to
-      `deepseek-ai/DeepSeek-V4.1-Flash`. Tracked as **C11**.
-    - **GPT-OSS runs with two output limits.** The MLPerf reference allows 10,240 output tokens
-      with `reasoning_effort` low for performance, and 32,768 with high for accuracy. Reasoning
-      effort isn't a client setting: for the performance run it's fixed when the parquet file is
-      built.
-    - **DeepSeek-R1 has an unchecked second metric.** The MLPerf spec also bounds tokens per sample
-      to within 10% of 3,886.2274. The checker doesn't check it, because the number isn't in
-      `results.json`.
-    - **Llama 3.1 8B needs its chat template.** To match MLPerf output, the server has to accept
-      the template the client sends. With vLLM that's `--trust-request-chat-template`.
-    - **Agentic runs have extra required settings.** Salting and inline accuracy must both be on,
-      and `stop_issuing_on_first_user_complete` must be `false`. The client's agentic example
-      README has the details.
-    - **Expect the suite to grow.** Adding benchmarks quickly is one of the goals of the rolling
-      submission model, so more models are likely soon after v1.0 opens.
 
 *Last verified against: the MLPerf Endpoints v1.0 rules overview (2026-09-22),
 `mlcommons/endpoints@main` (e71b928) and open PR #519, `mlcommons/endpoints-submission-cli@main`
