@@ -121,6 +121,7 @@ nav:
 
   - Reference:
       - reference/index.md
+      - Benchmarks and models: reference/benchmarks.md
       - Submission package layout: reference/package-layout.md
       - point.yaml: reference/point-yaml.md
       - system_desc.json: reference/system-desc-json.md

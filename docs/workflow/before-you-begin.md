@@ -11,7 +11,10 @@ rather than after step 4, which is where the accelerator time gets spent.
 - [ ] You have chosen a **scenario**: CoP or CoN
 - [ ] Your benchmark **model is on the round's supported list**, and you know whether it's an
       **agentic** benchmark: that decides whether you need an Offline point and how many accuracy
-      runs you owe
+      runs you owe. See [Benchmarks and models](../reference/benchmarks.md)
+- [ ] You have the benchmark's **performance and accuracy datasets**, or know where to get them.
+      The GPT-OSS performance set is on
+      [MLCommons storage](https://inference.mlcommons-storage.org/index.html#gpt-oss-benchmark)
 - [ ] You can reach the endpoint under test from wherever the client will run
 - [ ] Python **3.12+** for the reference client; Python 3.10+ for the submission CLI
 - [ ] [`gh` CLI](https://cli.github.com/) installed and authenticated

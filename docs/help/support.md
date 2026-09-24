@@ -40,8 +40,9 @@ MLCommons rather than searching further:
 
 - Whether your **organisation** needs MLCommons membership to submit
 - The **PRISM and Member Central URLs**
-- The **v1.0 supported model list**, accuracy targets, and dataset paths
-- Which benchmarks are **agentic**, and so have no Offline point
+- The **official** v1.0 model list and accuracy targets. The
+  [list on this site](../reference/benchmarks.md) is put together from the working group's
+  overview and the tooling
 - The **approved drafter list** for any benchmark
 - Which **load pattern** a dedicated Offline run should use
 - **CoN client locations** and scheduling
