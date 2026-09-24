@@ -3,6 +3,12 @@
 Tables to look things up in. For step-by-step instructions, see the
 [Submission Workflow](../workflow/index.md) instead.
 
+## What you can submit
+
+| Page | Covers |
+|---|---|
+| [Benchmarks and models](benchmarks.md) | The v1.0 models, their datasets, and the accuracy the checker expects |
+
 ## Artifacts you author
 
 | Page | Covers |

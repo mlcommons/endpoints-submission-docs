@@ -30,3 +30,6 @@
 [rules-4.5.3]: https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#453-normalized-metric
 [rules-5.2]: https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#52-pareto-curve-representation
 [rules-5.6]: https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#56-maximum-point-cap
+[rules-3.2]: https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#32-supported-models
+[rules-4.3]: https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#43-accuracy-metric
+[rules-5.7.1]: https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#571-definition

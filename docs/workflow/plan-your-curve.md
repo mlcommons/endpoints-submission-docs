@@ -138,7 +138,8 @@ for reviewers rather than rejected outright. Note that the checker can only comp
 a point sits at exactly `C_max`. Without one it skips that half of the check without saying so.
 
 The Offline point's `concurrency` isn't yours to choose: it's the number of queries in one pass over
-the performance dataset. It doesn't count toward any region, and it can't serve as your `C_max`
+the performance dataset. [Benchmarks and models](../reference/benchmarks.md#datasets) lists it for
+each benchmark. It doesn't count toward any region, and it can't serve as your `C_max`
 point.
 
 **Option 2: elect your `C_max` point.** Declare that your `C_max` point already is the highest
