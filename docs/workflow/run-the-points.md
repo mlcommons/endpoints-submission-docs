@@ -21,16 +21,18 @@ This is the expensive step. Everything up to now took minutes. This takes days.
 
 ## The binding run constraints
 
-| Constraint | Requirement |
-|---|---|
-| Load pattern | **`concurrency`** for every point except a dedicated Offline run. `poisson` is never valid. See [step 4](#4-run-the-offline-point) for the Offline point |
-| Steady-state duration | **600 s** in Ultra Low Concurrency; **1,200 s** in Low, Medium and High — measured over the steady-state window's issue time, not wall clock |
-| Completed queries | At least one full pass over the dataset, and the total samples issued must be a whole-number multiple of the dataset size |
-| Streaming | `stream_all_chunks: true` for every performance run |
-| Sampling | Performance runs sample **with** replacement; accuracy runs **without** |
-| Warmup | Optional, max 24 h per point, fully excluded from metrics, and fully documented |
-| Consistency | Same model, endpoint config, software stack and seed set across **every** point |
-| Speculative decoding | Only with a drafter on the benchmark's approved list, the same drafter at every point. No list is published yet, so **leave it off** for now |
+The run requirements are in [§6 of the rules][rules-6], and that's where the values are. This
+table only maps each one to where you meet it:
+
+| Requirement | Rule | Where you set it |
+|---|---|---|
+| Load pattern | [§6.1][rules-6.1] | `settings.load_pattern.type`: `concurrency` for every point, `max_throughput` for a dedicated Offline run ([step 4](#4-run-the-offline-point)) |
+| Minimum duration | [§6.2][rules-6.2] | Run length. It's measured over the steady-state window's issue time, not wall clock |
+| Minimum completed queries | [§6.4][rules-6.4] | Sample count: whole passes over the dataset |
+| Warmup | [§6.3][rules-6.3] | Your warmup procedure, declared in `point.yaml` |
+| Sampling and streaming | [§6.5][rules-6.5] | `stream_all_chunks: true` on every performance run. The rule also fixes the sampling order for performance and accuracy runs |
+| Consistency across points | [§9.1][rules-9.1] | Lock the model, endpoint config, software stack and seed set before the first point |
+| Speculative decoding | [§2.9.4][rules-2.9.4] | Needs a drafter from the benchmark's approved list. None is published yet, so **leave it off** for now |
 
 !!! tip "Run longer than the minimum"
     Your official numbers now come from a **steady-state window** the tooling detects inside the

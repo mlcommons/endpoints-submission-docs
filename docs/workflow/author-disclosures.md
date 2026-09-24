@@ -44,26 +44,12 @@ goes at the top level of at least one run folder per system:
 
 ### 1. Write `point.yaml` for each point
 
-This is the §8.3 disclosure the checker validates. It must declare, at minimum:
+This is the measurement-point disclosure the checker validates. The fields it must declare, and
+what each one means, are defined in [§8.3 of the rules][rules-8.3]. Work through that table field
+by field; the [`point.yaml` reference](../reference/point-yaml.md) notes where the checker's
+accepted values and field names differ from it.
 
-| Field | Notes |
-|---|---|
-| `concurrency` | The target level for this point |
-| `region` | Which region it satisfies |
-| `runtime_settings` | Load pattern, `min_duration_ms`, `min_sample_count`, `stream_all_chunks` |
-| `dataset` / `dataset_name` / `dataset_type` / `dataset_link` | Identity and role of the dataset |
-| `warmup` | `duration_s`, `requests_issued`, `requests_completed`, `data_source`, `concurrency`, `initialization_steps` |
-| `division` | Standardized, Serviced or RDI |
-| `max_supported_concurrency` | Your `C_max` |
-| `model_name`, `model_precision`, `link_to_model` | Model identity and lowest weight precision |
-| `link_to_model_transformation` | Calibration / quantization write-up, if any |
-| `seed_set`, `target_cohort` | The set you bound to, and the cohort you target |
-| `shared_src`, `shared_docs` | Must resolve to directories under the submission root |
-| `offline` | `dedicated` on a dedicated Offline run, `elected` on your `C_max` point if you elected it, otherwise leave it out |
-| `steady_state` | How the point's official numbers were derived |
-| `speculative_decoding` | Only if the point used it: the drafter's identity, checksum and configuration |
-
-Full field list: [`point.yaml` reference](../reference/point-yaml.md).
+Two fields need a decision rather than a lookup: `offline` and `dataset_type`.
 
 !!! warning "Exactly one point carries `offline`"
     For a non-agentic benchmark, one point has to declare `offline: dedicated` or
@@ -87,17 +73,13 @@ Full field list: [`point.yaml` reference](../reference/point-yaml.md).
 
 ### 2. Write `system_desc.json` for each point
 
-The §8.2 hardware and software description. Since policies PR #119 there's no per-system file:
+The hardware and software description. Since policies PR #119 there's no per-system file:
 **every Pareto point carries its own copy**, and the checker verifies all points of a curve describe
 the same system.
 
-Key fields: `division`, `system_name`, `shortened_system_name` (≤ 20 characters),
-`system_availability_status`, node and accelerator topology, `serving_framework`,
-`inference_backend`, `driver`, `container_link`, `model_name`, `max_supported_concurrency`,
-`endpoint_url`, the parallelism mapping (`tensor_parallel`, `expert_parallel`, `pipeline_parallel`,
-`data_parallel`, `disaggregated`), `batch`, `config_summary` and `tps_utilization`.
-
-Full field list and a copyable template: [`system_desc.json` reference](../reference/system-desc-json.md).
+The fields are defined in [§8.2 of the rules][rules-8.2], and a copyable template is in
+[§8.2.1][rules-8.2.1]. Checker behaviour and known gaps between the rules and the tooling:
+[`system_desc.json` reference](../reference/system-desc-json.md).
 
 !!! tip "`tps_utilization` is computed, not chosen"
     It is `reported_system_tps / max(reported_system_tps across the curve)`. The checker recomputes
