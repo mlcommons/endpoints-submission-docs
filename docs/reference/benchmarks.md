@@ -25,7 +25,6 @@ All three agentic benchmarks share one pair of datasets.
 
 ## Datasets
 
-
 | Benchmark | Performance dataset | Accuracy dataset | Offline concurrency |
 |---|---|---|---|
 | Llama 3.1 8B | CNN/DailyMail 3.0.0, validation split: 13,368 articles | The same set | 13,368 |
