@@ -30,9 +30,7 @@ Where to get them:
   `cnn_dailymail::llama3_8b`.
 - **GPT-OSS performance set**: [MLCommons storage](https://inference.mlcommons-storage.org/index.html#gpt-oss-benchmark),
   under "Dataset for GPT-OSS benchmark". The download holds several files; the one you need is
-  `perf/perf_eval_ref.parquet` (MD5 `e4cd6cef6dd975f3e50c85b3279b358b`). Put it where your config's
-  `path` points. The client's README says the LLM task force is still finalizing this set, so check
-  with them before your final runs. The accuracy sets come from Hugging Face automatically.
+  `perf/perf_eval_ref.parquet` (MD5 `e4cd6cef6dd975f3e50c85b3279b358b`).
 - **DeepSeek-R1**: a pre-tokenized copy ships in the client repository at
   `examples/07_DeepSeekR1_Example/data/deepseek_r1_eval.parquet`, stored with git-LFS.
 - **Agentic performance set**: [MLCommons storage](https://endpoints.mlcommons-storage.org/index.html#mlperf-agentic-inference).
