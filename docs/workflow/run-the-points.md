@@ -13,7 +13,8 @@
 - Probe the endpoint
 - Write one YAML config per measurement point
 - Run each point at **fixed concurrency** for its region's minimum duration
-- Run accuracy validations at the four mandatory region points
+- Run the dedicated **Offline** point, if you chose one in step 3
+- Run accuracy validations at the four mandatory region points and the Offline point
 - Keep every run folder
 
 This is the expensive step. Everything up to now took minutes. This takes days.
@@ -22,13 +23,14 @@ This is the expensive step. Everything up to now took minutes. This takes days.
 
 | Constraint | Requirement |
 |---|---|
-| Load pattern | **`concurrency`** only. `max_throughput` and `poisson` are **not valid** for Pareto points |
+| Load pattern | **`concurrency`** for every point except a dedicated Offline run. `poisson` is never valid. See [step 4](#4-run-the-offline-point) for the Offline point |
 | Steady-state duration | **600 s** in Ultra Low Concurrency; **1,200 s** in Low, Medium and High — measured over the steady-state window's issue time, not wall clock |
 | Completed queries | At least one full pass over the dataset, and the total samples issued must be a whole-number multiple of the dataset size |
 | Streaming | `stream_all_chunks: true` for every performance run |
 | Sampling | Performance runs sample **with** replacement; accuracy runs **without** |
 | Warmup | Optional, max 24 h per point, fully excluded from metrics, and fully documented |
 | Consistency | Same model, endpoint config, software stack and seed set across **every** point |
+| Speculative decoding | Only with a drafter on the benchmark's approved list, the same drafter at every point. No list is published yet, so **leave it off** for now |
 
 !!! tip "Run longer than the minimum"
     Your official numbers now come from a **steady-state window** the tooling detects inside the
@@ -102,11 +104,59 @@ uv run inference-endpoint benchmark from-config --config point-c64.yaml
 
 Repeat for every concurrency level in your plan. Each writes its own run folder.
 
-### 4. Run the accuracy validations
+### 4. Run the Offline point
+
+Skip this if the benchmark is agentic, or if you're electing your `C_max` point as the Offline
+result. An elected point is run exactly like the others in step 3; you only declare it differently
+in [step 5](author-disclosures.md).
+
+A dedicated Offline run gives the system the whole performance dataset at once instead of holding a
+target concurrency. The reference client's pattern for that is **`max_throughput`**, which issues
+every query at t=0. It's what `benchmark offline` and `init offline` set up:
+
+```bash
+uv run inference-endpoint init offline
+```
+
+```yaml
+settings:
+  load_pattern:
+    type: max_throughput     # every query issued at t=0
+```
+
+!!! question "Confirm the pattern name"
+    The rules call this "the benchmark-defined Offline load pattern" and don't name a client
+    setting. `max_throughput` matches the definition, and the checker doesn't reject a dedicated
+    Offline point for its load pattern, but no source says in so many words that this is the
+    pattern MLCommons means. Tracked as **C7** in [Open questions](../help/open-questions.md).
+
+!!! warning "Turn streaming on explicitly"
+    The client's `streaming: auto` default resolves to **off** for offline runs. The rules still
+    require `stream_all_chunks: true` for every performance run, Offline included, so set streaming
+    on in the config rather than relying on the default.
+
+Everything else in the constraints table still applies: the same stack and seed set, a sample
+count that's a whole multiple of the dataset size, and the warmup rules. Three things are specific
+to Offline:
+
+- **Size it for duration.** An Offline run ends when the queue drains, not on a clock, but the
+  minimum run duration still applies. Issue enough passes over the dataset that it lasts at least
+  1,200 seconds.
+- **Don't let passes mix.** The system can reorder and batch within one pass over the dataset as
+  it likes. It must not batch or reorder a query from one pass against a query from another.
+  Reviewers look at this specifically: batches full of repeated copies of the same sample are the
+  giveaway.
+- **Check it against your `C_max` point.** Its `system_tps` has to be at least 98% of your
+  `C_max` point's. Compare the two as soon as both have run, while you can still re-run cheaply.
+
+TTFT is still recorded, but it isn't required for this point and can't be used against it.
+
+### 5. Run the accuracy validations
 
 You need accuracy results at the four mandatory region points — Ultra Low, Low, Medium and High
-Concurrency — plus one more if you submit Offline results. All of them use the **same** endpoint
-configuration, model weights and software stack as the performance runs.
+Concurrency — and at the Offline point: five runs, or four for an agentic benchmark. If you
+elected your `C_max` point, its accuracy run counts for both it and Offline. All of them use the
+**same** endpoint configuration, model weights and software stack as the performance runs.
 
 For a **single-turn** benchmark, each accuracy run goes at the same concurrency as its point, on
 the same instance, **immediately after** that point's performance run. Don't batch them up at the
@@ -123,7 +173,7 @@ directory, with `accuracy/accuracy_results.json` alongside `performance/result_s
     Throughput results get reproducibility margins. Accuracy doesn't. It's a hard gate at automated
     compliance and throughout review. Miss the quality target and the submission is rejected.
 
-### 5. Keep everything
+### 6. Keep everything
 
 Each run folder contains:
 
@@ -165,29 +215,17 @@ output matches the canonical implementation exactly.
 
 !!! success "The v1.0 seed set is published"
     As of 2026-09-15 the policies repo carries `seedset.yaml`: one set, **`id: A`**, published for
-    cohort **`2026-10-C1`**. Its three values are identical to the set the checker already ships,
-    so a submission binding set `A` is using the right numbers.
+    cohort **`2026-10-C1`**. Since checker `v1.0.1.0` the checker bundles the same file, cohort key
+    included, and `seed-set-adoption` tests your `target_cohort` against the four-cohort window
+    for real.
 
     ```yaml
     seed_set: A
     target_cohort: 2026-10-C1
     ```
 
-!!! warning "The checker's copy is stale, so adoption still reports SKIP"
-    The checker's mirror carries `cohorts: []` and a comment describing the upstream PR as open —
-    it predates the merge. With no cohort keys, `seed-set-adoption` reports **SKIP** instead of
-    passing, so a clean report is not confirmation that your cohort is in the adoption window.
-
-    Point the checker at the published file to get a real result:
-
-    ```bash
-    export MLPERF_ENDPOINTS_SEED_SETS=/path/to/seedset.yaml
-    # or: submission-checker ... --seed-sets /path/to/seedset.yaml
-    ```
-
-    Note the two files are shaped differently — the published one nests under a `cohort:` key while
-    the checker's is a bare `seed_sets:` list. If the override is rejected, reshape it. Tracked as
-    **B4** in [Open questions](../help/open-questions.md).
+    Set `A` can be adopted by submissions targeting `2026-10-C1` through the three cohorts after it.
+    On an older checker, adoption reports **SKIP**. Upgrade rather than override.
 
 ## Verify
 
@@ -206,7 +244,21 @@ Check three things:
 - `n_samples_completed` represents at least one dataset pass
 
 Also confirm the run used the right pattern. `run_config` in `result_summary.json` should show the
-concurrency load pattern at your target level.
+concurrency load pattern at your target level, or `max_throughput` for a dedicated Offline run.
+
+For a dedicated Offline run, check it clears your `C_max` point before you tear anything down. This
+computes `system_tps` the way the checker does, as output tokens over run seconds:
+
+```bash
+python - <<'EOF'
+import json
+def tps(d):
+    s = json.load(open(f"{d}/performance/result_summary.json"))
+    return s["output_sequence_lengths"]["total"] / (s["duration_ns"] / 1e9)
+off, cmax = tps("<offline_dir>"), tps("<c_max_dir>")
+print(f"offline {off:.1f}  c_max {cmax:.1f}  ratio {off / cmax:.3f}  (needs >= 0.98)")
+EOF
+```
 
 ## Next
 

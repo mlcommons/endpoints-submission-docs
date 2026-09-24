@@ -1,8 +1,8 @@
 <!--
   PROVENANCE SNAPSHOT — do not edit.
   Upstream : endpoints_policies/endpoints_submission_rules.md
-  Repo     : mlcommons/endpoints_policies @ v1.0_rules_dev@a7ec3cc
-  Captured : 2026-09-19
+  Repo     : mlcommons/endpoints_policies @ v1.0_rules_dev@6b0b1ef
+  Captured : 2026-09-24
   Purpose  : diff this against upstream to find what drifted since the docs were written.
 -->
 
@@ -48,7 +48,7 @@
    - [5.8 Compliance Testing](#58-compliance-testing)
 6. [Review](#6-review)
    - [6.1 Automated Compliance (Week 0)](#61-automated-compliance-week-0)
-   - [6.2 Provisional Publication](#62-provisional-publication)
+   - [6.2 Publication Modes](#62-publication-modes)
    - [6.3 Peer Review (Weeks 1–3)](#63-peer-review-weeks-13)
    - [6.4 Objection Resolution (Weeks 4–6)](#64-objection-resolution-weeks-46)
    - [6.5 Review Timeline Summary](#65-review-timeline-summary)
@@ -78,8 +78,11 @@
    - [9.4 Appeal](#94-appeal)
    - [9.5 Status](#95-status)
 10. [Audit Process](#10-audit-process)
-    - [10.1 Audit Nomination on Reproducibility Grounds](#101-audit-nomination-on-reproducibility-grounds)
+    - [10.1 Audit Quota](#101-audit-quota)
     - [10.2 Audit Votes](#102-audit-votes)
+    - [10.3 Random Audit Selection](#103-random-audit-selection)
+    - [10.4 Audit Nomination on Reproducibility Grounds](#104-audit-nomination-on-reproducibility-grounds)
+    - [10.5 Audit Compliance and Resolution Rules](#105-audit-compliance-and-resolution-rules)
 11. [Appendices](#11-appendices)
 
 ---
@@ -93,7 +96,7 @@ Where this document conflicts with the MLPerf General Submission Rules, this doc
 Technical requirements — including benchmarks, metrics, the pareto collection methodology, and division-specific rules — are defined in the companion [MLPerf Endpoints Rules](endpoints_rules.md) document. Publication status categories and availability criteria are defined in [§7](#7-publication) of this document.
 
 > [!NOTE]
-> **Rule Stability.** These rules are *tentative* until the first MLPerf Endpoints submission round (v0.7) closes on **2026-06-26**. Sections explicitly marked **`[TENTATIVE — Subject to change after 2026-06-26]`** in either this document or in [`endpoints_rules.md`](endpoints_rules.md) are most likely to evolve between v0.7 and **v1.0** (next submission tentatively **2026-09-01**, after which rolling submission begins) based on submitter feedback and working-group discussion. The traditional MLPerf Inference v6.1 round on **2026-07-31** runs in parallel and is unaffected by Endpoints rule changes. See [§4.0 Submission Milestones](#40-submission-milestones) for the full milestone table.
+> **Rule Stability.** These rules are *tentative* until the **v1.0** submission round opens on **2026-10-12**, after which rolling submission begins. Sections explicitly marked **`[TENTATIVE — Subject to change after 2026-10-12]`** in either this document or in [`endpoints_rules.md`](endpoints_rules.md) are the most likely to evolve, based on submitter feedback from the v0.7 round (which closed on 2026-06-26) and on working-group discussion. See [§4.0 Submission Milestones](#40-submission-milestones) for the full milestone table.
 
 The review process is designed to:
 
@@ -144,7 +147,7 @@ Submitters or other review committee members may raise conflict of interest conc
 
 #### Neutral Members
 
-Several processes in these rules are staffed by **neutral members**: the dispute resolution panel ([§9.2](#92-escalation-path)), the objection review panel ([§8.5](#85-issues-discovered-after-publication)), and audit-nomination screening ([§10.1](#101-audit-nomination-on-reproducibility-grounds)).
+Several processes in these rules are staffed by **neutral members**: the dispute resolution panel ([§9.2](#92-escalation-path)), the objection review panel ([§8.5](#85-issues-discovered-after-publication)), and audit-nomination screening ([§10.4](#104-audit-nomination-on-reproducibility-grounds)).
 
 A neutral member is a person with **minimal conflict of interest in the matter at hand**, assessed against the criteria above: no direct financial interest in its outcome, no employment or equivalent relationship with either party, and no involvement in preparing or reviewing the submission in question. Consistent with the paragraph above, ordinary competitive relationships and CSP/OEM/ODM partnerships do **not** disqualify a person from serving as a neutral member.
 
@@ -208,15 +211,15 @@ The role of the review process is to ensure fairness of submissions, not to liti
 ### 4.0 Submission Milestones
 
 > [!NOTE]
-> **Rule Stability** (cross-reference [§1 Basics](#1-basics)). These rules are *tentative* until v0.7 closes. Submitters should expect rules — particularly sections marked `[TENTATIVE — Subject to change after 2026-06-26]` in [`endpoints_rules.md`](endpoints_rules.md) — to evolve between v0.7 and v1.0 based on submitter feedback.
+> **Rule Stability** (cross-reference [§1 Basics](#1-basics)). These rules are *tentative* until the v1.0 round opens. Submitters should expect rules — particularly sections marked `[TENTATIVE — Subject to change after 2026-10-12]` in [`endpoints_rules.md`](endpoints_rules.md) — to evolve up to that point, based on submitter feedback from v0.7.
 
 | Date | Milestone | Notes |
 |---|---|---|
 | **2026-06-26** | MLPerf Endpoints **v0.7** submission deadline (Submission Round 1) | First endpoint submission round. Rules in this document and in [`endpoints_rules.md`](endpoints_rules.md) apply. |
 | **2026-07-31** | MLPerf Inference **v6.1** submission deadline | Traditional MLPerf Inference round (separate process, governed by [inference_rules.adoc](https://github.com/mlcommons/inference_policies/blob/master/inference_rules.adoc) and the [General Submission Rules](https://github.com/mlcommons/policies/blob/master/submission_rules.adoc)). Endpoints does **not** gate on this date; it is listed here for awareness. |
-| **2026-09-01** *(tentative)* | MLPerf Endpoints **v1.0** submission deadline (Submission Round 2) + start of rolling submission | Date is tentative and subject to working-group confirmation. After v0.7 closes, rules are revised based on submitter feedback. Rolling submission ([§4.1](#41-rolling-submission-model)) begins on this date for v1.0 and beyond. |
+| **2026-10-12** | MLPerf Endpoints **v1.0** submission round opens (Submission Round 2) + start of rolling submission | Opening of the v1.0 round. Rules were revised after v0.7 closed, based on submitter feedback. Rolling submission ([§4.1](#41-rolling-submission-model)) begins on this date for v1.0 and beyond. |
 
-Until the v0.7 deadline, the rules in this document and in [`endpoints_rules.md`](endpoints_rules.md) may be revised by working-group consensus or by the operating-principles 2/3 vote (inherited from [General Submission Rules §3](https://github.com/mlcommons/policies/blob/master/submission_rules.adoc#operating-principles)). After v0.7 closes, rule revisions targeting v1.0 follow the same process. The sections most likely to change are those marked `[TENTATIVE — Subject to change after 2026-06-26]`.
+Until the v1.0 round opens, the rules in this document and in [`endpoints_rules.md`](endpoints_rules.md) may be revised by working-group consensus or by the operating-principles 2/3 vote (inherited from [General Submission Rules §3](https://github.com/mlcommons/policies/blob/master/submission_rules.adoc#operating-principles)). Rule revisions targeting v1.0 follow the same process. The sections most likely to change are those marked `[TENTATIVE — Subject to change after 2026-10-12]`.
 
 ### 4.1 Rolling Submission Model
 
@@ -239,13 +242,13 @@ Each cohort is identified as:
 
 Submitters may request that MLCommons hold publication of their results until a specific embargo date, declared at the time of submission.
 
-- **For standard (confidential) submissions:** results are not public until review is complete. The embargo date delays public release of finalized results. Results may be embargoed for **up to 60 days after the completion of review**.
-- **For provisional publication submissions** (see [§6.2](#62-provisional-publication)): the embargo date delays when the "peer review pending" result first becomes publicly visible, and may be set to any date before finalization of results.
+- **Confidential review with embargoed publication** ([§6.2.2](#622-confidential-review-with-embargoed-publication)): results are not public until review is complete. The embargo date delays public release of the finalized result, and may be up to **60 days after the completion of review**. Review itself is unaffected.
+- **Provisional publication** ([§6.2.3](#623-provisional-publication)): the embargo date delays when the "peer review pending" result first becomes publicly visible, and may be set to any date before finalization of results. Because peer review begins at provisional publication, this embargo also defers the start of review.
 
 Rules for embargoed submissions:
 
 - The embargo date must be declared in the submission metadata.
-- The full review process (automated compliance, peer review, objection resolution) proceeds normally under the embargo — the embargo only delays public release.
+- Under [§6.2.2](#622-confidential-review-with-embargoed-publication) the full review process proceeds normally under the embargo — the embargo delays only public release. Under [§6.2.3](#623-provisional-publication) the embargo additionally defers the start of peer review, since review begins at provisional publication.
 - The embargo date **may be changed after submission**, but any change must be broadcast immediately to all review committee members.
 - All review committee members are informed of the embargo date.
 - Results under embargo are published on the requested embargo date and are not tied to the regular cohort schedule.
@@ -262,15 +265,20 @@ All review timelines, update windows, and objection deadlines are anchored to th
 
 ### 4.5 Review Cycle Example
 
-The figure below illustrates three representative scenarios for a submission made on **August 10, 2026** (Monday). It shows how automated checks, peer review, objection resolution, provisional publication, and cohort publication all interact across calendar time.
+The figure below traces four submissions entering the pipeline shortly after the rolling submission window opens on **Monday 12 October 2026**, one in each publication mode of [§6.2](#62-publication-modes). It shows how automated compliance, peer review, objection resolution, provisional publication, embargo, dispute resolution, and cohort publication interact across calendar time. The relevant cohorts are `2026-10-C1` (21 Oct), `2026-11-C0` (4 Nov), `2026-11-C1` (18 Nov), `2026-12-C0` (2 Dec), `2026-12-C1` (16 Dec), `2027-01-C0` (6 Jan) and `2027-01-C1` (20 Jan).
 
 ![MLPerf Endpoints Submission and Review Cycle](review_cycle.svg)
 
-**Scenario 1 — Fails automated checks:** The submission is found non-compliant during Week 0 and is rejected. The submitter may correct and resubmit.
+**Scenario A — confidential review, no objections.** A submitter files on 12 October, the day the window opens. Automated compliance passes on 13 October and peer review begins ([§6.1](#61-automated-compliance-week-0)). No objections are filed, so at the close of Week 3 on 3 November the submission qualifies for early finalization ([§6.3](#63-peer-review-weeks-13)) and publishes in the **2026-11-C0** cohort on 4 November. Nothing was publicly visible before that date.
 
-**Scenario 2 — Objections resolved in peer review:** Automated checks pass on August 12. An objection is filed August 21, responded to August 26, and fully resolved August 28 — before peer review closes on September 2. Early finalization applies; results publish in the **2026-09-C0** cohort.
+**Scenario B — provisional publication under embargo ([§6.2.3](#623-provisional-publication)).** A submitter files on 22 October, opts in to provisional publication, and declares an embargo through 30 October. Automated compliance passes on 23 October, but **peer review does not begin there**: under this mode review starts at provisional publication, so the embargo holds both. On 30 October the embargo lifts, the "peer review pending" result becomes publicly visible, and Week 1 begins. An objection is filed on 5 November; the submitter responds within three business days on 10 November. Peer review closes on 20 November and the objection is resolved on 25 November, inside the Week 4–6 window. The result is finalized and published in the **2026-12-C0** cohort on 2 December, at which point the pending tag is removed.
 
-**Scenario 3 — Provisional publication; objections carry into resolution:** The submitter opts in to provisional publication. Automated checks pass August 12; the "peer review pending" result becomes visible at the **2026-08-C1** cohort (August 19), running in parallel with peer review. An objection filed August 27 carries into the objection resolution window. The objector provides a validation schedule; resolution is confirmed September 9. Results are finalized in the **2026-09-C1** cohort (September 16), at which point the "peer review pending" tag is removed.
+**Scenario C — unresolved at Week 6, escalation to dispute resolution.** A submitter files on 26 October. An objection filed on 10 November is still open when the objection resolution window closes on 8 December, so escalation is automatic ([§9.2](#92-escalation-path)). The chair certifies the open objection and names the panel on 10 December, written statements are due on 24 December, the panel convenes by 31 December, and a binding decision issues on 14 January. The submission does not finalize while the dispute is open; it publishes in the **2027-01-C1** cohort on 20 January. Had the process not concluded, the 8-week backstop would have required the chair to decide on the record by 2 February.
+
+**Scenario D — confidential review with embargoed publication ([§6.2.2](#622-confidential-review-with-embargoed-publication)).** A submitter files on 19 October under confidential review and declares a publication embargo through 8 December. Automated compliance passes on 20 October and peer review begins immediately — the embargo does not defer review in this mode. No objections are filed, so the submission reaches early finalization on 10 November. The finalized result is then **held**: it is not published at the next cohort, and it is never publicly visible carrying a "peer review pending" tag. It is released on the embargo date, 8 December, which is 28 days after review completed and so within the 60-day limit of [§4.2](#42-publication-cohorts-and-embargo).
+
+> [!NOTE]
+> **[WG Open Item — embargo versus cohort cadence]** Scenarios B and D both publish on a date that is not a cohort date, which [§4.2](#42-publication-cohorts-and-embargo) permits: embargoed results "are published on the requested embargo date and are not tied to the regular cohort schedule". In Scenario B the effect is more than off-cadence — a submission clearing compliance on 23 October would not otherwise reach a cohort until 4 November, so an embargo to 30 October makes the result public *earlier* than it could have been without one. The working group should decide whether an embargo date may precede the submission's next eligible cohort, and whether off-cadence publication is intended for one, both, or neither mode.
 
 ### 4.6 Seed Rotation
 
@@ -370,24 +378,42 @@ Automated compliance checks are executed immediately after submission. The check
 
 The full list of automated checks is defined in [MLPerf Endpoints Rules §9](endpoints_rules.md#9-compliance-validation).
 
-**If a submission fails any automated check by the end of Week 0, it is rejected.** The submitter is notified of the specific failures and may correct the issues and resubmit as a new submission. Rejected submissions do not enter the peer review phase. The peer review period begins as soon as all automated checks have passed.
+**If a submission fails any automated check by the end of Week 0, it is rejected.** The submitter is notified of the specific failures and may correct the issues and resubmit as a new submission. Rejected submissions do not enter the peer review phase. The peer review period begins as soon as all automated checks have passed — except for submissions using provisional publication, where it begins at provisional publication (see [§6.2](#62-publication-modes)).
 
-### 6.2 Provisional Publication
+### 6.2 Publication Modes
 
-By default, submissions enter a **fully confidential review cycle**: results and artifacts are visible to the review committee and other submitters, but are not published publicly until the review is complete (all objections resolved, no pending objections remaining). Results are published in the first cohort after finalization.
+Every submission declares one of three publication modes at submission time. The choice is **irrevocable after submission**.
 
-#### Opting In to Provisional Publication
+| Mode | Public before finalization | Peer review begins | Finalized results published |
+|---|---|---|---|
+| **A. Confidential review** *(default)* | No | When automated checks pass | First cohort after finalization |
+| **B. Confidential review, embargoed publication** | No | When automated checks pass | On the declared embargo date |
+| **C. Provisional publication** | Yes — tagged "peer review pending" | At provisional publication | Tag removed at finalization |
+
+#### 6.2.1 Confidential Review (default)
+
+Results and artifacts are visible to the review committee and to other submitters, but are not published publicly until review is complete — all objections resolved, none pending. Results are published in the first cohort after finalization. Peer review begins as soon as automated compliance passes ([§6.1](#61-automated-compliance-week-0)).
+
+#### 6.2.2 Confidential Review with Embargoed Publication
+
+A submitter who does not want provisional publication, but does want to control the date on which finalized results become public, may declare a **publication embargo**. Review is unaffected by the embargo: it is confidential and it begins and runs exactly as in [§6.2.1](#621-confidential-review-default). Only the public release of the **finalized** result is held.
+
+- The embargo date is declared at submission and may be up to **60 days after the completion of review** ([§4.2](#42-publication-cohorts-and-embargo)).
+- No result is ever publicly visible carrying a "peer review pending" tag under this mode.
+- If review completes before the embargo date, the result is finalized on schedule and held, then published on the embargo date.
+- If review is still running when the embargo date passes, the embargo has no further effect and the result is published at the first cohort after finalization.
+
+This mode suits a submitter aligning publication to a launch, conference or earnings date who does not want preliminary numbers in public beforehand.
+
+#### 6.2.3 Provisional Publication
 
 Submitters may **opt in** to provisional publication at the time of submission. If a submitter opts in:
 
 - Results are published before peer review completes, carrying a **"peer review pending"** tag. This allows submitters to reference new results in time-sensitive contexts — such as keynote presentations, product launches, and press briefings — without waiting for the full review cycle.
 - The review committee is informed of the opt-in at the start of the review cycle.
+- **Peer review begins at provisional publication**, not when automated compliance passes. Reviewers and the public see the result at the same time.
 
-The opt-in choice is irrevocable after submission. Submitters who do not opt in may not subsequently request provisional publication of those results.
-
-#### Embargo for Provisional Publication
-
-Submitters who opt in to provisional publication may additionally declare an **embargo date** — a hold on when the "peer review pending" result first becomes publicly visible. The embargo date may be any date before the finalization of results. See [§4.2](#42-publication-cohorts-and-embargo) for general embargo rules, including how to change the embargo date after submission.
+**Embargo under provisional publication.** A submitter who opts in may additionally declare an **embargo date** — a hold on when the "peer review pending" result first becomes publicly visible. The embargo date may be any date before the finalization of results. Because peer review begins at provisional publication, an embargo under this mode **also defers the start of peer review**, and therefore defers finalization by the same amount. See [§4.2](#42-publication-cohorts-and-embargo) for general embargo rules, including how to change the embargo date after submission.
 
 > [!IMPORTANT]
 > Any reference to results carrying the "peer review pending" tag — by MLCommons, submitters, press, or third parties — must include the standard MLCommons footnote stating that results are **preliminary and subject to change** pending peer review. The exact footnote text is defined in the MLPerf Results Messaging Guidelines.
@@ -422,7 +448,6 @@ Penalties are cumulative and non-reversible — responding after a penalty thres
 #### Updating submissions during peer review
 
 After compliance checks pass for a submission, submitters may only update run and submission metadata when requested by review committee. Updates are restricted to cases where insufficient information, code, or instructions was provided, or a material flaw is discovered that must be rectified. Any improvement to performance metrics must be justified and explained to the review committee. Submitters are encouraged to use the GitHub Web UI for making changes. Any and all changes are synced up with the database, and should shortly be viewable in the visualizer.
-
 
 ### 6.4 Objection Resolution (Weeks 4–6)
 
@@ -469,7 +494,7 @@ After Week 6, late objections may be raised only on the following grounds:
 - **Model equivalence** — the submission does not meet the model-equivalence rules of [Endpoints Rules §2.9](endpoints_rules.md#29-model-equivalence-rules-standardized-division): for example a prohibited weight transformation, an undisclosed approximation, or a drafter, sparsity, or KV-cache configuration that was never declared.
 - **Division rules** — the submission does not meet the requirements of the division under which it was published, or was published in the wrong division.
 
-Reproducibility remains **ineligible** as a late objection ground; reproducibility objections must be filed within the peer review window. A member with a reproducibility concern about a published result instead makes their case by **nominating the submission for audit** under [§10.1](#101-audit-nomination-on-reproducibility-grounds).
+Reproducibility remains **ineligible** as a late objection ground; reproducibility objections must be filed within the peer review window. A member with a reproducibility concern about a published result instead makes their case by **nominating the submission for audit** under [§10.4](#104-audit-nomination-on-reproducibility-grounds).
 
 > [!NOTE]
 > **Why these grounds extend past Week 6.** Model-equivalence and division-rule violations are frequently not discoverable during the review window. Under [§6.10](#610-visibility-of-results-during-review), code and submission artifacts are visible only to the review committee and other submitters until finalization, so for many parties the first opportunity to examine them arises after Week 6.
@@ -480,7 +505,7 @@ Late objections are handled through the dispute resolution process (see [§9](#9
 
 #### Scope and Standing for Late Concerns
 
-The limits in this subsection apply both to late objections under §6.6 and to audit nominations under [§10.1](#101-audit-nomination-on-reproducibility-grounds).
+The limits in this subsection apply both to late objections under §6.6 and to audit nominations under [§10.4](#104-audit-nomination-on-reproducibility-grounds).
 
 **Standing.** Only members of the review committee ([§2.1](#21-structure)) may raise a late objection or nominate a submission for audit. An organization that is not on the committee for the cohort in question may bring its concern to a committee member. [§8.5](#85-issues-discovered-after-publication) remains open to any MLCommons member, but only for allegations of direct fraud or misrepresentation.
 
@@ -491,9 +516,9 @@ The limits in this subsection apply both to late objections under §6.6 and to a
 
 Once that point passes the result is settled, and is no longer subject to late objection or audit nomination.
 
-Anchoring to finalization gives every submission the same exposure period. Anchoring to first publication would penalize submitters who opt in to provisional publication ([§6.2](#62-provisional-publication)), whose results appear weeks earlier and would therefore settle sooner than an otherwise identical confidential submission.
+Anchoring to finalization gives every submission the same exposure period. Anchoring to first publication would penalize submitters who opt in to provisional publication ([§6.2](#623-provisional-publication)), whose results appear weeks earlier and would therefore settle sooner than an otherwise identical confidential submission.
 
-The 90-day floor guarantees a minimum challenge period regardless of where in the audit-vote cycle a result lands, while the audit-vote ceiling keeps the period bounded. It matches the 90-day endpoint-accessibility requirement for Standardized CoN submissions ([§7.2.5](#725-division-specific-available-requirements)), so that the endpoint remains reachable for as long as the result can be challenged. A submitter's obligation to retain the benchmarked system and its configuration for a possible audit runs to the close of this window and no further.
+The 90-day floor guarantees a minimum challenge period regardless of where in the audit-vote cycle a result lands, while the audit-vote ceiling keeps the period bounded. It matches the 90-day endpoint-accessibility requirement for Standardized CoN submissions ([§7.2.5](#725-division-specific-available-requirements)), so that the endpoint remains reachable for as long as the result can be challenged. A submitter's obligation to retain the benchmarked system and its configuration for a possible audit runs to the close of this window and no further — except where the submission is nominated or selected for audit, in which case retention runs as set out in [§10.2](#102-audit-votes).
 
 > *Example:* A result finalized 10 days before an audit vote does not settle at that vote — 90 days have not elapsed — and settles on day 90. A result finalized 100 days before the next vote remains open until that vote.
 
@@ -548,7 +573,7 @@ Objections filed during peer review must be categorized as one of the following 
 |---|---|---|
 | **Compliance Failure** | Submission does not meet stated rules (point count, region coverage, run duration, load pattern, etc.). | High — may require withdrawal. |
 | **Methodology** | Disagreement with how the benchmark was configured or executed (e.g., dataset handling, warmup procedure). | High. |
-| **Reproducibility** | Results cannot be reproduced by an independent party or appear statistically implausible. A reproducibility objection must demonstrate deviation beyond the allowed variability margin for the metric in question (see [§6.6 Reproducibility Expectations](#reproducibility-expectations)); the throughput margins do not apply to latency metrics, and an objection may not rest on latency alone until a method is ratified. Minor deviations within the expected range are not grounds for blocking publication. Accuracy failures are always a valid reproducibility objection regardless of margin. Reproducibility objections must be filed during the peer review window (through the end of Week 3) and are not eligible as late objections; after finalization, a reproducibility concern is pursued by nominating the submission for audit under [§10.1](#101-audit-nomination-on-reproducibility-grounds). | High — but must exceed the allowed variability margin to be actionable. |
+| **Reproducibility** | Results cannot be reproduced by an independent party or appear statistically implausible. A reproducibility objection must demonstrate deviation beyond the allowed variability margin for the metric in question (see [§6.6 Reproducibility Expectations](#reproducibility-expectations)); the throughput margins do not apply to latency metrics, and an objection may not rest on latency alone until a method is ratified. Minor deviations within the expected range are not grounds for blocking publication. Accuracy failures are always a valid reproducibility objection regardless of margin. Reproducibility objections must be filed during the peer review window (through the end of Week 3) and are not eligible as late objections; after finalization, a reproducibility concern is pursued by nominating the submission for audit under [§10.4](#104-audit-nomination-on-reproducibility-grounds). | High — but must exceed the allowed variability margin to be actionable. |
 | **Validity of Results** | Specific metric values appear incorrect, inconsistent, or incompatible with known hardware capabilities. | High. |
 | **Division Rules** | Submission placed in wrong division, or system does not meet division requirements (availability, API compliance, etc.). The review committee may allow the submitting organization to reclassify to the correct division rather than withdraw. | Medium. |
 | **Availability** | System claimed as Available or Preview does not meet the availability requirements at the stated date. The review committee may allow the submitting organization to reclassify (e.g., from Available to Preview or RDI) rather than withdraw. | Medium. |
@@ -575,7 +600,7 @@ Meeting requests must include a written agenda and specific questions to be addr
 | Submitters | All results, all code, all run artifacts. | All results, all code, all run artifacts. |
 | Public | Results carrying the "peer review pending" tag only (for submissions that have opted in to provisional publication, once any declared embargo has lifted). No access to code or submission artifacts. | All results, all code, all submission artifacts. |
 
-For submissions that have not opted in to provisional publication (see [§6.2](#62-provisional-publication)), the public has no visibility until results are finalized.
+For submissions that have not opted in to provisional publication (see [§6.2](#623-provisional-publication)), the public has no visibility until results are finalized.
 
 ### 6.11 Withdrawing Results
 
@@ -683,7 +708,6 @@ The **endpoint URL submitted for benchmarking must be the same endpoint that any
 The endpoint's **terms of service must permit benchmarking** by third parties. Any MLCommons member in good standing must be able to independently access the endpoint under standard terms and attempt to reproduce the published results. A Serviced submission whose ToS prohibits competitive benchmarking or automated performance testing does not qualify for Available status. Submitters must confirm at submission time that no provision of their ToS, acceptable use policy, or rate-limiting policies would prevent a member from conducting a good-faith reproducibility test.
 
 **RDI division.** RDI division submissions carry RDI publication status and cannot qualify as Available or Preview. If the system subsequently becomes commercially available, the submitter must create a new Standardized or Serviced submission.
-
 
 ### 7.3 Preview
 
@@ -813,7 +837,6 @@ Each results publication includes:
 
 ## 8. Post-Publication
 
-
 #### Versioning and Historical Record
 
 MLCommons maintains a complete historical record of all versions of every pareto curve. Each version corresponds to the state of the submission at a given cohort.
@@ -862,7 +885,7 @@ Any use of published results in connection with the MLPerf trademark must follow
 
 ### 8.4 Issues Discovered After Publication
 
-This section is limited to allegations of **direct fraud or misrepresentation** — a submission that knowingly reports results it did not achieve, materially misstates the system under test, or conceals a material fact from reviewers. Post-publication concerns that do not allege fraud are handled as late objections ([§6.6](#66-late-objections-post-week-6)) or audit nominations ([§10.1](#101-audit-nomination-on-reproducibility-grounds)), subject to the standing and time-window limits of [§6.6](#scope-and-standing-for-late-concerns). This section carries no time limit and is not subject to supersession by a later submission.
+This section is limited to allegations of **direct fraud or misrepresentation** — a submission that knowingly reports results it did not achieve, materially misstates the system under test, or conceals a material fact from reviewers. Post-publication concerns that do not allege fraud are handled as late objections ([§6.6](#66-late-objections-post-week-6)) or audit nominations ([§10.4](#104-audit-nomination-on-reproducibility-grounds)), subject to the standing and time-window limits of [§6.6](#scope-and-standing-for-late-concerns). This section carries no time limit and is not subject to supersession by a later submission.
 
 Any MLCommons member may raise a fraud or misrepresentation allegation via email to any MLCommons WG chair. An objection review panel — minimally the review chair plus two **neutral members** ([§2.4](#24-conflict-of-interest)) — will screen the allegation. If rejected at this stage, the chair will respond to the objector with the reasoning.
 
@@ -938,12 +961,60 @@ Either party may appeal the review chair's decision to the Head of MLPerf within
 
 ## 10. Audit Process
 
-> [!NOTE]
-> **[TBD]** — The audit process for MLPerf Endpoints, including audit selection criteria, audit procedures, and non-compliance remedies, will be defined in a separate document. The audit rules will account for the rolling submission model and the higher volume of measurement points per submission (up to 32 pareto points per benchmark model).
->
-> Current proposal (subject to WG ratification): up to **2 audits per quarter**, selected by the review chair. Audit selection criteria and procedures are not yet finalized.
+For audit process guidelines see the [MLPerf Endpoints Audit Guidelines](MLPerf_Endpoints_Audit_Guidelines.md).
 
-### 10.1 Audit Nomination on Reproducibility Grounds
+To ensure compliance and accuracy, audits are conducted on a regular cadence, combining random selection with nomination by the review committee.
+
+### 10.1 Audit Quota
+
+Audit Quota
+* **Annual Cadence:** 8 audits per year.
+* **Quarterly Breakdown:** 2 audits per quarter, divided as:
+  * 1 randomly selected audit.
+  * 1 nominated audit selected by vote.
+
+### 10.2 Audit Votes
+
+The review committee holds an **audit vote** each quarter to select that quarter's **nominated audit** ([§10.1](#101-audit-quota)). The quarter's random audit is drawn separately under [§10.3](#103-random-audit-selection) and is not voted on.
+
+**Nomination.** During the review process a GitHub issue is opened in which submissions may be nominated for audit. Each nomination must state a reason — new hardware or software, unusual or interesting features, performance outside expectations, or similar.
+
+- **Who may nominate.** Members of the review committee ([§2.1](#21-structure)) only, consistent with the standing rule of [§6.6](#scope-and-standing-for-late-concerns) and with reproducibility nominations under [§10.4](#104-audit-nomination-on-reproducibility-grounds).
+- **Window.** Nominations on these grounds are open for **4 weeks following publication** of the result.
+- Reproducibility nominations under [§10.4](#104-audit-nomination-on-reproducibility-grounds) reach the same vote, on their own grounds and within the [§6.6](#scope-and-standing-for-late-concerns) window.
+
+**Compiling the slate.** The review committee chairs evaluate the nominations and compile the list of candidate systems at the close of the nomination window. The chairs may add any system with a new accelerator that was not nominated.
+
+**The vote.** The committee selects one submission for audit by **ranked-choice voting, decided by simple majority**. An option "No Audit Selected This Quarter" may be added if a majority of the review committee requests it. Where no simple majority emerges, the chairs may select one candidate at random from the pool of nominations.
+
+**Schedule, and the late-concern window.** The review chair publishes the schedule of audit votes in advance. Audit votes fix one boundary of the late-concern window: a result settles at the later of the next audit vote following finalization or 90 days after finalization ([§6.6](#scope-and-standing-for-late-concerns)). The published schedule is therefore what lets submitters and committee members determine when a given result becomes settled.
+
+A nomination filed within its window is considered at the next audit vote. Where the 90-day floor of §6.6 extends past that vote, an unselected reproducibility nomination remains open for any further vote falling inside the window; otherwise the result settles at the close of the window and the nomination lapses.
+
+**Hardware retention.** From nomination, the submitter must keep the benchmarked system in its submitted configuration and available to an auditor. If the vote passes without selecting it, the obligation ends; if it is selected, retention continues until the audit is complete ([§10.5](#105-audit-compliance-and-resolution-rules)).
+
+> [!NOTE]
+> **[WG Open Item]** — The **quorum** for an audit vote is undecided. The cadence (quarterly, per [§10.1](#101-audit-quota)), the voting rule (ranked choice, simple majority), and the chairs' authority to add new-accelerator systems are settled above.
+
+### 10.3 Random Audit Selection
+
+Random Audit Selection
+* **Timing:** The audit selection process begins after the withdrawal deadline.
+* **Rules for Random Audit Exclusion:**
+* A submission is not a candidate for the randomly chosen audit if the system is equivalent to a system audited in the previous round. For the purposes of this rule, equivalent systems have the same CPU, NIC, accelerator, and accelerator count, with the same configuration of those components as per the system configuration JSON. The review committee may determine that additional systems are equivalent to those audited in a previous round and exempt them from random audit. As a guidance for this exemption, if an accelerator is audited in one of the previous rounds, then the systems using the same accelerator can be excluded from random audit, if the aggregate system performance and the performance per accelerator are not more than 10% from those submitted during last audit time. For systems with power metrics, in addition to the performance, power efficiency must also be within 10% from the last audit time to be eligible for an exclusion from random audit. If any new result like a new model, an additional non-inferred scenario measurement or a new power measurement is submitted from the last audit time, then the exclusion is not applicable unless the review committee decides otherwise.
+* **Selection Mechanism:**
+  * A round is randomly selected with a probability of 1/6 (e.g., rolling a 6-sided die).
+  * Once a round is chosen, a submission is selected from the corresponding cohort (the set of submissions in that round) using a uniform probability of selection.
+  * **Proposal: Avoiding streaks of round selection (Needs WG Approval)**
+    * Reroll-on-repeat: If consecutive round is selected, a six sided die will be rolled again.
+      * For a selection streak of length 2, a 6-sided die would be rolled twice and the result of the second die roll will be accepted.
+      * For a selection streak of length 3, a 6-sided die would be rolled thrice and the result of the third die roll will be accepted.
+      * After a selection streak of length 3, there is budget for only one more random audit in the annual budget. The audit committee will make decision on how to proceed.
+      * A non-selection streak has higher probability. After a non-selection streak of length 3, the audit committee will decide based on the available annual budget and the time left in the current year. The audit committee has the final authority on all the audit decisions.
+
+* **Hardware retention:** From selection until the audit is complete ([§10.5](#105-audit-compliance-and-resolution-rules)), on the same terms as [§10.2](#102-audit-votes).
+
+### 10.4 Audit Nomination on Reproducibility Grounds
 
 Reproducibility concerns arising after the peer review window are not eligible as late objections ([§6.6](#66-late-objections-post-week-6)). A member who cannot reproduce a published result instead makes their case by **nominating the submission for audit**.
 
@@ -961,16 +1032,29 @@ Where an audit substantiates the concern, remedies follow [§9.3](#93-remedies) 
 > [!NOTE]
 > **[WG Open Item]** — Two questions remain open: whether nominated audits count against the proposed 2-per-quarter capacity or are additional to chair-selected audits, and whether a nominating member bears any share of the audit cost. A nomination route with no capacity guarantee may in practice defer indefinitely.
 
-### 10.2 Audit Votes
+### 10.5 Audit Compliance and Resolution Rules
 
-The review committee holds an **audit vote** to decide which submissions are audited. At each vote the committee considers the nominations received since the previous vote ([§10.1](#101-audit-nomination-on-reproducibility-grounds)) together with any submissions the review chair has selected, and chooses those to audit, subject to the audit capacity then in force.
+Audit Compliance and Resolution Rules
 
-Audit votes also fix one boundary of the late-concern window: a result settles at the later of the next audit vote following finalization or 90 days after finalization ([§6.6](#scope-and-standing-for-late-concerns)). The review chair publishes the schedule of audit votes in advance, so that submitters and committee members can determine when a given result becomes settled.
+An audit is expected to be completed within a 60 day period. Audits failing to meet this timeline can be requested to be invalidated by the auditee. The final decision to accept such a request will be taken by the Working Group.
 
-A nomination filed within the window is considered at the next audit vote. Where the 90-day floor extends past that vote, an unselected nomination remains open for any further vote falling inside the window; otherwise the result settles at the close of the window and the nomination lapses.
+If a submitter chosen for an audit finds it unfair, they can appeal to the MLCommons Executive Director to ensure fairness.
 
-> [!NOTE]
-> **[WG Open Item]** — The cadence of audit votes (the current proposal of up to 2 audits per quarter implies a quarterly vote), the quorum and voting rule, and whether the review chair retains independent selection authority alongside committee nominations are all undecided. Because the vote cadence now also determines how long a published result remains open to challenge, setting it is a prerequisite for §6.6 as well as for §10.
+An auditor shall be chosen by the review committee who has no conflict of interest with the submitter. The process of auditor selection will take no more than 28 days from selection of the submitter.
+
+The burden is on the submitter to provide sufficient materials to demonstrate that the submission is compliant with the rules. Any such materials, including software, documentation, testing results and machine access will be provided to the auditor under NDA.
+
+The submitter shall provide two days of hardware access, at a time mutually agreed with the auditor. The first day will be used to run a pre-agreed list of tests, and to verify other system parameters if needed. The second day will allow the auditor to run additional tests based on outcome of the first day.
+
+The auditor shall write a report describing the work that was performed, a list of unresolved issues, and a recommendation on whether the submission is compliant.
+
+The submitter will provide the auditor an NDA within seven days of the auditor’s selection. The auditor and submitter will negotiate and execute the NDA within 14 days of the auditor’s selection.
+
+The auditor will submit their report to the submitter no more than thirty days after executing all relevant NDAs. The submitter will make any necessary redactions due to NDAs and forward the finalized report to the review committee within seven days. The auditor will confirm the accuracy of the forwarded report.
+
+Submissions that fail the audit at a material level will be moved to the RDI division or removed, by review committee decision. If a submission failed an audit that was delayed past publication, then any published material concerning the invalidated result is subject to the MLCommons rules for Violation Determination, Remedies and Penalties for remedial action.
+
+MLCommons shall retain a library of past audit reports and send copies to MLCommons members, auditors, and potential auditors by request. Audit reports will not be further distributed without permission from the audited submitter.
 
 ---
 

@@ -64,6 +64,12 @@ Indexed by what you see. Search this page for a fragment of your error message.
     A `state` of `INTERRUPTED` means the run was aborted; `state: complete` with pending tasks means
     a drain timeout.
 
+??? failure "The Offline run has no per-token timing, or `streaming-config` flags it"
+    **Cause:** the client's `streaming: auto` default resolves to off for offline runs.
+
+    **Fix:** set streaming on explicitly in the Offline point's config. `stream_all_chunks` must be
+    `true` for every performance run.
+
 ??? failure "The run ends far sooner than the region minimum"
     **Cause:** sample-count sizing. With no explicit count and no minimum issue duration, the client
     issues the dataset **once** and stops.
@@ -131,12 +137,54 @@ Indexed by what you see. Search this page for a fragment of your error message.
 
 ## Validation failures
 
-??? failure "`point-count` fails: fewer than 7 points"
-    **Cause:** too few points, or points were withdrawn.
+??? failure "`point-count` fails"
+    **Cause:** too few points, or points were withdrawn. The minimum is 8 when a point declares
+    `offline: dedicated`, and 7 otherwise.
 
     **Fix:** run more. Note withdrawn points do not count toward the minimum and **cannot be
     replaced**, because there's no `add-run`. If the curve needs a different set of runs, create a new
     submission.
+
+??? failure "`offline-point-present` warns that no point declares `offline`"
+    **Cause:** no dedicated Offline run and no elected `C_max` point. The checker only warns because
+    it can't tell whether your benchmark is agentic.
+
+    **Fix:** if the benchmark isn't agentic, this **will** be rejected. Add `offline: elected` to
+    your `C_max` point's `point.yaml`, or run a dedicated Offline point and declare
+    `offline: dedicated`. See [step 3](../workflow/plan-your-curve.md#6-decide-how-to-meet-the-offline-requirement).
+
+??? failure "`offline-point-present` fails on an `elected` point"
+    **Cause:** `elected` is declared on a point whose concurrency isn't your declared `C_max`.
+
+    **Fix:** elect the point at exactly `max_supported_concurrency`. If you don't have one, run it,
+    or run a dedicated Offline point instead.
+
+??? failure "`offline-ordering` warns"
+    **Cause:** the dedicated Offline run's `system_tps` is below 0.98× your `C_max` point's, or its
+    concurrency is below `C_max`.
+
+    **Fix:** a low throughput usually means the Offline run didn't saturate the system; re-run it
+    with more passes, or elect your `C_max` point instead. A low concurrency means your dataset is
+    smaller than `C_max`, which the rules haven't resolved yet — see **C7** in
+    [Open questions](open-questions.md).
+
+??? failure "`power-descriptor` fails"
+    **Cause:** `results/<system>/system_power.json` is missing, or it states neither a total nor
+    any component group a total can be computed from.
+
+    **Fix:** put a `system_power.json` in at least one run folder of that system. See
+    [`system_power.json`](../reference/system-power-json.md).
+
+??? failure "The build fails saying runs declare different `system_power.json` contents"
+    **Cause:** two run folders of the same system carry different copies.
+
+    **Fix:** make every copy identical, or keep it in one run folder only.
+
+??? failure "`approved-drafter` fails"
+    **Cause:** the point declares `speculative_decoding`, and the drafter isn't on the benchmark's
+    approved list. With no list published yet, every drafter fails.
+
+    **Fix:** re-run the point without speculative decoding.
 
 ??? failure "A concurrency-coverage check fails"
     **Cause:** no point in one of Low, Medium or High Concurrency — often because `C_min` changed.
@@ -155,11 +203,17 @@ Indexed by what you see. Search this page for a fragment of your error message.
     reviewer files a methodology objection about.
 
 ??? failure "`seed-set-adoption` reports SKIP"
-    **Cause:** the bundled seed-set file carries no cohort keys, so the adoption test cannot run.
+    **Cause:** a checker older than `v1.0.1.0`, whose bundled seed-set file carries no cohort keys.
 
-    **Fix:** none available locally. Confirm the correct seed set with MLCommons, and point
-    `--seed-sets FILE` or `$MLPERF_ENDPOINTS_SEED_SETS` at a newer file if one exists. Tracked as
-    **B4** in [Open questions](open-questions.md).
+    **Fix:** `pip install -U endpoints-submission-cli`. From `v1.0.1.0` the adoption test runs
+    against the published set.
+
+??? failure "`accuracy-coverage` fails"
+    **Cause:** no accuracy results at a point in one of the four mandatory regions, or none at the
+    Offline point.
+
+    **Fix:** the message names the region or the Offline point. Run that accuracy validation. An
+    elected `C_max` point's accuracy run covers both High Concurrency and Offline.
 
 ??? failure "`accuracy-gate` fails"
     **Cause:** the accuracy run missed the benchmark quality target.
@@ -233,7 +287,7 @@ Indexed by what you see. Search this page for a fragment of your error message.
 
     **Fix:** results may **not** be changed during peer review. Your options are to withdraw the
     point (`submissions remove-run`) or withdraw the submission. Withdrawn points do not count
-    toward the 7-point minimum and cannot be replaced.
+    toward the minimum and cannot be replaced.
 
 ## Still stuck?
 

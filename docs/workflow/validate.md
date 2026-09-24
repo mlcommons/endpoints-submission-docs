@@ -35,6 +35,7 @@ A submission root is the level holding `results/` and `docs/`.
 | `--quiet` / `-q` | Suppress INFO-level passing checks |
 | `--output FILE` / `-o` | Write the full result as JSON |
 | `--seed-sets FILE` | Check against a specific published seed-set file |
+| `--approved-drafters FILE` | Check against a specific published approved-drafter list |
 
 Exit codes: `0` all checks passed, `1` one or more errors (or warnings under `--strict`).
 
@@ -70,8 +71,9 @@ Errors and warnings are not the same thing:
 
 ### 4. Know what is being checked
 
-The checks fall into seven groups: structure, system description, regions, measurement points,
-seed binding, metrics, and accuracy. Every rule ID maps to a clause in the rules.
+The checks fall into eight groups: structure, system description and power, regions and the
+Offline point, measurement points, seed binding, speculative decoding, metrics, and accuracy.
+Every rule ID maps to a clause in the rules.
 
 Full cross-walk from rule ID to clause: [Compliance checks](../reference/compliance-checks.md).
 
@@ -79,11 +81,25 @@ The ones that **reject** rather than flag:
 
 - Submission completeness — required files, YAML, artifacts, system descriptions
 - `shared_src` / `shared_docs` resolution
-- Point count ≥ 7
+- A `system_power.json` for each system
+- Point count ≥ 8, or ≥ 7 if you elected `C_max` or the benchmark is agentic
+- Exactly one Offline point (none for agentic)
 - Coverage of Ultra Low, Low, Medium and High Concurrency
 - `C_max` declared and > 32
-- Accuracy — at least one run passing the quality target
+- Accuracy at all five required points (four for agentic), each passing the quality target
 - Seed-set validity
+- Any drafter used is on the approved list, and was approved at least two cohorts earlier
+
+!!! warning "Use checker `v1.0.1.0` or later"
+    The Offline, power, accuracy-coverage, steady-state and drafter checks arrived in `v1.0.1.0`
+    (2026-09-23). An older checker passes submissions the server will reject. Check with
+    `endpoints-submission-cli --version`, and upgrade with `pip install -U endpoints-submission-cli`.
+
+!!! danger "A missing Offline point only warns locally"
+    The checker can't tell an agentic benchmark from a single-turn one yet, so a submission with
+    no `offline` declaration gets a **warning** (`offline-point-present`), not an error. For a
+    non-agentic benchmark the rules treat that as a reject. Run with `--strict` or read the
+    warnings. Don't take a clean exit code as proof you have an Offline point.
 
 ### 5. Use the programmatic API for CI
 

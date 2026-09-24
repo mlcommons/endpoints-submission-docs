@@ -18,7 +18,7 @@ Requires **Python 3.12+**. Commands below assume an activated venv; without one,
 
 | Command | Does |
 |---|---|
-| `benchmark offline` | Max-throughput burst — **not valid** for Pareto points |
+| `benchmark offline` | Max-throughput burst — the dedicated **Offline** point only, never a fixed-concurrency point |
 | `benchmark online` | Sustained load with a load pattern |
 | `benchmark from-config` | Run from a YAML config |
 | `probe` | Test endpoint connectivity |
@@ -43,9 +43,16 @@ inference-endpoint benchmark from-config --config point.yaml
 
 | Pattern | Behaviour | Valid for a Pareto point? |
 |---|---|---|
-| `concurrency` | Maintains N concurrent requests; QPS emerges from concurrency/latency | **Yes — the only valid one** |
-| `max_throughput` | All queries issued at t=0 | No |
+| `concurrency` | Maintains N concurrent requests; QPS emerges from concurrency/latency | **Yes — every fixed-concurrency point** |
+| `max_throughput` | All queries issued at t=0 | **Only** a dedicated Offline run — see below |
 | `poisson` | Fixed QPS with Poisson arrivals | No |
+| `agentic_inference` | Multi-turn conversations with turn sequencing | Agentic benchmarks. Not in the CLI quick reference; see `docs/load_generator/DESIGN.md` upstream |
+
+!!! question "`max_throughput` for the Offline point"
+    The rules define the Offline point as "all queries available to the system at once" and call
+    its pattern "the benchmark-defined Offline load pattern", without naming a client setting.
+    `max_throughput` matches that description, but no source confirms it's the intended pattern.
+    Tracked as **C7** in [Open questions](../help/open-questions.md).
 
 ```yaml
 settings:
@@ -82,7 +89,7 @@ Flags exist as `--full.dotted.path` and, where defined, a short alias. Both form
 |---|---|---|---|
 | `--model-params.max-new-tokens` | `--max-output-tokens` | 1024 | |
 | `--model-params.osl-distribution.min` | `--min-output-tokens` | 1 | |
-| `--model-params.streaming` | `--streaming` | `auto` | `auto` resolves to off for offline, on for online |
+| `--model-params.streaming` | `--streaming` | `auto` | `auto` resolves to off for offline, on for online. Submission runs, the Offline point included, need streaming on |
 | `--runtime.n-samples-to-issue` | `--num-samples` | — | Explicit sample count |
 | `--runtime.min-issue-duration-ms` | — | — | Poisson sizing from QPS × duration |
 | `--runtime.max-issue-duration-ms` | — | — | Caps performance issuing; in-flight responses still drain |
@@ -207,4 +214,5 @@ See [Submission package layout](package-layout.md) for the run folder the client
     Credentials and other secrets are replaced with `<redacted>`. Restore them before reusing that
     file as benchmark input.
 
-*Last verified against: `mlcommons/endpoints@main` (47cc5c8), 2026-09-19.*
+*Last verified against: `mlcommons/endpoints@main` (e71b928) and
+`mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef), 2026-09-24.*

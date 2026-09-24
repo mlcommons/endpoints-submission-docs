@@ -10,22 +10,47 @@ comply. Rules marked :material-alert-octagon:{ style="color:#c62828" } have a fa
 
 | Requirement | How to check |
 |---|---|
-| :material-alert-octagon:{ style="color:#c62828" } **≥ 7 measurement points** | `submission-checker check` — rule `point-count` |
-| **≤ 32 measurement points**, including any later additions | rule `point-cap` |
+| :material-alert-octagon:{ style="color:#c62828" } **≥ 8 measurement points** including a dedicated Offline run; **≥ 7** if you elect `C_max` as the Offline result, or for an agentic benchmark | `submission-checker check` — rule `point-count` |
+| **≤ 32 measurement points**, Offline included | rule `point-cap` |
+| :material-alert-octagon:{ style="color:#c62828" } **Exactly one Offline point** for a non-agentic benchmark, **none** for an agentic one | rule `offline-point-present` — see the warning below |
 | :material-alert-octagon:{ style="color:#c62828" } **≥ 1 point at concurrency 1–32** (Ultra Low) | rule `ultra-low-concurrency-coverage` |
 | :material-alert-octagon:{ style="color:#c62828" } **≥ 1 point in each of Low, Medium, High Concurrency** | rules `low-` / `med-` / `high-concurrency-coverage` |
 | :material-alert-octagon:{ style="color:#c62828" } **`C_max` declared and > 32** | rule `max-concurrency-declared` |
-| Every concurrency falls in a valid region | rule `concurrency-in-range` |
+| Every concurrency falls in a valid region (a dedicated Offline run is exempt) | rule `concurrency-in-range` |
 
 Regions are computed in log-2 space from your own `C_min` and `C_max`. See
 [Plan your Pareto curve](../workflow/plan-your-curve.md) and
 [Metrics and regions](../reference/metrics-and-regions.md).
 
+!!! warning "The checker can't enforce the Offline requirement yet"
+    It has no way to tell whether your benchmark is agentic, so a submission with **no** Offline
+    point only gets a warning locally. For a non-agentic benchmark the rules reject it.
+
+## The Offline point
+
+Required for non-agentic benchmarks, and not allowed for agentic ones.
+
+| Requirement | Detail |
+|---|---|
+| How it's satisfied | A **dedicated** run under the Offline load pattern, or **electing** your `C_max` point |
+| Load pattern | The whole sample set available at once, not paced to a concurrency |
+| Reported `concurrency` | The number of queries in one pass over the performance dataset |
+| Throughput | Dedicated run: `system_tps` ≥ **0.98 ×** the `C_max` point's (rule `offline-ordering`, flagged) |
+| Concurrency | Dedicated run: ≥ `C_max` (rule `offline-ordering`, flagged) |
+| Latency | TTFT isn't required and **can't** be the basis of a compliance check or objection |
+| Reordering | Allowed within one pass over the dataset, **never across passes** |
+| Region coverage | A dedicated run counts toward none. An elected point keeps its own region |
+| Everything else | Minimum duration, completed queries, dataset handling and accuracy apply as for any other point |
+| Declaration | `offline: dedicated` or `offline: elected` in that point's `point.yaml`. `elected` only on the `C_max` point |
+
+The TTFT exemption and the pass-boundary rule apply only to a dedicated run. An elected point is
+an ordinary fixed-concurrency point and reports latency like the rest.
+
 ## Per-point run requirements
 
 | Requirement | Value | How to check |
 |---|---|---|
-| Load pattern | The benchmark's **fixed-concurrency** pattern only — `max_throughput` and `poisson` are invalid | rule `load-pattern` |
+| Load pattern | The benchmark's **fixed-concurrency** pattern for every point except a dedicated Offline run, which uses the Offline pattern. `poisson` is invalid | rule `load-pattern` |
 | Steady-state duration | **600 s** Ultra Low; **1,200 s** Low / Medium / High | rule `point-duration` |
 | Completed queries | At least one pass over the dataset | rule `min-query-count` |
 | Samples issued | A whole-number multiple of the dataset size | — |
@@ -55,7 +80,7 @@ Incomplete or ambiguous warmup documentation is explicit grounds for a Methodolo
 
 | Requirement | Detail |
 |---|---|
-| :material-alert-octagon:{ style="color:#c62828" } Accuracy results at every required point | The four mandatory region points, plus one Offline point if you submit Offline results |
+| :material-alert-octagon:{ style="color:#c62828" } Accuracy results at every required point | The four mandatory region points plus the Offline point: **5** for non-agentic benchmarks, **4** for agentic. Rule `accuracy-coverage` |
 | :material-alert-octagon:{ style="color:#c62828" } The results pass the quality target | **Single-turn:** every result passes. **Multi-turn:** the average of them passes |
 | Placement (single-turn) | Same concurrency as the point, same instance, immediately after that point's performance run |
 | Same configuration | Identical endpoint config, weights and software stack as the performance runs |
@@ -84,7 +109,37 @@ four-cohort adoption test is not reapplied.
 ## Consistency across the curve
 
 Same model, endpoint configuration, software stack, dataset and seed set at **every** point. Every
-point's `system_desc.json` must describe the same system. Freeze the stack before the first run.
+point's `system_desc.json` must describe the same system, and the whole curve uses one provisioned
+power figure. If you use speculative decoding, it's the same drafter at every point. Freeze the
+stack before the first run.
+
+## Power normalization
+
+Standardized results, CoP and CoN, are normalised by **provisioned power**. RDI may report it.
+Serviced is deferred to a later version.
+
+| Requirement | Detail |
+|---|---|
+| :material-alert-octagon:{ style="color:#c62828" } `system_power.json` for each system | At `results/<system>/system_power.json`. Rule `power-descriptor` |
+| Normalized metric | `system_tps_per_kw = system_tps / provisioned_power_kw`. Rule `metric-consistency-tps-per-kw` |
+| Power model | `(CPU + accelerator + scale-up switches) × (1 + overhead)`, overhead **0.30** liquid-cooled, **0.50** air-cooled |
+| Component power | `count × TDP` for each group, backed by a public, verifiable source. Vendor spec sheets, conference papers, and statements at keynotes or earnings calls count. Analyst blogs, social media and press speculation don't |
+| Declaring a total instead | Allowed, with the same evidence standard. Where a spec gives a range, use the upper bound |
+| Partially populated systems | Published power for that configuration; or `P_rack × Y/N` for `Y` whole nodes of an `N`-node rack; or the formula with only the installed components counted. **Not** linear scaling inside a node |
+| Below rated TDP | Public evidence of the reduced rating, plus evidence reproducible by an audit, such as `nvidia-smi` or `rocm-smi` output |
+| Fixed per system | The same figure divides every point, however much of the system a point used. A power-capped variant is a different system |
+| Values you leave out | Filled in by MLCommons from conservative estimates. The result is tagged **"MLC Estimated Power"**. Rule `power-estimated` warns |
+| Scope | Remote storage racks can be left out. With data-centre-level liquid cooling you may give the power of the whole data centre, scaled to your system's size. A rack or system with its own CDU must include its cooling power |
+
+If you disagree with an MLCommons estimate, you have to point to a better public source, or publish
+the figure yourself. Non-public information is at MLCommons's discretion.
+
+Field names and an example: [`system_power.json`](../reference/system-power-json.md).
+
+!!! warning "Section 4.5 is pending ratification"
+    The tiers, overhead fractions, reference components and even the metric's name and units are
+    marked as subject to change. v1.0 uses Tier 3, the component sum. Nameplate power (Tier 2) and
+    measured power are later.
 
 ## Disclosure by division
 
@@ -143,4 +198,5 @@ your serving stack, and not as a sum of per-chunk counts.
 
 --8<-- "draft-rules-warning.md"
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (a7ec3cc), 2026-09-19.*
+*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef) and
+`mlcommons/endpoints-submission-cli@main` (f25f71e), 2026-09-24.*

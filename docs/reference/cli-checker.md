@@ -3,7 +3,8 @@
 Validates a submission folder against the automated compliance rules — the same checks that run
 server-side during Week 0. Used in [step 6](../workflow/validate.md).
 
-Ships with [`endpoints-submission-cli`](cli-submission.md).
+Ships with [`endpoints-submission-cli`](cli-submission.md). Use **`v1.0.1.0` or later**: that
+release added the Offline, power, accuracy-coverage, steady-state and drafter checks.
 
 ## `check`
 
@@ -20,6 +21,7 @@ A submission root is the level holding `results/` and `docs/`.
 | `--quiet` / `-q` | Suppress INFO-level passing checks |
 | `--output FILE` / `-o FILE` | Write full results as JSON |
 | `--seed-sets FILE` | Published seed sets to check against. Defaults to the bundled set; also settable via `$MLPERF_ENDPOINTS_SEED_SETS` |
+| `--approved-drafters FILE` | Published approved-drafter list to check against. Defaults to the bundled list, which is empty; also settable via `$MLPERF_ENDPOINTS_APPROVED_DRAFTERS` |
 
 **Exit codes:** `0` all checks passed · `1` one or more errors, or warnings under `--strict`.
 
@@ -61,18 +63,16 @@ else:
 `Report` also exposes `report.warnings` and serialises via `report.model_dump_json()`. Wiring this
 into CI validates your disclosure files on every change.
 
-## Seed sets
+## Bundled data
 
-The published sets ship as data at `src/submission_checker/data/seed_sets.yaml`. Point
-`--seed-sets FILE` or `$MLPERF_ENDPOINTS_SEED_SETS` at a newer file to check against a set published
-after the installed release.
+| File | Contents | Override |
+|---|---|---|
+| `src/submission_checker/data/seed_sets.yaml` | A mirror of the published `seedset.yaml`: set `A`, `cohort-id: 2026-10-C1`. The four-cohort adoption window is derived from the cohort ID | `--seed-sets FILE` or `$MLPERF_ENDPOINTS_SEED_SETS` |
+| `src/submission_checker/data/approved_drafters.yaml` | `drafters: []`. No list has been published, so any point using speculative decoding fails `approved-drafter` | `--approved-drafters FILE` or `$MLPERF_ENDPOINTS_APPROVED_DRAFTERS` |
 
-!!! question "The bundled set is provisional"
-    The shipped file carries a single set (`id: A`), mirrored from a policy PR that was still **open**
-    when the tooling was released, with `cohorts: []`. Because the upstream file carries no cohort
-    keys, the `seed-set-adoption` test reports **SKIP** rather than passing. Confirm the correct set
-    with MLCommons before running. Tracked as **B4** in
-    [Open questions](../help/open-questions.md).
+Override either one to check against something published after your installed release.
+Checkers before `v1.0.1.0` shipped a seed-set file with no cohort keys, so `seed-set-adoption`
+reported **SKIP**.
 
 ## Expected layout
 
@@ -85,6 +85,7 @@ after the installed release.
     ├── docs/
     └── results/
         └── <system>/
+            ├── system_power.json      # REQUIRED, one per system
             └── <model_name>/
                 └── r<N>/
                     ├── point.yaml
@@ -100,17 +101,18 @@ after the installed release.
 
 ## What gets checked
 
-Seven families of rules. Full cross-walk from rule ID to clause, with severity:
+Eight families of rules. Full cross-walk from rule ID to clause, with severity:
 [Compliance checks](compliance-checks.md).
 
 | Family | Covers |
 |---|---|
 | Structure | Directories, required files, shared-path resolution |
-| System description | Schema validity, consistency, model name, `C_max`, `tps_utilization` |
-| Regions | Derived `C_min`, boundary computation, coverage of all four regions, point count and cap |
-| Measurement points | `point.yaml` schema, disclosure completeness, load pattern, streaming, duration, query count, warmup |
+| System description | Schema validity, consistency, model name, `C_max`, `tps_utilization`, `system_power.json` |
+| Regions | Derived `C_min`, boundary computation, coverage of all four regions, the Offline point, point count and cap |
+| Measurement points | `point.yaml` schema, disclosure completeness, load pattern, streaming, duration, steady-state block, query count, warmup |
 | Seed binding | Set consistency, membership, runtime match, target cohort, adoption window |
-| Metrics | Result schema, duration, sample accounting, `system_tps`, TPOT P90, `tps_per_user` |
-| Accuracy | Presence, validity, sample count, quality gate |
+| Speculative decoding | Drafter on the approved list, approval lead time |
+| Metrics | Result schema, duration, sample accounting, `system_tps`, TPOT P90, `tps_per_user`, `system_tps_per_kw`, agentic interactivity |
+| Accuracy | Presence, coverage of the required points, validity, sample count, quality gate |
 
-*Last verified against: `mlcommons/endpoints-submission-cli@main` (f48ca84), 2026-09-19.*
+*Last verified against: `mlcommons/endpoints-submission-cli@main` (f25f71e, `v1.0.1.0`), 2026-09-24.*

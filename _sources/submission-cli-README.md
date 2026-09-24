@@ -1,8 +1,8 @@
 <!--
   PROVENANCE SNAPSHOT — do not edit.
   Upstream : endpoints-submission-cli/README.md
-  Repo     : mlcommons/endpoints-submission-cli @ main@f48ca84
-  Captured : 2026-09-13
+  Repo     : mlcommons/endpoints-submission-cli @ main@f25f71e
+  Captured : 2026-09-24
   Purpose  : diff this against upstream to find what drifted since the docs were written.
 -->
 
@@ -142,6 +142,7 @@ directory below it; a submission root is the level holding `results/` and `docs/
 | `--quiet` / `-q` | Suppress INFO-level passing checks |
 | `--output FILE` / `-o FILE` | Write full results as JSON to *FILE* |
 | `--seed-sets FILE` | Published seed sets to check against (§4.6). Defaults to the bundled set; also settable via `$MLPERF_ENDPOINTS_SEED_SETS`. |
+| `--approved-drafters FILE` | Published approved drafters (§2.9.4). Defaults to the bundled list; also settable via `$MLPERF_ENDPOINTS_APPROVED_DRAFTERS`. |
 
 **Exit codes:** `0` = all checks passed, `1` = one or more errors (or warnings with `--strict`).
 
@@ -169,6 +170,7 @@ Pareto point carries its own `system_desc.json`.
     ├── docs/                         # calibration, software disclosure, …
     └── results/
         └── <system>/
+            ├── system_power.json      # §4.5.2 — REQUIRED, one per system
             └── <model_name>/
                 └── r<N>/             # one directory per concurrency level
                     ├── point.yaml            # §8.3 measurement-point disclosure
@@ -212,6 +214,8 @@ submission root (§9.1).
 | `model-name-consistency` | §16 | It matches the results directory name |
 | `max-concurrency-declared` | §7 | `max_supported_concurrency` (C_max) present and > 32 |
 | `tps-utilization` | §8.2 | Equals `system_tps / max(system_tps)` over the point's own curve |
+| `power-descriptor` | §4.5.2 | `system_power.json` present per system and states a derivable power |
+| `power-estimated` | §4.5.2 | Flags component groups left for MLCommons to auto-populate (warn) |
 
 ### Regions (§5)
 
@@ -226,11 +230,14 @@ not satisfy High Concurrency coverage.
 | `concurrency-in-range` | §9.1 | Each concurrency falls in a valid region, margin included |
 | `region-declared` | §8.3 | Declared `region` is one of the spec's values |
 | `region-placement` | §8.3 | Declared region matches the computed one (warn) |
+| `offline-declared` | §5.7 | `offline` is `dedicated`, `elected`, or `none` |
+| `offline-point-present` | §5.7 | Exactly one Offline point; `elected` sits on the C_max point |
+| `offline-ordering` | §5.7.2 | Offline beats C_max on throughput (2% tolerance) and concurrency (warn) |
 | `ultra-low-concurrency-coverage` | §5.4 | At least one point at concurrency ≤ 32 |
 | `low-concurrency-coverage` | §9.1 | At least one point in the Low Concurrency region |
 | `med-concurrency-coverage` | §9.1 | At least one point in the Medium Concurrency region |
 | `high-concurrency-coverage` | §9.1 | At least one point in the High Concurrency region |
-| `point-count` | §2, §8 | 7–32 measurement points |
+| `point-count` | §5.3 | 7–32 measurement points; 8 with a dedicated Offline run |
 | `point-cap` | §2, §8 | Point count does not exceed 32 |
 
 ### Measurement points (§8.3, §6)
@@ -241,7 +248,10 @@ not satisfy High Concurrency coverage.
 | `point-disclosure-complete` | §8.3 | Every required §8.3 disclosure field is present |
 | `load-pattern` | §6.1 | `load_pattern` is `concurrency` with a positive level |
 | `streaming-config` | §6.5 | `stream_all_chunks` is `True` |
-| `point-duration` | §6.2 | Point meets its region's minimum duration (warn) |
+| `point-duration` | §6.2 | Steady-state window's issue-time span meets the region minimum (warn) |
+| `steady-state-valid` | §4.4 | `status`, `verdict` and gating `state` use the spec's vocabulary |
+| `steady-state-consistency` | §4.4 | The reported status agrees with the window it describes |
+| `steady-state-basis` | §4.4 | Which basis supplies the official result; flags fallbacks and drift (warn) |
 | `min-query-count` | §6.4 | `n_samples_completed` meets the dataset minimum |
 | `warmup-present` | §6.3.3 | Warmup declaration present |
 | `warmup-logs-retained` | §6.3.2 | Warmup log retention declared (warn) |
@@ -256,11 +266,27 @@ not satisfy High Concurrency coverage.
 | `seed-set-membership` | §9.1 | The bound set is one MLCommons published |
 | `seed-runtime-match` | §2.1.1 | The RNG seeds equal the bound set's values |
 | `target-cohort` | §4.6 | `target_cohort` matches `YYYY-MM-C0` / `YYYY-MM-C1` |
-| `seed-set-adoption` | §4.6 | Set published for the target cohort or the three before it |
+| `seed-set-adoption` | §4.6 | `target_cohort` falls inside the set's four-cohort adoption window |
 | `seed-config-legacy` | §4.6 | v0.7 fallback: seeds == 42 when no `seed_set` is declared |
 | `seed-set-registry` | §4.6 | Warns when the seed-set file itself cannot be read |
 
-The published sets ship as data (`src/submission_checker/data/seed_sets.yaml`). Point
+### Speculative decoding (§2.9.4)
+
+| Rule | Spec | Description |
+|------|------|-------------|
+| `approved-drafter` | §2.9.4 | The declared drafter is on the benchmark's published list |
+| `drafter-approval-lead-time` | §2.9.4 | Approved at least two cohorts before `target_cohort` |
+| `drafter-list-registry` | §2.9.4 | Warns when the drafter list itself cannot be read |
+
+The approved list ships as data (`src/submission_checker/data/approved_drafters.yaml`)
+and is **empty** — §2.9.4's list has not been published yet, and an empty registry means
+speculative decoding is not permitted for any benchmark, which is §2.9.4's own rule for a
+benchmark with no approved drafter. Point `--approved-drafters FILE` or
+`$MLPERF_ENDPOINTS_APPROVED_DRAFTERS` at a published list.
+
+The published sets ship as data (`src/submission_checker/data/seed_sets.yaml`), mirrored
+from the policies repo's `seedset.yaml`. The file's `cohort-id` is the cohort its sets
+were published for; §4.6's four-cohort adoption window is derived from it. Point
 `--seed-sets FILE` or `$MLPERF_ENDPOINTS_SEED_SETS` at a newer file to check against a
 set published after this release.
 
@@ -275,12 +301,15 @@ set published after this release.
 | `metric-consistency-system-tps` | §9.1 | Stored `system_tps` matches the derived value |
 | `metric-consistency-tpot-p90` | §9.1 | Reported TPOT P90 present, finite, strictly positive |
 | `metric-consistency-tps-per-user` | §9.1 | Stored `tps_per_user` matches `1000 / tpot_p90_ms` |
+| `metric-consistency-tps-per-kw` | §4.5.3 | Stored `system_tps_per_kw` matches `system_tps / provisioned_power_kw` |
+| `agentic-metric-consistency` | §4.1 | `e2e_avg_interactivity` is derivable from its reported inputs |
 
 ### Accuracy (§15)
 
 | Rule | Spec | Description |
 |------|------|-------------|
 | `accuracy-present` | §15 | At least one model in the submission carries accuracy results |
+| `accuracy-coverage` | §5.3 | Accuracy at each of the four mandatory bands, plus the Offline point |
 | `accuracy-valid` | §15 | `accuracy_results.json` parses correctly |
 | `accuracy-sample-count` | §15 | Issued sample count meets the model's minimum |
 | `accuracy-gate` | §15 | Score meets the benchmark quality target |
