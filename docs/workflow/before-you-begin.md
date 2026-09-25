@@ -67,15 +67,8 @@ rather than after step 4, which is where the accelerator time gets spent.
 
 ## Verify
 
-You are ready to start when this command prints a table rather than an authentication error:
-
-```bash
-endpoints-submission-cli runs list
-```
-
-An empty table is correct, since you have no runs yet. An error means your token isn't set; go to
-[step 1](register.md).
+You're ready to start when every item above is ticked, or you know who is getting it and when.
 
 ## Next
 
-→ [1. Register and get a token](register.md)
+→ [1. Get access and an API key](register.md)

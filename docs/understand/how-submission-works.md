@@ -6,7 +6,7 @@ What you do, what MLCommons does, what reviewers do, and when your results becom
 
 ```mermaid
 flowchart TD
-    A[Plan the curve<br/>choose C_max, compute regions] --> B[Run 7-32 measurement points<br/>plus the Offline point]
+    A[Plan the curve<br/>choose C_max, compute regions] --> B[Run 7–32 measurement points<br/>Offline included]
     B --> C[Author system_desc.json and point.yaml<br/>per point, system_power.json per system]
     C --> D[Register each run<br/>runs create]
     D --> E[Assemble + validate<br/>submissions create]

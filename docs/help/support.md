@@ -23,14 +23,14 @@ A question with these attached gets answered once instead of three times:
 - **Which division and scenario** you are submitting under
 - **Versions** — the `endpoints` commit SHA you built from, and `endpoints-submission-cli --version`
 - **The exact error text**, not a paraphrase
-- **The checker output** — `submission-checker check … --output checker.json`
+- **The checker output** — `endpoints-submission-cli check-submission … --output checker.json`
 - **The relevant `point.yaml`** with secrets removed
 - **What you expected**, and what the rules clause you are reading says
 
 For a run problem, `report.txt` and the non-histogram fields of `result_summary.json` are usually
 enough. **Don't attach `events.jsonl`**, which runs to hundreds of megabytes.
 
-!!! danger "Never paste your PRISM token"
+!!! warning "Never paste your PRISM token"
     Not in an issue, not in a log, not in a config attachment. If you think one has leaked, rotate
     it from the API Keys dashboard immediately. It can be used to withdraw your submissions.
 
@@ -44,7 +44,7 @@ MLCommons rather than searching further:
 - The **official** v1.0 model list and accuracy targets. The
   [list on this site](../reference/benchmarks.md) is put together from the working group's
   overview and the tooling
-- The **approved drafter list** for any benchmark
+- The **approved drafter list** for the legacy benchmarks, and when the checker will carry the agentic one
 - Which **load pattern** a dedicated Offline run should use
 - **CoN client locations** and scheduling
 - The **Preview Availability Tracker** and public results URLs

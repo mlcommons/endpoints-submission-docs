@@ -1,4 +1,4 @@
-# 1. Register and get a token
+# 1. Get access and an API key
 
 > Produces: a PRISM API key in `mlc_…` format, scoped to MLPerf Endpoints.
 

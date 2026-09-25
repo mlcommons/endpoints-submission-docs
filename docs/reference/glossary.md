@@ -164,14 +164,14 @@ Terms used across this site. Most also appear as hover tooltips on their first u
     curve.
 
 **Approved drafter list**
-:   The per-benchmark, per-round list of drafters a Standardized submission may use. None has been
-    published yet.
+:   The per-benchmark, per-round list of drafters a Standardized submission may use. Published for the agentic benchmarks only, in the reference repository's agentic example; the checker's list is still empty.
 
 **ConcurrencyScheduler**
 :   The reference client's fixed-concurrency load pattern — it keeps a set number of queries in
-    flight, issuing a replacement as each one completes. The rules now say "the benchmark-defined
-    fixed-concurrency load pattern" rather than naming it. `Poisson` is invalid for any Pareto
-    point; `MaxThroughput` only for a dedicated Offline run.
+    flight, issuing a replacement as each one completes. §6.1 says "the benchmark-defined
+    fixed-concurrency load pattern", while §4.4 and Submission Rules §5.7 still name
+    `ConcurrencyScheduler`. `Poisson` is invalid for fixed-concurrency points. The Offline pattern
+    isn't named; `max_throughput` is the likely match (see **C7**).
 
 **Warmup**
 :   Requests issued before `TEST_STARTED`. Excluded from metrics, but logged, retained and declared.

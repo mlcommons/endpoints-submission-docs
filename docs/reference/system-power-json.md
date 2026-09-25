@@ -1,15 +1,14 @@
 # `system_power.json`
 
 The provisioned-power descriptor for one system. **One per system**, not per point: provisioned
-power is fixed for the whole curve. Why it exists and what it's used for:
-[What is MLPerf Endpoints?](../understand/what-is-mlperf-endpoints.md#normalised-by-provisioned-power).
+power is fixed for the whole curve. Why it exists and what it's used for: [What is MLPerf
+Endpoints?](../understand/what-is-mlperf-endpoints.md#normalised-by-provisioned-power).
 
 !!! danger "Required, and authored by you"
-    Every system needs one. A system without it, or with a file from which no total can be
-    derived, fails the submission checker. Put it at the top level of at least one run folder of
-    the system; the builder places it at
-    `results/<system>/system_power.json` in the bundle. Authored in
-    [step 5](../workflow/author-disclosures.md#3-write-system_powerjson-for-each-system).
+    Every system needs one. A system without it, or with a file from which no total can be derived,
+    fails the submission checker. Put it at the top level of at least one run folder of the system;
+    the builder places it at `results/<system>/system_power.json` in the bundle. Authored in [step
+    5](../workflow/author-disclosures.md#3-write-system_powerjson-for-each-system).
 
 ## Fields
 
@@ -34,16 +33,17 @@ Each **group** has:
 | `link` | string | A public specification backing the rating |
 
 !!! warning "The rules and the checker name these differently"
-    [Rules §4.5.2][rules-4.5.2-power-model] lists the fields as `num_cpu`, `tdp_per_cpu`, `num_accelerator`,
-    `tdp_per_accelerator`, `num_switches` and `tdp_per_switch`. The released checker reads nested
-    groups with `count`, `tdp_per_unit` and `link`, as above. The checker's spelling is what gets
-    validated. Tracked as **B10** in [Open questions](../help/open-questions.md).
+    [Rules §4.5.2][rules-component-template-system_powerjson] lists the fields as `num_cpu`,
+    `tdp_per_cpu`, `num_accelerator`, `tdp_per_accelerator`, `num_switches` and `tdp_per_switch`.
+    The released checker reads nested groups with `count`, `tdp_per_unit` and `link`, as above. The
+    checker's spelling is what gets validated. Tracked as **B10** in [Open
+    questions](../help/open-questions.md).
 
 ## How the total is computed
 
 The formula is in [§4.5.2, Power Model][rules-4.5.2-power-model], and the checker follows it, with
-one difference: it adds `scale_out_network` to the major components, while the rules' formula
-counts scale-out networking inside the overhead fraction.
+one difference: it adds `scale_out_network` to the major components, while the rules' formula counts
+scale-out networking inside the overhead fraction.
 
 ## Example
 
