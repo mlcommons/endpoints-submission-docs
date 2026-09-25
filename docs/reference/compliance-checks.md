@@ -3,13 +3,14 @@
 Every automated check, cross-walked from **checker rule ID** to the **rules clause** it enforces and
 the **failure action** the rules assign. Use it to work out what a failed check actually means.
 
-Run locally with [`submission-checker`](cli-checker.md); run server-side during **Week 0**. This
+Run locally with [`submission-checker`](https://github.com/mlcommons/endpoints-submission-cli/blob/main/README.md#submission-checker); run server-side during **Week 0**. This
 page describes checker **`v1.0.1.0`**. Older versions lack the Offline, power, accuracy-coverage,
 steady-state and drafter rules.
 
 !!! danger "Week 0 failures reject the submission"
-    A submission that fails any automated check by the end of Week 0 is rejected. You correct and
-    resubmit as a **new** submission — there is no in-place patching, and you lose your cohort slot.
+    A submission that fails any automated check by the end of Week 0 is rejected ([§6.1 of the
+    Submission Rules][srules-6.1]). You resubmit as a **new** submission — there is no in-place
+    patching, and you lose your cohort slot.
 
 ## How to read the severity column
 
@@ -75,8 +76,8 @@ steady-state and drafter rules.
     Offline run counts toward no region at all.
 
 !!! danger "A missing Offline point is only a warning locally"
-    The checker can't tell whether a benchmark is agentic, because nothing it reads says so. So
-    when **no** point declares `offline`, `offline-point-present` warns instead of failing, and
+    The checker can't tell whether a benchmark is agentic, because nothing it reads says so. So when
+    **no** point declares `offline`, `offline-point-present` warns instead of failing, and
     `point-count` applies the 7-point minimum. For a non-agentic benchmark the rules reject that
     submission. Check this yourself.
 
@@ -161,17 +162,19 @@ steady-state and drafter rules.
 | `accuracy-sample-count` | §6.6 | Issued sample count meets the model's minimum | :material-alert-octagon:{ style="color:#c62828" } |
 | `accuracy-gate` | §9.1 | Score meets the benchmark quality target | :material-alert-octagon:{ style="color:#c62828" } |
 
-**Accuracy has no variability allowance** at any stage.
+**Accuracy has no variability allowance** at any stage ([Reproducibility
+Expectations][srules-reproducibility-expectations] in the Submission Rules).
 
 !!! note "The multi-turn mean is not what the checker tests"
     `accuracy-coverage` checks which regions have results, and `accuracy-gate` checks each score.
-    Rules §4.3 judges multi-turn benchmarks on the **mean** of the `N` results instead, and
-    the checker doesn't compute that. For a single-turn benchmark the two agree.
+    Rules §4.3 judges multi-turn benchmarks on the **mean** of the `N` results instead, and the
+    checker doesn't compute that. For a single-turn benchmark the two agree.
 
 ## What automation does not check
 
 Manual reviewers focus on what the checker cannot see. These are not rule IDs — they are objection
-grounds. See [Why submissions get rejected](../rules/rejection-reasons.md#rejections-that-come-from-judgement-not-checks).
+grounds. See [Why submissions get
+rejected](../rules/rejection-reasons.md#rejections-that-come-from-judgement-not-checks).
 
 ## Clause-numbering note
 

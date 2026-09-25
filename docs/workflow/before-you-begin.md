@@ -5,8 +5,8 @@ rather than after step 4, which is where the accelerator time gets spent.
 
 ## You can't submit without these
 
-- [ ] The **individual** who will submit has signed the MLCommons CLA
-- [ ] A **PRISM API token** in `mlc_…` format, scoped to *MLPerf Endpoints* — see [step 1](register.md)
+- [ ] The **individual** who will submit has signed the [MLCommons CLA](../understand/eligibility/cla-process.md)
+- [ ] A [**PRISM API token**](../understand/eligibility/prism-api-key.md) in `mlc_…` format, scoped to *MLPerf Endpoints* — see [step 1](register.md)
 - [ ] You have chosen a **division**: Standardized, Serviced or RDI — see [Divisions and scenarios](../understand/divisions-and-scenarios.md)
 - [ ] You have chosen a **scenario**: CoP or CoN
 - [ ] Your benchmark **model is on the round's supported list**, and you know whether it's an
@@ -17,7 +17,6 @@ rather than after step 4, which is where the accelerator time gets spent.
       [MLCommons storage](https://inference.mlcommons-storage.org/index.html#gpt-oss-benchmark)
 - [ ] You can reach the endpoint under test from wherever the client will run
 - [ ] Python **3.12+** for the reference client; Python 3.10+ for the submission CLI
-- [ ] [`gh` CLI](https://cli.github.com/) installed and authenticated
 
 ## What this actually costs
 
@@ -26,7 +25,7 @@ rather than after step 4, which is where the accelerator time gets spent.
       one at each mandatory region point and one at the Offline point. Electing your `C_max` point
       as the Offline result saves the separate run. Agentic benchmarks need 7 points and four
       accuracy runs. You need exclusive access to the system for all of it, and a point that fails
-      has to be re-run.
+      has to be re-run. See [§5.3][rules-5.3], [§6.2][rules-6.2] and [§4.3][rules-4.3].
 - [ ] **Power data** (Standardized). Public TDP figures for your CPUs, accelerators and scale-up
       switches, each with a link to a spec sheet. Gaps get filled with MLCommons's conservative
       estimates, so it's worth finding these early. See
@@ -36,8 +35,8 @@ rather than after step 4, which is where the accelerator time gets spent.
 - [ ] **Upload bandwidth.** Every run folder is archived and uploaded before the submission is
       assembled.
 - [ ] **Someone available for six weeks.** Once review starts, you have **3 business days** to
-      respond to any objection. After 10 business days of no response your submission is withdrawn.
-      This is an easy way to lose a submission after all the hardware time is already spent.
+      respond to any objection. After 10 business days of no response your submission is withdrawn
+      ([Submission Rules §6.3][srules-6.3]). This is an easy way to lose a submission after all the hardware time is already spent.
 
 ## Decisions to make now, not later
 
@@ -74,8 +73,8 @@ You are ready to start when this command prints a table rather than an authentic
 endpoints-submission-cli runs list
 ```
 
-An empty table is correct, since you have no runs yet. An error means your token isn't set;
-go to [step 1](register.md).
+An empty table is correct, since you have no runs yet. An error means your token isn't set; go to
+[step 1](register.md).
 
 ## Next
 

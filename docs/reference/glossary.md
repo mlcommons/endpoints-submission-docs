@@ -111,10 +111,12 @@ Terms used across this site. Most also appear as hover tooltips on their first u
 ## Process
 
 **PRISM**
-:   The MLCommons portal that issues the API tokens the submission CLI authenticates with.
+:   The MLCommons portal that issues the API tokens the submission CLI authenticates with. See
+    [PRISM API key](../understand/eligibility/prism-api-key.md).
 
 **CLA**
-:   Contributor License Agreement. Required of the **individual** making the submission.
+:   Contributor License Agreement. Required of the **individual** making the submission. See
+    [MLCommons CLA process](../understand/eligibility/cla-process.md).
 
 **Objection**
 :   A formal challenge filed as a GitHub issue during peer review, tagged `by <org>` and

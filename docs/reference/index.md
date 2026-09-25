@@ -15,7 +15,7 @@ Tables to look things up in. For step-by-step instructions, see the
 |---|---|
 | [Submission package layout](package-layout.md) | The run folder, the assembled bundle, and what is shared vs per-point |
 | [`point.yaml`](point-yaml.md) | Per-measurement-point disclosure fields |
-| [`system_desc.json`](system-desc-json.md) | Hardware and software description fields, with a template |
+| [`system_desc.json`](system-desc-json.md) | Hardware and software description: how to capture it or fill in the template |
 | [`system_power.json`](system-power-json.md) | Provisioned-power descriptor, one per system |
 
 ## Measurement
@@ -30,7 +30,6 @@ Tables to look things up in. For step-by-step instructions, see the
 |---|---|
 | [Benchmark runner CLI](cli-inference-endpoint.md) | `inference-endpoint` — runs the benchmark |
 | [Submission CLI](cli-submission.md) | `endpoints-submission-cli` — registers runs, creates submissions |
-| [Submission checker](cli-checker.md) | `submission-checker` — validates a bundle |
 
 ## Process
 

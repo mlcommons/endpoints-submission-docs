@@ -22,7 +22,7 @@ How to prepare, validate and submit an MLPerf&reg; Endpoints benchmark result.
 
     ---
 
-    The eight-step path from an empty directory to a submission in the review queue.
+    The nine-step path from an empty directory to a submission in the review queue.
 
     [:octicons-arrow-right-24: Before you begin](workflow/before-you-begin.md)
 
@@ -49,7 +49,7 @@ How to prepare, validate and submit an MLPerf&reg; Endpoints benchmark result.
 --8<-- "round-status.md"
 
 There is **no submission deadline**. Submissions are timestamped on receipt and enter review
-immediately; results publish in the next cohort they clear.
+immediately; results publish in the next cohort they clear ([Submission Rules §4.1][srules-4.1]).
 
 ## Coming from MLPerf Inference?
 
@@ -57,23 +57,23 @@ Six things work differently here:
 
 | | MLPerf Inference | MLPerf Endpoints |
 |---|---|---|
-| Schedule | Fixed rounds, advance registration | Rolling; register by holding a PRISM token |
+| Schedule | Fixed rounds, advance registration | Rolling; register by holding a [PRISM token](understand/eligibility/prism-api-key.md) |
 | Result | A score at one operating point | A **Pareto curve** of 7–32 points, plus an **Offline** result |
 | Divisions | Closed / Open | **Standardized** / **Serviced** / **RDI** |
 | Cross-query KV reuse | Prohibited | **Permitted**, with a per-query salt |
 | TTFT percentile | — | **P90** for v1.0 (v0.7 used P95) |
 | Power | Measured, optional | **Provisioned** power, declared per system; required for Standardized |
 
-Full detail in [What is MLPerf Endpoints?](understand/what-is-mlperf-endpoints.md) and
-[Model equivalence](rules/model-equivalence.md).
+Full detail in [What is MLPerf Endpoints?](understand/what-is-mlperf-endpoints.md) and [Model
+equivalence](rules/model-equivalence.md).
 
 ## Before you invest hardware time
 
 !!! danger "The v1.0 rules are a working draft"
     MLPerf Endpoints v1.0 rules are on an active development branch, and several sections that
-    determine how long your runs must be and what you must disclose are explicitly marked
-    tentative or pending working-group ratification. Read
-    [Open questions and WIP rules](help/open-questions.md) before you commit accelerator time.
+    determine how long your runs must be and what you must disclose are explicitly marked tentative
+    or pending working-group ratification. Read [Open questions and WIP
+    rules](help/open-questions.md) before you commit accelerator time.
 
 ## Authoritative sources
 

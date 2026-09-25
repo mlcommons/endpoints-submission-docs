@@ -22,7 +22,7 @@ Indexed by what you see. Search this page for a fragment of your error message.
        service authenticates against a different surface.
     3. Try `--token` explicitly to rule out a shell-profile problem.
 
-    See [step 1](../workflow/register.md).
+    See [Set your token](../workflow/register-runs.md#set-your-token).
 
 ??? failure "Connection errors, or requests going somewhere unexpected"
     **Cause:** `MLPERF_API_BASE_URL` is set.
@@ -47,19 +47,13 @@ Indexed by what you see. Search this page for a fragment of your error message.
     **Fix:** for a submission, prefer `uv sync` so your dependency set matches the lockfile. Record
     the commit SHA you built from either way, since you need it for disclosure.
 
-??? failure "Submission commands fail mentioning GitHub"
-    **Cause:** `gh` is missing or unauthenticated. It is required for creating, updating and
-    withdrawing submissions.
-
-    **Fix:** install the [`gh` CLI](https://cli.github.com/) and run `gh auth login`.
-
 ## Running the benchmark
 
 ??? failure "`result_summary.json` shows `complete: false`"
     **Cause:** the run drained out or was interrupted. The metrics are partial.
 
-    **Fix:** the point is **not usable** — re-run it. Check whether you hit
-    `run_timeout_s`, a drain timeout, or `endpoint_response_idle_timeout_s`.
+    **Fix:** the point is **not usable** — re-run it. Check whether you hit `run_timeout_s`, a drain
+    timeout, or `endpoint_response_idle_timeout_s`.
 
     A `state` of `INTERRUPTED` means the run was aborted; `state: complete` with pending tasks means
     a drain timeout.
@@ -75,23 +69,25 @@ Indexed by what you see. Search this page for a fragment of your error message.
     issues the dataset **once** and stops.
 
     **Fix:** set `settings.runtime.n_samples_to_issue`, or `min_issue_duration_ms`, so the run
-    sustains 600 s (Ultra Low) or 1,200 s (other regions) of steady state.
+    sustains 600 s (Ultra Low) or 1,200 s (other regions) of steady state ([§6.2 of the
+    rules][rules-6.2]).
 
     Priority order: `n_samples_to_issue` > Poisson QPS × min issue duration > dataset size.
 
 ??? failure "A percentile lookup in `result_summary.json` returns nothing"
-    **Cause:** percentile keys are **decimal strings** — `"50.0"`, `"90.0"`, `"99.9"`, not `"50"`
-    or `"90"`.
+    **Cause:** percentile keys are **decimal strings** — `"50.0"`, `"90.0"`, `"99.9"`, not `"50"` or
+    `"90"`.
 
     **Fix:** use the decimal form.
 
 ??? failure "Dataset validation fails saying samples cannot be salted"
     **Cause:** salt requires a dict sample with a text `prompt` field. A dataset whose samples carry
-    `messages`, or multimodal content parts, cannot be salted, and the client validates every
-    sample up front rather than shipping an unsalted payload.
+    `messages`, or multimodal content parts, cannot be salted, and the client validates every sample
+    up front rather than shipping an unsalted payload.
 
     **Fix:** use a dataset with a text `prompt`, or disable the warmup salt, but if warmup uses the
-    performance dataset, **salting is mandatory**, so the dataset must support it.
+    performance dataset, **salting is mandatory** ([§6.3.1 of the rules][rules-6.3.1]), so the
+    dataset must support it.
 
 ??? failure "The endpoint stops responding and the run hangs"
     **Cause:** no liveness deadline set.
@@ -111,11 +107,11 @@ Indexed by what you see. Search this page for a fragment of your error message.
 ## Disclosure files
 
 ??? failure "The checker reports missing `point.yaml` or `system_desc.json`"
-    **Cause:** you expected a tool to generate them. Nothing does.
+    **Cause:** you expected the reference client to generate them. It doesn't.
 
-    **Fix:** author both by hand and place them at the top level of every run folder. See
-    [step 5](../workflow/author-disclosures.md),
-    [`point.yaml`](../reference/point-yaml.md) and
+    **Fix:** author `point.yaml` by hand. Capture `system_desc.json` with [`mlperf-sysinfo`](https://docs.mlcommons.org/mlperf-sysinfo/)
+    or write it from the §8.2.1 template. Place both at the top level of every run folder. See [step
+    5](../workflow/author-disclosures.md), [`point.yaml`](../reference/point-yaml.md) and
     [`system_desc.json`](../reference/system-desc-json.md).
 
 ??? failure "Fields you set in `config.yaml` do not appear in the submission"
@@ -142,16 +138,17 @@ Indexed by what you see. Search this page for a fragment of your error message.
     `offline: dedicated`, and 7 otherwise.
 
     **Fix:** run more. Note withdrawn points do not count toward the minimum and **cannot be
-    replaced**, because there's no `add-run`. If the curve needs a different set of runs, create a new
-    submission.
+    replaced**, because there's no `add-run`. If the curve needs a different set of runs, create a
+    new submission.
 
 ??? failure "`offline-point-present` warns that no point declares `offline`"
     **Cause:** no dedicated Offline run and no elected `C_max` point. The checker only warns because
     it can't tell whether your benchmark is agentic.
 
     **Fix:** if the benchmark isn't agentic, this **will** be rejected. Add `offline: elected` to
-    your `C_max` point's `point.yaml`, or run a dedicated Offline point and declare
-    `offline: dedicated`. See [step 3](../workflow/plan-your-curve.md#6-decide-how-to-meet-the-offline-requirement).
+    your `C_max` point's `point.yaml`, or run a dedicated Offline point and declare `offline:
+    dedicated`. See [step
+    3](../workflow/plan-your-curve.md#6-decide-how-to-meet-the-offline-requirement).
 
 ??? failure "`offline-point-present` fails on an `elected` point"
     **Cause:** `elected` is declared on a point whose concurrency isn't your declared `C_max`.
@@ -165,12 +162,12 @@ Indexed by what you see. Search this page for a fragment of your error message.
 
     **Fix:** a low throughput usually means the Offline run didn't saturate the system; re-run it
     with more passes, or elect your `C_max` point instead. A low concurrency means your dataset is
-    smaller than `C_max`, which the rules haven't resolved yet — see **C7** in
-    [Open questions](open-questions.md).
+    smaller than `C_max`, which the rules haven't resolved yet — see **C7** in [Open
+    questions](open-questions.md).
 
 ??? failure "`power-descriptor` fails"
-    **Cause:** `results/<system>/system_power.json` is missing, or it states neither a total nor
-    any component group a total can be computed from.
+    **Cause:** `results/<system>/system_power.json` is missing, or it states neither a total nor any
+    component group a total can be computed from.
 
     **Fix:** put a `system_power.json` in at least one run folder of that system. See
     [`system_power.json`](../reference/system-power-json.md).
@@ -222,13 +219,20 @@ Indexed by what you see. Search this page for a fragment of your error message.
     permitted under [model equivalence](../rules/model-equivalence.md) pushed you below the target;
     dynamic approximate sparsity and aggressive PTQ are both gated on exactly this.
 
-## Submission failures
+## Registering runs
 
 ??? failure "`Run folder error: … is missing required file(s): performance/result_summary.json`"
     **Cause:** a flat run folder with the summary at the top level.
 
     **Fix:** use the layout the reference client writes — the summary belongs under `performance/`.
     Flat layouts are not accepted. See [Submission package layout](../reference/package-layout.md).
+
+??? failure "A run cannot be deleted"
+    **Cause:** it belongs to an active submission.
+
+    **Fix:** `submissions withdraw` first, then `runs delete`.
+
+## Submission failures
 
 ??? failure "The build fails naming a specific run"
     **Cause:** the builder cannot tell whether the run is an accuracy or a performance run. It reads
@@ -240,15 +244,11 @@ Indexed by what you see. Search this page for a fragment of your error message.
     guessing used to file accuracy runs as performance runs and silently drop the accuracy results.
 
 ??? failure "`submissions update --run-ids` is rejected"
-    **Cause:** the list would **add** a run. The post-submission window for adding points was removed.
+    **Cause:** the list would **add** a run. The post-submission window for adding points was
+    removed.
 
     **Fix:** the list may only shrink. To remove one point, use `submissions remove-run`. For a
     different set of runs, create a new submission.
-
-??? failure "A run cannot be deleted"
-    **Cause:** it belongs to an active submission.
-
-    **Fix:** `submissions withdraw` first, then `runs delete`.
 
 ??? failure "The upload failed and you are unsure of the state"
     **Cause:** partial failure. The CLI rolls back automatically — a failed run-archive upload
@@ -266,8 +266,8 @@ Indexed by what you see. Search this page for a fragment of your error message.
     **Fix:** nothing. `pr_url` and `pr_number` populate once whatever opens it has set them.
 
 ??? failure "`submissions create` succeeded but status is not `REVIEW_PENDING`"
-    **Cause:** the final PATCH step failed. Both submission and bundle exist — the CLI treats this as
-    a warning, not a fatal error.
+    **Cause:** the final PATCH step failed. Both submission and bundle exist — the CLI treats this
+    as a warning, not a fatal error.
 
     **Fix:** the status can be set manually. Confirm with `submissions get`.
 
@@ -276,18 +276,18 @@ Indexed by what you see. Search this page for a fragment of your error message.
 ??? failure "You missed the 3-business-day response window"
     **Cause:** no one was watching the review thread.
 
-    **Fix:** respond immediately. Penalties are **cumulative and non-reversible** — responding does
-    not undo a penalty already incurred, but it prevents further escalation. At 10 business days the
-    submission is withdrawn.
+    **Fix:** respond immediately. A penalty already incurred stays, but responding stops further
+    escalation. At 10 business days the submission is withdrawn ([Submission Rules
+    §6.3][srules-6.3]).
 
     See [After you submit](../workflow/after-submission.md).
 
 ??? failure "A measurement point turns out to be wrong during review"
     **Cause:** an error found after compliance passed.
 
-    **Fix:** results may **not** be changed during peer review. Your options are to withdraw the
-    point (`submissions remove-run`) or withdraw the submission. Withdrawn points do not count
-    toward the minimum and cannot be replaced.
+    **Fix:** results may **not** be changed during peer review ([Submission Rules
+    §8.1][srules-8.1]). Withdraw the point (`submissions remove-run`) or the whole submission. A
+    withdrawn point doesn't count toward the minimum and can't be replaced.
 
 ## Still stuck?
 
