@@ -6,8 +6,8 @@ power is fixed for the whole curve. Why it exists and what it's used for:
 
 !!! danger "Required, and authored by you"
     Every system needs one. A system without it, or with a file from which no total can be
-    derived, fails `power-descriptor` and the submission is rejected. No tool writes it. Put it at
-    the top level of at least one run folder of the system; the builder places it at
+    derived, fails the submission checker. Put it at the top level of at least one run folder of
+    the system; the builder places it at
     `results/<system>/system_power.json` in the bundle. Authored in
     [step 5](../workflow/author-disclosures.md#3-write-system_powerjson-for-each-system).
 
@@ -41,26 +41,14 @@ Each **group** has:
 
 ## How the total is computed
 
-What the checker computes from the fields above. The power model it implements is in
-[§4.5.2, Power Model][rules-4.5.2-power-model].
-
-```
-major    = cpu + accelerator + scale_up_network (+ scale_out_network)
-           where each group = count × tdp_per_unit
-
-total_w  = provisioned_power_w                    if declared
-         = major × (1 + overhead_fraction)        otherwise
-
-provisioned_power_kw = total_w / 1000
-system_tps_per_kw    = system_tps / provisioned_power_kw
-```
-
-Rules §4.5.2 also allows CPU and accelerator power to be declared as one combined value where
-a vendor publishes them that way.
+The formula is in [§4.5.2, Power Model][rules-4.5.2-power-model], and the checker follows it, with
+one difference: it adds `scale_out_network` to the major components, while the rules' formula
+counts scale-out networking inside the overhead fraction.
 
 ## Example
 
-A liquid-cooled node with two CPUs, eight accelerators and one scale-up switch:
+A liquid-cooled node with two CPUs, eight accelerators and one scale-up switch, in the shape the
+checker reads:
 
 ```json
 {
@@ -70,9 +58,6 @@ A liquid-cooled node with two CPUs, eight accelerators and one scale-up switch:
   "overhead_fraction": 0.30
 }
 ```
-
-`(700 + 5600 + 3500) × 1.30 = 12,740 W`, so 12.74 kW. A point with `system_tps` of 25,000 reports
-`system_tps_per_kw` of about 1,962.
 
 ## Evidence, partial systems and estimates
 
@@ -87,14 +72,6 @@ These are policy, and live in the rules:
   result then carries: [§4.5.2][rules-4.5.2].
 
 Where a published figure is a range, the rules use the upper bound.
-
-## Checker rules that read this file
-
-| Rule | Checks | Severity |
-|---|---|---|
-| `power-descriptor` | Present for each system, and a total can be derived | Reject |
-| `power-estimated` | Names the component groups left for MLCommons to fill in | Warn |
-| `metric-consistency-tps-per-kw` | A stored `system_tps_per_kw` equals `system_tps / provisioned_power_kw` | Flag |
 
 The bundle build also fails if two runs of the same system carry different `system_power.json`
 contents.

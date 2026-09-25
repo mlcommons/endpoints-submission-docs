@@ -1,135 +1,91 @@
-# 6. Validate locally
+# 7. Validate locally
 
 > Produces: a clean `submission-checker` report.
 
 !!! note "Before you begin"
-    - Completed [5. Author the disclosure files](author-disclosures.md)
-    - Every run folder has `system_desc.json` and `point.yaml`
+    - Completed [6. Register your runs](register-runs.md)
+    - You have the run ID of every point
 
 !!! danger "You only get one attempt at Week 0"
-    The same checks run on the server after you submit. **If your submission fails any automated
-    check by the end of Week 0, it's rejected.** You can't patch it in place: you fix the issues and
-    resubmit as an entirely new submission, losing your place in the cohort queue. Local validation
-    is the cheap version of that.
+    The same checks run on the server after you submit, and a submission that fails any of them by
+    the end of Week 0 is rejected ([Submission Rules §6.1][srules-6.1]). You can't patch it in
+    place: you resubmit as an entirely new submission, losing your place in the cohort queue. Local
+    validation is the cheap version of that.
 
 ## What you'll do
 
-- Run `submission-checker` against an assembled submission directory
-- Or run `submissions create --dry-run`, which assembles and checks without uploading
-- Fix, re-run, repeat until clean
+- Run [`submissions create --dry-run`](https://github.com/mlcommons/endpoints-submission-cli/blob/main/docs/endpoints-cli/usage/submissions.md#submissions-create), which builds the bundle from your runs and checks it
+  without creating anything
+- Or run [`submission-checker check`](https://github.com/mlcommons/endpoints-submission-cli/blob/main/README.md#check-a-submission) against a submission directory you
+  assembled yourself
+- Fix, re-register, re-run, repeat until clean
 
 ## Steps
 
-### 1. Check an assembled submission
+### 1. Dry-run the real pipeline
 
-```bash
-submission-checker check /path/to/submission
-```
+Run [`submissions
+create`](https://github.com/mlcommons/endpoints-submission-cli/blob/main/docs/endpoints-cli/usage/submissions.md#submissions-create)
+with `--dry-run`, the classification flags you'll use in [step 8](submit.md), and the run IDs from
+step 6. It takes the same path step 8 will, without creating anything, so it's the closest local
+approximation to what Week 0 will do.
 
-The path may be the submitting organisation's directory or a `<submission_id>/` directory below it.
-A submission root is the level holding `results/` and `docs/`.
+The full report, warnings included, goes to a `submission_checker_<timestamp>.log` file in the
+current directory. If a check fails, fix the run folder, [register it
+again](register-runs.md#re-register), and re-run with the new run ID.
 
-| Flag | Does |
-|---|---|
-| `--strict` | Treat warnings as errors — exit 1 on any warning |
-| `--quiet` / `-q` | Suppress INFO-level passing checks |
-| `--output FILE` / `-o` | Write the full result as JSON |
-| `--seed-sets FILE` | Check against a specific published seed-set file |
-| `--approved-drafters FILE` | Check against a specific published approved-drafter list |
+### 2. Or check a directory you assembled
 
-Exit codes: `0` all checks passed, `1` one or more errors (or warnings under `--strict`).
-
-### 2. Or dry-run the real pipeline
-
-Once your runs are registered ([step 7](submit.md)), this exercises the actual assembly path:
-
-```bash
-endpoints-submission-cli submissions create \
-  --division standardized \
-  --scenario cop \
-  --availability available \
-  --run-ids <run-id> --run-ids <run-id> … \
-  --dry-run
-```
-
-It downloads the archives, assembles the folder, runs the checker, prints the layout, and exits
-without creating anything. This is the closest local approximation to what Week 0 will do.
+Use this for CI, or when you've laid out a submission yourself following [Submission package
+layout](../reference/package-layout.md#the-submission-bundle). The command, its flags and exit codes
+are in the checker's
+[README](https://github.com/mlcommons/endpoints-submission-cli/blob/main/README.md#check-a-submission).
 
 ### 3. Read the report properly
 
-Errors and warnings are not the same thing:
+Errors and warnings are not the same thing. The split follows the failure actions in [§9.1 of the
+rules][rules-9.1]:
 
 | | Meaning | Consequence |
 |---|---|---|
 | **Error** | A rule whose failure action is *reject* or *reject points* | Blocks submission |
 | **Warning** | A rule that is flagged rather than fatal | Does not block locally, but reviewers see it and may object |
 
-!!! tip "Run with `--strict` at least once"
-    Warnings are where methodology objections come from. A point that merely *warns* on duration or
-    region placement is exactly the kind of thing a reviewer files an objection about in Weeks 1–3,
-    and an objection costs you far more than a re-run does now.
+!!! tip "Read the warnings, not just the exit code"
+    The dry-run fails only on errors, so warnings pass silently unless you read the log.
+    `submission-checker --strict` treats them as errors. Warnings are where methodology objections
+    come from. A point that merely *warns* on duration or region placement is exactly the kind of
+    thing a reviewer files an objection about in Weeks 1–3, and an objection costs you far more than
+    a re-run does now.
 
 ### 4. Know what is being checked
 
-The checks fall into eight groups: structure, system description and power, regions and the
-Offline point, measurement points, seed binding, speculative decoding, metrics, and accuracy.
-Every rule ID maps to a clause in the rules.
-
-Full cross-walk from rule ID to clause: [Compliance checks](../reference/compliance-checks.md).
-
-The ones that **reject** rather than flag:
-
-- Submission completeness — required files, YAML, artifacts, system descriptions
-- `shared_src` / `shared_docs` resolution
-- A `system_power.json` for each system
-- Point count ≥ 8, or ≥ 7 if you elected `C_max` or the benchmark is agentic
-- Exactly one Offline point (none for agentic)
-- Coverage of Ultra Low, Low, Medium and High Concurrency
-- `C_max` declared and > 32
-- Accuracy at all five required points (four for agentic), each passing the quality target
-- Seed-set validity
-- Any drafter used is on the approved list, and was approved at least two cohorts earlier
+What each check looks at is in the checker's
+[README](https://github.com/mlcommons/endpoints-submission-cli/blob/main/README.md#what-gets-checked).
+Which of them reject rather than flag is in [§9.1 of the rules][rules-9.1], and the cross-walk from
+checker rule ID to clause is in [Compliance checks](../reference/compliance-checks.md).
 
 !!! warning "Use checker `v1.0.1.0` or later"
     The Offline, power, accuracy-coverage, steady-state and drafter checks arrived in `v1.0.1.0`
     (2026-09-23). An older checker passes submissions the server will reject. Check with
-    `endpoints-submission-cli --version`, and upgrade with `pip install -U endpoints-submission-cli`.
+    `endpoints-submission-cli --version`, and upgrade with `pip install -U
+    endpoints-submission-cli`.
 
 !!! danger "A missing Offline point only warns locally"
-    The checker can't tell an agentic benchmark from a single-turn one yet, so a submission with
-    no `offline` declaration gets a **warning** (`offline-point-present`), not an error. For a
+    The checker can't tell an agentic benchmark from a single-turn one yet, so a submission with no
+    `offline` declaration gets a **warning** (`offline-point-present`), not an error. For a
     non-agentic benchmark the rules treat that as a reject. Run with `--strict` or read the
     warnings. Don't take a clean exit code as proof you have an Offline point.
 
 ### 5. Use the programmatic API for CI
 
-```python
-from pathlib import Path
-from submission_checker import SubmissionChecker
-
-report = SubmissionChecker(Path("/submissions/acme_corp")).run()
-
-if not report.passed:
-    for result in report.errors:
-        print(f"[{result.rule}] {result.message}")
-```
-
-`report.warnings` and `report.model_dump_json()` are also available. Wiring this into CI so every
-change to your disclosure files is checked is worth the hour it takes.
-
-## Verify
-
-```bash
-submission-checker check /path/to/submission --strict --output checker.json
-echo "exit: $?"
-```
-
-You're ready to submit when the exit code is `0`. Keep `checker.json`, which is useful evidence if a
-reviewer later questions something the checker already passed.
+The checker can also run from Python; see its [Programmatic
+API](https://github.com/mlcommons/endpoints-submission-cli/blob/main/README.md#programmatic-api).
+Wiring it into CI so every change to your disclosure files is checked is worth the hour it takes.
 
 ## Next
 
-→ [7. Submit](submit.md)
+→ [8. Submit](submit.md)
 
-Problems? See [Troubleshooting](../help/troubleshooting.md#validation-failures) and
-[Why submissions get rejected](../rules/rejection-reasons.md).
+Problems? See [Troubleshooting](../help/troubleshooting.md#validation-failures) and [Why submissions
+get rejected](../rules/rejection-reasons.md).
