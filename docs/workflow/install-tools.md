@@ -1,9 +1,9 @@
 # 2. Install the tools
 
-> Produces: a working `inference-endpoint`, `endpoints-submission-cli` and `submission-checker`.
+> Produces: a working `inference-endpoint` and `endpoints-submission-cli`, including its checker.
 
 !!! note "Before you begin"
-    - Completed [1. Register and get a token](register.md)
+    - Completed [1. Get access and an API key](register.md)
     - Python **3.12+** available for the reference client
     - Python 3.10+ available for the submission CLI
 
@@ -20,7 +20,7 @@ There are three distinct CLIs and it is worth fixing which is which now:
 |---|---|---|
 | `inference-endpoint` | [`mlcommons/endpoints`](https://github.com/mlcommons/endpoints) | Drives load at your endpoint and writes a run folder |
 | `endpoints-submission-cli` | [`endpoints-submission-cli`](https://github.com/mlcommons/endpoints-submission-cli) | Registers runs, assembles and uploads a submission |
-| `submission-checker` | same package | Validates a bundle against the automated compliance rules |
+| `endpoints-submission-cli check-submission` | same package | Validates a bundle against the automated compliance rules |
 
 ## Steps
 
@@ -65,23 +65,24 @@ git -C endpoints rev-parse HEAD
 pip install endpoints-submission-cli
 ```
 
-Both `endpoints-submission-cli` and `submission-checker` come from this one package.
+The compliance checker comes with it, as `endpoints-submission-cli check-submission`. The CLI's
+README still describes a separate `submission-checker` command, but the package doesn't install one
+(**B16** in [Open questions](../help/open-questions.md)).
 
 ## Verify
 
-All three must respond:
+Both must respond:
 
 ```bash
 uv run inference-endpoint --version
 endpoints-submission-cli --version
-submission-checker --help
 ```
 
 And the region calculator should produce sensible boundaries — this is the tool you will use in the
 next step:
 
 ```bash
-submission-checker regions --max-concurrency 1024 --min-concurrency 16
+python -c "from submission_checker.cli import main; main()" regions --max-concurrency 1024 --min-concurrency 16
 ```
 
 ## Next

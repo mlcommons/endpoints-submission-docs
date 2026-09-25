@@ -3,8 +3,8 @@
 The hardware and software description of the system under test. **One per Pareto point**.
 
 !!! danger "Not written by the reference client"
-    You supply it and drop it into each run folder before upload. See
-    [step 5](../workflow/author-disclosures.md).
+    You supply it and drop it into each run folder before upload. See [step
+    5](../workflow/author-disclosures.md).
 
 The checker verifies that every point of a curve describes the **same** system.
 

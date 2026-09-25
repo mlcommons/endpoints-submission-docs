@@ -4,7 +4,7 @@
 |---|---|---|---|
 | [**MLCommons CLA**](cla-process.md) | The right to contribute code and submit results | The **individual** making the submission | MLCommons CLA process |
 | [**PRISM account + API token**](prism-api-key.md) | Authentication for every CLI command | The individual making the submission | MLCommons Member Central → API Keys |
-| [**MLCommons membership**](membership.md) | Organisational standing; review-committee eligibility | Your organisation | MLCommons |
+| [**MLCommons membership**](membership.md) | Organisational standing. Committee seats come from finalized results, not membership ([§2.1][srules-2.1]) | Your organisation | MLCommons |
 
 ## What membership does affect
 

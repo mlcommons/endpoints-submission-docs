@@ -36,7 +36,8 @@ Phase directories exist only for phases that ran:
     `runs create` requires **`system_desc.json`** and **`point.yaml`** in every run folder, and the
     bundle needs a **`system_power.json`** from at least one run folder per system. None is an
     endpoints artifact. You author `point.yaml` and `system_power.json`; `system_desc.json` you can
-    capture with [`mlperf-sysinfo`](https://docs.mlcommons.org/mlperf-sysinfo/) or write from the template. Drop them in before upload.
+    capture with [`mlperf-sysinfo`](https://docs.mlcommons.org/mlperf-sysinfo/) or write from the
+    template. Drop them in before upload.
 
 ```
 <run-folder>/

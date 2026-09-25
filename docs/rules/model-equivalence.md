@@ -1,8 +1,8 @@
 # Model equivalence (Standardized division)
 
 If you are submitting Standardized, this page governs every optimisation decision you are about to
-make. If you are submitting Serviced or RDI, augmentation is allowed with disclosure and this page
-is background only.
+make. If you are submitting Serviced, augmentation is allowed with disclosure; RDI allows it without
+that requirement. For both, this page is background only.
 
 --8<-- "precedence-notice.md"
 

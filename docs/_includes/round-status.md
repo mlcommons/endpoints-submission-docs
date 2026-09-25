@@ -1,4 +1,4 @@
-| | |
+| Item | Current value |
 |---|---|
 | **Submission model** | Rolling — submit any day, no fixed deadline |
 | **Publication cohorts** | 1st and 3rd Wednesday monthly, 08:00 Pacific |

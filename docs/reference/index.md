@@ -1,7 +1,7 @@
 # Reference
 
-Tables to look things up in. For step-by-step instructions, see the
-[Submission Workflow](../workflow/index.md) instead.
+Tables to look things up in. For step-by-step instructions, see the [Submission
+Workflow](../workflow/index.md) instead.
 
 ## What you can submit
 
@@ -39,8 +39,8 @@ Tables to look things up in. For step-by-step instructions, see the
 | [Submission states](submission-states.md) | Status values and what moves between them |
 | [Glossary](glossary.md) | Terms and acronyms |
 
-!!! note "These pages are hand-written"
-    Each CLI page names the upstream document it tracks. Generating them from `--help` output is the
-    right end state; until then, the upstream repository is authoritative and these pages can lag.
+!!! note "The tool pages link upstream"
+    The CLI pages link to each tool's own documentation rather than copying it. Run `--help` on any
+    command for the authoritative flag list.
 
 *Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef), 2026-09-24.*

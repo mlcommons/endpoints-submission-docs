@@ -66,8 +66,7 @@ These targets come from the client's
 [agentic example README](https://github.com/mlcommons/endpoints/blob/main/examples/10_Agentic_Inference/README.md#accuracy),
 and the checker enforces them from `v1.1.0.0`. There are three metrics:
 
-- **Inline accuracy** and **OSL per-turn mean** have to pass at every point that carries an
-  accuracy result.
+- **Inline accuracy** and **OSL per-turn mean** have to pass at every submitted Pareto point.
 - **SWE-bench accuracy** is judged on the average of four results, one from each mandatory region.
 
 | Metric | Kimi K3 | Qwen3.6-35B-A3B | DeepSeek-V4.1-Flash |

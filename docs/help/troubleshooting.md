@@ -27,8 +27,8 @@ Indexed by what you see. Search this page for a fragment of your error message.
 ??? failure "Connection errors, or requests going somewhere unexpected"
     **Cause:** `MLPERF_API_BASE_URL` is set.
 
-    **Fix:** unset it. It defaults to `https://api.mlcommons.org` and should only be overridden for
-    dev or staging environments.
+    **Fix:** unset it. The CLI has the production API built in, and the variable should only be set
+    for dev or staging environments.
     ```bash
     unset MLPERF_API_BASE_URL
     ```
@@ -55,8 +55,8 @@ Indexed by what you see. Search this page for a fragment of your error message.
     **Fix:** the point is **not usable** — re-run it. Check whether you hit `run_timeout_s`, a drain
     timeout, or `endpoint_response_idle_timeout_s`.
 
-    A `state` of `INTERRUPTED` means the run was aborted; `state: complete` with pending tasks means
-    a drain timeout.
+    A `state` of `"interrupted"` means the run was aborted; `"complete"` with pending tasks means a
+    drain timeout.
 
 ??? failure "`streaming-config` fails"
     **Cause:** the point's `point.yaml` records `stream_all_chunks: false`, which is the default in
@@ -71,7 +71,7 @@ Indexed by what you see. Search this page for a fragment of your error message.
     **Cause:** sample-count sizing. With no explicit count and no minimum issue duration, the client
     issues the dataset **once** and stops.
 
-    **Fix:** set `settings.runtime.n_samples_to_issue`, or `min_issue_duration_ms`, so the run
+    **Fix:** set `settings.runtime.n_samples_to_issue`, a multiple of the dataset size, so the run
     sustains 600 s (Ultra Low) or 1,200 s (other regions) of steady state ([§6.2 of the
     rules][rules-6.2]).
 
@@ -102,18 +102,14 @@ Indexed by what you see. Search this page for a fragment of your error message.
         endpoint_response_idle_timeout_s: 300   # >= 300; raise for long requests
     ```
 
-??? failure "`from-config` ignores `--report-dir`"
-    **Cause:** not a bug. `from-config` accepts only `--config`, `--timeout` and `--mode`.
-
-    **Fix:** set `report_dir` in the YAML.
-
 ## Disclosure files
 
 ??? failure "The checker reports missing `point.yaml` or `system_desc.json`"
     **Cause:** you expected the reference client to generate them. It doesn't.
 
-    **Fix:** author `point.yaml` by hand. Capture `system_desc.json` with [`mlperf-sysinfo`](https://docs.mlcommons.org/mlperf-sysinfo/)
-    or write it from the §8.2.1 template. Place both at the top level of every run folder. See [step
+    **Fix:** author `point.yaml` by hand. Capture `system_desc.json` with
+    [`mlperf-sysinfo`](https://docs.mlcommons.org/mlperf-sysinfo/) or write it from the §8.2.1
+    template. Place both at the top level of every run folder. See [step
     5](../workflow/author-disclosures.md), [`point.yaml`](../reference/point-yaml.md) and
     [`system_desc.json`](../reference/system-desc-json.md).
 
@@ -182,7 +178,8 @@ Indexed by what you see. Search this page for a fragment of your error message.
 
 ??? failure "`approved-drafter` fails"
     **Cause:** the point declares `speculative_decoding`, and the drafter isn't on the benchmark's
-    approved list. With no list published yet, every drafter fails.
+    approved list. Approved heads exist only for the agentic benchmarks, and the checker's list is
+    still empty, so every drafter fails for now.
 
     **Fix:** re-run the point without speculative decoding.
 
@@ -191,7 +188,7 @@ Indexed by what you see. Search this page for a fragment of your error message.
 
     **Fix:**
     ```bash
-    submission-checker regions --max-concurrency <C_max> --min-concurrency <your lowest point>
+    python -c "from submission_checker.cli import main; main()" regions --max-concurrency <C_max> --min-concurrency <your lowest point>
     ```
     Remember `C_min` is **derived from your own lowest point**, so dropping that point moves every
     other boundary. And a point in the 10% margin does **not** satisfy High Concurrency.

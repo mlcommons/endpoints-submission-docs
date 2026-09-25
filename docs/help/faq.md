@@ -34,8 +34,8 @@ Process and policy questions that are not errors. For errors, see
 ## Scope of a submission
 
 **Can I submit more than one model?**
-:   One submission is one Pareto curve: one system, one benchmark model, one dataset. Multiple
-    models means multiple submissions.
+:   One *result* is one Pareto curve: one system, one benchmark model, one dataset. A single submission
+    can carry several systems and models, and each becomes its own result.
 
 **How many points do I need?**
 :   For a non-agentic benchmark, 8 to 32: `1 + 3 + 3` fixed-concurrency points plus an Offline
@@ -84,8 +84,7 @@ Process and policy questions that are not errors. For errors, see
     [§2.9.3 of the rules][rules-2.9.3].
 
 **Can I use speculative decoding?**
-:   Only with a drafter on the benchmark's approved list. No list has been published yet, so for
-    now the answer is no for every benchmark, and the checker rejects any point that uses it. See
+:   Only with a drafter on the benchmark's approved list. The reference repository lists approved speculative-decoding heads for the agentic benchmarks only, in the [agentic example README](https://github.com/mlcommons/endpoints/blob/main/examples/10_Agentic_Inference/README.md). There is none for Llama 3.1 8B, GPT-OSS 120B or DeepSeek-R1. The checker's bundled list is still empty, so for now it rejects any point that uses speculative decoding. See
     [§2.9.4 of the rules][rules-2.9.4] and **C10** in [Open questions](open-questions.md).
 
 **Can I disable speculative decoding on some points?**
@@ -105,8 +104,7 @@ Process and policy questions that are not errors. For errors, see
 ## Publication
 
 **Can I publish before review finishes?**
-:   Yes, by opting in to provisional publication at submission time. **The choice is
-    irrevocable.** See [Submission Rules §6.2.3][srules-6.2.3].
+:   Yes, by opting in to provisional publication at submission time. **The choice is irrevocable** ([Submission Rules §6.2][srules-6.2]). Provisional publication itself is in [§6.2.3][srules-6.2.3].
 
 **Can I delay publication?**
 :   Yes, with an embargo date declared at submission. What it holds back depends on your
