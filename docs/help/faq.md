@@ -10,22 +10,26 @@ Process and policy questions that are not errors. For errors, see
 ## Getting started
 
 **Do I have to be an MLCommons member to submit?**
-:   **Unconfirmed.** The rules require the MLCommons CLA from the *individual* making the
-    submission, and describe registering at MLCommons Member Central with an organisation email. No
-    clause states that organisational membership is a precondition. Ask MLCommons before planning
-    around either answer. See [Membership, PRISM and eligibility](../understand/eligibility.md) and
-    **A1** in [Open questions](open-questions.md).
+:   **Unconfirmed.** The rules require the [MLCommons CLA](../understand/eligibility/cla-process.md) from the *individual* making the
+    submission ([Submission Rules §5.1][srules-5.1]), but no clause makes [organisational
+    membership](../understand/eligibility/membership.md) a precondition. Ask MLCommons before
+    planning around either answer. See [Membership, PRISM and
+    eligibility](../understand/eligibility/index.md) and **A1** in [Open
+    questions](open-questions.md).
 
 **Does everyone in my organisation need to sign the CLA?**
-:   No. The requirement applies to the individual making the submission.
+:   No. Only the individual making the submission signs it
+    ([Submission Rules §5.1][srules-5.1]).
 
 **Is there a registration deadline?**
-:   No. The eight-week advance registration requirement from the general MLPerf rules is explicitly
-    overridden for Endpoints. Registration is having a PRISM API key.
+:   No. The general MLPerf eight-week advance registration doesn't apply
+    ([Submission Rules §5.1][srules-5.1]). Registration is having a [PRISM API
+    key](../understand/eligibility/prism-api-key.md).
 
 **When is the submission deadline?**
-:   There isn't one. Submissions are rolling. What matters is the **cohort cutoff**: automated
-    checks must pass at least one business day before the 1st or 3rd Wednesday publication date.
+:   There isn't one; submissions are rolling. What matters is the **cohort cutoff**: automated
+    checks must pass at least one business day before a publication date ([Submission Rules
+    §4.3][srules-4.3]).
 
 ## Scope of a submission
 
@@ -36,141 +40,129 @@ Process and policy questions that are not errors. For errors, see
 **How many points do I need?**
 :   For a non-agentic benchmark, 8 to 32: `1 + 3 + 3` fixed-concurrency points plus an Offline
     point. If you elect your `C_max` point as the Offline result, 7 is enough. Agentic benchmarks
-    need 7 and have no Offline point. See [Plan your Pareto curve](../workflow/plan-your-curve.md).
+    need 7 and have no Offline point. See [§5.3 of the rules][rules-5.3] and [Plan your Pareto
+    curve](../workflow/plan-your-curve.md).
 
 **Do I really need a separate Offline run?**
 :   No. You can elect your `C_max` point as the Offline result instead, provided you have a point
     at exactly `C_max`. You give up whatever extra throughput an unpaced run might have shown, and
-    save a run plus its accuracy validation. See
-    [step 3](../workflow/plan-your-curve.md#6-decide-how-to-meet-the-offline-requirement).
+    save a run plus its accuracy validation. See [§5.7.2 of the rules][rules-5.7.2] and [step
+    3](../workflow/plan-your-curve.md#6-decide-how-to-meet-the-offline-requirement).
 
 **Can I add points after submitting?**
 :   **No.** The post-submission window for adding measurement points was removed. There is no
-    `add-run`, and `submissions update --run-ids` rejects any list that would add one.
+    `add-run`, and `submissions update --run-ids` rejects any list that would add one. The technical
+    rules still mention the old window; see **B2** in [Open questions](open-questions.md).
 
 **Can I remove a bad point?**
 :   Yes, with `submissions remove-run` during peer review. But withdrawn points do **not** count
-    toward the minimum and the shortfall **cannot be repaired** by adding a replacement. This is
-    why planning a spare point matters.
+    toward the minimum ([Submission Rules §8.1][srules-8.1]) and the shortfall **cannot be
+    repaired** by adding a replacement. This is why planning a spare point matters.
 
 **Do I need an accuracy run per point?**
-:   Not at every point, but at five of them: the four mandatory region points (Ultra Low, Low,
-    Medium and High Concurrency) and the Offline point. Agentic benchmarks need four. All use the
-    same endpoint configuration, weights and software stack as the performance runs. For
-    single-turn benchmarks every result must pass, and each run goes at its point's concurrency
-    immediately after that point's performance run; for multi-turn benchmarks only the average must
-    pass.
+:   No. You need one at five points: the four mandatory region points and the Offline point, or
+    four for agentic benchmarks ([§5.3 of the rules][rules-5.3]). How each must pass, single-turn
+    versus multi-turn, is in [§4.3][rules-4.3].
 
 ## Rules
 
 **Is response caching allowed?**
-:   No. Returning a cached response verbatim to a matching request is prohibited. Every request must
-    execute the forward pass.
+:   No. Every request must execute the forward pass
+    ([§2.9.9 Q1 of the rules][rules-2.9.9]).
 
 **Is KV-cache reuse across queries allowed?**
-:   **Yes.** This is the main difference from MLPerf Inference. It counts as a serving optimisation, not
-    response caching, because the forward pass still runs on a per-query salted token stream. See
-    [Model equivalence](../rules/model-equivalence.md).
+:   **Yes**, on a per-query salted token stream. This is the main difference from MLPerf Inference.
+    See [§2.9.5 of the rules][rules-2.9.5] and [Model
+    equivalence](../rules/model-equivalence.md#kv-cache-the-big-difference).
 
 **Can I use a different serving framework than the reference?**
-:   Yes. Arbitrary frameworks and runtimes are permitted provided they conform to the rest of the
-    rules: model equivalence, no benchmark detection, no input-based optimization. The framework
-    must satisfy the Available definition.
+:   Yes, if it conforms to the rest of the rules and meets the Available definition
+    ([§2.9.9 Q3 of the rules][rules-2.9.9]).
 
 **Can I quantize?**
-:   Yes. PTQ is the standard permitted transformation, subject to four conditions: published
-    calibration set only, publicly described, passes the accuracy gate, disclosed in the YAML.
+:   Yes. Post-training quantization is permitted under the conditions in
+    [§2.9.3 of the rules][rules-2.9.3].
 
 **Can I use speculative decoding?**
 :   Only with a drafter on the benchmark's approved list. No list has been published yet, so for
     now the answer is no for every benchmark, and the checker rejects any point that uses it. See
-    [Model equivalence](../rules/model-equivalence.md#speculative-decoding).
+    [§2.9.4 of the rules][rules-2.9.4] and **C10** in [Open questions](open-questions.md).
 
 **Can I disable speculative decoding on some points?**
-:   Yes. The **drafter** must be the same across the curve, but its *configuration* may vary per
-    point, including disabling speculation entirely. A drafter that ships in the canonical
-    checkpoint must still be present in your derived checkpoint. You can't strip it out.
+:   Yes. The drafter is fixed across the curve, but its configuration can vary per point, including
+    off ([§2.9.4][rules-2.9.4]). A drafter that ships in the canonical checkpoint must stay in your
+    derived checkpoint ([§2.9.3][rules-2.9.3]).
 
 **Do I have to report power?**
-:   For Standardized, yes: a `system_power.json` per system is required, and results are also
-    published as `system_tps_per_kw`. It's optional for RDI and not yet defined for Serviced. It's
-    provisioned power from spec-sheet ratings, not a meter reading. See
-    [Power normalization](../rules/requirements.md#power-normalization).
+:   For Standardized, yes, as provisioned power rather than a meter reading
+    ([§4.5 of the rules][rules-4.5]). The checker wants a `system_power.json` for every system
+    whatever your division (**B11** in [Open questions](open-questions.md)). See [Power
+    normalization](../rules/requirements.md#power-normalization).
 
 **Does passing the accuracy gate make an optimisation legal?**
-:   No. Accuracy is **necessary, not sufficient**. A submission that hits the quality target while
-    breaking one of the rules (pruning weights, removing experts, fine-tuning a drafter) is not
-    model equivalent.
+:   No. Accuracy is **necessary, not sufficient** ([§2.9.8 of the rules][rules-2.9.8]).
 
 ## Publication
 
 **Can I publish before review finishes?**
-:   Yes, by opting in to provisional publication at submission time. Results carry a *peer review
-    pending* tag and every public reference must carry the MLCommons footnote. Review starts when
-    the result goes public. **The choice is irrevocable**. You can't request it later.
+:   Yes, by opting in to provisional publication at submission time. **The choice is
+    irrevocable.** See [Submission Rules §6.2.3][srules-6.2.3].
 
 **Can I delay publication?**
-:   Yes, with an embargo date declared at submission. Under confidential review, the finalized
-    result is held for up to 60 days after review completes, and review itself isn't delayed. Under
-    provisional publication, the embargo holds back the tagged result and the start of review with
-    it. The date can be changed afterwards, but the change is broadcast to all review committee
-    members.
+:   Yes, with an embargo date declared at submission. What it holds back depends on your
+    publication mode; see [Submission Rules §4.2][srules-publication-embargo] and
+    [§6.2][srules-6.2].
 
 **Can I be audited?**
-:   Yes. There are two audits a quarter: one drawn at random, one chosen by committee vote from
-    nominations made in the 4 weeks after publication. From the moment you're nominated you must
-    keep the system as submitted. See [Audits](../understand/how-submission-works.md#audits).
+:   Yes. From the moment you're nominated you must keep the system as submitted. See
+    [Submission Rules §10][srules-10] and [Audits](../understand/how-submission-works.md#audits).
 
 **What happens if my Preview system does not become available in time?**
-:   The result is **invalidated and removed** at the next cohort, not archived. One extension of up
-    to 60 days may be granted if requested at least 30 days before expiry. A second will be denied.
+:   The result is **invalidated and removed** at the next cohort, unless you got the one extension
+    allowed. See [Submission Rules §7.3.5][srules-7.3.5] and [§7.3.6][srules-7.3.6].
 
 **Can I relabel a Preview result as Available without re-running?**
 :   Only if the hardware and software configuration did not change materially. If it did, you must
-    re-run.
+    re-run ([Submission Rules §7.3.7][srules-7.3.7]).
 
 **Can I fix an error in a published result?**
-:   No. Corrections to finalized results are not permitted. The affected points or the whole
-    submission are invalidated instead. Non-result corrections need review-chair approval and publish
-    with a change log.
+:   No. The affected points or the whole submission are invalidated instead
+    ([Submission Rules §8.1][srules-8.1]).
 
 ## Review
 
 **Who reviews my submission?**
-:   The committee for your cohort, drawn from organisations with a finalized Endpoints result in the
-    preceding 6 months or 12 cohorts. Plus one designated reviewer assigned at random, excluding your
-    own organisation.
+:   The review committee for your cohort, plus one designated reviewer assigned at random from
+    outside your organisation. See [Submission Rules §2.1][srules-2.1] and [§2.6][srules-2.6].
 
 **Is a competitor reviewing me a conflict of interest?**
-:   No, explicitly. The model is built on competitors reviewing each other. CSP/OEM/ODM partnerships
-    are not conflicts either. Conflicts are limited to direct financial interest, employment
-    relationships and similar.
+:   No, and neither are CSP/OEM/ODM partnerships
+    ([Submission Rules §2.4][srules-2.4]).
 
 **How fast do I have to respond to an objection?**
 :   **3 business days**, with local public holidays exempt. Penalties escalate to withdrawal at 10
-    business days and are non-reversible.
+    business days and are non-reversible ([Submission Rules §6.3][srules-6.3]).
 
 **Can I improve my results during review?**
-:   You may only update run and submission metadata **when the review committee requests it**. Any
-    improvement to performance metrics must be justified and explained to the committee.
+:   Only **when the review committee requests it**, and any improvement to performance metrics must
+    be justified ([Submission Rules §6.3][srules-updating-submissions-during-peer-review]).
 
 **What if someone objects after review closes?**
-:   Late objections are permitted only on availability, validity, model-equivalence and
-    division-rule grounds, and only from review committee members. Reproducibility is **not**
-    eligible. That becomes an audit nomination instead.
+:   Only on limited grounds, and reproducibility isn't one of them: a reproducibility concern
+    becomes an audit nomination instead. See [Submission Rules §6.6][srules-6.6].
 
 **How long does my result stay challengeable?**
-:   Until the later of the next audit vote or **90 days** after finalization. Your obligation to
-    retain the system for a possible audit runs to the same point, and longer if you're nominated
-    or selected for audit.
+:   Until the later of the next audit vote or **90 days** after finalization. You must keep the
+    system available for audit until then, and longer if you're nominated ([Submission Rules
+    §6.6][srules-scope-and-standing-for-late-concerns]).
 
 ## Naming and messaging
 
 **What do I call my result?**
-:   Unqualified "MLPerf Endpoints" means **Standardized**. Serviced and RDI results must use
-    "MLPerf Endpoints Serviced" and "MLPerf Endpoints RDI". Preview results must carry the "Preview"
-    qualifier. Omitting it violates MLCommons usage guidelines.
+:   Unqualified "MLPerf Endpoints" means **Standardized**. Serviced, RDI and Preview results carry a
+    qualifier. See [§2.2.3][rules-2.2.3], [§2.3.2][rules-2.3.2] and [§2.4.2][rules-2.4.2] of the
+    rules, and [Submission Rules §7.3.8][srules-7.3.8].
 
 **Do I have to say anything when quoting a provisional result?**
-:   Yes. Include the MLCommons footnote saying results are preliminary and peer review is pending.
-    That applies to you, MLCommons, press and third parties alike.
+:   Yes, the MLCommons footnote saying results are preliminary
+    ([Submission Rules §6.2.3][srules-6.2.3]).

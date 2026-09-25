@@ -12,8 +12,9 @@
 | Your submission's review thread | Anything about a submission already in review |
 
 !!! note "No response times are published"
-    None of the sources state a support SLA, or a turnaround for PRISM API-creation access. Build
-    slack into your plan rather than assuming same-day answers.
+    None of the sources state a support SLA, or a turnaround for [PRISM API-creation
+    access](../understand/eligibility/prism-api-key.md). Build slack into your plan rather than
+    assuming same-day answers.
 
 ## What to include when asking
 
@@ -38,7 +39,7 @@ enough. **Don't attach `events.jsonl`**, which runs to hundreds of megabytes.
 Some things are genuinely not published anywhere. If your question is one of these, go straight to
 MLCommons rather than searching further:
 
-- Whether your **organisation** needs MLCommons membership to submit
+- Whether your **organisation** needs [MLCommons membership](../understand/eligibility/membership.md) to submit
 - The **PRISM and Member Central URLs**
 - The **official** v1.0 model list and accuracy targets. The
   [list on this site](../reference/benchmarks.md) is put together from the working group's
@@ -53,17 +54,14 @@ Full list with context: [Open questions](open-questions.md).
 ## During review
 
 Objections are filed and resolved **on the submission's review thread**, not through support
-channels. Meetings are convened only when an objection escalates, a party explicitly requests one
-with a written agenda and specific questions, or the review chair decides a meeting would materially
-accelerate resolution.
+channels. Meetings are the exception ([Submission Rules §6.9][srules-6.9]).
 
-If you think a reviewer has a conflict of interest, raise it with the **review chair**. You can do
-this at any time during review, and the chair decides whether they should step aside.
+If you think a reviewer has a conflict of interest, raise it with the **review chair**, at any time
+during review ([§2.4][srules-2.4]).
 
-If you believe a published result involves **fraud or misrepresentation**, that is a separate route:
-any MLCommons member may raise it by email to any MLCommons working-group chair. It carries no time
-limit. Concerns that do not allege fraud are handled as late objections or audit nominations
-instead.
+An allegation of **fraud or misrepresentation** in a published result goes by email to any MLCommons
+working-group chair ([§8.4][srules-8.4]). Anything short of fraud is a late objection or an audit
+nomination instead.
 
 ## Reporting a documentation problem
 

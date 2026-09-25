@@ -6,8 +6,8 @@ power is fixed for the whole curve. Why it exists and what it's used for:
 
 !!! danger "Required, and authored by you"
     Every system needs one. A system without it, or with a file from which no total can be
-    derived, fails `power-descriptor` and the submission is rejected. Put it at
-    the top level of at least one run folder of the system; the builder places it at
+    derived, fails the submission checker. Put it at the top level of at least one run folder of
+    the system; the builder places it at
     `results/<system>/system_power.json` in the bundle. Authored in
     [step 5](../workflow/author-disclosures.md#3-write-system_powerjson-for-each-system).
 
@@ -81,9 +81,6 @@ A liquid-cooled node with two CPUs, eight accelerators and one scale-up switch. 
 }
 ```
 
-`(700 + 5600 + 3500) × 1.30 = 12,740 W`, so 12.74 kW. A point with `system_tps` of 25,000 reports
-`system_tps_per_kw` of about 1,962.
-
 ## Evidence, partial systems and estimates
 
 These are policy, and live in the rules:
@@ -97,14 +94,6 @@ These are policy, and live in the rules:
   result then carries: [§4.5.2][rules-4.5.2].
 
 Where a published figure is a range, the rules use the upper bound.
-
-## Checker rules that read this file
-
-| Rule | Checks | Severity |
-|---|---|---|
-| `power-descriptor` | Present for each system, and a total can be derived | Reject |
-| `power-estimated` | Names the component groups left for MLCommons to fill in | Warn |
-| `metric-consistency-tps-per-kw` | A stored `system_tps_per_kw` equals `system_tps / provisioned_power_kw` | Flag |
 
 The bundle build also fails if two runs of the same system carry different `system_power.json`
 contents.

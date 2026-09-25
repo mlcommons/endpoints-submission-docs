@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1110" viewBox="0 0 1500 1110">
+<rect x="0.0" y="0.0" width="1500.0" height="1110.0" rx="0" fill="#F5F7FA"/>
+<text x="26.0" y="42.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="23" fill="#1F2933" font-weight="bold" text-anchor="start">MLPerf Endpoints — Rolling Submission, Review and Publication</text>
+<text x="26.0" y="66.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="13.5" fill="#7B8794" font-weight="normal" text-anchor="start">Four submissions entering the pipeline after the rolling window opens on Monday 12 October 2026. Cohorts publish on the 1st and 3rd Wednesday at 08:00 PT.</text>
+<rect x="214.0" y="104.0" width="191.3" height="24.0" rx="4" fill="#1F2933"/>
+<text x="310.7" y="120.5" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11.5" fill="#FFFFFF" font-weight="bold" text-anchor="middle">OCTOBER 2026</text>
+<rect x="407.3" y="104.0" width="288.0" height="24.0" rx="4" fill="#2B3945"/>
+<text x="552.3" y="120.5" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11.5" fill="#FFFFFF" font-weight="bold" text-anchor="middle">NOVEMBER</text>
+<rect x="697.3" y="104.0" width="297.7" height="24.0" rx="4" fill="#1F2933"/>
+<text x="847.2" y="120.5" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11.5" fill="#FFFFFF" font-weight="bold" text-anchor="middle">DECEMBER</text>
+<rect x="997.0" y="104.0" width="201.0" height="24.0" rx="4" fill="#2B3945"/>
+<text x="1098.5" y="120.5" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11.5" fill="#FFFFFF" font-weight="bold" text-anchor="middle">JANUARY 2027</text>
+<line x1="214.0" y1="130.0" x2="214.0" y2="137.0" stroke="#D3DAE1" stroke-width="1"/>
+<text x="214.0" y="151.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10" fill="#7B8794" font-weight="normal" text-anchor="middle">12 Oct</text>
+<line x1="281.7" y1="130.0" x2="281.7" y2="137.0" stroke="#D3DAE1" stroke-width="1"/>
+<text x="281.7" y="151.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10" fill="#7B8794" font-weight="normal" text-anchor="middle">19 Oct</text>
+<line x1="349.3" y1="130.0" x2="349.3" y2="137.0" stroke="#D3DAE1" stroke-width="1"/>
+<text x="349.3" y="151.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10" fill="#7B8794" font-weight="normal" text-anchor="middle">26 Oct</text>
+<line x1="417.0" y1="130.0" x2="417.0" y2="137.0" stroke="#D3DAE1" stroke-width="1"/>
+<text x="417.0" y="151.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10" fill="#7B8794" font-weight="normal" text-anchor="middle">2 Nov</text>
+<line x1="484.7" y1="130.0" x2="484.7" y2="137.0" stroke="#D3DAE1" stroke-width="1"/>
+<text x="484.7" y="151.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10" fill="#7B8794" font-weight="normal" text-anchor="middle">9 Nov</text>
+<line x1="552.3" y1="130.0" x2="552.3" y2="137.0" stroke="#D3DAE1" stroke-width="1"/>
+<text x="552.3" y="151.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10" fill="#7B8794" font-weight="normal" text-anchor="middle">16 Nov</text>
+<line x1="620.0" y1="130.0" x2="620.0" y2="137.0" stroke="#D3DAE1" stroke-width="1"/>
+<text x="620.0" y="151.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10" fill="#7B8794" font-weight="normal" text-anchor="middle">23 Nov</text>
+<line x1="687.7" y1="130.0" x2="687.7" y2="137.0" stroke="#D3DAE1" stroke-width="1"/>
+<text x="687.7" y="151.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10" fill="#7B8794" font-weight="normal" text-anchor="middle">30 Nov</text>
+<line x1="755.3" y1="130.0" x2="755.3" y2="137.0" stroke="#D3DAE1" stroke-width="1"/>
+<text x="755.3" y="151.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10" fill="#7B8794" font-weight="normal" text-anchor="middle">7 Dec</text>
+<line x1="823.0" y1="130.0" x2="823.0" y2="137.0" stroke="#D3DAE1" stroke-width="1"/>
+<text x="823.0" y="151.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10" fill="#7B8794" font-weight="normal" text-anchor="middle">14 Dec</text>
+<line x1="890.7" y1="130.0" x2="890.7" y2="137.0" stroke="#D3DAE1" stroke-width="1"/>
+<text x="890.7" y="151.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10" fill="#7B8794" font-weight="normal" text-anchor="middle">21 Dec</text>
+<line x1="958.3" y1="130.0" x2="958.3" y2="137.0" stroke="#D3DAE1" stroke-width="1"/>
+<text x="958.3" y="151.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10" fill="#7B8794" font-weight="normal" text-anchor="middle">28 Dec</text>
+<line x1="1026.0" y1="130.0" x2="1026.0" y2="137.0" stroke="#D3DAE1" stroke-width="1"/>
+<text x="1026.0" y="151.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10" fill="#7B8794" font-weight="normal" text-anchor="middle">4 Jan</text>
+<line x1="1093.7" y1="130.0" x2="1093.7" y2="137.0" stroke="#D3DAE1" stroke-width="1"/>
+<text x="1093.7" y="151.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10" fill="#7B8794" font-weight="normal" text-anchor="middle">11 Jan</text>
+<line x1="1161.3" y1="130.0" x2="1161.3" y2="137.0" stroke="#D3DAE1" stroke-width="1"/>
+<text x="1161.3" y="151.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10" fill="#7B8794" font-weight="normal" text-anchor="middle">18 Jan</text>
+<line x1="301.0" y1="158.0" x2="301.0" y2="720.0" stroke="#B9C2CC" stroke-width="1" stroke-dasharray="4 4"/>
+<rect x="276.0" y="142.0" width="50.0" height="17.0" rx="8" fill="#EDF1F5" stroke="#B9C2CC" stroke-width="1"/>
+<text x="301.0" y="154.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10" fill="#3E4C59" font-weight="bold" text-anchor="middle">10-C1</text>
+<line x1="436.3" y1="158.0" x2="436.3" y2="720.0" stroke="#B9C2CC" stroke-width="1" stroke-dasharray="4 4"/>
+<rect x="411.3" y="142.0" width="50.0" height="17.0" rx="8" fill="#EDF1F5" stroke="#B9C2CC" stroke-width="1"/>
+<text x="436.3" y="154.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10" fill="#3E4C59" font-weight="bold" text-anchor="middle">11-C0</text>
+<line x1="571.7" y1="158.0" x2="571.7" y2="720.0" stroke="#B9C2CC" stroke-width="1" stroke-dasharray="4 4"/>
+<rect x="546.7" y="142.0" width="50.0" height="17.0" rx="8" fill="#EDF1F5" stroke="#B9C2CC" stroke-width="1"/>
+<text x="571.7" y="154.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10" fill="#3E4C59" font-weight="bold" text-anchor="middle">11-C1</text>
+<line x1="707.0" y1="158.0" x2="707.0" y2="720.0" stroke="#B9C2CC" stroke-width="1" stroke-dasharray="4 4"/>
+<rect x="682.0" y="142.0" width="50.0" height="17.0" rx="8" fill="#EDF1F5" stroke="#B9C2CC" stroke-width="1"/>
+<text x="707.0" y="154.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10" fill="#3E4C59" font-weight="bold" text-anchor="middle">12-C0</text>
+<line x1="842.3" y1="158.0" x2="842.3" y2="720.0" stroke="#B9C2CC" stroke-width="1" stroke-dasharray="4 4"/>
+<rect x="817.3" y="142.0" width="50.0" height="17.0" rx="8" fill="#EDF1F5" stroke="#B9C2CC" stroke-width="1"/>
+<text x="842.3" y="154.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10" fill="#3E4C59" font-weight="bold" text-anchor="middle">12-C1</text>
+<line x1="1045.3" y1="158.0" x2="1045.3" y2="720.0" stroke="#B9C2CC" stroke-width="1" stroke-dasharray="4 4"/>
+<rect x="1020.3" y="142.0" width="50.0" height="17.0" rx="8" fill="#EDF1F5" stroke="#B9C2CC" stroke-width="1"/>
+<text x="1045.3" y="154.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10" fill="#3E4C59" font-weight="bold" text-anchor="middle">01-C0</text>
+<line x1="1180.7" y1="158.0" x2="1180.7" y2="720.0" stroke="#B9C2CC" stroke-width="1" stroke-dasharray="4 4"/>
+<rect x="1155.7" y="142.0" width="50.0" height="17.0" rx="8" fill="#EDF1F5" stroke="#B9C2CC" stroke-width="1"/>
+<text x="1180.7" y="154.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10" fill="#3E4C59" font-weight="bold" text-anchor="middle">01-C1</text>
+<defs><pattern id="hatch" width="7" height="7" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="7" stroke="#FFFFFF" stroke-width="2.6" stroke-opacity="0.45"/></pattern></defs>
+<rect x="20.0" y="172.0" width="178.0" height="108.0" rx="6" fill="#FFFFFF" stroke="#D3DAE1" stroke-width="1"/>
+<rect x="20.0" y="172.0" width="5.0" height="108.0" rx="2" fill="#2C7A6B"/>
+<text x="38.0" y="196.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="15" fill="#2C7A6B" font-weight="bold" text-anchor="start">A</text>
+<text x="38.0" y="216.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="12.5" fill="#1F2933" font-weight="bold" text-anchor="start">Confidential review</text>
+<text x="38.0" y="233.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11" fill="#7B8794" font-weight="normal" text-anchor="start">no objections</text>
+<rect x="208.0" y="172.0" width="998.0" height="108.0" rx="6" fill="#FFFFFF" fill-opacity="0.55"/>
+<rect x="214.0" y="192.0" width="9.7" height="26.0" rx="5" fill="#3E4C59"/>
+<rect x="223.7" y="192.0" width="203.0" height="26.0" rx="5" fill="#2C7A6B"/>
+<text x="232.7" y="209.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11.5" fill="#FFFFFF" font-weight="bold" text-anchor="start">Peer review  ·  Weeks 1-3</text>
+<rect x="214.0" y="230.0" width="222.3" height="22.0" rx="5" fill="#7B8794"/>
+<rect x="214.0" y="230.0" width="222.3" height="22.0" rx="5" fill="url(#hatch)"/>
+<text x="238.0" y="245.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11" fill="#FFFFFF" font-weight="bold" text-anchor="start">Not public until finalization</text>
+<circle cx="214.0" cy="205.0" r="9.5" fill="#2C7A6B" stroke="#FFFFFF" stroke-width="2"/>
+<text x="214.0" y="208.7" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11" fill="#FFFFFF" font-weight="bold" text-anchor="middle">1</text>
+<circle cx="426.7" cy="205.0" r="9.5" fill="#2C7A6B" stroke="#FFFFFF" stroke-width="2"/>
+<text x="426.7" y="208.7" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11" fill="#FFFFFF" font-weight="bold" text-anchor="middle">2</text>
+<circle cx="436.3" cy="241.0" r="9.5" fill="#1F2933" stroke="#FFFFFF" stroke-width="2"/>
+<text x="436.3" y="244.7" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11" fill="#FFFFFF" font-weight="bold" text-anchor="middle">3</text>
+<rect x="20.0" y="300.0" width="178.0" height="128.0" rx="6" fill="#FFFFFF" stroke="#D3DAE1" stroke-width="1"/>
+<rect x="20.0" y="300.0" width="5.0" height="128.0" rx="2" fill="#C77D12"/>
+<text x="38.0" y="324.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="15" fill="#C77D12" font-weight="bold" text-anchor="start">B</text>
+<text x="38.0" y="344.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="12.5" fill="#1F2933" font-weight="bold" text-anchor="start">Provisional publication</text>
+<text x="38.0" y="361.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11" fill="#7B8794" font-weight="normal" text-anchor="start">embargo to 30 Oct</text>
+<rect x="208.0" y="300.0" width="998.0" height="128.0" rx="6" fill="#FFFFFF" fill-opacity="0.55"/>
+<rect x="310.7" y="320.0" width="9.7" height="26.0" rx="5" fill="#3E4C59"/>
+<rect x="320.3" y="320.0" width="67.7" height="26.0" rx="5" fill="#C9D2DA"/>
+<text x="329.3" y="337.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10.5" fill="#3E4C59" font-weight="bold" text-anchor="start">Held</text>
+<rect x="388.0" y="320.0" width="203.0" height="26.0" rx="5" fill="#2C7A6B"/>
+<text x="412.0" y="337.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11.5" fill="#FFFFFF" font-weight="bold" text-anchor="start">Peer review  ·  Weeks 1-3</text>
+<rect x="591.0" y="320.0" width="48.3" height="26.0" rx="5" fill="#DCEBE7"/>
+<text x="646.3" y="337.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11.5" fill="#3E4C59" font-weight="bold" text-anchor="start">W4-6</text>
+<rect x="320.3" y="358.0" width="67.7" height="22.0" rx="5" fill="#C77D12"/>
+<rect x="320.3" y="358.0" width="67.7" height="22.0" rx="5" fill="url(#hatch)"/>
+<text x="329.3" y="373.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10.5" fill="#FFFFFF" font-weight="bold" text-anchor="start">Embargo</text>
+<rect x="388.0" y="358.0" width="319.0" height="22.0" rx="5" fill="#C77D12"/>
+<text x="412.0" y="373.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11" fill="#FFFFFF" font-weight="bold" text-anchor="start">Publicly visible — tagged “peer review pending”</text>
+<rect x="707.0" y="358.0" width="135.3" height="22.0" rx="5" fill="#2C7A6B"/>
+<text x="731.0" y="373.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11" fill="#FFFFFF" font-weight="bold" text-anchor="start">Finalized</text>
+<circle cx="310.7" cy="333.0" r="9.5" fill="#2C7A6B" stroke="#FFFFFF" stroke-width="2"/>
+<text x="310.7" y="336.7" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11" fill="#FFFFFF" font-weight="bold" text-anchor="middle">1</text>
+<circle cx="446.0" cy="333.0" r="9.5" fill="#C77D12" stroke="#FFFFFF" stroke-width="2"/>
+<text x="446.0" y="336.7" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11" fill="#FFFFFF" font-weight="bold" text-anchor="middle">3</text>
+<circle cx="494.3" cy="333.0" r="9.5" fill="#C77D12" stroke="#FFFFFF" stroke-width="2"/>
+<text x="494.3" y="336.7" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11" fill="#FFFFFF" font-weight="bold" text-anchor="middle">4</text>
+<circle cx="639.3" cy="333.0" r="9.5" fill="#2C7A6B" stroke="#FFFFFF" stroke-width="2"/>
+<text x="639.3" y="336.7" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11" fill="#FFFFFF" font-weight="bold" text-anchor="middle">5</text>
+<circle cx="388.0" cy="369.0" r="9.5" fill="#C77D12" stroke="#FFFFFF" stroke-width="2"/>
+<text x="388.0" y="372.7" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11" fill="#FFFFFF" font-weight="bold" text-anchor="middle">2</text>
+<circle cx="707.0" cy="369.0" r="9.5" fill="#1F2933" stroke="#FFFFFF" stroke-width="2"/>
+<text x="707.0" y="372.7" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11" fill="#FFFFFF" font-weight="bold" text-anchor="middle">6</text>
+<rect x="20.0" y="448.0" width="178.0" height="150.0" rx="6" fill="#FFFFFF" stroke="#D3DAE1" stroke-width="1"/>
+<rect x="20.0" y="448.0" width="5.0" height="150.0" rx="2" fill="#3B6FA0"/>
+<text x="38.0" y="472.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="15" fill="#3B6FA0" font-weight="bold" text-anchor="start">C</text>
+<text x="38.0" y="492.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="12.5" fill="#1F2933" font-weight="bold" text-anchor="start">Unresolved at Week 6</text>
+<text x="38.0" y="509.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11" fill="#7B8794" font-weight="normal" text-anchor="start">escalates to dispute</text>
+<rect x="208.0" y="448.0" width="998.0" height="150.0" rx="6" fill="#FFFFFF" fill-opacity="0.55"/>
+<rect x="349.3" y="468.0" width="9.7" height="26.0" rx="5" fill="#3E4C59"/>
+<rect x="359.0" y="468.0" width="203.0" height="26.0" rx="5" fill="#2C7A6B"/>
+<text x="368.0" y="485.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11.5" fill="#FFFFFF" font-weight="bold" text-anchor="start">Peer review  ·  W1-3</text>
+<rect x="562.0" y="468.0" width="203.0" height="26.0" rx="5" fill="#DCEBE7"/>
+<text x="571.0" y="485.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11.5" fill="#2C7A6B" font-weight="bold" text-anchor="start">Resolution  ·  W4-6</text>
+<rect x="765.0" y="468.0" width="357.7" height="26.0" rx="5" fill="#3B6FA0"/>
+<text x="789.0" y="485.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11.5" fill="#FFFFFF" font-weight="bold" text-anchor="start">Dispute resolution  ·  §9.2</text>
+<rect x="349.3" y="506.0" width="831.3" height="22.0" rx="5" fill="#7B8794"/>
+<rect x="349.3" y="506.0" width="831.3" height="22.0" rx="5" fill="url(#hatch)"/>
+<text x="373.3" y="521.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11" fill="#FFFFFF" font-weight="bold" text-anchor="start">Not public — a disputed submission does not finalize</text>
+<circle cx="349.3" cy="481.0" r="9.5" fill="#2C7A6B" stroke="#FFFFFF" stroke-width="2"/>
+<text x="349.3" y="484.7" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11" fill="#FFFFFF" font-weight="bold" text-anchor="middle">1</text>
+<circle cx="494.3" cy="481.0" r="9.5" fill="#2C7A6B" stroke="#FFFFFF" stroke-width="2"/>
+<text x="494.3" y="484.7" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11" fill="#FFFFFF" font-weight="bold" text-anchor="middle">2</text>
+<circle cx="765.0" cy="481.0" r="9.5" fill="#3B6FA0" stroke="#FFFFFF" stroke-width="2"/>
+<text x="765.0" y="484.7" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11" fill="#FFFFFF" font-weight="bold" text-anchor="middle">3</text>
+<circle cx="987.3" cy="481.0" r="9.5" fill="#3B6FA0" stroke="#FFFFFF" stroke-width="2"/>
+<text x="987.3" y="484.7" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11" fill="#FFFFFF" font-weight="bold" text-anchor="middle">4</text>
+<circle cx="1122.7" cy="481.0" r="9.5" fill="#3B6FA0" stroke="#FFFFFF" stroke-width="2"/>
+<text x="1122.7" y="484.7" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11" fill="#FFFFFF" font-weight="bold" text-anchor="middle">5</text>
+<circle cx="1180.7" cy="517.0" r="9.5" fill="#1F2933" stroke="#FFFFFF" stroke-width="2"/>
+<text x="1180.7" y="520.7" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11" fill="#FFFFFF" font-weight="bold" text-anchor="middle">6</text>
+<line x1="1122.7" y1="544.0" x2="1200.0" y2="544.0" stroke="#A32E28" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="1196.0" y="560.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10.5" fill="#A32E28" font-weight="bold" text-anchor="end">8-week backstop: chair decides on the record by 2 Feb</text>
+<rect x="20.0" y="612.0" width="178.0" height="108.0" rx="6" fill="#FFFFFF" stroke="#D3DAE1" stroke-width="1"/>
+<rect x="20.0" y="612.0" width="5.0" height="108.0" rx="2" fill="#7A5CA8"/>
+<text x="38.0" y="636.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="15" fill="#7A5CA8" font-weight="bold" text-anchor="start">D</text>
+<text x="38.0" y="656.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="12.5" fill="#1F2933" font-weight="bold" text-anchor="start">Embargoed publication</text>
+<text x="38.0" y="673.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11" fill="#7B8794" font-weight="normal" text-anchor="start">confidential review</text>
+<rect x="208.0" y="612.0" width="998.0" height="108.0" rx="6" fill="#FFFFFF" fill-opacity="0.55"/>
+<rect x="281.7" y="632.0" width="9.7" height="26.0" rx="5" fill="#3E4C59"/>
+<rect x="291.3" y="632.0" width="203.0" height="26.0" rx="5" fill="#2C7A6B"/>
+<text x="300.3" y="649.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11.5" fill="#FFFFFF" font-weight="bold" text-anchor="start">Peer review  ·  Weeks 1-3</text>
+<rect x="281.7" y="670.0" width="212.7" height="22.0" rx="5" fill="#7B8794"/>
+<rect x="281.7" y="670.0" width="212.7" height="22.0" rx="5" fill="url(#hatch)"/>
+<text x="305.7" y="685.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11" fill="#FFFFFF" font-weight="bold" text-anchor="start">Not public</text>
+<rect x="494.3" y="670.0" width="270.7" height="22.0" rx="5" fill="#7A5CA8"/>
+<text x="518.3" y="685.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11" fill="#FFFFFF" font-weight="bold" text-anchor="start">Finalized, held under embargo</text>
+<circle cx="281.7" cy="645.0" r="9.5" fill="#2C7A6B" stroke="#FFFFFF" stroke-width="2"/>
+<text x="281.7" y="648.7" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11" fill="#FFFFFF" font-weight="bold" text-anchor="middle">1</text>
+<circle cx="494.3" cy="645.0" r="9.5" fill="#2C7A6B" stroke="#FFFFFF" stroke-width="2"/>
+<text x="494.3" y="648.7" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11" fill="#FFFFFF" font-weight="bold" text-anchor="middle">2</text>
+<circle cx="765.0" cy="681.0" r="9.5" fill="#7A5CA8" stroke="#FFFFFF" stroke-width="2"/>
+<text x="765.0" y="684.7" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="11" fill="#FFFFFF" font-weight="bold" text-anchor="middle">3</text>
+<rect x="1216.0" y="172.0" width="250.0" height="548.0" rx="8" fill="#FFFFFF" stroke="#D3DAE1" stroke-width="1"/>
+<text x="1234.0" y="202.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="12.5" fill="#1F2933" font-weight="bold" text-anchor="start">KEY</text>
+<rect x="1234.0" y="220.0" width="14.0" height="14.0" rx="3" fill="#3E4C59"/>
+<text x="1256.0" y="230.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10.5" fill="#3E4C59" font-weight="normal" text-anchor="start">Automated compliance</text>
+<text x="1256.0" y="244.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10.5" fill="#3E4C59" font-weight="normal" text-anchor="start">(Week 0)</text>
+<rect x="1234.0" y="260.0" width="14.0" height="14.0" rx="3" fill="#2C7A6B"/>
+<text x="1256.0" y="270.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10.5" fill="#3E4C59" font-weight="normal" text-anchor="start">Peer review</text>
+<rect x="1234.0" y="286.0" width="14.0" height="14.0" rx="3" fill="#DCEBE7"/>
+<text x="1256.0" y="296.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10.5" fill="#3E4C59" font-weight="normal" text-anchor="start">Objection resolution</text>
+<rect x="1234.0" y="312.0" width="14.0" height="14.0" rx="3" fill="#3B6FA0"/>
+<text x="1256.0" y="322.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10.5" fill="#3E4C59" font-weight="normal" text-anchor="start">Dispute resolution</text>
+<rect x="1234.0" y="338.0" width="14.0" height="14.0" rx="3" fill="#C77D12"/>
+<text x="1256.0" y="348.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10.5" fill="#3E4C59" font-weight="normal" text-anchor="start">Publicly visible,</text>
+<text x="1256.0" y="362.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10.5" fill="#3E4C59" font-weight="normal" text-anchor="start">tagged peer review pending</text>
+<rect x="1234.0" y="378.0" width="14.0" height="14.0" rx="3" fill="#7A5CA8"/>
+<text x="1256.0" y="388.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10.5" fill="#3E4C59" font-weight="normal" text-anchor="start">Finalized, held under</text>
+<text x="1256.0" y="402.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10.5" fill="#3E4C59" font-weight="normal" text-anchor="start">publication embargo</text>
+<rect x="1234.0" y="418.0" width="14.0" height="14.0" rx="3" fill="#7B8794"/>
+<text x="1256.0" y="428.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10.5" fill="#3E4C59" font-weight="normal" text-anchor="start">Not public</text>
+<line x1="1234.0" y1="458.0" x2="1448.0" y2="458.0" stroke="#D3DAE1" stroke-width="1"/>
+<text x="1234.0" y="482.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10" fill="#7B8794" font-weight="normal" text-anchor="start">Dashed verticals mark publication</text>
+<text x="1234.0" y="496.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10" fill="#7B8794" font-weight="normal" text-anchor="start">cohorts (1st and 3rd Wednesday).</text>
+<text x="1234.0" y="524.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10" fill="#7B8794" font-weight="normal" text-anchor="start">Numbered markers key to the</text>
+<text x="1234.0" y="538.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10" fill="#7B8794" font-weight="normal" text-anchor="start">scenario panels below.</text>
+<text x="1234.0" y="566.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10" fill="#7B8794" font-weight="normal" text-anchor="start">Modes:  A §6.2.1   B §6.2.3</text>
+<text x="1234.0" y="580.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10" fill="#7B8794" font-weight="normal" text-anchor="start">C §9.2 (escalation)   D §6.2.2</text>
+<rect x="26.0" y="748.0" width="350.0" height="340.0" rx="8" fill="#FFFFFF" stroke="#D3DAE1" stroke-width="1"/>
+<rect x="26.0" y="748.0" width="350.0" height="4.0" rx="2" fill="#2C7A6B"/>
+<circle cx="52.0" cy="778.0" r="13" fill="#2C7A6B"/>
+<text x="52.0" y="783.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="14" fill="#FFFFFF" font-weight="bold" text-anchor="middle">A</text>
+<text x="74.0" y="783.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="13" fill="#1F2933" font-weight="bold" text-anchor="start">Confidential review</text>
+<circle cx="50.0" cy="804.0" r="8" fill="#2C7A6B" fill-opacity="0.16"/>
+<text x="50.0" y="807.4" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.5" fill="#2C7A6B" font-weight="bold" text-anchor="middle">1</text>
+<text x="66.0" y="808.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10.5" fill="#2C7A6B" font-weight="bold" text-anchor="start">12-13 Oct</text>
+<text x="66.0" y="822.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">Submit as the window opens; checks</text>
+<text x="66.0" y="834.5" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">pass and peer review begins (§6.1)</text>
+<circle cx="50.0" cy="849.0" r="8" fill="#2C7A6B" fill-opacity="0.16"/>
+<text x="50.0" y="852.4" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.5" fill="#2C7A6B" font-weight="bold" text-anchor="middle">2</text>
+<text x="66.0" y="853.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10.5" fill="#2C7A6B" font-weight="bold" text-anchor="start">3 Nov</text>
+<text x="66.0" y="867.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">No objections by end of Week 3 —</text>
+<text x="66.0" y="879.5" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">early finalization (§6.3)</text>
+<circle cx="50.0" cy="894.0" r="8" fill="#2C7A6B" fill-opacity="0.16"/>
+<text x="50.0" y="897.4" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.5" fill="#2C7A6B" font-weight="bold" text-anchor="middle">3</text>
+<text x="66.0" y="898.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10.5" fill="#2C7A6B" font-weight="bold" text-anchor="start">4 Nov</text>
+<text x="66.0" y="912.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">Published in 2026-11-C0; nothing</text>
+<text x="66.0" y="924.5" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">was public before this date</text>
+<rect x="392.0" y="748.0" width="350.0" height="340.0" rx="8" fill="#FFFFFF" stroke="#D3DAE1" stroke-width="1"/>
+<rect x="392.0" y="748.0" width="350.0" height="4.0" rx="2" fill="#C77D12"/>
+<circle cx="418.0" cy="778.0" r="13" fill="#C77D12"/>
+<text x="418.0" y="783.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="14" fill="#FFFFFF" font-weight="bold" text-anchor="middle">B</text>
+<text x="440.0" y="783.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="13" fill="#1F2933" font-weight="bold" text-anchor="start">Provisional publication</text>
+<circle cx="416.0" cy="804.0" r="8" fill="#C77D12" fill-opacity="0.16"/>
+<text x="416.0" y="807.4" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.5" fill="#C77D12" font-weight="bold" text-anchor="middle">1</text>
+<text x="432.0" y="808.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10.5" fill="#C77D12" font-weight="bold" text-anchor="start">22-23 Oct</text>
+<text x="432.0" y="822.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">Submit, opt in, embargo to 30 Oct;</text>
+<text x="432.0" y="834.5" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">checks pass — review does NOT start</text>
+<circle cx="416.0" cy="849.0" r="8" fill="#C77D12" fill-opacity="0.16"/>
+<text x="416.0" y="852.4" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.5" fill="#C77D12" font-weight="bold" text-anchor="middle">2</text>
+<text x="432.0" y="853.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10.5" fill="#C77D12" font-weight="bold" text-anchor="start">30 Oct</text>
+<text x="432.0" y="867.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">Embargo lifts: result visible,</text>
+<text x="432.0" y="879.5" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">tagged “peer review pending”; W1 begins</text>
+<circle cx="416.0" cy="894.0" r="8" fill="#C77D12" fill-opacity="0.16"/>
+<text x="416.0" y="897.4" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.5" fill="#C77D12" font-weight="bold" text-anchor="middle">3</text>
+<text x="432.0" y="898.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10.5" fill="#C77D12" font-weight="bold" text-anchor="start">5 Nov</text>
+<text x="432.0" y="912.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">Objection filed during</text>
+<text x="432.0" y="924.5" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">peer review</text>
+<circle cx="416.0" cy="939.0" r="8" fill="#C77D12" fill-opacity="0.16"/>
+<text x="416.0" y="942.4" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.5" fill="#C77D12" font-weight="bold" text-anchor="middle">4</text>
+<text x="432.0" y="943.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10.5" fill="#C77D12" font-weight="bold" text-anchor="start">10 Nov</text>
+<text x="432.0" y="957.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">Submitter responds within</text>
+<text x="432.0" y="969.5" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">3 business days (§6.3)</text>
+<circle cx="416.0" cy="984.0" r="8" fill="#C77D12" fill-opacity="0.16"/>
+<text x="416.0" y="987.4" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.5" fill="#C77D12" font-weight="bold" text-anchor="middle">5</text>
+<text x="432.0" y="988.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10.5" fill="#C77D12" font-weight="bold" text-anchor="start">25 Nov</text>
+<text x="432.0" y="1002.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">Objection resolved inside</text>
+<text x="432.0" y="1014.5" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">the Week 4-6 window</text>
+<circle cx="416.0" cy="1029.0" r="8" fill="#C77D12" fill-opacity="0.16"/>
+<text x="416.0" y="1032.4" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.5" fill="#C77D12" font-weight="bold" text-anchor="middle">6</text>
+<text x="432.0" y="1033.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10.5" fill="#C77D12" font-weight="bold" text-anchor="start">2 Dec</text>
+<text x="432.0" y="1047.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">Finalized in 2026-12-C0;</text>
+<text x="432.0" y="1059.5" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">the pending tag is removed</text>
+<rect x="758.0" y="748.0" width="350.0" height="340.0" rx="8" fill="#FFFFFF" stroke="#D3DAE1" stroke-width="1"/>
+<rect x="758.0" y="748.0" width="350.0" height="4.0" rx="2" fill="#3B6FA0"/>
+<circle cx="784.0" cy="778.0" r="13" fill="#3B6FA0"/>
+<text x="784.0" y="783.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="14" fill="#FFFFFF" font-weight="bold" text-anchor="middle">C</text>
+<text x="806.0" y="783.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="13" fill="#1F2933" font-weight="bold" text-anchor="start">Escalation to dispute</text>
+<circle cx="782.0" cy="804.0" r="8" fill="#3B6FA0" fill-opacity="0.16"/>
+<text x="782.0" y="807.4" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.5" fill="#3B6FA0" font-weight="bold" text-anchor="middle">1</text>
+<text x="798.0" y="808.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10.5" fill="#3B6FA0" font-weight="bold" text-anchor="start">26-27 Oct</text>
+<text x="798.0" y="822.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">Submit (confidential);</text>
+<text x="798.0" y="834.5" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">automated checks pass</text>
+<circle cx="782.0" cy="849.0" r="8" fill="#3B6FA0" fill-opacity="0.16"/>
+<text x="782.0" y="852.4" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.5" fill="#3B6FA0" font-weight="bold" text-anchor="middle">2</text>
+<text x="798.0" y="853.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10.5" fill="#3B6FA0" font-weight="bold" text-anchor="start">10 Nov</text>
+<text x="798.0" y="867.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">Objection filed during</text>
+<text x="798.0" y="879.5" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">peer review</text>
+<circle cx="782.0" cy="894.0" r="8" fill="#3B6FA0" fill-opacity="0.16"/>
+<text x="782.0" y="897.4" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.5" fill="#3B6FA0" font-weight="bold" text-anchor="middle">3</text>
+<text x="798.0" y="898.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10.5" fill="#3B6FA0" font-weight="bold" text-anchor="start">8 Dec</text>
+<text x="798.0" y="912.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">Open at Week 6 — escalation is</text>
+<text x="798.0" y="924.5" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">automatic; chair certifies in 2 days</text>
+<circle cx="782.0" cy="939.0" r="8" fill="#3B6FA0" fill-opacity="0.16"/>
+<text x="782.0" y="942.4" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.5" fill="#3B6FA0" font-weight="bold" text-anchor="middle">4</text>
+<text x="798.0" y="943.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10.5" fill="#3B6FA0" font-weight="bold" text-anchor="start">31 Dec</text>
+<text x="798.0" y="957.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">Panel convenes, 15 business days</text>
+<text x="798.0" y="969.5" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">from notification (§9.2)</text>
+<circle cx="782.0" cy="984.0" r="8" fill="#3B6FA0" fill-opacity="0.16"/>
+<text x="782.0" y="987.4" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.5" fill="#3B6FA0" font-weight="bold" text-anchor="middle">5</text>
+<text x="798.0" y="988.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10.5" fill="#3B6FA0" font-weight="bold" text-anchor="start">14 Jan</text>
+<text x="798.0" y="1002.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">Binding decision issued by</text>
+<text x="798.0" y="1014.5" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">the review chair</text>
+<circle cx="782.0" cy="1029.0" r="8" fill="#3B6FA0" fill-opacity="0.16"/>
+<text x="782.0" y="1032.4" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.5" fill="#3B6FA0" font-weight="bold" text-anchor="middle">6</text>
+<text x="798.0" y="1033.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10.5" fill="#3B6FA0" font-weight="bold" text-anchor="start">20 Jan</text>
+<text x="798.0" y="1047.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">Published in 2027-01-C1 once</text>
+<text x="798.0" y="1059.5" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">the dispute concludes</text>
+<rect x="1124.0" y="748.0" width="350.0" height="340.0" rx="8" fill="#FFFFFF" stroke="#D3DAE1" stroke-width="1"/>
+<rect x="1124.0" y="748.0" width="350.0" height="4.0" rx="2" fill="#7A5CA8"/>
+<circle cx="1150.0" cy="778.0" r="13" fill="#7A5CA8"/>
+<text x="1150.0" y="783.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="14" fill="#FFFFFF" font-weight="bold" text-anchor="middle">D</text>
+<text x="1172.0" y="783.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="13" fill="#1F2933" font-weight="bold" text-anchor="start">Embargoed publication</text>
+<circle cx="1148.0" cy="804.0" r="8" fill="#7A5CA8" fill-opacity="0.16"/>
+<text x="1148.0" y="807.4" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.5" fill="#7A5CA8" font-weight="bold" text-anchor="middle">1</text>
+<text x="1164.0" y="808.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10.5" fill="#7A5CA8" font-weight="bold" text-anchor="start">19-20 Oct</text>
+<text x="1164.0" y="822.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">Submit under confidential review, embargo</text>
+<text x="1164.0" y="834.5" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">to 8 Dec; checks pass and review begins</text>
+<circle cx="1148.0" cy="849.0" r="8" fill="#7A5CA8" fill-opacity="0.16"/>
+<text x="1148.0" y="852.4" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.5" fill="#7A5CA8" font-weight="bold" text-anchor="middle">2</text>
+<text x="1164.0" y="853.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10.5" fill="#7A5CA8" font-weight="bold" text-anchor="start">10 Nov</text>
+<text x="1164.0" y="867.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">No objections; early finalization.</text>
+<text x="1164.0" y="879.5" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">The result is held, not published</text>
+<circle cx="1148.0" cy="894.0" r="8" fill="#7A5CA8" fill-opacity="0.16"/>
+<text x="1148.0" y="897.4" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.5" fill="#7A5CA8" font-weight="bold" text-anchor="middle">3</text>
+<text x="1164.0" y="898.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="10.5" fill="#7A5CA8" font-weight="bold" text-anchor="start">8 Dec</text>
+<text x="1164.0" y="912.0" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">Published on the embargo date, off the</text>
+<text x="1164.0" y="924.5" font-family="'Segoe UI',Calibri,'Helvetica Neue',Arial,sans-serif" font-size="9.8" fill="#3E4C59" font-weight="normal" text-anchor="start">cohort cadence. Never tagged pending</text>
+</svg>
