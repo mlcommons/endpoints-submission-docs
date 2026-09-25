@@ -97,9 +97,9 @@ those points; multi-turn benchmarks must pass on the average ([§4.3][rules-4.3]
 allowed some variation between runs. Accuracy isn't: miss the target and the submission is rejected.
 
 !!! warning "This changed twice in September"
-    Until early 2026-09 the rules asked for one accuracy run per submission. Then it became four.
-    Since the Offline point became mandatory for non-agentic benchmarks on 2026-09-22, it's five. If
-    you planned hardware time against an older number, re-plan.
+    Until mid-September 2026 the rules asked for one accuracy run per submission. Then it became
+    four. Since the Offline point became mandatory for non-agentic benchmarks on 2026-09-22, it's
+    five. If you planned hardware time against an older number, re-plan.
 
 **Next:** [How submission works](how-submission-works.md)
 

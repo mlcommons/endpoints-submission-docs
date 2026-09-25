@@ -62,13 +62,12 @@ For GPT-OSS the query count includes the repeats, so AIME25 counts eight times.
 
 ### Agentic benchmarks
 
-These targets come from the client's
-[agentic example README](https://github.com/mlcommons/endpoints/blob/main/examples/10_Agentic_Inference/README.md#accuracy), not
-from the checker (this line to be removed when changes are made to the submission checker).
+These targets come from the client's [agentic example
+README](https://github.com/mlcommons/endpoints/blob/main/examples/10_Agentic_Inference/README.md#accuracy),
+not from the checker (this line to be removed when changes are made to the submission checker).
 There are three metrics:
 
-- **Inline accuracy** and **OSL per-turn mean** have to pass at every point that carries an
-  accuracy result.
+- **Inline accuracy** and **OSL per-turn mean** have to pass at every submitted Pareto point.
 - **SWE-bench accuracy** is judged on the average of four results, one from each mandatory region.
 
 | Metric | Kimi K3 | Qwen3.6-35B-A3B | DeepSeek-V4.1-Flash *(proposed)* |

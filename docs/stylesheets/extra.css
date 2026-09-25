@@ -22,3 +22,8 @@
    margin by the same amount, so the header keeps its 2.4rem height. */
 .md-header__button.md-logo { padding: .2rem; margin: .1rem; }
 .md-header__button.md-logo img { height: 1.8rem; }
+
+/* Material lets inline code in table cells break anywhere, so on a narrow
+   screen a key like settings.load_pattern.type wraps one character per line.
+   Keep code on one line; the table scrolls sideways instead. */
+.md-typeset td code { white-space: nowrap; }

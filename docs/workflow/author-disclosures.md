@@ -10,11 +10,11 @@
 
 !!! danger "The reference client doesn't write these files"
     `system_desc.json`, `point.yaml` and `system_power.json` are yours to supply, dropped into run
-    folders before upload. The reference client does not write them, and only `system_desc.json`
-    has a capture tool (see [step 2](#2-write-system_descjson-for-each-point)). The submission
-    CLI copies `point.yaml` into the bundle **exactly as written**. It doesn't derive it from
-    `config.yaml` and does not fill in missing fields. Whatever you write is what gets submitted and
-    what gets checked.
+    folders before upload. The reference client does not write them, and only `system_desc.json` has
+    a capture tool (see [below](#2-write-system_descjson-for-each-point)). The submission CLI copies
+    `point.yaml` into the bundle **exactly as written**. It doesn't derive it from `config.yaml` and
+    does not fill in missing fields. Whatever you write is what gets submitted and what gets
+    checked.
 
 ## What you'll do
 
@@ -85,9 +85,10 @@ Pareto point carries its own copy**, and the checker verifies all points of a cu
 same system.
 
 The fields are defined in [§8.2 of the rules][rules-8.2]. Either capture the file with
-[`mlperf-sysinfo`](https://docs.mlcommons.org/mlperf-sysinfo/), which reads the machine under test using its `endpoints` profile, or copy
-the template in [§8.2.1][rules-8.2.1] and fill it in. Checker behaviour and known gaps between the
-rules and the tooling: [`system_desc.json` reference](../reference/system-desc-json.md).
+[`mlperf-sysinfo`](https://docs.mlcommons.org/mlperf-sysinfo/), which reads the machine under test
+using its `endpoints` profile, or copy the template in [§8.2.1][rules-8.2.1] and fill it in. Checker
+behaviour and known gaps between the rules and the tooling: [`system_desc.json`
+reference](../reference/system-desc-json.md).
 
 !!! tip "`tps_utilization` is computed, not chosen"
     It is `reported_system_tps / max(reported_system_tps across the curve)`. The checker recomputes
@@ -127,7 +128,9 @@ reference](../reference/system-power-json.md).
     The file is required even if you leave values out ([Component Template in
     §4.5.2][rules-component-template-system_powerjson]). The checker flags each blank component
     group `power-estimated`, MLCommons fills it in with a deliberately conservative estimate, and
-    the published result is tagged **"MLC Estimated Power"**.
+    the published result is tagged **"MLC Estimated Power"**. The file still has to yield a total:
+    with no `provisioned_power_w` and no group that has both a count and a TDP, the checker fails
+    `power-descriptor`.
 
 ### 4. Write the shared `src/` content
 

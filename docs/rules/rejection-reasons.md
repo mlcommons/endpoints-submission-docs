@@ -12,46 +12,52 @@ Failure modes as **symptom → cause → fix**, each linked to the step where it
 ## The hard stops
 
 These have a failure action of **reject** in [§9.1][rules-9.1]. There is no patching in place: you
-correct and resubmit as a new submission, losing your cohort slot ([Submission Rules
-§6.1][srules-6.1]).
+correct and resubmit as a new submission ([Submission Rules §6.1][srules-6.1]).
 
 | Symptom | Cause | Fix |
 |---|---|---|
-| `point-count` fails | Fewer than 8 points with a dedicated Offline run, or fewer than 7 otherwise | Run more points. Note withdrawn points do not count and **cannot be replaced** — [plan a spare](../workflow/plan-your-curve.md) |
+| `point-count` fails | Fewer than 8 points with a dedicated Offline run, or fewer than 7 otherwise | Run more points. Withdrawn points don't count, and there's no way to add a point to a submission — [plan a spare](../workflow/plan-your-curve.md) |
 | `offline-point-present` fails | Two points declare `offline`, or `elected` sits on a point that isn't at `C_max` | Keep one declaration. Elect only the point at your declared `C_max` |
 | No Offline point (non-agentic) | Nothing declares `offline`. **Locally this is only a warning** | Run a dedicated Offline point or elect `C_max` — [step 3](../workflow/plan-your-curve.md#6-decide-how-to-meet-the-offline-requirement) |
 | `power-descriptor` fails | No `system_power.json` for a system, or one with nothing a total can be derived from | Author it — [step 5](../workflow/author-disclosures.md#3-write-system_powerjson-for-each-system) |
-| `*-concurrency-coverage` fails | No point in Low, Medium or High Concurrency | Recompute boundaries with `submission-checker regions` and run the missing region. Remember the 10% margin is **not** High Concurrency |
+| `*-concurrency-coverage` fails | No point in Low, Medium or High Concurrency | Recompute boundaries with the checker's `regions` command ([step 3](../workflow/plan-your-curve.md#3-compute-the-boundaries)) and run the missing region. Remember the 10% margin is **not** High Concurrency |
 | `ultra-low-concurrency-coverage` fails | No point at concurrency ≤ 32 | Run one in 1–32 |
-| `max-concurrency-declared` fails | `max_supported_concurrency` missing, or ≤ 32 | Declare a `C_max` > 32 in `system_desc.json` |
+| `system-description-valid` or `region-computation` fails | `max_supported_concurrency` missing (the first), or ≤ 32 (the second). §9.1 calls this *Max concurrency declared* | Declare a `C_max` > 32 in `system_desc.json` |
 | `accuracy-gate` fails | Accuracy run missed the benchmark quality target | No tolerance exists. Fix the configuration and re-run — and check whether an approximation under model equivalence pushed you under |
 | `accuracy-present` / `accuracy-coverage` fails | No accuracy results in one of the four mandatory regions, or none at the Offline point | Run the missing validation — one at each mandatory region point and one at Offline, same stack as performance |
 | `shared-path-resolution` fails | `shared_src` / `shared_docs` do not resolve under the submission root | Fix the pointers in every `point.yaml` — [step 5](../workflow/author-disclosures.md) |
 | `seed-set-consistency` / `seed-set-membership` fails | Points record different seed sets, or a set MLCommons never published | Bind **one** published set and record it at every point |
 | Required files missing | A point lacks `point.yaml`, `system_desc.json` or `result_summary.json` | [Step 5](../workflow/author-disclosures.md). The reference client doesn't write them; [`mlperf-sysinfo`](https://docs.mlcommons.org/mlperf-sysinfo/) can capture `system_desc.json` |
+| `load-pattern` fails | A point other than a dedicated Offline run used `max_throughput` or `poisson`. This rejects the **point** | Only the fixed-concurrency pattern is valid there. Re-run, or declare `offline: dedicated` if it really is your Offline run |
 | `approved-drafter` / `drafter-approval-lead-time` fails | A point used speculative decoding with a drafter not on the approved list, or approved too recently | These reject the **points**. With no list published yet, re-run without speculation |
 
-## The flags, where objections come from
+## Flagged by the rules, but they fail the local check
 
-These do not stop the automated checks, but reviewers see them and Weeks 1–3 is when they act.
+[§9.1][rules-9.1] only flags these, but the checker reports them as errors, and `submissions create`
+stops on any error. Fix them before you submit.
+
+| Symptom | Cause | Fix |
+|---|---|---|
+| `min-query-count` fails | Fewer completed queries than the minimum | Re-run with a longer issue window |
+| `streaming-config` fails | `stream_all_chunks` not `true` | Set it — per-token timing depends on it |
+| `concurrency-in-range` fails | A point sits outside every valid region | Recompute boundaries — remember `C_min` is **derived from your own lowest point** |
+| `warmup-present` fails | Warmup declaration missing | Declare the warmup block in `point.yaml` |
+| `tps-utilization` fails | Value is not `system_tps / max(system_tps)` over your own curve | Recompute after every point has run |
+| `system-description-consistency` fails | Points describe different systems | One curve, one system. Freeze the stack before the first run |
+| `config-consistency-dataset` fails | Points used different datasets | Re-run the odd ones out |
+| `metric-consistency-*` fails | A stored `system_tps`, `tps_per_user` or `system_tps_per_kw` disagrees with the derived value | Don't hand-edit result files |
+
+## Warnings, where objections come from
+
+These don't stop the checker, but reviewers see them and Weeks 1–3 is when they act.
 
 | Symptom | Cause | Fix |
 |---|---|---|
 | `point-duration` warns | A point ran under its region's minimum steady-state duration | Re-run at 600 s (Ultra Low) or 1,200 s |
-| `min-query-count` warns | Fewer completed queries than one dataset pass | Re-run with a longer issue window |
-| `streaming-config` flags | `stream_all_chunks` not `true` | Set it — per-token timing depends on it |
-| `load-pattern` flags | A point other than a dedicated Offline run used `max_throughput` or `poisson` | Only the fixed-concurrency pattern is valid there. Re-run, or declare `offline: dedicated` if it really is your Offline run |
 | `offline-ordering` warns | Offline `system_tps` under 0.98× the `C_max` point's, or Offline concurrency under `C_max` | Re-run the Offline point so it saturates the system, or elect `C_max` instead |
 | `power-estimated` warns | A component group in `system_power.json` has no count or TDP | Fill it in from a public spec sheet, or accept the "MLC Estimated Power" tag |
-| `metric-consistency-tps-per-kw` fails | Stored `system_tps_per_kw` disagrees with `system_tps / provisioned_power_kw` | Don't hand-edit it |
 | `region-placement` warns | Declared `region` disagrees with the computed one | Correct the declared value |
-| `concurrency-in-range` flags | A point sits outside every valid region | Recompute boundaries — remember `C_min` is **derived from your own lowest point** |
-| `warmup-present` flags | Warmup declaration incomplete | Declare all six fields |
 | `warmup-salt` warns | Warmup salt is enabled | Expected if warmup used the performance dataset — but be ready to explain it |
-| `tps-utilization` fails | Value is not `system_tps / max(system_tps)` over your own curve | Recompute after every point has run |
-| `system-description-consistency` fails | Points describe different systems | One curve, one system. Freeze the stack before the first run |
-| `config-consistency-dataset` fails | Points used different datasets | Re-run the odd ones out |
-| `metric-consistency-*` fails | Stored `system_tps` or `tps_per_user` disagrees with the derived value | Do not hand-edit result files |
 
 ## Tooling failures before you even submit
 

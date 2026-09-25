@@ -17,16 +17,17 @@ Upstream describes what the client can do. These are the settings a submission i
 
 | Setting | For a submission |
 |---|---|
-| `load_pattern.type` | `concurrency` for every fixed-concurrency point. `max_throughput` only for a dedicated Offline run. `poisson` is never valid |
+| `load_pattern.type` | `concurrency` for every fixed-concurrency point of a single-turn benchmark, `agentic_inference` for agentic benchmarks. `max_throughput` only for a dedicated Offline run. `poisson` is never valid |
 | `streaming` | On for every performance run, the Offline point included. The default, `auto`, resolves to off for offline runs |
 | `scheduler_random_seed`, `dataloader_random_seed` | From your bound seed set. See [Seeds and salting](../workflow/run-the-points.md#seeds-and-salting) |
 
-!!! danger "Do not modify the source"
+!!! warning "Do not modify the source"
     Configure the client through its YAML config only ([§2.1.1 of the rules][rules-2.1.1]).
 
-!!! danger "The warmup salt is off by default"
-    If warmup uses the performance dataset, the rules require salting and no KV cache reuse
-    ([§6.3.1][rules-6.3.1]). The client does not enable the salt for you (`--warmup-salt`).
+!!! warning "The warmup salt is off by default"
+    [§6.3.1][rules-6.3.1] prohibits performance-dataset samples in warmup. If the client does use
+    them, salting must be enabled, and the rules' v0.7 note also requires KV-cache reuse to be off.
+    The client does not enable the salt for you (`--warmup-salt`).
 
 !!! question "`max_throughput` for the Offline point"
     The rules call the Offline pattern "the benchmark-defined Offline load pattern" without naming a

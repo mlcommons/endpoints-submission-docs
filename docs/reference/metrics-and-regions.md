@@ -6,8 +6,8 @@ Endpoints?](../understand/what-is-mlperf-endpoints.md). Applied in [step
 
 ## Primary metrics
 
-Captured at each measurement point, at a specific concurrency level. The metrics, their field
-names and how each one is computed are in [rules §4.1][rules-4.1].
+Captured at each measurement point, at a specific concurrency level. The metrics, their field names
+and how each one is computed are in [rules §4.1][rules-4.1].
 
 !!! note "TTFT doesn't apply to a dedicated Offline run"
     `ttft_p90_ms` isn't required for a dedicated Offline run ([§5.7.1][rules-5.7.1]). An elected
@@ -115,7 +115,7 @@ half-to-even, which is Python's built-in `round()` and easy to get wrong by hand
 Don't implement it yourself. Use the checker, which implements it:
 
 ```bash
-submission-checker regions --max-concurrency 1024 --min-concurrency 16
+python -c "from submission_checker.cli import main; main()" regions --max-concurrency 1024 --min-concurrency 16
 ```
 
 !!! note "`C_min` is derived in v1.0"
@@ -141,7 +141,7 @@ must notify the working group with written justification.
 ## Pre-computed boundaries
 
 A quick-reference table for common `C_min` and `C_max` combinations is in [Appendix B of the
-rules][rules-appendix-b]. For any other combination, run `submission-checker regions`.
+rules][rules-appendix-b]. For any other combination, run the checker's `regions` command, as above.
 
 ## Point counts
 

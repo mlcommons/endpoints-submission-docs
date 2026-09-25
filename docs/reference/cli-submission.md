@@ -12,20 +12,19 @@ Installation, authentication, and every command and flag are documented in
 - [`runs` commands](https://github.com/mlcommons/endpoints-submission-cli/blob/main/docs/endpoints-cli/usage/runs.md)
 - [`submissions` commands](https://github.com/mlcommons/endpoints-submission-cli/blob/main/docs/endpoints-cli/usage/submissions.md)
 
-Run `--help` on any command for the authoritative flag list. You need a
-[PRISM API key](../understand/eligibility/prism-api-key.md) for every command.
+Run `--help` on any command for the authoritative flag list. You need a [PRISM API
+key](../understand/eligibility/prism-api-key.md) for every command.
 
-The package also ships
-[`submission-checker`](https://github.com/mlcommons/endpoints-submission-cli/blob/main/README.md#submission-checker).
-How `--provisional` and `--embargo-date` combine into the publication modes is in
-[step 8](../workflow/submit.md#create-the-submission). Status values are in
-[Submission states](submission-states.md).
+The package also ships the checker, as `endpoints-submission-cli check-submission`. Its checks are
+described in the README's
+[`submission-checker`](https://github.com/mlcommons/endpoints-submission-cli/blob/main/README.md#submission-checker)
+section, but that command isn't installed (**B16** in [Open questions](../help/open-questions.md)).
+How `--provisional` and `--embargo-date` combine into the publication modes is in [step
+8](../workflow/submit.md#create-the-submission). Status values are in [Submission
+states](submission-states.md).
 
-!!! danger "Removed points cannot be replaced"
-    Withdrawn points do **not** count toward the minimum point count ([§8.1 of the Submission
-    Rules][srules-8.1]). That section still talks about submitting additional points to stay
-    compliant, but the CLI has no `add-run`. If a submission needs a different set of runs, create a
-    new one.
+There's no command to add a run to a submission; see [step
+8](../workflow/submit.md#points-fixed-at-creation).
 
 *Last verified against: `mlcommons/endpoints-submission-cli@main` (f25f71e) and
 `mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef), 2026-09-24.*

@@ -6,7 +6,7 @@
     - Completed [3. Plan your Pareto curve](plan-your-curve.md)
     - You have a list of legal concurrency levels
     - The endpoint under test is up and reachable
-    - You know which seed set you are binding to — see [Seeds](#seeds-and-salting) below
+    - You know which seed set you are binding to — see [seed set and salt](#seeds-and-salting) below
 
 ## What you'll do
 
@@ -23,7 +23,7 @@ The run requirements are in [§6 of the rules][rules-6], and that's where the va
 
 | Requirement | Rule | Where you set it |
 |---|---|---|
-| Load pattern | [§6.1][rules-6.1] | `settings.load_pattern.type`: `concurrency` for every point, `max_throughput` for a dedicated Offline run ([step 2](#run-the-offline-point)) |
+| Load pattern | [§6.1][rules-6.1] | `settings.load_pattern.type`: `concurrency` for every point, `max_throughput` for a dedicated Offline run ([below](#run-the-offline-point)) |
 | Minimum duration | [§6.2][rules-6.2] | Run length. It's measured over the steady-state window's issue time, not wall clock |
 | Minimum completed queries | [§6.4][rules-6.4] | Sample count: whole passes over the dataset |
 | Warmup | [§6.3][rules-6.3] | Your warmup procedure, declared in `point.yaml` |
@@ -38,11 +38,41 @@ The run requirements are in [§6 of the rules][rules-6], and that's where the va
     drain included, which understates what your system does. See [What your numbers are measured
     over](../reference/metrics-and-regions.md#what-your-numbers-are-measured-over).
 
-!!! danger "Configuration consistency is checked across the whole curve"
+!!! warning "Configuration consistency is checked across the whole curve"
     Every point must describe the same system, the same model and the same dataset. A curve
     assembled from points run against two different software versions will be flagged and can be
     rejected. Lock your software stack before the first point and don't change it until the last one
     is done.
+
+## Before your first run: seed set and salt {#seeds-and-salting}
+
+Your submission binds to exactly **one seed set** when it first appears in a
+[cohort](../understand/how-submission-works.md#rolling-submission-and-cohorts), and every point must
+record that same set. Seed rotation never forces you to re-run. The binding and adoption window are
+in [Submission Rules §4.6][srules-4.6].
+
+The seeds also drive the per-query **salt**, which is what makes cross-query KV-cache reuse legal.
+Accuracy runs use the **un-salted** dataset. See [§2.9.5.1][rules-2.9.5.1].
+
+!!! warning "Warmup must not use performance-dataset samples"
+    Warmup can't use performance-dataset samples in any form; the accuracy dataset is fine
+    ([§6.3.1][rules-6.3.1]). If your client does use the performance dataset during warmup,
+    **salting must be enabled**, and the salting flag is **not on by default**.
+
+!!! success "The v1.0 seed set is published"
+    As of 2026-09-15 the policies repo carries `seedset.yaml`: one set, **`id: A`**, published for
+    cohort **`2026-10-C1`**. Since checker `v1.0.1.0` the checker bundles the same file, cohort key
+    included, and `seed-set-adoption` tests your `target_cohort` against the four-cohort window for
+    real.
+
+    ```yaml
+    seed_set: A
+    target_cohort: 2026-10-C1
+    ```
+
+    Set `A` can be adopted by submissions targeting `2026-10-C1` through the three cohorts after it.
+    Checkers before `v1.0.1.0` don't test adoption at all, so upgrade rather than rely on an older
+    one.
 
 ## Steps
 
@@ -117,52 +147,13 @@ invocation writes the performance run and then the accuracy run into the same re
 
 ### 4. Keep everything
 
-Each run folder contains:
+Keep every run folder the client writes. What's in one is in [Submission package
+layout](../reference/package-layout.md).
 
-```
-<report_dir>/
-├── config.yaml                       # resolved config as run (secrets redacted)
-├── report.txt                        # human-readable summary
-├── events.jsonl                      # per-event log (the large one)
-├── sample_idx_map.json
-├── performance/result_summary.json   # written when the performance phase ran
-├── accuracy/accuracy_results.json    # written when the accuracy phase ran
-└── metrics/final_snapshot.json
-```
-
-Full detail in [Submission package layout](../reference/package-layout.md).
 
 !!! warning "Warmup logs must be retained"
     Warmup requests don't count toward any metric, but their logs must be **kept for reviewers**
     ([§6.3.2][rules-6.3.2]).
-
-## Seeds and salting
-
-Your submission binds to exactly **one seed set** when it first appears, and every point must record
-that same set. Seed rotation never forces you to re-run. The binding and adoption window are in
-[Submission Rules §4.6][srules-4.6].
-
-The seeds also drive the per-query **salt**, which is what makes cross-query KV-cache reuse legal.
-Accuracy runs use the **un-salted** dataset. See [§2.9.5.1][rules-2.9.5.1].
-
-!!! warning "Warmup must not use performance-dataset samples"
-    Warmup can't use performance-dataset samples in any form; the accuracy dataset is fine
-    ([§6.3.1][rules-6.3.1]). If your client does use the performance dataset during warmup,
-    **salting must be enabled**, and the salting flag is **not on by default**.
-
-!!! success "The v1.0 seed set is published"
-    As of 2026-09-15 the policies repo carries `seedset.yaml`: one set, **`id: A`**, published for
-    cohort **`2026-10-C1`**. Since checker `v1.0.1.0` the checker bundles the same file, cohort key
-    included, and `seed-set-adoption` tests your `target_cohort` against the four-cohort window for
-    real.
-
-    ```yaml
-    seed_set: A
-    target_cohort: 2026-10-C1
-    ```
-
-    Set `A` can be adopted by submissions targeting `2026-10-C1` through the three cohorts after it.
-    On an older checker, adoption reports **SKIP**. Upgrade rather than override.
 
 ## Next
 

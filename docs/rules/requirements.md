@@ -13,12 +13,12 @@ From [§5.3][rules-5.3], [§5.4][rules-5.4] and [§5.6][rules-5.6], with failure
 
 | Requirement | How to check |
 |---|---|
-| :material-alert-octagon:{ style="color:#c62828" } **≥ 8 measurement points** including a dedicated Offline run; **≥ 7** if you elect `C_max` as the Offline result, or for an agentic benchmark | `submission-checker check` — rule `point-count` |
+| :material-alert-octagon:{ style="color:#c62828" } **≥ 8 measurement points** including a dedicated Offline run; **≥ 7** if you elect `C_max` as the Offline result, or for an agentic benchmark | `endpoints-submission-cli check-submission` — rule `point-count` |
 | **≤ 32 measurement points**, Offline included | rule `point-cap` |
 | :material-alert-octagon:{ style="color:#c62828" } **Exactly one Offline point** for a non-agentic benchmark, **none** for an agentic one | rule `offline-point-present` — see the warning below |
 | :material-alert-octagon:{ style="color:#c62828" } **≥ 1 point at concurrency 1–32** (Ultra Low) | rule `ultra-low-concurrency-coverage` |
 | :material-alert-octagon:{ style="color:#c62828" } **≥ 1 point in each of Low, Medium, High Concurrency** | rules `low-` / `med-` / `high-concurrency-coverage` |
-| :material-alert-octagon:{ style="color:#c62828" } **`C_max` declared and > 32** | rule `max-concurrency-declared` |
+| :material-alert-octagon:{ style="color:#c62828" } **`C_max` declared and > 32** | rules `system-description-valid` (missing) and `region-computation` (≤ 32) |
 | Every concurrency falls in a valid region (a dedicated Offline run is exempt) | rule `concurrency-in-range` |
 
 Regions are computed in log-2 space from your own `C_min` and `C_max`. See [Plan your Pareto
@@ -40,7 +40,7 @@ reordering only within a pass) is in [§5.7.1][rules-5.7.1]. What the checker do
 |---|---|
 | Declaration: `offline: dedicated` or `offline: elected` in that point's `point.yaml`; `elected` only on the `C_max` point | rule `offline-point-present` |
 | Dedicated run: `system_tps` ≥ **0.98 ×** the `C_max` point's, and concurrency ≥ `C_max` | rule `offline-ordering` (flagged). The throughput half is skipped silently if no point sits at exactly `C_max` |
-| Dedicated run uses the Offline load pattern | rule `load-pattern` |
+| Dedicated run uses the Offline load pattern | Not checked: `load-pattern` exempts a dedicated Offline point |
 
 A dedicated run counts toward no region. An elected point keeps its own region and reports latency
 like any other point.
@@ -86,9 +86,10 @@ tolerance ([Reproducibility Expectations][srules-reproducibility-expectations]).
 | :material-alert-octagon:{ style="color:#c62828" } The results pass the quality target | rule `accuracy-gate` |
 
 !!! question "The targets are not published"
-    Per-benchmark accuracy tolerance values are marked `[WIP]` upstream. They are not in any source
-    this documentation could verify. Ask MLCommons. Tracked as **C2** in [Open
-    questions](../help/open-questions.md).
+    The per-benchmark targets are marked `[WIP]` in [§2.9.8][rules-2.9.8]. For the legacy benchmarks
+    the checker gates against the MLPerf Inference targets (see [Benchmarks and
+    models](../reference/benchmarks.md#accuracy-targets)); agentic targets aren't in the checker
+    yet. Tracked as **C2** in [Open questions](../help/open-questions.md).
 
 ## Seeds
 
@@ -101,11 +102,11 @@ The per-query salt is seeded from the same set and has its own requirements in
 
 ## Consistency across the curve
 
-Same model, endpoint configuration, software stack, dataset and seed set at **every** point
-(*Configuration consistency* in [§9.1][rules-9.1]). Every point's `system_desc.json` must describe
-the same system, and the whole curve uses one provisioned power figure ([§4.5.3][rules-4.5.3]). If
-you use speculative decoding, it's the same drafter at every point. Freeze the stack before the
-first run.
+Same model, endpoint configuration, software stack and seed set at **every** point (*Configuration
+consistency* in [§9.1][rules-9.1]). The checker also requires the same dataset
+(`config-consistency-dataset`). Every point's `system_desc.json` must describe the same system, and
+the whole curve uses one provisioned power figure ([§4.5.3][rules-4.5.3]). If you use speculative
+decoding, it's the same drafter at every point. Freeze the stack before the first run.
 
 ## Power normalization
 
@@ -126,7 +127,7 @@ Field names and an example: [`system_power.json`](../reference/system-power-json
 
 !!! warning "Section 4.5 is pending ratification"
     The tiers, overhead fractions, reference components and even the metric's name and units are
-    marked as subject to change ([§4.5.1][rules-4.5.1]).
+    marked as subject to change ([§4.5][rules-4.5]).
 
 ## Disclosure by division
 

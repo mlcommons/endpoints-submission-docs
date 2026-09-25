@@ -3,9 +3,10 @@
 Every automated check, cross-walked from **checker rule ID** to the **rules clause** it enforces and
 the **failure action** the rules assign. Use it to work out what a failed check actually means.
 
-Run locally with [`submission-checker`](https://github.com/mlcommons/endpoints-submission-cli/blob/main/README.md#submission-checker); run server-side during **Week 0**. This
-page describes checker **`v1.0.1.0`**. Older versions lack the Offline, power, accuracy-coverage,
-steady-state and drafter rules.
+Run locally with `endpoints-submission-cli check-submission` (documented upstream as
+[`submission-checker`](https://github.com/mlcommons/endpoints-submission-cli/blob/main/README.md#submission-checker),
+see **B16**); run server-side during **Week 0**. This page describes checker **`v1.0.1.0`**. Older
+versions lack the Offline, power, accuracy-coverage, steady-state and drafter rules.
 
 !!! danger "Week 0 failures reject the submission"
     A submission that fails any automated check by the end of Week 0 is rejected ([§6.1 of the
@@ -20,6 +21,15 @@ steady-state and drafter rules.
 | :material-alert:{ style="color:#ef6c00" } **Reject points** | Non-conforming points are rejected |
 | :material-flag:{ style="color:#f9a825" } **Flag** | Flagged for reviewer attention — does not block automatically, but is objection material |
 | :material-information:{ style="color:#1565c0" } **Warn** | Checker-level warning; becomes an error under `--strict` |
+
+!!! warning "Local severity can be stricter than §9.1"
+    The icons show the failure action in the rules. The checker sets its own severity, and most
+    **Flag** rows are errors locally, which stops `submissions create`:
+    `system-description-consistency`, `model-name-consistency`, `tps-utilization`,
+    `concurrency-in-range`, `streaming-config`, `min-query-count`, `warmup-present`,
+    `config-consistency-dataset` and every `metric-consistency-*` rule. Of the **Warn** rows,
+    `steady-state-valid`, `steady-state-consistency`, `seed-config-legacy` (a seed other than 42)
+    and `region-basis` (no parsable `point.yaml`) can also fail as errors.
 
 ## Structure
 
@@ -46,7 +56,7 @@ steady-state and drafter rules.
 | `system-description-consistency` | §9.1 | Every point of a curve describes the same system | :material-flag:{ style="color:#f9a825" } |
 | `model-name-valid` | §3.2 | `model_name` is one of the round's supported models | :material-alert-octagon:{ style="color:#c62828" } |
 | `model-name-consistency` | §8.2 | Matches the results directory name | :material-flag:{ style="color:#f9a825" } |
-| `max-concurrency-declared` | §9.1 | `max_supported_concurrency` present and > 32 | :material-alert-octagon:{ style="color:#c62828" } |
+| `max-concurrency-declared` | §9.1 | Reports `max_supported_concurrency`. A missing value fails `system-description-valid`, and a value ≤ 32 fails `region-computation` | :material-alert-octagon:{ style="color:#c62828" } |
 | `tps-utilization` | §8.2 | Equals `system_tps / max(system_tps)` over the point's own curve | :material-flag:{ style="color:#f9a825" } |
 | `power-descriptor` | §4.5.2, §9.1 | `results/<system>/system_power.json` exists and a total power can be derived from it | :material-alert-octagon:{ style="color:#c62828" } |
 | `power-estimated` | §4.5.2 | Names component groups left for MLCommons to fill in — the result will carry "MLC Estimated Power" | :material-information:{ style="color:#1565c0" } |
@@ -72,8 +82,10 @@ steady-state and drafter rules.
 
 !!! warning "The 10% margin does not satisfy High Concurrency"
     A point in `C_max + 1 … ceil(1.10 × C_max)` is in its own region. It passes
-    `concurrency-in-range` but does **not** count toward `high-concurrency-coverage`. A dedicated
-    Offline run counts toward no region at all.
+    `concurrency-in-range` but does **not** count toward `high-concurrency-coverage`. The rules say
+    a dedicated Offline run counts toward no region ([§5.7.2][rules-5.7.2]), but the checker's
+    coverage checks don't exclude it: a dedicated run at exactly `C_max` is counted as High
+    Concurrency.
 
 !!! danger "A missing Offline point is only a warning locally"
     The checker can't tell whether a benchmark is agentic, because nothing it reads says so. So when
@@ -129,9 +141,9 @@ steady-state and drafter rules.
 | `drafter-list-registry` | §2.9.4 | Warns when the drafter list itself can't be read | :material-information:{ style="color:#1565c0" } |
 
 !!! warning "The bundled list is empty"
-    No approved-drafter list has been published, so the checker ships an empty one and rejects any
-    point that uses speculative decoding. That matches the rules for a benchmark with no approved
-    drafter. Point `--approved-drafters FILE` or `$MLPERF_ENDPOINTS_APPROVED_DRAFTERS` at a
+    The reference repository lists approved heads for the agentic benchmarks only, and the checker
+    hasn't picked them up: it ships an empty list and rejects any point that uses speculative
+    decoding. Point `--approved-drafters FILE` or `$MLPERF_ENDPOINTS_APPROVED_DRAFTERS` at a
     published list once one exists.
 
 !!! note "Amendments are not re-tested for adoption"

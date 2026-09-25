@@ -107,7 +107,7 @@ nav:
   - Submission Workflow:
       - workflow/index.md
       - Before you begin: workflow/before-you-begin.md
-      - 1. Register and get a token: workflow/register.md
+      - 1. Get access and an API key: workflow/register.md
       - 2. Install the tools: workflow/install-tools.md
       - 3. Plan your Pareto curve: workflow/plan-your-curve.md
       - 4. Run the measurement points: workflow/run-the-points.md
