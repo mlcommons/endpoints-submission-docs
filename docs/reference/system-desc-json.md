@@ -85,11 +85,6 @@ The checker verifies that every point of a curve describes the **same** system
 | `config_summary` | Concatenation of `disaggregated`, `tensor_parallel`, `pipeline_parallel`, `expert_parallel`, `data_parallel` where each is > 1, plus `config_summary_notes` |
 | `config_summary_notes` | Free-form, for anything the concatenated fields miss |
 
-!!! note "`link_config` was removed"
-    Policies commit `b4ab404` dropped `link_config` from the §8.2 field table, but the template in
-    §8.2.1 still carries it, so it's still shown in the template below. Leave it empty. Tracked as
-    **B7**.
-
 ## Other
 
 | Field | Description |
@@ -166,7 +161,6 @@ The checker verifies that every point of a curve describes the **same** system
   "batch": 0,
   "config_summary": "",
   "config_summary_notes": "",
-  "link_config": "",
   "tps_utilization": 0
 }
 ```
