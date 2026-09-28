@@ -177,12 +177,6 @@ The checker verifies that every point of a curve describes the **same** system
 | `max-concurrency-declared` | `max_supported_concurrency` present and > 32 |
 | `tps-utilization` | Equals `system_tps / max(system_tps)` over the point's own curve |
 
-!!! note "Field name drift"
-    Most of the rules now say `system_desc.json`, but the §9.1 *Max concurrency declared* row and
-    the Submission Rules still say `system_desc_id.json`, and the result-ID definition refers to a
-    `benchmark_model` field. The tooling uses `system_desc.json` and `model_name`, and that's what
-    the checker reads.
-
 Provisioned power is **not** in this file. It goes in a separate, per-system
 [`system_power.json`](system-power-json.md).
 
