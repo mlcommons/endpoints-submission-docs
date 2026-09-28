@@ -6,7 +6,7 @@ power is fixed for the whole curve. Why it exists and what it's used for:
 
 !!! danger "Required, and authored by you"
     Every system needs one. A system without it, or with a file from which no total can be
-    derived, fails `power-descriptor` and the submission is rejected. No tool writes it. Put it at
+    derived, fails `power-descriptor` and the submission is rejected. Put it at
     the top level of at least one run folder of the system; the builder places it at
     `results/<system>/system_power.json` in the bundle. Authored in
     [step 5](../workflow/author-disclosures.md#3-write-system_powerjson-for-each-system).
