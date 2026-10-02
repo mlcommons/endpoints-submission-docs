@@ -47,8 +47,9 @@ rather than after step 4, which is where the accelerator time gets spent.
       or provisional publication with a "peer review pending" tag. You **can't change it after
       submitting**, so decide now. An embargo on a provisional submission also delays the start of
       review. See [When your results become public](../understand/how-submission-works.md#when-your-results-become-public).
-- [ ] **Speculative decoding?** Only with a drafter on the benchmark's approved list. No list has
-      been published yet, so for now it isn't available for any benchmark. See
+- [ ] **Speculative decoding?** Only with a drafter on the benchmark's approved list. Heads are
+      approved for the agentic benchmarks only, and the checker's bundled list is still empty, so
+      for now plan without it. See
       [Model equivalence](../rules/model-equivalence.md#speculative-decoding).
 - [ ] **Who signs off on disclosure.** Standardized requires publishing your configuration, launch
       scripts and integration code. Get that cleared internally before you run, not after.

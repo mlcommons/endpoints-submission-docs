@@ -130,10 +130,11 @@ settings:
     Offline point for its load pattern, but no source says in so many words that this is the
     pattern MLCommons means. Tracked as **C7** in [Open questions](../help/open-questions.md).
 
-!!! warning "Turn streaming on explicitly"
-    The client's `streaming: auto` default resolves to **off** for offline runs. The rules still
-    require `stream_all_chunks: true` for every performance run, Offline included, so set streaming
-    on in the config rather than relying on the default.
+!!! note "Streaming isn't required here"
+    The client's `streaming: auto` default resolves to **off** for offline runs, and that's fine:
+    the rules exempt a dedicated Offline run from the streaming requirement, since it reports only
+    `system_tps`. Keep `stream_all_chunks: true` anyway, because checker `v1.1.0.0` still checks it
+    at every point.
 
 Everything else in the constraints table still applies: the same stack and seed set, a sample
 count that's a whole multiple of the dataset size, and the warmup rules. Three things are specific

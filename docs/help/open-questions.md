@@ -5,8 +5,23 @@ committing accelerator time.
 
 --8<-- "draft-rules-warning.md"
 
-**Last reviewed:** 2026-09-24, against `endpoints_policies@v1.0_rules_dev` (6b0b1ef),
-`endpoints-submission-cli@main` (f25f71e, tag `v1.0.1.0`), `endpoints@main` (e71b928).
+**Last reviewed:** 2026-10-02, against `endpoints_policies@v1.0_rules_dev` (d2d9da6),
+`endpoints-submission-cli@main` (a42a056, tag `v1.1.0.0`), `endpoints@main` (f1100cf).
+
+??? info "What changed at the 2026-10-02 review"
+    The rules moved 10 commits. What matters to a submitter:
+
+    - **Streaming (§6.5, §2.9.7).** Fixed-concurrency performance runs must use streaming
+      responses; a dedicated Offline run is exempt. `stream_all_chunks` is now a client-side
+      setting that can take either value. A multi-token stream interval on the server is allowed.
+    - **`model_name` moved to `point.yaml`.** It's gone from `system_desc.json`, and so is
+      `link_config`. The rules now say `system_desc.json` everywhere.
+
+    Checker `v1.1.0.0` (2026-10-01) knows the agentic models and gates their accuracy, rejects a
+    single-turn curve with no Offline point, and follows §4.5.2's power model. That resolves
+    **B10** and **B12**. In the CLI, `--publication-cycle` is gone and a new submission waits in
+    `COMPLIANCE_CHECKING` instead of moving straight to `REVIEW_PENDING`. On the client side, the
+    steady-state detector now runs inside the benchmark when you ask for it, which narrows **B9**.
 
 ??? info "What changed at the 2026-09-24 review"
     The rules moved 36 commits since the 2026-09-19 review. Five merged changes matter to a
@@ -51,10 +66,8 @@ none has been resolved by guesswork.
 | **B5** | **TTFT percentile** | The public MLCommons benchmark page still advertises **TTFT P95**. The v1.0 rules require **P90** and state P95 was the v0.7 metric. | The rules — P90 |
 | **B6** | **Result labels** | The rules use Available / Preview / RDI. The public page additionally shows "Verified / Provisional / Unverified". The relationship is unstated. | The rules — needs a mapping |
 | **B8** | **Which metrics gate a steady-state window** | *Narrowed.* §4.4's definition table and the detector documentation now on `endpoints@main` agree: **TPOT at P50 and P90**, with TTFT a diagnostic and drift warning only. But the paragraph after that table in §4.4 still says **TTFT and TPOT at P50/P90**. | TPOT at P50/P90, but confirm |
-| **B9** | **The steady-state detector isn't part of the run** | *Partly resolved.* `scripts/steady_state_diagnostics.py` and its documentation merged to `endpoints@main` on 2026-09-16 (#447). It's an ad-hoc tool you run over a run directory or `events.jsonl`. Nothing in the client writes the `steady_state` block §8.3 requires, and the tool itself prints *not yet supported* for agentic runs. The rules still link a pinned commit on the old design branch. | Run the script yourself and fill in `steady_state` from its output |
-| **B10** | **`system_power.json` field names** | Rules §4.5.2 names the fields `num_cpu`, `tdp_per_cpu`, `num_accelerator`, `tdp_per_accelerator`, `num_switches`, `tdp_per_switch`. The checker reads nested groups (`cpu`, `accelerator`, `scale_up_network`, `scale_out_network`), each with `count`, `tdp_per_unit` and `link`, plus `provisioned_power_w` and `overhead_fraction`. §4.5.2 publishes no literal schema. | The checker's shape |
+| **B9** | **Nothing writes the `steady_state` block** | *Partly resolved.* Since endpoints#514 (2026-09-24) the client finds the steady-state window during the run when you pass `--steady-state`, and reports it in `result_summary.json` and `report.txt`. It's off by default and doesn't run for Offline or agentic runs. The checker reads the block from `point.yaml`, and nothing copies it there. The standalone detector is now `python -m inference_endpoint.metrics.steady_state_diagnostics <run_dir>`. The rules still link a pinned commit on the old design branch. | Run with `--steady-state` and copy the result into `steady_state` |
 | **B11** | **Who needs `system_power.json`** | §4.5's scope makes power normalization mandatory for Standardized, optional for RDI and deferred for Serviced. The same section's callout says *every submission* must include the file, and §9.1's *Power descriptor* row says Standardized. The checker requires it for every system regardless of division. | Include it whatever your division |
-| **B12** | **The checker can't tell agentic from single-turn** | Nothing the checker reads says whether a benchmark is agentic. So when no point declares `offline`, `offline-point-present` only **warns**, and `point-count` applies the 7-point minimum. For a non-agentic benchmark the rules reject that submission. Ties to **C8**. | The rules — count your Offline point yourself |
 | **B13** | **"One accuracy run for each of the 5 pareto regions"** | §4.3 now opens with that sentence. There are four regions plus the Offline point, and agentic benchmarks need only four accuracy results. The rest of §4.3 and §5.3 are consistent with each other: `N` = 5 non-agentic, 4 agentic. | §5.3 — five or four points |
 
 ??? success "Resolved at the 2026-09-24 review"
@@ -77,7 +90,7 @@ None of this is available in any source we could find.
 | **C5** | **The full submission-state list** | Only `REVIEW_PENDING`, `WITHDRAWN`, `FINALIZED` and `PUBLISHED` are documented |
 | **C6** | **Preview Availability Tracker URL** and the public results/visualizer URL | Referenced by the rules; no URL given |
 | **C7** | **The Offline point's loose ends** | §5.7 defines the Offline point, but several things you need to run one aren't settled. **Load pattern:** the rules say "the benchmark-defined Offline load pattern" and name no client setting; the reference client's `max_throughput` matches the definition, unconfirmed. **`region` value:** unspecified for a dedicated run; `submitters_choice` passes the checker. **Dataset smaller than `C_max`:** the Offline concurrency is the dataset size and must be ≥ `C_max`, so a large `C_max` can't satisfy both. Open upstream as `[OFFLINE]` item 2. **Steady state:** §4.4's scope excludes a dedicated Offline run, which implies `total` metrics; not stated outright. **Duration:** §6.2 applies unchanged, though the run ends when the queue drains. **Pass boundaries:** the event log doesn't mark them, so the no-mixing rule is a manual review item |
-| **C8** | **Which benchmarks are agentic, and which are multi-turn** | This now decides a lot: whether you need an Offline point, how many points and accuracy runs you owe, the accuracy gate (every point vs mean-of-N), the primary chart (`tps_per_user` vs `e2e_avg_interactivity`), and whether agentic salting flags apply. None of it is mapped to a benchmark. Ties to **C1** and **B12** |
+| **C8** | **Which benchmarks are agentic, and which are multi-turn** | This now decides a lot: whether you need an Offline point, how many points and accuracy runs you owe, the accuracy gate (every point vs mean-of-N), the primary chart (`tps_per_user` vs `e2e_avg_interactivity`), and whether agentic salting flags apply. None of it is mapped to a benchmark. The checker decides it from the load pattern: a curve run with `agentic_inference` is agentic. Ties to **C1** |
 | **C9** | **Super-pass size per benchmark** | The steady-state window is measured in super-passes, defaulting to one full dataset pass "unless the benchmark definition specifies a different super-pass size". No benchmark definition is published, so you cannot compute your own floor |
 | **C10** | **Approved drafter lists** | §2.9.4 allows speculative decoding only with a drafter on the benchmark's published list. None has been published, the checker ships an empty one, and a drafter approved now can only be used two cohorts later. Until a list appears, speculative decoding isn't available for any benchmark |
 

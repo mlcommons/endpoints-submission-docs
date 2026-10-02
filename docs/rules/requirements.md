@@ -12,7 +12,7 @@ comply. Rules marked :material-alert-octagon:{ style="color:#c62828" } have a fa
 |---|---|
 | :material-alert-octagon:{ style="color:#c62828" } **≥ 8 measurement points** including a dedicated Offline run; **≥ 7** if you elect `C_max` as the Offline result, or for an agentic benchmark | `submission-checker check` — rule `point-count` |
 | **≤ 32 measurement points**, Offline included | rule `point-cap` |
-| :material-alert-octagon:{ style="color:#c62828" } **Exactly one Offline point** for a non-agentic benchmark, **none** for an agentic one | rule `offline-point-present` — see the warning below |
+| :material-alert-octagon:{ style="color:#c62828" } **Exactly one Offline point** for a non-agentic benchmark, **none** for an agentic one | rule `offline-point-present` |
 | :material-alert-octagon:{ style="color:#c62828" } **≥ 1 point at concurrency 1–32** (Ultra Low) | rule `ultra-low-concurrency-coverage` |
 | :material-alert-octagon:{ style="color:#c62828" } **≥ 1 point in each of Low, Medium, High Concurrency** | rules `low-` / `med-` / `high-concurrency-coverage` |
 | :material-alert-octagon:{ style="color:#c62828" } **`C_max` declared and > 32** | rule `max-concurrency-declared` |
@@ -22,9 +22,9 @@ Regions are computed in log-2 space from your own `C_min` and `C_max`. See
 [Plan your Pareto curve](../workflow/plan-your-curve.md) and
 [Metrics and regions](../reference/metrics-and-regions.md).
 
-!!! warning "The checker can't enforce the Offline requirement yet"
-    It has no way to tell whether your benchmark is agentic, so a submission with **no** Offline
-    point only gets a warning locally. For a non-agentic benchmark the rules reject it.
+!!! note "How the checker knows a benchmark is agentic"
+    From the load pattern. A curve whose points all use `agentic_inference` is checked as agentic;
+    anything else is checked as single-turn, where a missing Offline point fails.
 
 ## The Offline point
 
@@ -198,5 +198,5 @@ your serving stack, and not as a sum of per-chunk counts.
 
 --8<-- "draft-rules-warning.md"
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef) and
-`mlcommons/endpoints-submission-cli@main` (f25f71e), 2026-09-24.*
+*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (d2d9da6) and
+`mlcommons/endpoints-submission-cli@main` (a42a056, `v1.1.0.0`), 2026-10-02.*

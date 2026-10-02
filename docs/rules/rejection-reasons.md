@@ -17,8 +17,7 @@ patching in place — you correct and resubmit as a new submission, losing your 
 | Symptom | Cause | Fix |
 |---|---|---|
 | `point-count` fails | Fewer than 8 points with a dedicated Offline run, or fewer than 7 otherwise | Run more points. Note withdrawn points do not count and **cannot be replaced** — [plan a spare](../workflow/plan-your-curve.md) |
-| `offline-point-present` fails | Two points declare `offline`, or `elected` sits on a point that isn't at `C_max` | Keep one declaration. Elect only the point at your declared `C_max` |
-| No Offline point (non-agentic) | Nothing declares `offline`. **Locally this is only a warning** | Run a dedicated Offline point or elect `C_max` — [step 3](../workflow/plan-your-curve.md#6-decide-how-to-meet-the-offline-requirement) |
+| `offline-point-present` fails | Nothing declares `offline` on a single-turn curve, two points do, `elected` sits on a point that isn't at `C_max`, or an agentic curve declares one | Keep exactly one declaration, and elect only the point at your declared `C_max`. An agentic curve has none — [step 3](../workflow/plan-your-curve.md#6-decide-how-to-meet-the-offline-requirement) |
 | `power-descriptor` fails | No `system_power.json` for a system, or one with nothing a total can be derived from | Author it — [step 5](../workflow/author-disclosures.md#3-write-system_powerjson-for-each-system) |
 | `*-concurrency-coverage` fails | No point in Low, Medium or High Concurrency | Recompute boundaries with `submission-checker regions` and run the missing region. Remember the 10% margin is **not** High Concurrency |
 | `ultra-low-concurrency-coverage` fails | No point at concurrency ≤ 32 | Run one in 1–32 |
@@ -40,6 +39,7 @@ These do not stop the automated checks, but reviewers see them and Weeks 1–3 i
 | `min-query-count` warns | Fewer completed queries than one dataset pass | Re-run with a longer issue window |
 | `streaming-config` flags | `stream_all_chunks` not `true` | Set it — per-token timing depends on it |
 | `load-pattern` flags | A point other than a dedicated Offline run used `max_throughput` or `poisson` | Only the fixed-concurrency pattern is valid there. Re-run, or declare `offline: dedicated` if it really is your Offline run |
+| `benchmark-type-consistency` flags | Some points use `agentic_inference` and others don't | Use one load pattern for the whole curve. Until you do, it's checked as single-turn |
 | `offline-ordering` warns | Offline `system_tps` under 0.98× the `C_max` point's, or Offline concurrency under `C_max` | Re-run the Offline point so it saturates the system, or elect `C_max` instead |
 | `power-estimated` warns | A component group in `system_power.json` has no count or TDP | Fill it in from a public spec sheet, or accept the "MLC Estimated Power" tag |
 | `metric-consistency-tps-per-kw` fails | Stored `system_tps_per_kw` disagrees with `system_tps / provisioned_power_kw` | Don't hand-edit it |
@@ -93,5 +93,5 @@ rule.
 
 --8<-- "precedence-notice.md"
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef) and
-`mlcommons/endpoints-submission-cli@main` (f25f71e), 2026-09-24.*
+*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (d2d9da6) and
+`mlcommons/endpoints-submission-cli@main` (a42a056, `v1.1.0.0`), 2026-10-02.*

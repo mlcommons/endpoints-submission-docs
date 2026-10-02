@@ -65,17 +65,17 @@ A post-processing step reads the event log (`events.jsonl`) after the run and fi
 the measured path — you don't do anything during the run to produce it. It does change how you plan
 a run, though, because a run can fail to have one.
 
-!!! warning "The detector is an ad-hoc script for now"
-    `scripts/steady_state_diagnostics.py` is on `mlcommons/endpoints` `main` (merged 2026-09-16),
-    and you run it yourself over a run directory or its `events.jsonl`:
+!!! warning "Turn the detector on, and copy its result"
+    Since endpoints#514 the client can find the window during the run. It's off by default; pass
+    `--steady-state` (or set `settings.steady_state.enabled`) and the result appears in
+    `result_summary.json` and `report.txt`. To re-check a finished run:
 
     ```bash
-    uv run scripts/steady_state_diagnostics.py <run_dir>/
+    python -m inference_endpoint.metrics.steady_state_diagnostics <run_dir>/
     ```
 
-    It isn't wired into `inference-endpoint` yet, so a run doesn't produce the `steady_state`
-    block by itself; you fill it in from the script's output. The script's own documentation scopes it
-    to single-turn workloads; for agentic runs it prints *not yet supported*. Tracked as **B9** in
+    Nothing copies the result into `point.yaml`; you fill in its `steady_state` block yourself. The
+    client doesn't compute steady state for agentic or Offline runs. Tracked as **B9** in
     [Open questions](../help/open-questions.md).
 
 ### Super-passes
@@ -301,5 +301,5 @@ The High Concurrency region carries a margin extending the valid upper bound to
 | Maximum | **32** points, Offline included | **32** points |
 | Spacing | No requirements — cluster or spread as you choose | Same |
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef) and
-`mlcommons/endpoints@main` (e71b928), 2026-09-24.*
+*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (d2d9da6) and
+`mlcommons/endpoints@main` (f1100cf), 2026-10-02.*

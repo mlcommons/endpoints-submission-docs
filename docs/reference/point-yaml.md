@@ -62,13 +62,14 @@ Added in 2026-09. It records how the point's official numbers were derived — s
 `total` metrics are reported alongside as supplementary. The window sub-field names are the ones
 the checker reads; §8.3 describes them only in prose.
 
-!!! warning "You run the detector yourself, for now"
-    The detector is on `mlcommons/endpoints` `main` as an ad-hoc script,
-    `scripts/steady_state_diagnostics.py`, which you point at a run directory or its
-    `events.jsonl`. It isn't wired into the benchmark run, so nothing fills in this block for you.
-    Its own documentation scopes it to single-turn workloads and prints *not yet supported* for
-    agentic runs. A dedicated Offline run sits outside the rules' steady-state scope too.
-    Tracked as **B9** in [Open questions](../help/open-questions.md).
+!!! warning "You copy this block in yourself"
+    Run the benchmark with `--steady-state` and the client finds the window during the run and
+    reports it in `result_summary.json` and `report.txt`. Nothing copies it into `point.yaml`, so
+    you fill in this block from that output. To re-check a finished run, point
+    `python -m inference_endpoint.metrics.steady_state_diagnostics` at its run directory. The
+    client doesn't compute steady state for agentic or Offline runs, and a dedicated Offline run
+    sits outside the rules' steady-state scope too. Tracked as **B9** in [Open
+    questions](../help/open-questions.md).
 
 ## The warmup block
 
@@ -122,8 +123,8 @@ the submission root.
 | `region-declared` | `region` is one of the permitted values |
 | `region-placement` | The declared region matches the computed one *(warn)* |
 | `offline-declared` | `offline` is `dedicated`, `elected` or `none` |
-| `offline-point-present` | Exactly one point declares Offline, and `elected` sits on the `C_max` point |
-| `load-pattern` | `load_pattern` is `concurrency` with a positive level. A dedicated Offline run is exempt |
+| `offline-point-present` | Single-turn: exactly one point declares Offline, and `elected` sits on the `C_max` point. Agentic: none does |
+| `load-pattern` | `load_pattern` is `concurrency`, or `agentic_inference` for an agentic benchmark, with a positive level. A dedicated Offline run is exempt |
 | `streaming-config` | `stream_all_chunks` is `True` |
 | `point-duration` | The steady-state window's issue-time span meets its region's minimum *(warn)* |
 | `steady-state-valid` | `status`, `verdict` and each `state` use the permitted values |
@@ -148,6 +149,6 @@ Full cross-walk: [Compliance checks](compliance-checks.md).
 - [Submission package layout](package-layout.md), where this file sits
 - [Metrics and regions](metrics-and-regions.md) — how to determine the right `region` value
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef),
-`mlcommons/endpoints-submission-cli@main` (f25f71e) and `mlcommons/endpoints@main` (e71b928),
-2026-09-24.*
+*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (d2d9da6),
+`mlcommons/endpoints-submission-cli@main` (a42a056, `v1.1.0.0`) and `mlcommons/endpoints@main`
+(f1100cf), 2026-10-02.*

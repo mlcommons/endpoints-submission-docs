@@ -4,8 +4,9 @@ Every automated check, cross-walked from **checker rule ID** to the **rules clau
 the **failure action** the rules assign. Use it to work out what a failed check actually means.
 
 Run locally with [`submission-checker`](cli-checker.md); run server-side during **Week 0**. This
-page describes checker **`v1.0.1.0`**. Older versions lack the Offline, power, accuracy-coverage,
-steady-state and drafter rules.
+page describes checker **`v1.1.0.0`**. Versions before `v1.0.1.0` lack the Offline, power,
+accuracy-coverage, steady-state and drafter rules, and versions before `v1.1.0.0` don't know the
+agentic models or their accuracy targets.
 
 !!! danger "Week 0 failures reject the submission"
     A submission that fails any automated check by the end of Week 0 is rejected. You correct and
@@ -60,7 +61,8 @@ steady-state and drafter rules.
 | `region-declared` | §8.3 | Declared `region` is one of the permitted values | :material-alert:{ style="color:#ef6c00" } |
 | `region-placement` | §8.3 | Declared region matches the computed one | :material-information:{ style="color:#1565c0" } |
 | `offline-declared` | §8.3 | `offline` is `dedicated`, `elected` or `none` | :material-alert:{ style="color:#ef6c00" } |
-| `offline-point-present` | §5.7, §9.1 | Exactly one Offline point, and `elected` only on the `C_max` point. **None present only warns** — see below | :material-alert-octagon:{ style="color:#c62828" } |
+| `offline-point-present` | §5.7, §9.1 | Single-turn: exactly one Offline point, and `elected` only on the `C_max` point. Agentic: none | :material-alert-octagon:{ style="color:#c62828" } |
+| `benchmark-type-consistency` | §6.1, §9.1 | Every point of the curve uses the same load pattern, so the curve is either agentic or single-turn | :material-flag:{ style="color:#f9a825" } |
 | `offline-ordering` | §5.7.2, §9.1 | Dedicated Offline run: `system_tps` ≥ 0.98 × the `C_max` point's, and concurrency ≥ `C_max` | :material-flag:{ style="color:#f9a825" } |
 | `ultra-low-concurrency-coverage` | §5.4, §9.1 | At least one point at concurrency ≤ 32 | :material-alert-octagon:{ style="color:#c62828" } |
 | `low-concurrency-coverage` | §9.1 | At least one point in Low Concurrency | :material-alert-octagon:{ style="color:#c62828" } |
@@ -74,11 +76,12 @@ steady-state and drafter rules.
     `concurrency-in-range` but does **not** count toward `high-concurrency-coverage`. A dedicated
     Offline run counts toward no region at all.
 
-!!! danger "A missing Offline point is only a warning locally"
-    The checker can't tell whether a benchmark is agentic, because nothing it reads says so. So
-    when **no** point declares `offline`, `offline-point-present` warns instead of failing, and
-    `point-count` applies the 7-point minimum. For a non-agentic benchmark the rules reject that
-    submission. Check this yourself.
+!!! note "How the checker tells agentic from single-turn"
+    Nothing in `point.yaml` names the benchmark type, so the checker reads it from the load pattern.
+    A curve whose points all use `agentic_inference` is agentic: it may not have an Offline point,
+    and the minimum is 7 points. Anything else is single-turn, and a missing Offline point fails
+    `offline-point-present`. If the points disagree, `benchmark-type-consistency` fails and the
+    curve is checked as single-turn.
 
 !!! note "`offline-ordering` needs a point at exactly `C_max`"
     The throughput half of the check looks up the point whose concurrency equals your declared
@@ -90,7 +93,7 @@ steady-state and drafter rules.
 |---|---|---|---|
 | `point-config-valid` | §8.3 | `point.yaml` parses against the `PointConfig` schema | :material-alert-octagon:{ style="color:#c62828" } |
 | `point-disclosure-complete` | §8.3 | Every required disclosure field is present | :material-alert-octagon:{ style="color:#c62828" } |
-| `load-pattern` | §6.1 | `load_pattern` is `concurrency` with a positive level. A point declaring `offline: dedicated` is exempt, and no Offline pattern name is tested | :material-alert:{ style="color:#ef6c00" } |
+| `load-pattern` | §6.1 | `load_pattern` is `concurrency`, or `agentic_inference` for an agentic benchmark, with a positive level. A point declaring `offline: dedicated` is exempt, and no Offline pattern name is tested | :material-alert:{ style="color:#ef6c00" } |
 | `streaming-config` | §6.5, §9.1 | `stream_all_chunks` is `True` | :material-flag:{ style="color:#f9a825" } |
 | `point-duration` | §6.2 | The steady-state window's issue-time span meets the region's minimum | :material-flag:{ style="color:#f9a825" } |
 | `steady-state-valid` | §4.4, §8.3 | `status`, `verdict` and gating `state` values are from the permitted vocabulary | :material-information:{ style="color:#1565c0" } |
@@ -101,6 +104,14 @@ steady-state and drafter rules.
 | `warmup-logs-retained` | §6.3.2 | Log retention declared | :material-information:{ style="color:#1565c0" } |
 | `warmup-salt` | §6.3.3 | Warns when the warmup salt is enabled | :material-information:{ style="color:#1565c0" } |
 | `config-consistency-dataset` | §9.1 | All points use the same dataset | :material-flag:{ style="color:#f9a825" } |
+| `config-consistency-model` | §8.5, §9.1 | All points declare the same `model_name` in `point.yaml` | :material-flag:{ style="color:#f9a825" } |
+
+!!! warning "The rules no longer require `stream_all_chunks: true`"
+    Rules §6.5 now requires streaming responses (`model_params.streaming` resolving to `on`)
+    on fixed-concurrency performance runs, exempts a dedicated Offline run, and allows either value
+    of `stream_all_chunks`. Checker `v1.1.0.0` hasn't caught up: `streaming-config` still fails a
+    point whose `point.yaml` records `stream_all_chunks: false`, and nothing checks
+    `model_params.streaming`. Run with `stream_all_chunks: true` until the checker changes.
 
 ## Seed binding
 
@@ -160,13 +171,18 @@ steady-state and drafter rules.
 | `accuracy-valid` | §6.6 | `accuracy_results.json` parses correctly | :material-alert-octagon:{ style="color:#c62828" } |
 | `accuracy-sample-count` | §6.6 | Issued sample count meets the model's minimum | :material-alert-octagon:{ style="color:#c62828" } |
 | `accuracy-gate` | §9.1 | Score meets the benchmark quality target | :material-alert-octagon:{ style="color:#c62828" } |
+| `agentic-accuracy-inline` | §4.3, §9.1 | Agentic models: inline accuracy meets the model's threshold at every point | :material-alert-octagon:{ style="color:#c62828" } |
+| `agentic-accuracy-swebench` | §4.3, §9.1 | Agentic models: the mean of the four mandatory-region SWE-bench scores meets the threshold | :material-alert-octagon:{ style="color:#c62828" } |
+| `agentic-osl-range` | §4.3, §9.1 | Agentic models: the full-run mean output length per turn is inside the model's range | :material-alert-octagon:{ style="color:#c62828" } |
 
 **Accuracy has no variability allowance** at any stage.
 
-!!! note "The multi-turn mean is not what the checker tests"
-    `accuracy-coverage` checks which regions have results, and `accuracy-gate` checks each score.
-    Rules §4.3 judges multi-turn benchmarks on the **mean** of the `N` results instead, and
-    the checker doesn't compute that. For a single-turn benchmark the two agree.
+!!! note "Agentic models have their own accuracy rules"
+    For Kimi K3, Qwen3.6-35B-A3B and DeepSeek-V4.1-Flash, `accuracy-gate` stands aside and the three
+    `agentic-*` rules apply the thresholds from the client's [agentic
+    README](https://github.com/mlcommons/endpoints/blob/main/examples/10_Agentic_Inference/README.md#accuracy).
+    SWE-bench is judged on the mean of four results, as §4.3 requires for multi-turn benchmarks.
+    For the other models, `accuracy-gate` checks each score.
 
 ## What automation does not check
 
@@ -181,5 +197,5 @@ grounds. See [Why submissions get rejected](../rules/rejection-reasons.md#reject
     content is in §6.6, §8.5 and §9.1. The clause column above maps to the rules as they actually
     are. Tracked as **B3** in [Open questions](../help/open-questions.md).
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef) and
-`mlcommons/endpoints-submission-cli@main` (f25f71e, `v1.0.1.0`), 2026-09-24.*
+*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (d2d9da6) and
+`mlcommons/endpoints-submission-cli@main` (a42a056, `v1.1.0.0`), 2026-10-02.*

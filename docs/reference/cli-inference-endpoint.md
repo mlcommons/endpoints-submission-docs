@@ -89,7 +89,7 @@ Flags exist as `--full.dotted.path` and, where defined, a short alias. Both form
 |---|---|---|---|
 | `--model-params.max-new-tokens` | `--max-output-tokens` | 1024 | |
 | `--model-params.osl-distribution.min` | `--min-output-tokens` | 1 | |
-| `--model-params.streaming` | `--streaming` | `auto` | `auto` resolves to off for offline, on for online. Submission runs, the Offline point included, need streaming on |
+| `--model-params.streaming` | `--streaming` | `auto` | `auto` resolves to off for offline, on for online. Every fixed-concurrency point needs streaming on; a dedicated Offline run is exempt |
 | `--runtime.n-samples-to-issue` | `--num-samples` | — | Explicit sample count |
 | `--runtime.min-issue-duration-ms` | — | — | Poisson sizing from QPS × duration |
 | `--runtime.max-issue-duration-ms` | — | — | Caps performance issuing; in-flight responses still drain |
@@ -214,5 +214,5 @@ See [Submission package layout](package-layout.md) for the run folder the client
     Credentials and other secrets are replaced with `<redacted>`. Restore them before reusing that
     file as benchmark input.
 
-*Last verified against: `mlcommons/endpoints@main` (e71b928) and
-`mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef), 2026-09-24.*
+*Last verified against: `mlcommons/endpoints@main` (f1100cf) and
+`mlcommons/endpoints_policies@v1.0_rules_dev` (d2d9da6), 2026-10-02.*

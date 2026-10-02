@@ -3,8 +3,9 @@
 Validates a submission folder against the automated compliance rules — the same checks that run
 server-side during Week 0. Used in [step 6](../workflow/validate.md).
 
-Ships with [`endpoints-submission-cli`](cli-submission.md). Use **`v1.0.1.0` or later**: that
-release added the Offline, power, accuracy-coverage, steady-state and drafter checks.
+Ships with [`endpoints-submission-cli`](cli-submission.md). Use **`v1.1.0.0` or later**.
+`v1.0.1.0` added the Offline, power, accuracy-coverage, steady-state and drafter checks, and
+`v1.1.0.0` added the agentic models and their accuracy gates, and the rules' power model.
 
 ## `check`
 
@@ -115,4 +116,4 @@ Eight families of rules. Full cross-walk from rule ID to clause, with severity:
 | Metrics | Result schema, duration, sample accounting, `system_tps`, TPOT P90, `tps_per_user`, `system_tps_per_kw`, agentic interactivity |
 | Accuracy | Presence, coverage of the required points, validity, sample count, quality gate |
 
-*Last verified against: `mlcommons/endpoints-submission-cli@main` (f25f71e, `v1.0.1.0`), 2026-09-24.*
+*Last verified against: `mlcommons/endpoints-submission-cli@main` (a42a056, `v1.1.0.0`), 2026-10-02.*

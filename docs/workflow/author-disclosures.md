@@ -112,17 +112,17 @@ lifts it from your run folders to `results/<system>/system_power.json` in the bu
 Two ways to fill it:
 
 - **From components.** Count and rated TDP for the CPUs, accelerators and scale-up switches, each
-  with a link to a public spec sheet, plus the overhead fraction for your cooling: `0.30` liquid,
-  `0.50` air.
+  with a link to a public spec sheet. The overhead for cooling and everything else, `0.30` liquid
+  or `0.50` air, comes from the `cooling` field in `system_desc.json`, so make sure that's filled
+  in.
 - **Directly.** A single provisioned-power figure, if you have published documentation for the
   system as provisioned. For a range, use the upper bound.
 
 ```json
 {
-  "cpu":              { "count": 2, "tdp_per_unit": 350,  "link": "https://…" },
-  "accelerator":      { "count": 8, "tdp_per_unit": 700,  "link": "https://…" },
-  "scale_up_network": { "count": 1, "tdp_per_unit": 3500, "link": "https://…" },
-  "overhead_fraction": 0.30
+  "cpu":              { "num_cpu": 2,         "tdp_per_cpu": 350,         "link": "https://…" },
+  "accelerator":      { "num_accelerator": 8, "tdp_per_accelerator": 700, "link": "https://…" },
+  "scale_up_network": { "num_switches": 1,    "tdp_per_switch": 3500,     "link": "https://…" }
 }
 ```
 

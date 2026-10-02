@@ -64,11 +64,14 @@ Indexed by what you see. Search this page for a fragment of your error message.
     A `state` of `INTERRUPTED` means the run was aborted; `state: complete` with pending tasks means
     a drain timeout.
 
-??? failure "The Offline run has no per-token timing, or `streaming-config` flags it"
-    **Cause:** the client's `streaming: auto` default resolves to off for offline runs.
+??? failure "`streaming-config` fails"
+    **Cause:** the point's `point.yaml` records `stream_all_chunks: false`, which is the default in
+    the client's config templates (`settings.client.stream_all_chunks`).
 
-    **Fix:** set streaming on explicitly in the Offline point's config. `stream_all_chunks` must be
-    `true` for every performance run.
+    **Fix:** re-run with `stream_all_chunks: true`. The rules now allow either value, but checker
+    `v1.1.0.0` still requires `true`. Separately, every fixed-concurrency point needs streaming
+    responses so TTFT and TPOT can be measured. The client's `streaming: auto` turns them on for
+    those runs; a dedicated Offline run doesn't need them.
 
 ??? failure "The run ends far sooner than the region minimum"
     **Cause:** sample-count sizing. With no explicit count and no minimum issue duration, the client
@@ -145,13 +148,14 @@ Indexed by what you see. Search this page for a fragment of your error message.
     replaced**, because there's no `add-run`. If the curve needs a different set of runs, create a new
     submission.
 
-??? failure "`offline-point-present` warns that no point declares `offline`"
-    **Cause:** no dedicated Offline run and no elected `C_max` point. The checker only warns because
-    it can't tell whether your benchmark is agentic.
+??? failure "`offline-point-present` fails because no point declares `offline`"
+    **Cause:** no dedicated Offline run and no elected `C_max` point, on a curve the checker reads as
+    single-turn. It treats a curve as agentic only when every point's load pattern is
+    `agentic_inference`.
 
-    **Fix:** if the benchmark isn't agentic, this **will** be rejected. Add `offline: elected` to
-    your `C_max` point's `point.yaml`, or run a dedicated Offline point and declare
-    `offline: dedicated`. See [step 3](../workflow/plan-your-curve.md#6-decide-how-to-meet-the-offline-requirement).
+    **Fix:** add `offline: elected` to your `C_max` point's `point.yaml`, or run a dedicated Offline
+    point and declare `offline: dedicated`. If the benchmark really is agentic, check the load
+    pattern recorded at every point. See [step 3](../workflow/plan-your-curve.md#6-decide-how-to-meet-the-offline-requirement).
 
 ??? failure "`offline-point-present` fails on an `elected` point"
     **Cause:** `elected` is declared on a point whose concurrency isn't your declared `C_max`.

@@ -90,16 +90,12 @@ The ones that **reject** rather than flag:
 - Seed-set validity
 - Any drafter used is on the approved list, and was approved at least two cohorts earlier
 
-!!! warning "Use checker `v1.0.1.0` or later"
+!!! warning "Use checker `v1.1.0.0` or later"
     The Offline, power, accuracy-coverage, steady-state and drafter checks arrived in `v1.0.1.0`
-    (2026-09-23). An older checker passes submissions the server will reject. Check with
+    (2026-09-23). `v1.1.0.0` (2026-10-01) added the agentic models and their accuracy gates, fails
+    a single-turn curve with no Offline point, and follows the rules' power model. An older checker
+    passes submissions the server will reject. Check with
     `endpoints-submission-cli --version`, and upgrade with `pip install -U endpoints-submission-cli`.
-
-!!! danger "A missing Offline point only warns locally"
-    The checker can't tell an agentic benchmark from a single-turn one yet, so a submission with
-    no `offline` declaration gets a **warning** (`offline-point-present`), not an error. For a
-    non-agentic benchmark the rules treat that as a reject. Run with `--strict` or read the
-    warnings. Don't take a clean exit code as proof you have an Offline point.
 
 ### 5. Use the programmatic API for CI
 

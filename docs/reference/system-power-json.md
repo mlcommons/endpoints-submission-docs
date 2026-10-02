@@ -19,52 +19,62 @@ to yield a total.
 | Field | Type | Description |
 |---|---|---|
 | `provisioned_power_w` | number | A declared total, in **watts**. If present it is used as-is and the component groups are ignored |
+| `rack_power_w`, `rack_nodes`, `submitted_nodes` | number | Rack-level node scaling (§4.5.2.1): the published power of a full rack of `rack_nodes` nodes, scaled to the `submitted_nodes` you submit |
 | `cpu` | group | Host CPUs |
 | `accelerator` | group | GPUs, ASICs and similar |
+| `compute` | group | Optional. CPU and accelerator as one figure, where the vendor publishes them that way. Replaces `cpu` and `accelerator` |
 | `scale_up_network` | group | The high-bandwidth fabric between accelerators — NVLink switches, TPU ICI, UALink over Ethernet. Zero in a system with no switches |
-| `scale_out_network` | group | Optional. Only for multi-node systems with a scale-out fabric |
-| `overhead_fraction` | number | Other components and cooling: `0.30` liquid-cooled, `0.50` air-cooled |
+| `scale_out_network` | group | Optional. Only for multi-node systems with a scale-out fabric. Reported, but not added to the total |
+| `overhead_fraction` | number | Optional, and normally left out: the checker takes it from `cooling` in `system_desc.json` (below) |
 
-Each **group** has:
+Each **group** has a count, a rated power per unit in **watts**, and a link to a public
+specification. The checker accepts the field names from rules §4.5.2, or a generic spelling on any
+group:
 
-| Field | Type | Description |
+| Group | Count | Power per unit |
 |---|---|---|
-| `count` | number | Units installed, as provisioned — not the chassis maximum |
-| `tdp_per_unit` | number | Rated power per unit, in **watts** |
-| `link` | string | A public specification backing the rating |
+| `cpu` | `num_cpu` | `tdp_per_cpu` |
+| `accelerator` | `num_accelerator` | `tdp_per_accelerator` |
+| `scale_up_network`, `scale_out_network` | `num_switches` | `tdp_per_switch` |
+| Any group | `count` | `tdp_per_unit` |
 
-!!! warning "The rules and the checker name these differently"
-    Rules §4.5.2 lists the fields as `num_cpu`, `tdp_per_cpu`, `num_accelerator`,
-    `tdp_per_accelerator`, `num_switches` and `tdp_per_switch`. The released checker reads nested
-    groups with `count`, `tdp_per_unit` and `link`, as above. The checker's spelling is what gets
-    validated. Tracked as **B10** in [Open questions](../help/open-questions.md).
+The link goes in `link` or `public_specification`. Count what's installed, as provisioned, not the
+chassis maximum.
+
+!!! warning "Declare `cooling` in `system_desc.json`"
+    The overhead fraction comes from the system description's `cooling` field, read at system
+    level or from `node_types`: `0.30` if it says liquid (or water, or immersion), `0.50` if it says
+    air. A system whose nodes are cooled differently gets `0.50`. Without a fraction there is no
+    total, so `power-descriptor` fails. Passive cooling matches neither value; in that case state
+    `overhead_fraction` here.
 
 ## How the total is computed
 
 ```
-major    = cpu + accelerator + scale_up_network (+ scale_out_network)
-           where each group = count × tdp_per_unit
+total_w  = provisioned_power_w                             if declared
+         = rack_power_w × submitted_nodes / rack_nodes     else, if all three are given
+         = major × (1 + overhead_fraction)                 otherwise
 
-total_w  = provisioned_power_w                    if declared
-         = major × (1 + overhead_fraction)        otherwise
+major    = cpu + accelerator + scale_up_network
+           (compute replaces cpu + accelerator when given)
 
 provisioned_power_kw = total_w / 1000
 system_tps_per_kw    = system_tps / provisioned_power_kw
 ```
 
-Rules §4.5.2 also allows CPU and accelerator power to be declared as one combined value where
-a vendor publishes them that way.
+Scale-out networking isn't part of `major`. Rules §4.5.2 counts it inside the overhead fraction,
+along with storage, power-supply overhead and cooling.
 
 ## Example
 
-A liquid-cooled node with two CPUs, eight accelerators and one scale-up switch:
+A liquid-cooled node with two CPUs, eight accelerators and one scale-up switch. Its
+`system_desc.json` says the node is liquid-cooled, so the fraction is `0.30`:
 
 ```json
 {
-  "cpu":              { "count": 2, "tdp_per_unit": 350,  "link": "https://vendor.example/cpu-spec" },
-  "accelerator":      { "count": 8, "tdp_per_unit": 700,  "link": "https://vendor.example/accel-spec" },
-  "scale_up_network": { "count": 1, "tdp_per_unit": 3500, "link": "https://vendor.example/switch-spec" },
-  "overhead_fraction": 0.30
+  "cpu":              { "num_cpu": 2,         "tdp_per_cpu": 350,         "link": "https://vendor.example/cpu-spec" },
+  "accelerator":      { "num_accelerator": 8, "tdp_per_accelerator": 700, "link": "https://vendor.example/accel-spec" },
+  "scale_up_network": { "num_switches": 1,    "tdp_per_switch": 3500,     "link": "https://vendor.example/switch-spec" }
 }
 ```
 
@@ -123,5 +133,5 @@ contents.
     - **Pending ratification.** Tier definitions, overhead fractions, reference components and the
       metric's name and units are all marked subject to change.
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef) and
-`mlcommons/endpoints-submission-cli@main` (f25f71e), 2026-09-24.*
+*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (d2d9da6) and
+`mlcommons/endpoints-submission-cli@main` (a42a056, `v1.1.0.0`), 2026-10-02.*
