@@ -84,6 +84,14 @@ git -C endpoints rev-parse HEAD
 
 Both `endpoints-submission-cli` and `submission-checker` come from this one package.
 
+Optionally, install the results visualizer to preview your curves locally before you submit:
+
+```bash
+pip install mlperf-viz
+```
+
+See [Results visualizer](../reference/cli-visualizer.md).
+
 ### 3. Install `gh`
 
 The [`gh` CLI](https://cli.github.com/) is required for creating, updating and withdrawing

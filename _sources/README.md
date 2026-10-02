@@ -10,6 +10,7 @@ instead.
 | `policies-*.md`, `policies-seedset.yaml` | mlcommons/endpoints_policies | `v1.0_rules_dev@a7ec3cc` | 2026-09-19 |
 | `submission-cli-*.md` | mlcommons/endpoints-submission-cli | `main@f48ca84` | 2026-09-13 |
 | `endpoints-*.md` | mlcommons/endpoints | `main@47cc5c8` | 2026-09-13 |
+| `mlperf-viz-README.md` | mlcommons/mlperf-viz (`cli/README.md`) | `cli-v1.1.0@654dca5` | 2026-10-02 |
 
 The dates differ because only the policies repo moved at the 2026-09-19 resync; the CLI and
 reference-client snapshots are still current at their original capture.
