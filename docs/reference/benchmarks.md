@@ -4,12 +4,12 @@
 
 | Benchmark | Model on Hugging Face | `model_name` the checker accepts |
 |---|---|---|
-| Llama 3.1 8B | `meta-llama/Llama-3.1-8B-Instruct` | `llama3.1-8b` |
+| Llama 3.1 8B | `meta-llama/Llama-3.1-8B-Instruct` | `llama3_1-8b` |
 | GPT-OSS 120B | `openai/gpt-oss-120b` | `gpt-oss-120b` |
 | DeepSeek-R1 | `deepseek-ai/DeepSeek-R1` | `deepseek-r1` |
-| Kimi K3 *(agentic)* | `moonshotai/Kimi-K3` | None yet |
-| Qwen3.6-35B-A3B *(agentic)* | `Qwen/Qwen3.6-35B-A3B` | None yet |
-| DeepSeek V4 *(agentic, tentative)* | Not settled, see below | None yet |
+| Kimi K3 *(agentic)* | `moonshotai/Kimi-K3` | `kimi-k3` |
+| Qwen3.6-35B-A3B *(agentic)* | `Qwen/Qwen3.6-35B-A3B` | `qwen3_6-35b-a3b` |
+| DeepSeek-V4.1-Flash *(agentic)* | `deepseek-ai/DeepSeek-V4.1-Flash` | `deepseek-v4_1-flash` |
 
 ## Datasets
 
@@ -63,21 +63,19 @@ For GPT-OSS the query count includes the repeats, so AIME25 counts eight times.
 ### Agentic benchmarks
 
 These targets come from the client's
-[agentic example README](https://github.com/mlcommons/endpoints/blob/main/examples/10_Agentic_Inference/README.md#accuracy), not
-from the checker (this line to be removed when changes are made to the submission checker).
-There are three metrics:
+[agentic example README](https://github.com/mlcommons/endpoints/blob/main/examples/10_Agentic_Inference/README.md#accuracy),
+and the checker enforces them from `v1.1.0.0`. There are three metrics:
 
 - **Inline accuracy** and **OSL per-turn mean** have to pass at every point that carries an
   accuracy result.
 - **SWE-bench accuracy** is judged on the average of four results, one from each mandatory region.
 
-| Metric | Kimi K3 | Qwen3.6-35B-A3B | DeepSeek-V4.1-Flash *(proposed)* |
+| Metric | Kimi K3 | Qwen3.6-35B-A3B | DeepSeek-V4.1-Flash |
 |---|---|---|---|
-| Inline accuracy | At least 58.32% (reference 58.9%) | At least 55.86% (reference 56.43%) | At least 51.7% (reference 53.3%) |
+| Inline accuracy | At least 58.32% (reference 58.9%) | At least 55.86% (reference 56.43%) | At least 52.36% (reference 53.16%) |
 | OSL per-turn mean, in tokens | 425–520 (reference 472) | 344–422 (reference 383) | 793–970 (reference 882) |
 | SWE-bench accuracy | At least 93.5% (reference 94.83%) | At least 69% (reference 71.7%) | At least 96.4% (reference 97.5%) |
 
 *Last verified against: the MLPerf Endpoints v1.0 rules overview (2026-09-22),
-`mlcommons/endpoints@main` (e71b928) and open PR #519, `mlcommons/endpoints-submission-cli@main`
-(f25f71e, tag `v1.0.1.0`) and open PR #93, and `mlcommons/endpoints_policies@v1.0_rules_dev`
-(6b0b1ef), 2026-09-24.*
+`mlcommons/endpoints@main` (f1100cf), `mlcommons/endpoints-submission-cli@main` (a42a056, tag
+`v1.1.0.0`), and `mlcommons/endpoints_policies@v1.0_rules_dev` (d2d9da6), 2026-10-02.*
