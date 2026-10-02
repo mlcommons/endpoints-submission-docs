@@ -7,9 +7,19 @@ instead.
 
 | Snapshot | Upstream | Ref | Captured |
 |---|---|---|---|
-| `policies-*.md`, `policies-seedset.yaml` | mlcommons/endpoints_policies | `v1.0_rules_dev@6b0b1ef` | 2026-09-24 |
-| `submission-cli-*.md` | mlcommons/endpoints-submission-cli | `main@f25f71e` (tag `v1.0.1.0`) | 2026-09-24 |
+| `policies-*.md`, `policies-seedset.yaml` | mlcommons/endpoints_policies | `v1.0_rules_dev@d2d9da6` | 2026-10-02 |
+| `submission-cli-*.md` | mlcommons/endpoints-submission-cli | `main@a42a056` (after tag `v1.1.0.0`) | 2026-10-02 |
 | `endpoints-*.md` | mlcommons/endpoints | `main@47cc5c8` | 2026-09-13 |
+
+The 2026-10-02 resync moved the policies snapshots (streaming and the multi-token stream interval,
+`model_name` and `link_config` out of `system_desc.json`, file-name fixes) and the CLI snapshots
+(checker `v1.1.0.0`: agentic models and accuracy gates, the §4.5.2 power model, no
+`--publication-cycle`, submissions left in `COMPLIANCE_CHECKING`, the new API default, and
+`create-local` deprecated on `main`). The two reference-client files are unchanged at
+`main@f1100cf`. Mined, not snapshotted: endpoints#514 (steady state computed during the run,
+detector moved to `src/inference_endpoint/metrics/`), endpoints#519 (DeepSeek-V4.1-Flash), and
+from the checker at `a42a056`: `checker.py`, `models/aggregate/context.py`,
+`models/file/{point_config,system_power}.py` and `data/approved_drafters.yaml`.
 
 The 2026-09-24 resync moved the policies snapshots (Offline point, power normalization, approved
 drafter lists, publication modes, audit process) and the CLI snapshots (checker `v1.0.1.0`, which

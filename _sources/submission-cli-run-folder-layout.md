@@ -1,8 +1,8 @@
 <!--
   PROVENANCE SNAPSHOT — do not edit.
   Upstream : docs/endpoints-cli/reference/run-folder-layout.md
-  Repo     : mlcommons/endpoints-submission-cli @ main@f25f71e
-  Captured : 2026-09-24
+  Repo     : mlcommons/endpoints-submission-cli @ main@a42a056
+  Captured : 2026-10-02
   Purpose  : diff this against upstream to find what drifted since the docs were written.
 -->
 

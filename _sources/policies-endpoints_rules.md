@@ -1,8 +1,8 @@
 <!--
   PROVENANCE SNAPSHOT — do not edit.
   Upstream : endpoints_policies/endpoints_rules.md
-  Repo     : mlcommons/endpoints_policies @ v1.0_rules_dev@6b0b1ef
-  Captured : 2026-09-24
+  Repo     : mlcommons/endpoints_policies @ v1.0_rules_dev@d2d9da6
+  Captured : 2026-10-02
   Purpose  : diff this against upstream to find what drifted since the docs were written.
 -->
 
@@ -60,7 +60,7 @@
 7. [Publication Status](#7-publication-status)
 8. [Submission Requirements](#8-submission-requirements)
    - [8.1 Directory Structure](#81-directory-structure)
-   - [8.2 System Description (system\_desc.json)](#82-system-description-system_desc_idjson)
+   - [8.2 System Description (system\_desc.json)](#82-system-description-system_descjson)
    - [8.3 Measurement Point YAML](#83-measurement-point-yaml)
    - [8.4 Software Disclosure](#84-software-disclosure)
    - [8.5 Result ID](#85-result-id)
@@ -579,7 +579,7 @@ Techniques permitted under [§2.9.6.2](#2962-exact-sparse-execution-and-softmax-
 - **Detokenization.** The response text must be produced by applying the reference detokenizer to the generated token IDs.
 - **Stop token handling.** The generation must halt on the same stop tokens and EOS conditions defined in the benchmark specification.
 - **Sampling.** For benchmarks using greedy decoding (temperature = 0), the submission must also use greedy decoding. For benchmarks specifying a sampling configuration, the submission must use the same sampling parameters as specified in the benchmark definition.
-- **Output stream.** With `stream_all_chunks = true`, every output token must be dispatched to the client as it is generated. Buffering token dispatch is not permitted.
+- **Output stream.** On streaming runs, the SUT must dispatch output to the client incrementally as it is generated. A multi-token **stream interval** is permitted: the SUT may group up to N consecutive generated tokens into one chunk (e.g., `stream_interval` in TensorRT-LLM, SGLang, and vLLM), dispatching each chunk once N tokens have accumulated or generation ends. Holding tokens beyond the configured interval, or buffering the complete response into a single message, is not permitted. This is a SUT requirement and is independent of the client-side `stream_all_chunks` setting (see [§6.5](#65-dataset-considerations)).
 
 #### 2.9.8 Accuracy Gate
 
@@ -602,7 +602,7 @@ A: No. Returning a cached response verbatim to a request that matches a previous
 The salt is itself part of the submission's **bound seed set** ([Submission Rules §4.6](endpoints_submission_rules.md#46-seed-rotation)), so it changes when MLCommons refreshes the seed set every two cohorts.
 
 **Q2: Is iteration coalescing — the server returning multiple generated tokens in a single network message — allowed?**
-A: *Open question.* See [Appendix A](#appendix-a-open-questions-and-working-group-items); the WG is discussing this in the context of Client-over-Network (CoN) scenarios. Until resolved, submitters must disclose any token-coalescing behavior and conservatively assume `stream_all_chunks = true` semantics. Token-count metrics use the reference tokenizer applied to the coalesced output (see [§2.8 Tokenizer Rules](#28-tokenizer-rules)).
+A: Yes, as a multi-token stream interval under [§2.9.7](#297-post-processing-equivalence). Serving frameworks expose this to reduce per-token dispatch overhead at large batch sizes. Changing chunk boundaries is not a modification of the response stream under [§2.2.1](#221-general-rules), since the concatenated output is unchanged. No metric adjustment is applied: TTFT is taken at the first chunk, so a larger interval delays it, and TPOT is computed over the post-first-chunk output tokenized once with the reference tokenizer (see [§2.8 Tokenizer Rules](#28-tokenizer-rules)).
 
 **Q3: Can I use a different serving framework than the reference (vLLM vs. TensorRT-LLM vs. SGLang)?**
 A: Yes. Arbitrary frameworks and runtimes are inherited from upstream, provided the framework conforms to the rest of the rules (model equivalence, no benchmark detection, no input-based optimization, etc.). The framework must satisfy the **Available** definition ([Submission Rules §7.2](endpoints_submission_rules.md#72-available)).
@@ -1236,7 +1236,8 @@ At each measurement point, the total number of samples issued MUST be a positive
 - Performance runs use `WithReplacementSampleOrder` (random sampling with replacement from the performance dataset).
 - Accuracy runs use `WithoutReplacementSampleOrder` (each sample exactly once).
 - For Ultra Low Concurrency region runs, a representative subset of the dataset may be used (configured via `n_samples_from_dataset`) to reduce run time, subject to pre-approval by the working group. The subset must be documented and identical across all submitters.
-- `stream_all_chunks` must be set to `true` for all performance runs to enable accurate per-token timing.
+- Fixed-concurrency performance runs must use streaming responses (`model_params.streaming` resolves to `on`) so that TTFT and TPOT can be measured. A dedicated Offline run ([§5.7](#57-offline-point)) is exempt, since it reports only `system_tps`. The SUT's streaming behavior, including any multi-token stream interval, is governed by [§2.9.7](#297-post-processing-equivalence).
+- `stream_all_chunks` is a client-side setting; either value is permitted, and the value used is recorded in `runtime_settings` ([§8.3](#83-measurement-point-yaml)).
 
 ### 6.6 Accuracy Requirement
 
@@ -1341,7 +1342,6 @@ Endpoints submissions must include the following metadata:
 | `inference_backend` | Inference backend used for submission, e.g., vendor stack components. |
 | `driver` | Driver and version number for any accelerators. |
 | `container_link` | Link to container for submission. |
-| `model_name` | Benchmark model name (must match supported model list). |
 | `max_supported_concurrency` | Declared Maximum Supported Concurrency `M`. |
 | `endpoint_url` | URL or description of the endpoint under test. |
 | `operating_system` | OS used for the node. |
@@ -1361,7 +1361,7 @@ Endpoints submissions must include the following metadata:
 
 #### 8.2.1 Template Structure
 
-`systems/<system_desc_id>.json` contains the fields defined in the table above.
+`results/<system>/<model_name>/r<N>/system_desc.json` contains the fields defined in the table above.
 
 ```json
 {
@@ -1419,7 +1419,6 @@ Endpoints submissions must include the following metadata:
   "batch": 0,
   "config_summary": "",
   "config_summary_notes": "",
-  "link_config": "",
   "tps_utilization": 0
 }
 ```
@@ -1477,7 +1476,7 @@ The **result ID** identifies a single published result and is human-readable. A 
 | `major-version` | Major version of the MLPerf Endpoints rules under which the result was submitted (e.g., `1` for v1.0). |
 | `minor-version` | Minor version of the same (e.g., `0` for v1.0). |
 | `cohort-number` | Cohort Number for this submission (e.g., `0` for the first cohort of a given version, `1` for the second, etc.)
-| `model_id` | Benchmark model identifier from the round's supported model list ([§3.2](#32-supported-models)). Must match `benchmark_model` in `system_desc.json` ([§8.2](#82-system-description-system_desc_idjson)). |
+| `model_id` | Benchmark model identifier from the round's supported model list ([§3.2](#32-supported-models)). Must match `model_name` in `point.yaml` ([§8.3](#83-measurement-point-yaml)). |
 | `dataset_id` | Identifier of the dataset used for the performance and accuracy runs, as named in the benchmark definition ([§3.1](#31-benchmark-definition)) and recorded in each point's `dataset` field ([§8.3](#83-measurement-point-yaml)). |
 | `entry-number` | Sequence number assigned at publication, unique within the preceding four components. |
 
@@ -1504,14 +1503,14 @@ The compliance validator — run by the submitter before submission and by MLCom
 | **Low Concurrency coverage** | ≥ 1 point in the Low Concurrency region. | Reject submission. |
 | **Medium Concurrency coverage** | ≥ 1 point in the Medium Concurrency region. | Reject submission. |
 | **High Concurrency coverage** | ≥ 1 point in the High Concurrency region. | Reject submission. |
-| **Max concurrency declared** | $C_{max} > 32$; declared in `system_desc_id.json`. | Reject submission. |
+| **Max concurrency declared** | $C_{max} > 32$; declared in `system_desc.json`. | Reject submission. |
 | **Point cap** | ≤ 32 total measurement points. | Reject points beyond 32. |
 | **Concurrency in range** | Each point's concurrency falls within a valid region (including the 10% High Concurrency margin), computed using the reference algorithm in [§5.5](#55-region-boundary-reference-algorithm). | Flag out-of-range points. |
 | **Offline ordering** | For a `dedicated` Offline run: `system_tps(Offline)` ≥ 0.98 × `system_tps` at the $C_{max}$ point, and `concurrency(Offline)` ≥ $C_{max}$ ([§5.7.2](#572-relationship-to-maximum-supported-concurrency)). Not applicable to an `elected` point. | Flag non-compliant submission. |
 | **Load pattern** | All points except the Offline point used the benchmark-defined fixed-concurrency load pattern; the Offline point used the Offline pattern. | Reject non-conforming points. |
 | **Run duration** | Each point meets the minimum steady-state duration for its region (see [§6.2](#62-minimum-run-duration)). | Flag non-compliant points. |
 | **Minimum query count** | Each point meets the minimum completed queries for its region (see [§6.4](#64-minimum-completed-queries)). | Flag non-compliant points. |
-| **Streaming config** | `stream_all_chunks = true` for all performance runs. | Flag non-compliant points. |
+| **Streaming config** | Streaming enabled (`model_params.streaming` resolves to `on`) for all fixed-concurrency performance runs; a dedicated Offline run is exempt. | Flag non-compliant points. |
 | **Warmup metadata** | Each point's YAML declares the warmup fields required by [§6.3.3](#633-documentation-requirements) (`duration_s`, `requests_issued`, `requests_completed`, `data_source`, `concurrency`, `initialization_steps`). | Flag non-compliant points. |
 | **Warmup logs retained** | Warmup request logs are retained and available for reviewer inspection (see [§6.3.2](#632-discard-policy)). | Flag non-compliant points. |
 | **Metric consistency** | The valid per-response TPOT distribution must be non-empty with a finite, strictly positive P90; the normalized P90 value in milliseconds is `tpot_p90_ms` and `tps_per_user = 1000 / tpot_p90_ms`. The authoritative result schema defines TPOT serialization and units. | Flag inconsistent points. |
@@ -1633,6 +1632,7 @@ See [§7.4](#74-open-question-custom-sku-classification-custom-sku).
 | Serviced division audit procedures | Required, details TBD | TBD |
 | Caching rules for Serviced division | Not allowed across queries | Proposed |
 | Response stream modification rules | Not allowed outside reference API | Proposed |
+| Multi-token stream interval (iteration coalescing) | Allowed ([§2.9.7](#297-post-processing-equivalence)) | Proposed |
 | Future division for new models/datasets | To be determined by WG | TBD |
 | Fabric vs. bus restrictions (Standardized CoN) | Not imposed (borrowed from Network Division) | Proposed |
 | Batch/chunk tokenizer variability | Reconstruct the complete structured assistant response, render it with the official reference chat template, exclude empty assistant framing, and apply the reference tokenizer once | Proposed |

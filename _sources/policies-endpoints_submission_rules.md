@@ -1,8 +1,8 @@
 <!--
   PROVENANCE SNAPSHOT — do not edit.
   Upstream : endpoints_policies/endpoints_submission_rules.md
-  Repo     : mlcommons/endpoints_policies @ v1.0_rules_dev@6b0b1ef
-  Captured : 2026-09-24
+  Repo     : mlcommons/endpoints_policies @ v1.0_rules_dev@d2d9da6
+  Captured : 2026-10-02
   Purpose  : diff this against upstream to find what drifted since the docs were written.
 -->
 
@@ -43,7 +43,7 @@
    - [5.3 Late Submissions](#53-late-submissions)
    - [5.4 Licensing](#54-licensing)
    - [5.5 Submission Content](#55-submission-content)
-   - [5.6 system\_desc\_id.json Metadata](#56-system_desc_idjson-metadata)
+   - [5.6 system\_desc.json Metadata](#56-system_descjson-metadata)
    - [5.7 Logging Requirements](#57-logging-requirements)
    - [5.8 Compliance Testing](#58-compliance-testing)
 6. [Review](#6-review)
@@ -340,18 +340,18 @@ All submissions of code must be made under the MLCommons CLA. Per the CLA, all s
 
 A submission must contain the following:
 
-- Metadata for the system under test (`system_desc_id.json`).
+- Metadata for the system under test (`system_desc.json`).
 - Pareto curve YAML configuration files (one per measurement point).
 - Run result artifacts for each measurement point (log files, metric summaries).
 - Accuracy validation run artifacts.
 - Code that implements the benchmark endpoint interface.
 - Metadata describing the system-implementation combination tested.
 
-Full content and directory structure requirements are defined in [MLPerf Endpoints Rules §7](endpoints_rules.md#7-submission-requirements).
+Full content and directory structure requirements are defined in [MLPerf Endpoints Rules §8](endpoints_rules.md#8-submission-requirements).
 
-### 5.6 `system_desc_id.json` Metadata
+### 5.6 `system_desc.json` Metadata
 
-The complete list of fields is defined in [MLPerf Endpoints Rules §8.2](endpoints_rules.md#82-system-description-system_desc_idjson), which is the canonical source.
+The complete list of fields is defined in [MLPerf Endpoints Rules §8.2](endpoints_rules.md#82-system-description-system_descjson), which is the canonical source.
 
 ### 5.7 Logging Requirements
 
