@@ -27,8 +27,8 @@
 Run [`submissions
 create`](https://github.com/mlcommons/endpoints-submission-cli/blob/main/docs/endpoints-cli/usage/submissions.md#submissions-create)
 with `--dry-run`, the same classification you'll use in [step 8](submit.md) (division, scenario,
-availability, publication cycle and publication mode, which you decided in [Before you
-begin](before-you-begin.md)), and the run IDs from step 6. It takes the same path step 8 will,
+availability and publication mode, which you decided in [Before you begin](before-you-begin.md)),
+and the run IDs from step 6. It takes the same path step 8 will,
 without creating anything, so it's the closest local approximation to what Week 0 will do.
 
 The full report, warnings included, goes to a `submission_checker_<timestamp>.log` file in the

@@ -23,6 +23,7 @@ correct and resubmit as a new submission ([Submission Rules §6.1][srules-6.1]).
 | `ultra-low-concurrency-coverage` fails | No point at concurrency ≤ 32 | Run one in 1–32 |
 | `system-description-valid` or `region-computation` fails | `max_supported_concurrency` missing (the first), or ≤ 32 (the second). §9.1 calls this *Max concurrency declared* | Declare a `C_max` > 32 in `system_desc.json` |
 | `accuracy-gate` fails | Accuracy run missed the benchmark quality target | No tolerance exists. Fix the configuration and re-run — and check whether an approximation under model equivalence pushed you under |
+| `agentic-accuracy-inline` / `agentic-accuracy-swebench` / `agentic-osl-range` fails | An agentic model missed its inline accuracy or output-length range at a point, or its mean SWE-bench score across the four regions is too low | No tolerance. Fix the configuration and re-run — [targets](../reference/benchmarks.md#agentic-benchmarks) |
 | `accuracy-present` / `accuracy-coverage` fails | No accuracy results in one of the four mandatory regions, or none at the Offline point | Run the missing validation — one at each mandatory region point and one at Offline, same stack as performance |
 | `shared-path-resolution` fails | `shared_src` / `shared_docs` do not resolve under the submission root | Fix the pointers in every `point.yaml` — [step 5](../workflow/author-disclosures.md) |
 | `seed-set-consistency` / `seed-set-membership` fails | Points record different seed sets, or a set MLCommons never published | Bind **one** published set and record it at every point |
@@ -38,7 +39,9 @@ stops on any error. Fix them before you submit.
 | Symptom | Cause | Fix |
 |---|---|---|
 | `min-query-count` fails | Fewer completed queries than the minimum | Re-run with a longer issue window |
-| `streaming-config` fails | `stream_all_chunks` not `true` | Set it — per-token timing depends on it |
+| `streaming-config` fails | `point.yaml` records `stream_all_chunks: false` | Re-run with it `true`. The rules now allow either value, but the checker still requires `true` |
+| `benchmark-type-consistency` fails | Some points use `agentic_inference` and others don't | Use one load pattern for the whole curve. Until you do, it's checked as single-turn |
+| `config-consistency-model` fails | Points declare different `model_name` values in `point.yaml` | One curve, one model. Fix the name, spelled as in [Benchmarks and models](../reference/benchmarks.md) |
 | `concurrency-in-range` fails | A point sits outside every valid region | Recompute boundaries — remember `C_min` is **derived from your own lowest point** |
 | `warmup-present` fails | Warmup declaration missing | Declare the warmup block in `point.yaml` |
 | `tps-utilization` fails | Value is not `system_tps / max(system_tps)` over your own curve | Recompute after every point has run |

@@ -83,13 +83,14 @@ tolerance ([Reproducibility Expectations][srules-reproducibility-expectations]).
 | Requirement | How to check |
 |---|---|
 | :material-alert-octagon:{ style="color:#c62828" } Accuracy results at every required point | rule `accuracy-coverage` |
-| :material-alert-octagon:{ style="color:#c62828" } The results pass the quality target | rule `accuracy-gate` |
+| :material-alert-octagon:{ style="color:#c62828" } The results pass the quality target | rule `accuracy-gate`, or for the agentic models `agentic-accuracy-inline`, `agentic-accuracy-swebench` and `agentic-osl-range` |
 
 !!! question "The targets are not published"
     The per-benchmark targets are marked `[WIP]` in [§2.9.8][rules-2.9.8]. For the legacy benchmarks
     the checker gates against the MLPerf Inference targets (see [Benchmarks and
-    models](../reference/benchmarks.md#accuracy-targets)); agentic targets aren't in the checker
-    yet. Tracked as **C2** in [Open questions](../help/open-questions.md).
+    models](../reference/benchmarks.md#accuracy-targets)). For the agentic benchmarks it uses the
+    targets in the client's agentic README. Tracked as **C2** in [Open
+    questions](../help/open-questions.md).
 
 ## Seeds
 

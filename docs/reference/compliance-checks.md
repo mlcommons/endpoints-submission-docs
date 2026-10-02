@@ -28,7 +28,8 @@ rules, and versions before `v1.1.0.0` don't know the agentic models or their acc
     **Flag** rows are errors locally, which stops `submissions create`:
     `system-description-consistency`, `model-name-consistency`, `tps-utilization`,
     `concurrency-in-range`, `streaming-config`, `min-query-count`, `warmup-present`,
-    `config-consistency-dataset` and every `metric-consistency-*` rule. Of the **Warn** rows,
+    `benchmark-type-consistency`, `config-consistency-dataset`, `config-consistency-model` and every
+    `metric-consistency-*` rule. Of the **Warn** rows,
     `steady-state-valid`, `steady-state-consistency`, `seed-config-legacy` (a seed other than 42)
     and `region-basis` (no parsable `point.yaml`) can also fail as errors.
 
