@@ -82,7 +82,10 @@ markdown_extensions:
       custom_checkbox: true
   - pymdownx.snippets:
       base_path: ["docs/_includes"]
-      auto_append: ["glossary.md"]
+      # policy-links.md holds reference-style links to rules clauses, so pages can
+      # point at a clause instead of copying its table. The policies branch lives
+      # only in that file: change it there when the rules move to main.
+      auto_append: ["glossary.md", "policy-links.md"]
       check_paths: true
   - toc:
       permalink: true
