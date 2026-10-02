@@ -7,7 +7,7 @@
     - Completed [2. Install the tools](install-tools.md)
     - You know roughly the highest concurrency your system serves usefully
 
-!!! danger "Do this before you run anything"
+!!! warning "Do this before you run anything"
     Region boundaries are calculated from your own minimum and maximum concurrency, so which
     concurrency levels count as valid depends on a number you pick. Running your points first and
     computing regions afterwards is the most common way to discover you have missed a required
@@ -16,7 +16,7 @@
 ## What you'll do
 
 - Choose `C_max`, your Maximum Supported Concurrency
-- Compute your four region boundaries with `submission-checker regions`
+- Compute your region boundaries with the checker's `regions` command
 - Pick at least 7 concurrency levels that satisfy the [`1 + 3 + 3` coverage rule][rules-5.3]
 - Decide how you'll meet the Offline requirement: a dedicated run, or electing your `C_max` point
 - Sanity-check the count against the 32-point cap
@@ -62,7 +62,7 @@ space. The reference algorithm is in [§5.5 of the rules][rules-5.5]. To calcula
 tool:
 
 ```bash
-submission-checker regions --max-concurrency 1024 --min-concurrency 16
+python -c "from submission_checker.cli import main; main()" regions --max-concurrency 1024 --min-concurrency 16
 ```
 
 <div class="result" markdown>
@@ -71,13 +71,16 @@ For `C_min = 16`, `C_max = 1024`:
 
 | Region | Range |
 |---|---|
-| Ultra Low Concurrency | 1 – 16 |
+| Low Latency (1 to `C_min`) | 1 – 16 |
 | Low Concurrency | 17 – 26 |
 | Medium Concurrency | 27 – 117 |
 | High Concurrency | 118 – 1024 |
-| 10% margin | 1025 – 1127 |
+| Margin (10% above `C_max`) | 1025 – 1127 |
 
 </div>
+
+The tool labels the band up to `C_min` "Low Latency". The Ultra Low Concurrency region itself stays
+1–32 for everyone.
 
 Pre-computed boundaries for common combinations are in [Appendix B of the rules][rules-appendix-b].
 
@@ -93,7 +96,8 @@ The rules give a worked 7-point set for three system sizes, under [Concurrency R
 §5.4][rules-5.4-concurrency]. Use them as a starting shape, with two caveats. They predate the
 Offline point, so add a dedicated Offline run on top or elect the `C_max` point. And the large-scale
 and mid-range sets stop short of their `C_max`, which is fine for region coverage but causes trouble
-at [step 6](#6-decide-how-to-meet-the-offline-requirement).
+when you [decide how to meet the Offline
+requirement](#6-decide-how-to-meet-the-offline-requirement).
 
 ### 5. Note the 10% margin
 
@@ -116,10 +120,9 @@ result.
 
 ## Verify
 
-Write your planned levels down and name the region each one falls in, using the boundaries from
-step 3. Then check the plan against the minimum submission requirements in
-[§5.3 of the rules][rules-5.3] and the point-count, region-coverage and Offline checks in
-[§9.1][rules-9.1].
+Write your planned levels down and name the region each one falls in, using the boundaries you
+computed above. Then check the plan against the minimum submission requirements in [§5.3 of the
+rules][rules-5.3] and the point-count, region-coverage and Offline checks in [§9.1][rules-9.1].
 
 !!! tip "Budget a spare"
     Withdrawn points do **not** count toward the minimum, and the shortfall cannot be repaired by

@@ -101,7 +101,7 @@ power figures, the result is tagged **"MLC Estimated Power"**.
   past the 90 days
   ([§10.2][srules-10.2]).
   See [Audits](../understand/how-submission-works.md#audits).
-- **Keep a CoN endpoint reachable** for at least **90 days** after publication, with a point of
+- **Keep a Standardized CoN endpoint reachable** for at least **90 days** after publication, with a point of
   contact
   ([§7.2.5][srules-7.2.5]).
 - **Honour a Preview commitment:** Available and re-submitted within 180 days of first
@@ -110,8 +110,7 @@ power figures, the result is tagged **"MLC Estimated Power"**.
   See [Publication status](../rules/publication-status.md).
 - **Use the right name.** Unqualified "MLPerf Endpoints" means Standardized; Serviced, RDI and
   Preview results carry qualified names
-  ([§2.2.3][rules-2.2.3],
-  [§7.3.8][srules-7.3.8]).
+  ([§2.2.3][rules-2.2.3], [§2.3.2][rules-2.3.2], [§2.4.2][rules-2.4.2], [§7.3.8][srules-7.3.8]).
 
 ## Verify
 

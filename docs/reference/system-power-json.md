@@ -1,15 +1,14 @@
 # `system_power.json`
 
 The provisioned-power descriptor for one system. **One per system**, not per point: provisioned
-power is fixed for the whole curve. Why it exists and what it's used for:
-[What is MLPerf Endpoints?](../understand/what-is-mlperf-endpoints.md#normalised-by-provisioned-power).
+power is fixed for the whole curve. Why it exists and what it's used for: [What is MLPerf
+Endpoints?](../understand/what-is-mlperf-endpoints.md#normalised-by-provisioned-power).
 
 !!! danger "Required, and authored by you"
-    Every system needs one. A system without it, or with a file from which no total can be
-    derived, fails the submission checker. Put it at the top level of at least one run folder of
-    the system; the builder places it at
-    `results/<system>/system_power.json` in the bundle. Authored in
-    [step 5](../workflow/author-disclosures.md#3-write-system_powerjson-for-each-system).
+    Every system needs one. A system without it, or with a file from which no total can be derived,
+    fails the submission checker. Put it at the top level of at least one run folder of the system;
+    the builder places it at `results/<system>/system_power.json` in the bundle. Authored in [step
+    5](../workflow/author-disclosures.md#3-write-system_powerjson-for-each-system).
 
 ## Fields
 
@@ -28,8 +27,8 @@ to yield a total.
 | `overhead_fraction` | number | Optional, and normally left out: the checker takes it from `cooling` in `system_desc.json` (below) |
 
 Each **group** has a count, a rated power per unit in **watts**, and a link to a public
-specification. The checker accepts the field names from rules §4.5.2, or a generic spelling on any
-group:
+specification. The checker accepts the field names from [rules §4.5.2][rules-component-template-system_powerjson],
+or a generic spelling on any group:
 
 | Group | Count | Power per unit |
 |---|---|---|

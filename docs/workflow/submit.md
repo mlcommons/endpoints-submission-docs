@@ -31,7 +31,7 @@ The two publication flags select one of the publication modes in [Submission Rul
 | `--provisional` | Provisional publication |
 | `--provisional --embargo-date` | Provisional, embargoed. Nothing is public, and **review doesn't start**, until the date |
 
-!!! danger "The mode is irrevocable"
+!!! warning "The mode is irrevocable"
     You can't change the publication mode after submitting, so you can't opt in to provisional
     publication later ([§6.2][srules-6.2]). Anyone quoting a *peer review pending* result has to
     carry the MLCommons *preliminary* footnote.

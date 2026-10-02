@@ -10,7 +10,7 @@ value, and where the tooling adds a condition the rules don't state.
 | Field | What the checker accepts |
 |---|---|
 | `region` | `low_latency`, `low_concurrency`, `med_concurrency`, `high_concurrency` or `submitters_choice` (`region-declared`) |
-| `division` | `Standardized`, `Serviced` or `RDI` |
+
 | `dataset_type` | Any of the §8.3 values, but the bundle builder only uses it when it is exactly `Accuracy` or `Performance`. |
 | `offline` | `dedicated`, `elected` or `none`, or absent. `elected` only on the point whose concurrency equals `max_supported_concurrency` (`offline-point-present`) |
 | `target_cohort` | `YYYY-MM-C0` or `YYYY-MM-C1` (`target-cohort`) |
