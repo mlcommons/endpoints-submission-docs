@@ -30,9 +30,9 @@ table only maps each one to where you meet it:
 | Minimum duration | [§6.2][rules-6.2] | Run length. It's measured over the steady-state window's issue time, not wall clock |
 | Minimum completed queries | [§6.4][rules-6.4] | Sample count: whole passes over the dataset |
 | Warmup | [§6.3][rules-6.3] | Your warmup procedure, declared in `point.yaml` |
-| Sampling and streaming | [§6.5][rules-6.5] | `stream_all_chunks: true` on every performance run. The rule also fixes the sampling order for performance and accuracy runs |
+| Sampling and streaming | [§6.5][rules-6.5] | Streaming responses on every fixed-concurrency point; a dedicated Offline run is exempt. The rules allow either value of `stream_all_chunks`, but keep it `true`, because checker `v1.1.0.0` still requires it. The rule also fixes the sampling order for performance and accuracy runs |
 | Consistency across points | [§9.1][rules-9.1] | Lock the model, endpoint config, software stack and seed set before the first point |
-| Speculative decoding | [§2.9.4][rules-2.9.4] | Needs a drafter from the benchmark's approved list. None is published yet, so **leave it off** for now |
+| Speculative decoding | [§2.9.4][rules-2.9.4] | Needs a drafter from the benchmark's approved list. Heads are approved for the agentic benchmarks only, and the checker's bundled list is still empty, so **leave it off** for now |
 
 !!! tip "Run longer than the minimum"
     Your official numbers now come from a **steady-state window** the tooling detects inside the

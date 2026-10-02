@@ -22,6 +22,15 @@ A few fields need more care than their one-line definition suggests:
     The checker recomputes it against your own curve (`tps-utilization`). You cannot fill it in until
     every point has run.
 
+!!! warning "`cooling` sets your power overhead"
+    The checker uses `cooling` to pick the overhead fraction for
+    [`system_power.json`](system-power-json.md): `0.30` for liquid-cooled, `0.50` for air-cooled.
+    Leave it empty and `power-descriptor` fails.
+
+!!! note "No `model_name` here"
+    The benchmark model name goes in `point.yaml` ([§8.3][rules-8.3]). §8.2 no longer lists it, and
+    the checker ignores a `model_name` left in this file.
+
 !!! question "`disaggregated` is truncated upstream"
     The field definition in the source data dictionary is cut off mid-sentence and carries an
     upstream TODO to verify the full text with the dictionary owner. Confirm the intended semantics
@@ -42,5 +51,5 @@ A few fields need more care than their one-line definition suggests:
 Provisioned power is **not** in this file. It goes in a separate, per-system
 [`system_power.json`](system-power-json.md).
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef) and
-`mlcommons/endpoints-submission-cli@main` (f25f71e), 2026-09-24.*
+*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (d2d9da6) and
+`mlcommons/endpoints-submission-cli@main` (a42a056, `v1.1.0.0`), 2026-10-02.*
