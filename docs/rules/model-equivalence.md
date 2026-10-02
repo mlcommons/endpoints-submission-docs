@@ -8,9 +8,10 @@ is background only.
 
 !!! warning "Check your assumptions here"
     Endpoints **inherits** the MLPerf Inference model-equivalence rules, then deliberately diverges
-    in three places. If you've submitted to MLPerf Inference before, your assumptions about
-    cross-query KV reuse and dynamic approximate sparsity. Where the two conflict, the Endpoints
-    rules are the source of truth for Endpoints submissions.
+    in three places: cross-query KV reuse, dynamic approximate sparsity, and quantization of a
+    speculative-decoding drafter. If you've submitted to MLPerf Inference before, recheck your
+    assumptions on all three. Where the two conflict, the Endpoints rules are the source of truth
+    for Endpoints submissions.
 
 ## The framing: disallowed-only
 
@@ -43,9 +44,12 @@ that a parameter not otherwise mentioned in the rules was yours to tune.
 - Knowledge distillation to a different architecture
 - Retraining, fine-tuning, LoRA, adapter layers, RLHF, or any gradient-based weight update, applied
   either to the canonical model **or** to any speculative-decoding drafter
+- **Speculative decoding with a drafter or algorithm that isn't on the benchmark's approved list**.
+  See [below](#speculative-decoding)
 - **Response caching**: returning a cached response verbatim to a matching request, bypassing the
   forward pass. Every request must execute the forward pass
-- Coalescing identical queries to amortise work across them
+- Coalescing identical queries to amortise work across them. On the Offline point this is also
+  why reordering has to stay inside one pass over the dataset
 - Modifying weights during the timed portion of a run (online learning)
 - Benchmark detection — behaving differently when a benchmark workload is recognised
 - **Input-based optimization**: encoding anything about the benchmark input dataset's *content* into
@@ -93,32 +97,74 @@ the artifact is not.
     Whether a component present in the checkpoint must also be **resident in accelerator memory**
     during measurement is an open working-group item. The memory freed by not loading it converts
     directly into KV-cache capacity and therefore throughput, so this is a real and currently
-    undisclosed advantage. Tracked upstream as `[CKPT-RESIDENCY]` and here as **B-open** in
-    [Open questions](../help/open-questions.md).
+    undisclosed advantage. Tracked upstream as `[CKPT-RESIDENCY]`, and here under *Likely to
+    affect your optimisation choices* in [Open questions](../help/open-questions.md).
 
 ## Speculative decoding
 
-Permitted for any benchmark whose definition **designates a drafter**. If the benchmark does not
-designate one, speculative decoding isn't available for that benchmark at all. A drafter shipped
-with the model but not designated may not be used.
+v1.0 replaced the single drafter a benchmark used to designate with a **curated, published list of
+approved drafters per benchmark**. You can use any drafter on your benchmark's list. A benchmark
+with no approved drafter doesn't allow speculative decoding at all. That includes a drafter that
+ships inside the canonical checkpoint but isn't on the list.
 
-The drafter is **frozen**. Disallowed:
+!!! warning "No list has been published yet"
+    As of 2026-09-24 there is no approved-drafter list for any benchmark. The checker ships an
+    empty one and reads that as "not permitted anywhere", which is also what the rules say. Until
+    a list is published, run without speculative decoding. Tracked as **C10** in
+    [Open questions](../help/open-questions.md).
 
-- Fine-tuning, LoRA, adapters, RLHF, or any gradient update to the drafter
-- Continued pre-training or retraining of the drafter
-- **Swapping** the drafter, including a different checkpoint of the same family, or a smaller one
-- Replacing the algorithm with a different one (e.g. EAGLE for Medusa)
-- Approximate methods that alter the output distribution — outputs must be token-for-token identical
-  to what the target would generate without speculation
-- Approximating, skipping or replacing the verification step, including verifying with a secondary
-  drafter
+### How a drafter gets on the list
 
-**Permitted:** PTQ on the drafter weights, under the same four conditions as the main model.
+- The benchmark task force seeds each list with at least one drafter per model where it can.
+- Anyone, submitter or working-group member, can propose another. The working group reviews it by
+  default; on escalation the task force reviews and the working group ratifies.
+- **Lead time.** A newly approved drafter can only be used by a submission whose `target_cohort`
+  is at least **two cohorts after** the one the updated list was published in. The checker tests
+  this (`drafter-approval-lead-time`).
 
-**Across the curve:** all points must use the **same drafter** — same head, same algorithm. Different
-*configurations* of that drafter are fine across points, including disabling speculation entirely at
-some points. Declare the per-point configuration in `point.yaml`; report any dynamic variation
-within a point as a distribution.
+A drafter is identified either by **weights** (model ID and weight checksum) or, for a
+self-speculative or early-exit drafter with no weights of its own, by **configuration**: the
+target's checksum plus the exit layer and anything else that defines the draft pass.
+
+### What disqualifies a drafter
+
+- **Not open-weight.** Anyone who accepts the licence must be able to download it. Private hosting
+  or manual approval disqualifies. An automatic click-through, such as the Llama licence gate,
+  doesn't.
+- **Trained on the benchmark data.** Deliberate fine-tuning or distillation on the performance
+  dataset is input-based optimization. Incidental overlap with a pretraining corpus is fine.
+- **Trained for the benchmark.** Fine-tuned or distilled to do well on this benchmark, including on
+  traffic built to mimic its task mix, prompt style or length distribution, even if the dataset
+  itself was never used. A general-purpose drafter that happens to suit the benchmark is fine.
+- **Undisclosed or QAT-style quantization.** Quantization-aware training, or PTQ without the
+  calibration set and method disclosed.
+
+### What you can't do with an approved drafter
+
+- **Modify it.** No fine-tuning, LoRA, adapters, RLHF or continued pre-training. A modified drafter
+  isn't the one on the list. PTQ is the one exception, under the same four conditions as the main
+  model.
+- **Change the output.** Verification must not accept tokens the target wouldn't have produced.
+  Output must be token-for-token identical to the target without speculation.
+- **Weaken verification.** No approximating, skipping or replacing it, including verifying with a
+  second drafter. The verifier is the canonical model with only the permitted transformations.
+
+Tree-structured verification attention (DFlash-style and similar) is fine, as long as the
+token-for-token guarantee holds.
+
+### Across the curve
+
+All points use the **same drafter**: same head, same algorithm. Its *configuration* can differ
+per point, for example `speculative-num-steps` or `speculative-eagle-topk`, and you can turn
+speculation off entirely at some points. Declare each point's configuration, and in the
+`speculative_decoding` block of `point.yaml` the drafter's ID and checksum, precision, public
+release date, a link to its model card or technical report, and tokenizer-compatibility notes.
+Report any variation within a single point's run as a distribution.
+
+No drafter-specific equivalence test exists. A speculative-decoding submission has to pass the
+accuracy gate with speculation on, and the drafter has to be free of input-based optimization.
+Because exact verification can't move accuracy, a failure at the gate means verification isn't
+exact.
 
 ## KV cache: the big difference
 
@@ -254,4 +300,5 @@ an approximation the rules allow is acceptable in your particular submission.
 
 --8<-- "draft-rules-warning.md"
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (a7ec3cc), 2026-09-19.*
+*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef) and
+`mlcommons/endpoints-submission-cli@main` (f25f71e), 2026-09-24.*

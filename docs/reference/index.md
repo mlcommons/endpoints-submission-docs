@@ -10,6 +10,7 @@ Tables to look things up in. For step-by-step instructions, see the
 | [Submission package layout](package-layout.md) | The run folder, the assembled bundle, and what is shared vs per-point |
 | [`point.yaml`](point-yaml.md) | Per-measurement-point disclosure fields |
 | [`system_desc.json`](system-desc-json.md) | Hardware and software description fields, with a template |
+| [`system_power.json`](system-power-json.md) | Provisioned-power descriptor, one per system |
 
 ## Measurement
 
@@ -37,4 +38,4 @@ Tables to look things up in. For step-by-step instructions, see the
     Each CLI page names the upstream document it tracks. Generating them from `--help` output is the
     right end state; until then, the upstream repository is authoritative and these pages can lag.
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (a7ec3cc), 2026-09-19.*
+*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef), 2026-09-24.*

@@ -6,8 +6,8 @@ What you do, what MLCommons does, what reviewers do, and when your results becom
 
 ```mermaid
 flowchart TD
-    A[Plan the curve<br/>choose C_max, compute regions] --> B[Run 7-32 measurement points<br/>reference client, fixed concurrency]
-    B --> C[Author system_desc.json<br/>and point.yaml per point]
+    A[Plan the curve<br/>choose C_max, compute regions] --> B[Run 7-32 measurement points<br/>plus the Offline point]
+    B --> C[Author system_desc.json and point.yaml<br/>per point, system_power.json per system]
     C --> D[Register each run<br/>runs create]
     D --> E[Assemble + validate<br/>submissions create]
     E -->|checker errors| C
@@ -80,22 +80,27 @@ financial interest in the outcome or an employment relationship.
 
 ## When your results become public
 
-By default, review is **fully confidential**: results and artifacts are visible to the review
-committee and other submitters, but not to the public until review completes.
+You pick one of three publication modes when you submit, and you **can't change it afterwards**.
 
-Alternatively you can **opt in to provisional publication** when you submit. Your results publish
-before peer review finishes, tagged **"peer review pending"**. This is useful if you need results in
-time for a launch or conference. Two things to know:
+| Mode | Public before finalization? | Peer review starts | Finalized result goes public |
+|---|---|---|---|
+| **Confidential review** *(default)* | No | When automated checks pass | The first cohort after finalization |
+| **Confidential review, embargoed** | No | When automated checks pass | On your embargo date |
+| **Provisional publication** | Yes, tagged **"peer review pending"** | At provisional publication | The tag is removed at finalization |
 
-- You **can't change your mind** later. If you don't opt in at submission time, you can't request it
-  afterwards.
-- Anyone quoting a "peer review pending" result — you, MLCommons or the press — has to include the
-  MLCommons footnote saying results are preliminary and may change.
+**Confidential review, embargoed** is for timing a launch without putting early numbers out. Review
+runs as normal and the finalized result is held until your date, which can be up to 60 days after
+review completes. If review is still going when the date arrives, the embargo stops mattering and
+the result goes out at the first cohort after finalization.
 
-Either way, you can set an **embargo date**. For confidential submissions this holds back finalized
-results for up to 60 days after review completes. For provisional submissions it holds back when the
-tagged result first appears. You can change the date later, but all review committee members are
-told when you do.
+**Provisional publication** gets numbers public before review finishes, for a keynote or press
+briefing. You can add an embargo here too, which holds back when the tagged result first appears.
+Review only starts once the result is public, so a provisional embargo pushes back your review,
+and your finalization, by the same amount of time.
+
+Anyone quoting a "peer review pending" result, whether that's you, MLCommons or the press, has to
+include the MLCommons footnote saying results are preliminary and may change. You can move an
+embargo date after submitting, but every review committee member is told when you do.
 
 | Group | During review | After finalization |
 |---|---|---|
@@ -113,8 +118,35 @@ Other people can challenge your published result until the **later** of the next
 days** after finalization. After that it's settled. You need to keep the benchmarked system
 available for a possible audit until that window closes.
 
+## Audits
+
+MLCommons runs **8 audits a year**, two per quarter:
+
+- **One random.** A submission is drawn at random. Systems equivalent to one audited in the
+  previous round (same CPU, NIC, accelerator and accelerator count) are normally excluded.
+- **One by vote.** Review committee members nominate submissions in a GitHub issue during the
+  **4 weeks after a result is published**, giving a reason such as new hardware or performance
+  outside expectations. The chairs can add any system with a new accelerator. The committee then
+  picks one by ranked-choice vote. Reproducibility concerns raised after review also go to this
+  vote as nominations.
+
+**You have to keep the system as submitted from the moment it's nominated**, not only once it's
+picked. If the vote passes you over, that obligation ends. If you're picked, or drawn at random,
+it lasts until the audit is complete.
+
+An audit is expected to finish within 60 days. You provide an NDA within 7 days of the auditor
+being chosen, and two days of hardware access at a time you both agree: the first for a pre-agreed
+list of tests, the second for follow-ups. The burden is on you to show the submission complies.
+A submission that fails at a material level is moved to RDI or removed, by committee decision. If
+you think being chosen is unfair, you can appeal to the MLCommons Executive Director.
+
+What the auditor actually checks is in the
+[MLPerf Endpoints Audit Guidelines](https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/MLPerf_Endpoints_Audit_Guidelines.md):
+that the hardware and software match your system description, that results reproduce, and that
+nothing like response caching or benchmark-specific optimisation is going on.
+
 **Next:** [Divisions and scenarios](divisions-and-scenarios.md)
 
 --8<-- "precedence-notice.md"
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (a7ec3cc), 2026-09-19.*
+*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef), 2026-09-24.*

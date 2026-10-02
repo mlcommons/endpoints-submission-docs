@@ -60,7 +60,10 @@ Human reviewers focus on what automation cannot check:
   whitespace emitted to stop the clock
 - Whether content is duplicated across response fields or padded to inflate token counts
 - Whether warmup used performance-dataset samples. Reviewers may cross-check your retained logs
+- For the Offline point, whether reordering stayed inside one pass over the dataset. Batches made
+  of repeated copies of the same sample point to sorting across passes
 - Whether the system description matches what actually ran
+- If you used speculative decoding, whether the disclosed drafter matches the approved list
 - Cross-submission consistency for the same hardware platform
 
 ## Objection types and what they cost you
@@ -102,7 +105,7 @@ write-ups.
 !!! danger "Results may not be changed during review"
     If a measurement point is wrong, your options are to **withdraw that point**
     (`submissions remove-run`) or withdraw the whole submission. Withdrawn points do not count
-    toward the 7-point minimum and the shortfall cannot be repaired by adding a replacement.
+    toward the minimum point count, and the shortfall cannot be repaired by adding a replacement.
 
 **After finalization**, corrections to published results are not permitted at all. An error means
 invalidating the affected points or the submission. Non-result corrections need review-chair
@@ -115,15 +118,24 @@ result is finalized. If everything resolves before the end of Week 3 you qualify
 finalization** and do not wait for the resolution window to close.
 
 The result then publishes in the next cohort for which it clears the one-business-day alignment
-window. Published results carry: result ID, submitter and system description, benchmark model,
-division, publication status, the step-function Pareto curve, and `system_tps`, `tps_per_user` and
-`ttft_p90_ms` at each point.
+window, or on your embargo date if you declared one. Published results carry: result ID, submitter
+and system description, benchmark model, division, publication status, the step-function Pareto
+curve, and `system_tps`, `tps_per_user` and `ttft_p90_ms` at each point. A dedicated Offline run is
+plotted as your throughput ceiling and labelled **Offline**; an elected one is a label on your
+`C_max` point. If MLCommons had to fill in any of your power figures, the result is tagged
+**"MLC Estimated Power"**.
 
 ## Your obligations after publication
 
-- **Retain the system.** Your obligation to keep the benchmarked system and its configuration
-  available for a possible audit until the result settles, which is the later of the next audit vote or
-  **90 days** after finalization.
+- **Retain the system.** Keep the benchmarked system and its configuration available for a
+  possible audit until the result settles, which is the later of the next audit vote or **90
+  days** after finalization.
+- **Keep it as submitted if you're nominated for audit.** Committee members can nominate your
+  result for the quarterly audit vote during the **4 weeks after publication**. From the moment
+  it's nominated you must keep the system in its submitted configuration, even if that runs past
+  the 90 days. If the vote passes you over, the obligation ends. If you're selected, or drawn in
+  the random audit, it lasts until the audit is complete. See
+  [Audits](../understand/how-submission-works.md#audits).
 - **Keep a CoN endpoint reachable.** Standardized CoN submissions must keep the endpoint URL
   accessible for at least **90 days** after publication, with a point of contact for access requests.
 - **Honour a Preview commitment.** 180 days from first publication to achieve Available status and

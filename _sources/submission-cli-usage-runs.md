@@ -1,8 +1,8 @@
 <!--
   PROVENANCE SNAPSHOT — do not edit.
   Upstream : docs/endpoints-cli/usage/runs.md
-  Repo     : mlcommons/endpoints-submission-cli @ main@f48ca84
-  Captured : 2026-09-13
+  Repo     : mlcommons/endpoints-submission-cli @ main@a42a056
+  Captured : 2026-10-02
   Purpose  : diff this against upstream to find what drifted since the docs were written.
 -->
 
@@ -69,8 +69,8 @@ A run flagged `--test` shows as `Test Run │ Yes` in `runs get`. It is **not** 
 `runs list`: that view is served by the API's `RunSummary` schema, which does not carry
 `is_test`, so the test marker stays dormant there until the API exposes it.
 
-`submissions create-local --test` sets the same flag on every run it registers, so a test
-submission never leaves untagged runs behind. `submissions create` takes already-registered
+`submissions create-local --test` (deprecated; to be removed) sets the same flag on every
+run it registers, so a test submission never leaves untagged runs behind. `submissions create` takes already-registered
 runs, so flag those at `runs create` time.
 
 **Run folder layout** — the folder must contain:

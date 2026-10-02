@@ -9,7 +9,7 @@
 
 !!! danger "Do this before you run anything"
     Region boundaries are calculated from your own minimum and maximum concurrency, so which
-    concurrency levels count as valid depends on a number you pick. Running seven points first and
+    concurrency levels count as valid depends on a number you pick. Running your points first and
     computing regions afterwards is the most common way to discover you have missed a required
     region. Each missing point means another 1,200-second run plus warmup.
 
@@ -18,20 +18,28 @@
 - Choose `C_max`, your Maximum Supported Concurrency
 - Compute your four region boundaries with `submission-checker regions`
 - Pick at least 7 concurrency levels that satisfy the `1 + 3 + 3` coverage rule
+- Decide how you'll meet the Offline requirement: a dedicated run, or electing your `C_max` point
 - Sanity-check the count against the 32-point cap
 
 ## The coverage rule
 
-A submission needs a **minimum of 7** and a **maximum of 32** measurement points:
+A non-agentic submission needs a **minimum of 8** and a **maximum of 32** measurement points,
+structured `1 + 3 + 3 + 1`:
 
 | Points | Placement |
 |---|---|
 | 1 mandatory | In the **Ultra Low Concurrency** region — concurrency 1 to 32 inclusive, fixed for every submission |
 | 3 mandatory | One each in **Low**, **Medium** and **High** Concurrency |
 | 3 submitter's choice | Anywhere in those same three concurrency regions |
+| 1 mandatory **Offline** | Every query available at once rather than a fixed concurrency. See [step 6](#6-decide-how-to-meet-the-offline-requirement) |
+
+The minimum drops to **7** in two cases: you elect your `C_max` point as the Offline result, so
+there's no separate Offline run, or the benchmark is **agentic**. Agentic benchmarks have no
+Offline point at all, and including one is an error.
 
 There are **no spacing requirements**. Cluster points around an inflection, highlight a sweet spot,
-or spread them evenly. All three discretionary points can go in one region.
+or spread them evenly. All three discretionary points can go in one region. The Offline point
+counts toward the 32-point cap.
 
 ## Steps
 
@@ -107,11 +115,15 @@ More pre-computed combinations are in [Metrics and regions](../reference/metrics
 
 Worked examples straight from the rules:
 
-| System | `C_min` | `C_max` | A valid minimum 7-point set |
+| System | `C_min` | `C_max` | A valid set of 7 fixed-concurrency points |
 |---|---|---|---|
 | Large scale | 32 | 8,192 | `{32, 40, 200, 500, 1000, 2000, 4096}` |
 | Mid-range | 16 | 1,024 | `{16, 24, 64, 96, 128, 256, 1000}` |
 | Smaller | 1 | 256 | `{1, 4, 16, 32, 64, 128, 256}` |
+
+These are the rules' own examples, and they predate the Offline point. Add a dedicated Offline run
+on top, or elect the `C_max` point. The first two sets also stop short of their `C_max` (8,192 and
+1,024), which is fine for region coverage but causes trouble at [step 6](#6-decide-how-to-meet-the-offline-requirement).
 
 ### 5. Note the 10% margin
 
@@ -124,6 +136,51 @@ to `ceil(1.10 × C_max)`.
     existed to allow adding points after submission, and that window has been removed. See
     [step 7](submit.md#3-points-are-fixed-at-creation).
 
+### 6. Decide how to meet the Offline requirement
+
+Skip this step if your benchmark is agentic.
+
+For every other benchmark you need one Offline result, and there are two ways to supply it.
+
+Either way, **put one of your points at exactly `C_max`**. Both options are defined relative to "the
+`C_max` point", and the rules' own example sets above don't have one.
+
+**Option 1: a dedicated Offline run.** A separate run in which the client makes the whole
+performance dataset available at once and the system drains it as fast as it can. This is your
+eighth point. Two constraints tie it to your `C_max` point:
+
+| Quantity | Must hold |
+|---|---|
+| Throughput | `system_tps(Offline) ≥ 0.98 × system_tps(C_max point)` |
+| Concurrency | `concurrency(Offline) ≥ C_max` |
+
+The 2% is there to absorb run-to-run noise. It isn't a target. An Offline run that comes in below
+your `C_max` point usually means the Offline run didn't saturate the system. A failure is flagged
+for reviewers rather than rejected outright. Note that the checker can only compare throughput when
+a point sits at exactly `C_max`. Without one it skips that half of the check without saying so.
+
+The Offline point's `concurrency` isn't yours to choose: it's the number of queries in one pass over
+the performance dataset. It doesn't count toward any region, and it can't serve as your `C_max`
+point.
+
+**Option 2: elect your `C_max` point.** Declare that your `C_max` point already is the highest
+throughput your system reaches. That point stays an ordinary fixed-concurrency point and is also
+reported as the Offline result. There's no second run, the 2% margin doesn't apply, and your
+minimum is 7 points. You're giving up whatever extra throughput a dedicated run might have shown,
+which is why the rules take your word for it. The checker rejects an `elected` declaration on any
+point whose concurrency isn't your declared `C_max`.
+
+!!! tip "Which to pick"
+    If you expect an unpaced run to beat your `C_max` point, run Option 1, since that's the number
+    that gets plotted as your throughput ceiling. If your `C_max` point is already saturating the
+    system, Option 2 saves a full run and its accuracy validation.
+
+!!! question "If `C_max` is larger than your dataset"
+    A dedicated Offline run reports the dataset size as its concurrency, and that has to be at least
+    `C_max`. With a `C_max` above the dataset size you can't satisfy both. The working group hasn't
+    decided what happens in that case. If it applies to you, ask before you run, or use Option 2.
+    Tracked as **C7** in [Open questions](../help/open-questions.md).
+
 ## Verify
 
 Write your planned levels down and check each one against the computed boundaries before running.
@@ -132,14 +189,17 @@ and that Low, Medium and High each have at least one.
 
 Then confirm your plan against the cap:
 
-- At least 7 points? At most 32 points?
+- At least 8 points, or 7 if you're electing `C_max` or the benchmark is agentic? At most 32,
+  Offline included?
 - At least one point at concurrency ≤ 32?
-- `C_max` > 32?
+- `C_max` > 32, and one point at exactly `C_max`?
+- For a dedicated Offline run: is your performance dataset at least `C_max` queries?
+- Can you name which five points will carry accuracy results (four for agentic)?
 
 !!! tip "Budget a spare"
-    Withdrawn points do **not** count toward the 7-point minimum, and the shortfall cannot be
-    repaired by adding a replacement point later. Planning 8 or 9 points instead of exactly 7 buys
-    you the ability to lose one during review without losing the submission.
+    Withdrawn points do **not** count toward the minimum, and the shortfall cannot be repaired by
+    adding a replacement point later. Planning one or two points more than the minimum buys you the
+    ability to lose one during review without losing the submission.
 
 ## Next
 

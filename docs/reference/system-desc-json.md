@@ -84,7 +84,6 @@ The checker verifies that every point of a curve describes the **same** system
 | `node_config` | Configuration of nodes/processors, in enough detail to reproduce the submission |
 | `config_summary` | Concatenation of `disaggregated`, `tensor_parallel`, `pipeline_parallel`, `expert_parallel`, `data_parallel` where each is > 1, plus `config_summary_notes` |
 | `config_summary_notes` | Free-form, for anything the concatenated fields miss |
-| `link_config` | Link to full configuration logs for the run |
 
 ## Other
 
@@ -162,7 +161,6 @@ The checker verifies that every point of a curve describes the **same** system
   "batch": 0,
   "config_summary": "",
   "config_summary_notes": "",
-  "link_config": "",
   "tps_utilization": 0
 }
 ```
@@ -179,10 +177,8 @@ The checker verifies that every point of a curve describes the **same** system
 | `max-concurrency-declared` | `max_supported_concurrency` present and > 32 |
 | `tps-utilization` | Equals `system_tps / max(system_tps)` over the point's own curve |
 
-!!! note "Field name drift"
-    The rules refer to the file as `system_desc_id.json` in places and to a `benchmark_model` field
-    in the result-ID definition, while the tooling uses `system_desc.json` and `model_name`. The
-    tooling spelling is what the checker reads.
+Provisioned power is **not** in this file. It goes in a separate, per-system
+[`system_power.json`](system-power-json.md).
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (a7ec3cc) and
-`mlcommons/endpoints-submission-cli@main` (f48ca84), 2026-09-19.*
+*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef) and
+`mlcommons/endpoints-submission-cli@main` (f25f71e), 2026-09-24.*

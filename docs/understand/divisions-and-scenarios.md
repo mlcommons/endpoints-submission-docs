@@ -32,6 +32,7 @@ flowchart TD
 | Audit / compliance tests | Yes | Yes (audit + accuracy) | No |
 | Fine-tuning / retraining | No | Yes, with disclosure | Yes |
 | Must be publicly purchasable | No | **Yes** (GA service) | No |
+| Power normalization | **Required** — `system_power.json` per system | Not yet defined | Optional |
 | Result name | "MLPerf Endpoints" | "MLPerf Endpoints Serviced" | "MLPerf Endpoints RDI" |
 
 ### Standardized
@@ -47,6 +48,10 @@ approved techniques would need updating every time a new quantization format or 
 
 Your serving framework and low-level software stack have to meet the **Available** definition, but
 they don't have to be open source.
+
+Standardized results are also normalised by provisioned power, in both CoP and CoN. That means
+gathering public power ratings for your CPUs, accelerators and switches before you submit. See
+[Power normalization](../rules/requirements.md#power-normalization).
 
 ### Serviced
 
@@ -118,4 +123,4 @@ separated.
 
 --8<-- "precedence-notice.md"
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (a7ec3cc), 2026-09-19.*
+*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef), 2026-09-24.*

@@ -40,8 +40,10 @@ MLCommons rather than searching further:
 
 - Whether your **organisation** needs MLCommons membership to submit
 - The **PRISM and Member Central URLs**
-- Which **seed set** a v1.0 submission should bind
 - The **v1.0 supported model list**, accuracy targets, and dataset paths
+- Which benchmarks are **agentic**, and so have no Offline point
+- The **approved drafter list** for any benchmark
+- Which **load pattern** a dedicated Offline run should use
 - **CoN client locations** and scheduling
 - The **Preview Availability Tracker** and public results URLs
 

@@ -5,7 +5,7 @@
 
 !!! note "Before you begin"
     - Completed [6. Validate locally](validate.md) with exit code 0
-    - You have decided on publication status, provisional publication and embargo
+    - You have decided on publication status and publication mode
     - `gh` is installed and authenticated
 
 ## What you'll do
@@ -58,8 +58,8 @@ endpoints-submission-cli submissions create \
 | `--run-ids` | yes | Repeat the flag once per run |
 | `--provisional` | no | Publish before review completes, tagged *peer review pending* |
 | `--target-availability-date` | conditional | **Required** with `--availability preview` |
-| `--embargo-date` | no | ISO 8601 |
-| `--publication-cycle` | no | e.g. `2026-09-C1` |
+| `--embargo-date` | no | ISO 8601. What it holds back depends on `--provisional`, below |
+| `--publication-cycle` | no | e.g. `2026-10-C1` |
 | `--dry-run` | no | Assemble and check only |
 
 What the command actually does: downloads the run archives, assembles the bundle, **runs the
@@ -68,10 +68,20 @@ bundle, and sets status to `REVIEW_PENDING`.
 
 If the bundle upload fails, the submission is withdrawn automatically to leave a clean state.
 
-!!! danger "`--provisional` is irrevocable"
-    Opting in to provisional publication cannot be undone, and submitters who do not opt in may not
-    request it later. Anyone quoting a *peer review pending* result, including the press,
-    must carry the MLCommons footnote stating results are preliminary and subject to change.
+The two publication flags combine into the three publication modes:
+
+| Flags | Mode | What happens |
+|---|---|---|
+| neither | Confidential review | Review starts when checks pass; published at the first cohort after finalization |
+| `--embargo-date` only | Confidential review, embargoed | Review starts when checks pass; the finalized result is held until the date, up to 60 days after review completes |
+| `--provisional` | Provisional publication | Published tagged *peer review pending*; review starts at that point |
+| `--provisional --embargo-date` | Provisional, embargoed | Nothing public, and **no review**, until the date |
+
+!!! danger "The mode is irrevocable"
+    The publication mode can't be changed after submission. Submitters who don't opt in to
+    provisional publication can't request it later. Anyone quoting a *peer review pending* result,
+    including the press, must carry the MLCommons footnote stating results are preliminary and
+    subject to change.
 
 !!! warning "Preview commits you to a deadline"
     `--availability preview` requires a target availability date within **180 days** of first
@@ -87,7 +97,8 @@ If the bundle upload fails, the submission is withdrawn automatically to leave a
     that would add a run. The list may only shrink.
 
     You may withdraw a faulty point during peer review with `submissions remove-run`. But withdrawn
-    points do not count toward the 7-point minimum, and that shortfall **cannot be repaired**. If a
+    points do not count toward the minimum point count, and that shortfall **cannot be repaired**.
+    Withdrawing the Offline point, or one of the five accuracy points, is just as final. If a
     submission needs a different set of runs, create a new one.
 
 This is why [step 3](plan-your-curve.md) suggests planning a spare point.

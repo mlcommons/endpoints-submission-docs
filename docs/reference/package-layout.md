@@ -32,14 +32,16 @@ Phase directories exist only for phases that ran:
 
 ### Plus what you author
 
-!!! danger "Two required files are not written by any tool"
-    `runs create` additionally requires **`system_desc.json`** and **`point.yaml`** in the run
-    folder. Neither is an endpoints artifact — you author both and drop them in before upload.
+!!! danger "Three required files are not written by any tool"
+    `runs create` requires **`system_desc.json`** and **`point.yaml`** in every run folder, and
+    the bundle needs a **`system_power.json`** from at least one run folder per system. None is an
+    endpoints artifact — you author them and drop them in before upload.
 
 ```
 <run-folder>/
 ├── system_desc.json        # you author — hardware/software description
 ├── point.yaml              # you author — per-point disclosure
+├── system_power.json       # you author — per system; any run folder of that system
 ├── src/<implementation>/   # merged into the bundle's shared src/ (README.md required)
 └── documentation/          # merged into the bundle's shared docs/
 ```
@@ -115,8 +117,10 @@ What `endpoints-submission-cli` assembles and uploads.
     │
     └── results/
         └── <system>/                 # e.g. H200-SXM-141GBx8_TRT/
+            ├── system_power.json     # REQUIRED, one per system — provisioned power
             └── <model_name>/         # e.g. deepseek-r1/, gpt-oss-120b/
                 └── r<N>/             # one PARETO POINT per concurrency (r1, r32, r256, …)
+                                      #   a dedicated Offline run's N is the dataset size
                     ├── point.yaml
                     ├── system_desc.json
                     ├── result_summary.json
@@ -139,10 +143,15 @@ files, and the optional `server_configs/`.
     `shared_docs` pointers in its `point.yaml`. If those pointers don't resolve to a directory under
     the submission root, the point is **incomplete** and the submission is rejected.
 
-### `system_desc.json` is per point
+### `system_desc.json` is per point, `system_power.json` is per system
 
-Since policies PR #119 there is no per-system file — **every Pareto point carries its own
-`system_desc.json`**. The checker verifies that all points of a curve describe the same system.
+Since policies PR #119 **every Pareto point carries its own `system_desc.json`**, and the checker
+verifies that all points of a curve describe the same system.
+
+`system_power.json` is the one per-system file, because provisioned power is fixed across the whole
+curve. The builder takes it from whichever of the system's run folders supply it and writes it to
+`results/<system>/`. If two run folders of the same system carry different contents, the build
+fails. See [`system_power.json`](system-power-json.md).
 
 ### `cli_metadata.json`
 
@@ -176,5 +185,5 @@ Written inside `<submission_id>/`, not at the organisation level.
     - **`config.yaml` is sanitized.** Report directories contain a `config.yaml` with credentials and
       other secrets replaced by `<redacted>`. Restore them before reusing that file as benchmark input.
 
-*Last verified against: `mlcommons/endpoints-submission-cli@main` (f48ca84) and
-`mlcommons/endpoints_policies@v1.0_rules_dev` (a7ec3cc), 2026-09-19.*
+*Last verified against: `mlcommons/endpoints-submission-cli@main` (f25f71e) and
+`mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef), 2026-09-24.*

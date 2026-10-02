@@ -34,8 +34,15 @@ Process and policy questions that are not errors. For errors, see
     models means multiple submissions.
 
 **How many points do I need?**
-:   Minimum 7, maximum 32, structured 1 + 3 + 3. See
-    [Plan your Pareto curve](../workflow/plan-your-curve.md).
+:   For a non-agentic benchmark, 8 to 32: `1 + 3 + 3` fixed-concurrency points plus an Offline
+    point. If you elect your `C_max` point as the Offline result, 7 is enough. Agentic benchmarks
+    need 7 and have no Offline point. See [Plan your Pareto curve](../workflow/plan-your-curve.md).
+
+**Do I really need a separate Offline run?**
+:   No. You can elect your `C_max` point as the Offline result instead, provided you have a point
+    at exactly `C_max`. You give up whatever extra throughput an unpaced run might have shown, and
+    save a run plus its accuracy validation. See
+    [step 3](../workflow/plan-your-curve.md#6-decide-how-to-meet-the-offline-requirement).
 
 **Can I add points after submitting?**
 :   **No.** The post-submission window for adding measurement points was removed. There is no
@@ -43,17 +50,16 @@ Process and policy questions that are not errors. For errors, see
 
 **Can I remove a bad point?**
 :   Yes, with `submissions remove-run` during peer review. But withdrawn points do **not** count
-    toward the 7-point minimum and the shortfall **cannot be repaired** by adding a replacement.
-    This is why planning a spare point matters.
+    toward the minimum and the shortfall **cannot be repaired** by adding a replacement. This is
+    why planning a spare point matters.
 
 **Do I need an accuracy run per point?**
-:   Not at every point, but at more than one. Accuracy is required at the four mandatory region
-    points — Ultra Low, Low, Medium and High Concurrency — plus an Offline point if you submit
-    Offline results. All use the same endpoint configuration, weights and software stack as the
-    performance runs. For single-turn benchmarks every result must pass, and each run goes at its
-    point's concurrency immediately after that point's performance run; for multi-turn benchmarks
-    only the average must pass. This changed in 2026-09 — the rules previously asked for one run
-    per submission.
+:   Not at every point, but at five of them: the four mandatory region points (Ultra Low, Low,
+    Medium and High Concurrency) and the Offline point. Agentic benchmarks need four. All use the
+    same endpoint configuration, weights and software stack as the performance runs. For
+    single-turn benchmarks every result must pass, and each run goes at its point's concurrency
+    immediately after that point's performance run; for multi-turn benchmarks only the average must
+    pass.
 
 ## Rules
 
@@ -75,10 +81,21 @@ Process and policy questions that are not errors. For errors, see
 :   Yes. PTQ is the standard permitted transformation, subject to four conditions: published
     calibration set only, publicly described, passes the accuracy gate, disclosed in the YAML.
 
+**Can I use speculative decoding?**
+:   Only with a drafter on the benchmark's approved list. No list has been published yet, so for
+    now the answer is no for every benchmark, and the checker rejects any point that uses it. See
+    [Model equivalence](../rules/model-equivalence.md#speculative-decoding).
+
 **Can I disable speculative decoding on some points?**
 :   Yes. The **drafter** must be the same across the curve, but its *configuration* may vary per
-    point, including disabling speculation entirely. The drafter must still be present in the
-    submitted checkpoint. You can't strip it out.
+    point, including disabling speculation entirely. A drafter that ships in the canonical
+    checkpoint must still be present in your derived checkpoint. You can't strip it out.
+
+**Do I have to report power?**
+:   For Standardized, yes: a `system_power.json` per system is required, and results are also
+    published as `system_tps_per_kw`. It's optional for RDI and not yet defined for Serviced. It's
+    provisioned power from spec-sheet ratings, not a meter reading. See
+    [Power normalization](../rules/requirements.md#power-normalization).
 
 **Does passing the accuracy gate make an optimisation legal?**
 :   No. Accuracy is **necessary, not sufficient**. A submission that hits the quality target while
@@ -89,13 +106,20 @@ Process and policy questions that are not errors. For errors, see
 
 **Can I publish before review finishes?**
 :   Yes, by opting in to provisional publication at submission time. Results carry a *peer review
-    pending* tag and every public reference must carry the MLCommons footnote. **The choice is
-    irrevocable**. You can't request it later.
+    pending* tag and every public reference must carry the MLCommons footnote. Review starts when
+    the result goes public. **The choice is irrevocable**. You can't request it later.
 
 **Can I delay publication?**
-:   Yes, with an embargo date declared at submission. Up to 60 days after review completes for
-    confidential submissions. The date can be changed afterwards, but the change is broadcast to all
-    review committee members.
+:   Yes, with an embargo date declared at submission. Under confidential review, the finalized
+    result is held for up to 60 days after review completes, and review itself isn't delayed. Under
+    provisional publication, the embargo holds back the tagged result and the start of review with
+    it. The date can be changed afterwards, but the change is broadcast to all review committee
+    members.
+
+**Can I be audited?**
+:   Yes. There are two audits a quarter: one drawn at random, one chosen by committee vote from
+    nominations made in the 4 weeks after publication. From the moment you're nominated you must
+    keep the system as submitted. See [Audits](../understand/how-submission-works.md#audits).
 
 **What happens if my Preview system does not become available in time?**
 :   The result is **invalidated and removed** at the next cohort, not archived. One extension of up
@@ -137,7 +161,8 @@ Process and policy questions that are not errors. For errors, see
 
 **How long does my result stay challengeable?**
 :   Until the later of the next audit vote or **90 days** after finalization. Your obligation to
-    retain the system for a possible audit runs to the same point.
+    retain the system for a possible audit runs to the same point, and longer if you're nominated
+    or selected for audit.
 
 ## Naming and messaging
 

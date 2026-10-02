@@ -1,8 +1,8 @@
 site_name: MLPerf Endpoints — Submitter Documentation
 site_description: How to prepare, validate and submit an MLPerf Endpoints benchmark result.
-site_url: https://anandhu-eng.github.io/endpoints-submission-docs/
-repo_url: https://github.com/anandhu-eng/endpoints-submission-docs
-repo_name: anandhu-eng/endpoints-submission-docs
+site_url: https://mlcommons.github.io/endpoints-submission-docs/
+repo_url: https://github.com/mlcommons/endpoints-submission-docs
+repo_name: mlcommons/endpoints-submission-docs
 edit_uri: ""
 copyright: MLPerf and MLCommons are trademarks of MLCommons Association.
 
@@ -121,6 +121,7 @@ nav:
       - Submission package layout: reference/package-layout.md
       - point.yaml: reference/point-yaml.md
       - system_desc.json: reference/system-desc-json.md
+      - system_power.json: reference/system-power-json.md
       - Metrics and regions: reference/metrics-and-regions.md
       - Benchmark runner CLI: reference/cli-inference-endpoint.md
       - Submission CLI: reference/cli-submission.md

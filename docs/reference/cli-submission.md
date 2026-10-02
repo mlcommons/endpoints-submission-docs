@@ -139,9 +139,12 @@ endpoints-submission-cli submissions create \
 | `--run-ids RUN_ID` | yes | Repeatable — one flag per run |
 | `--provisional` | no | Request provisional publication. Prompts for confirmation |
 | `--yes` / `-y` | no | Skip the provisional confirmation prompt |
-| `--publication-cycle` | no | e.g. `2026-09-C1` |
+| `--publication-cycle` | no | e.g. `2026-10-C1` |
 | `--target-availability-date` | conditional | `YYYY-MM-DD`. **Required** with `--availability preview` |
-| `--embargo-date` | no | ISO 8601 datetime |
+| `--embargo-date` | no | ISO 8601 datetime. Without `--provisional`, holds the finalized result; with it, holds the provisional result **and** the start of review |
+
+`--provisional` and `--embargo-date` together select one of the three publication modes. See
+[step 7](../workflow/submit.md#2-create-the-submission) for the combinations.
 | `--dry-run` | no | Assemble and check, print the layout, exit |
 
 **What it does:**
@@ -200,7 +203,7 @@ Registers the removal, then rebuilds, re-checks and re-uploads if runs remain. I
 steps 2–4 are skipped with a warning. Rollback re-adds the run on failure.
 
 !!! danger "Removed points cannot be replaced"
-    Withdrawn points do **not** count toward the 7-point minimum, and that shortfall cannot be
+    Withdrawn points do **not** count toward the minimum point count, and that shortfall cannot be
     repaired by adding another point. There is no `add-run`. If a submission needs a different set of
     runs, create a new one.
 
@@ -223,4 +226,5 @@ test flag on every run it registers, so a test submission leaves no untagged run
 
 See [Submission states](submission-states.md).
 
-*Last verified against: `mlcommons/endpoints-submission-cli@main` (f48ca84), 2026-09-19.*
+*Last verified against: `mlcommons/endpoints-submission-cli@main` (f25f71e) and
+`mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef), 2026-09-24.*
