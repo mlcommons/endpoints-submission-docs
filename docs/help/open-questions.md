@@ -6,7 +6,8 @@ committing accelerator time.
 --8<-- "draft-rules-warning.md"
 
 **Last reviewed:** 2026-10-02, against `endpoints_policies@v1.0_rules_dev` (d2d9da6),
-`endpoints-submission-cli@main` (a42a056, tag `v1.1.0.0`), `endpoints@main` (f1100cf).
+`endpoints-submission-cli@main` (a42a056, tag `v1.1.0.0`), `endpoints@main` (f1100cf), and the
+working group's v1.0 rules overview of 2026-09-22.
 
 ??? info "What changed at the 2026-10-02 review"
     The rules moved 10 commits. What matters to a submitter:
@@ -19,9 +20,12 @@ committing accelerator time.
 
     Checker `v1.1.0.0` (2026-10-01) knows the agentic models and gates their accuracy, rejects a
     single-turn curve with no Offline point, and follows §4.5.2's power model. That resolves
-    **B10** and **B12**. In the CLI, `--publication-cycle` is gone and a new submission waits in
-    `COMPLIANCE_CHECKING` instead of moving straight to `REVIEW_PENDING`. On the client side, the
-    steady-state detector now runs inside the benchmark when you ask for it, which narrows **B9**.
+    **B10**, **B12** and **B15**. The client's agentic example settled the third agentic model as
+    DeepSeek-V4.1-Flash and published its targets, which closes **C11**.
+
+    In the CLI, `--publication-cycle` is gone and a new submission waits in `COMPLIANCE_CHECKING`
+    instead of moving straight to `REVIEW_PENDING`. On the client side, the steady-state detector
+    now runs inside the benchmark when you ask for it, which narrows **B9**.
 
 ??? info "What changed at the 2026-09-24 review"
     The rules moved 36 commits since the 2026-09-19 review. Five merged changes matter to a
@@ -84,14 +88,14 @@ None of this is available in any source we could find.
 
 | # | Item | Why it blocks you |
 |---|---|---|
-| **C1** | The **v1.0 supported model list** and canonical model IDs | The rules defer to "the reference repository", published ≥ 6 weeks before a round. The client ships a ruleset named `mlperf-inference-v6.1`, which is not an Endpoints ruleset name. `model-name-valid` checks against this list |
-| **C2** | **Per-benchmark accuracy targets and tolerances** | Marked `[WIP]` upstream. `accuracy-gate` is a hard reject and you cannot predict whether you pass |
-| **C3** | **Dataset identities and download paths** for performance and accuracy runs | You cannot run without them. For a dedicated Offline run, the dataset's size is also your Offline concurrency |
+| **C1** | The **official v1.0 model list** and canonical model IDs | *Partly answered.* The working group's 2026-09-22 overview names the suite: Llama 3.1 8B, GPT-OSS 120B and DeepSeek-R1, plus three agentic models. It's collected in [Benchmarks and models](../reference/benchmarks.md). The rules still defer to a list in "the reference repository", published ≥ 6 weeks before a round, and that list doesn't exist yet. The names the checker accepts are on the same page |
+| **C2** | **Per-benchmark accuracy targets and tolerances** | Marked `[WIP]` upstream. For the legacy benchmarks the checker applies the MLPerf Inference targets, listed in [Benchmarks and models](../reference/benchmarks.md#accuracy-targets), but nothing says those are the Endpoints targets. For the agentic benchmarks the client's agentic README publishes targets for all three models, and checker `v1.1.0.0` enforces them |
+| **C3** | **Dataset identities and download paths** for performance and accuracy runs | *Mostly answered* in [Benchmarks and models](../reference/benchmarks.md#datasets), from the overview and the client. The GPT-OSS performance set is on MLCommons storage, but the client's README says the LLM task force is still finalizing it. For a dedicated Offline run, the dataset's size is also your Offline concurrency |
 | **C4** | **CoN client locations and scheduling procedure** | Deferred to a separate working-group publication that does not yet exist. CoN submitters cannot plan |
 | **C5** | **The full submission-state list** | Only `REVIEW_PENDING`, `WITHDRAWN`, `FINALIZED` and `PUBLISHED` are documented |
 | **C6** | **Preview Availability Tracker URL** and the public results/visualizer URL | Referenced by the rules; no URL given |
 | **C7** | **The Offline point's loose ends** | §5.7 defines the Offline point, but several things you need to run one aren't settled. **Load pattern:** the rules say "the benchmark-defined Offline load pattern" and name no client setting; the reference client's `max_throughput` matches the definition, unconfirmed. **`region` value:** unspecified for a dedicated run; `submitters_choice` passes the checker. **Dataset smaller than `C_max`:** the Offline concurrency is the dataset size and must be ≥ `C_max`, so a large `C_max` can't satisfy both. Open upstream as `[OFFLINE]` item 2. **Steady state:** §4.4's scope excludes a dedicated Offline run, which implies `total` metrics; not stated outright. **Duration:** §6.2 applies unchanged, though the run ends when the queue drains. **Pass boundaries:** the event log doesn't mark them, so the no-mixing rule is a manual review item |
-| **C8** | **Which benchmarks are agentic, and which are multi-turn** | This now decides a lot: whether you need an Offline point, how many points and accuracy runs you owe, the accuracy gate (every point vs mean-of-N), the primary chart (`tps_per_user` vs `e2e_avg_interactivity`), and whether agentic salting flags apply. None of it is mapped to a benchmark. The checker decides it from the load pattern: a curve run with `agentic_inference` is agentic. Ties to **C1** |
+| **C8** | **Which benchmarks are agentic, and which are multi-turn** | This now decides a lot: whether you need an Offline point, how many points and accuracy runs you owe, the accuracy gate (every point vs mean-of-N), the primary chart (`tps_per_user` vs `e2e_avg_interactivity`), and whether agentic salting flags apply. *Partly answered:* the 2026-09-22 overview splits the suite into legacy and agentic benchmarks, so you can tell which are agentic, and the checker decides it from the load pattern: a curve run with `agentic_inference` is agentic. Which benchmarks count as multi-turn for the accuracy rule still isn't stated. Ties to **C1** |
 | **C9** | **Super-pass size per benchmark** | The steady-state window is measured in super-passes, defaulting to one full dataset pass "unless the benchmark definition specifies a different super-pass size". No benchmark definition is published, so you cannot compute your own floor |
 | **C10** | **Approved drafter lists** | §2.9.4 allows speculative decoding only with a drafter on the benchmark's published list. None has been published, the checker ships an empty one, and a drafter approved now can only be used two cohorts later. Until a list appears, speculative decoding isn't available for any benchmark |
 
