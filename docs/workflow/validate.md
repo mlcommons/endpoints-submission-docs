@@ -101,6 +101,19 @@ if not report.passed:
 `report.warnings` and `report.model_dump_json()` are also available. Wiring this into CI so every
 change to your disclosure files is checked is worth the hour it takes.
 
+### 6. Look at your curves (optional)
+
+The checker tells you whether the submission is valid, not whether the curve looks the way you
+expect. To see it, render the same folder in a local dashboard:
+
+```bash
+pip install mlperf-viz
+mlperf-viz /path/to/submission
+```
+
+It opens the Pareto Explorer in your browser; nothing is uploaded. Each `<System>/<Model>` pair is
+one curve. Flags and formats: [Results visualizer](../reference/cli-visualizer.md).
+
 ## Verify
 
 ```bash

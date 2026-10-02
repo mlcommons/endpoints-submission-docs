@@ -125,6 +125,7 @@ nav:
       - Benchmark runner CLI: reference/cli-inference-endpoint.md
       - Submission CLI: reference/cli-submission.md
       - Submission checker: reference/cli-checker.md
+      - Results visualizer: reference/cli-visualizer.md
       - Compliance checks: reference/compliance-checks.md
       - Submission states: reference/submission-states.md
       - Glossary: reference/glossary.md
