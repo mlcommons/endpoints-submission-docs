@@ -3,14 +3,15 @@
 Every automated check, cross-walked from **checker rule ID** to the **rules clause** it enforces and
 the **failure action** the rules assign. Use it to work out what a failed check actually means.
 
-Run locally with [`submission-checker`](cli-checker.md); run server-side during **Week 0**. This
+Run locally with [`submission-checker`](https://github.com/mlcommons/endpoints-submission-cli/blob/main/README.md#submission-checker); run server-side during **Week 0**. This
 page describes checker **`v1.1.0.0`**. Versions before `v1.0.1.0` lack the Offline, power,
 accuracy-coverage, steady-state and drafter rules, and versions before `v1.1.0.0` don't know the
 agentic models or their accuracy targets.
 
 !!! danger "Week 0 failures reject the submission"
-    A submission that fails any automated check by the end of Week 0 is rejected. You correct and
-    resubmit as a **new** submission — there is no in-place patching, and you lose your cohort slot.
+    A submission that fails any automated check by the end of Week 0 is rejected ([§6.1 of the
+    Submission Rules][srules-6.1]). You resubmit as a **new** submission — there is no in-place
+    patching, and you lose your cohort slot.
 
 ## How to read the severity column
 
@@ -175,7 +176,8 @@ agentic models or their accuracy targets.
 | `agentic-accuracy-swebench` | §4.3, §9.1 | Agentic models: the mean of the four mandatory-region SWE-bench scores meets the threshold | :material-alert-octagon:{ style="color:#c62828" } |
 | `agentic-osl-range` | §4.3, §9.1 | Agentic models: the full-run mean output length per turn is inside the model's range | :material-alert-octagon:{ style="color:#c62828" } |
 
-**Accuracy has no variability allowance** at any stage.
+**Accuracy has no variability allowance** at any stage ([Reproducibility
+Expectations][srules-reproducibility-expectations] in the Submission Rules).
 
 !!! note "Agentic models have their own accuracy rules"
     For Kimi K3, Qwen3.6-35B-A3B and DeepSeek-V4.1-Flash, `accuracy-gate` stands aside and the three
@@ -187,7 +189,8 @@ agentic models or their accuracy targets.
 ## What automation does not check
 
 Manual reviewers focus on what the checker cannot see. These are not rule IDs — they are objection
-grounds. See [Why submissions get rejected](../rules/rejection-reasons.md#rejections-that-come-from-judgement-not-checks).
+grounds. See [Why submissions get
+rejected](../rules/rejection-reasons.md#rejections-that-come-from-judgement-not-checks).
 
 ## Clause-numbering note
 

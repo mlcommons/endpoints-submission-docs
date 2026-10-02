@@ -1,9 +1,9 @@
-# 8. After you submit
+# 9. After you submit
 
 > Produces: a finalized, published result, as long as you keep responding to reviewers.
 
 !!! note "Before you begin"
-    - Completed [7. Submit](submit.md)
+    - Completed [8. Submit](submit.md)
     - Status is `REVIEW_PENDING`
     - **Someone is on the hook to respond within 3 business days for the next six weeks**
 
@@ -19,130 +19,99 @@ reviewers than by failing a technical check at Week 0.
 | Objection resolution | Weeks 4–6 | Provide a fix or formal resolution within **3 business days** |
 | Dispute resolution | From Week 6, ~5 weeks | File a written statement within **10 business days** of notification |
 
-Timelines anchor to the cohort your submission first appears in, not the day you uploaded.
+[![MLPerf Endpoints submission and review cycle, tracing four example submissions through each
+publication mode](../assets/review-cycle.svg)](../assets/review-cycle.svg)
+
+*Four example submissions, one per publication mode, from [§4.5 of the Submission
+Rules][srules-4.5]. Select the image to open it full size.*
+
+Timelines anchor to the cohort your submission first appears in, not the day you uploaded. The full
+schedule is in [§6.5 of the Submission Rules][srules-6.5], and the dispute deadlines in
+[§9.2][srules-9.2].
 
 ## The response clock
 
 !!! danger "Silence withdraws your submission"
-    Penalties accrue automatically from the day an objection is filed. The review chair enforces
-    them without a motion, and they're **cumulative and non-reversible**. Responding after a
-    threshold does not undo the penalty already incurred.
+    Penalties start automatically once an objection is filed and don't reverse if you reply late:
+    finalization slips one cohort after 3 business days without a response, two after 6, and the
+    submission is **withdrawn** after 10. The schedule, and how business days are counted, is in
+    [Submission Rules §6.3][srules-6.3].
 
-    | Business days without your response | Penalty |
-    |---|---|
-    | 3 | Finalization delayed by **1 cohort** |
-    | 6 | Delayed by **2 cohorts** |
-    | 10 | Submission is **withdrawn** |
-
-Business-day counting accounts for local public holidays in your primary operating jurisdiction.
-
-Your initial response must either **acknowledge the issue and include a schedule for resolution**
-(this can extend into the objection resolution window), or **contest it with a counter-argument
-and supporting evidence**. A holding reply with no schedule and no argument is not a response.
-
-After you respond, the objector has 2 business days to accept, retract, or carry the objection
-forward. In the resolution window, objector silence for 3 business days is treated as
-acknowledgment and the objection is automatically retracted.
+A reply only counts if it either acknowledges the issue with a schedule for resolution or contests
+it with evidence ([§6.3][srules-6.3]). A holding reply with no schedule and no argument is not a
+response. What the objector owes you in return is in [§6.4][srules-6.4].
 
 ## What reviewers are looking at
 
-A peer review covers, at minimum: whether results are in a reasonable range for the hardware and
-software, whether your reproducibility instructions are clear and followable, the benchmark
-methodology, and the content of your system description JSON.
-
-Human reviewers focus on what automation cannot check:
-
-- Whether the curve shape is physically plausible: throughput rising with concurrency to
-  saturation, then levelling off
-- Whether metric distributions look manipulated, such as suspiciously uniform TTFT across very
-  different concurrency levels
-- Whether the TTFT-triggering fragment is a genuine part of the response rather than leading
-  whitespace emitted to stop the clock
-- Whether content is duplicated across response fields or padded to inflate token counts
-- Whether warmup used performance-dataset samples. Reviewers may cross-check your retained logs
-- For the Offline point, whether reordering stayed inside one pass over the dataset. Batches made
-  of repeated copies of the same sample point to sorting across passes
-- Whether the system description matches what actually ran
-- If you used speculative decoding, whether the disclosed drafter matches the approved list
-- Cross-submission consistency for the same hardware platform
+The minimum scope of a review is in [Submission Rules §2.6][srules-scope-of-review]. Human reviewers
+concentrate on what automation can't check, listed in [§9.2 of the rules][rules-9.2]: curve shape,
+suspicious metric distributions, TTFT and token-count gaming, warmup data, Offline pass boundaries,
+and whether your system description matches what ran.
 
 ## Objection types and what they cost you
 
-| Type | Severity |
-|---|---|
-| Compliance failure | High — may require withdrawal |
-| Methodology | High |
-| Reproducibility | High, but must exceed the variability margin to be actionable |
-| Validity of results | High |
-| Division rules | Medium — usually **reclassification**, not withdrawal |
-| Availability | Medium — usually reclassification |
-| Suspect or incomprehensible results | Medium — triggers investigation |
-| Cosmetic | Low — does not block finalization |
+Every objection has a type, and the type sets its severity ([Submission Rules §6.8][srules-6.8]).
+Division and availability objections usually end in **reclassification** rather than withdrawal, and
+cosmetic ones don't block finalization.
 
-Reproducibility margins: up to **10%** variability when an independent party re-runs during review;
-within **5%** when re-running on the exact same system. These apply to `system_tps` and
-`tps_per_user` only.
+A reproducibility objection has to show a deviation beyond the throughput margins in
+[Reproducibility Expectations][srules-reproducibility-expectations]: 10% for an independent re-run,
+5% on the exact same system.
 
 !!! warning "Latency cannot carry an objection on its own"
-    The throughput margins do **not** apply to `ttft_p90_ms` or any latency percentile. A fixed
-    percentage band is not a sound test for a tail statistic. Until the working group ratifies a
-    method, a reproducibility objection may not rest on latency alone. Latency evidence can support
-    an objection based primarily on throughput or accuracy.
+    The margins don't apply to `ttft_p90_ms` or any other latency percentile, and until the working
+    group ratifies a method, a reproducibility objection can't rest on latency alone (same section).
 
 **Accuracy always has to pass.** No margin, at any stage.
 
 ## What you may and may not change
 
-**During peer review**, after compliance checks have passed, you may update run and submission
-metadata **only when the review committee requests it**, where insufficient information, code or
-instructions were provided, or a material flaw must be rectified. Any improvement to performance
-metrics must be justified and explained to the committee.
-
-Freely correctable: documentation, READMEs, system description metadata, source and configuration
-files that do not match the actual run settings, software version information, calibration
-write-ups.
+During peer review you can update run and submission metadata only when the review committee asks
+([Updating submissions during peer review][srules-updating-submissions-during-peer-review]).
+Non-result content such as documentation, system description metadata and configs that don't match
+the run can be corrected; results can't ([Submission Rules §8.1][srules-8.1]).
 
 !!! danger "Results may not be changed during review"
-    If a measurement point is wrong, your options are to **withdraw that point**
-    (`submissions remove-run`) or withdraw the whole submission. Withdrawn points do not count
-    toward the minimum point count, and the shortfall cannot be repaired by adding a replacement.
+    If a measurement point is wrong, your options are to **withdraw that point** (`submissions
+    remove-run`) or withdraw the whole submission. Withdrawn points do not count toward the minimum
+    point count. §8.1 says that may mean submitting additional points, but there's no way to add a
+    point to a submission ([step 8](submit.md#points-fixed-at-creation)), so in practice the
+    shortfall can't be repaired.
 
-**After finalization**, corrections to published results are not permitted at all. An error means
-invalidating the affected points or the submission. Non-result corrections need review-chair
-approval and publish with a change log.
+After finalization, a wrong result means invalidating the affected points or the submission, and
+non-result corrections need review-chair approval (same section).
 
 ## Finalization and publication
 
-Once every objection is resolved or retracted, the *peer review pending* tag is removed and the
-result is finalized. If everything resolves before the end of Week 3 you qualify for **early
-finalization** and do not wait for the resolution window to close.
+Once every objection is resolved or retracted, the result is finalized, early if that happens before
+the end of Week 3 ([§6.3][srules-6.3]). It's queued for the next available cohort
+([§6.3][srules-6.3]), or held until your embargo date if you declared one ([§4.2][srules-4.2]).
 
-The result then publishes in the next cohort for which it clears the one-business-day alignment
-window, or on your embargo date if you declared one. Published results carry: result ID, submitter
-and system description, benchmark model, division, publication status, the step-function Pareto
-curve, and `system_tps`, `tps_per_user` and `ttft_p90_ms` at each point. A dedicated Offline run is
-plotted as your throughput ceiling and labelled **Offline**; an elected one is a label on your
-`C_max` point. If MLCommons had to fill in any of your power figures, the result is tagged
-**"MLC Estimated Power"**.
+What the published entry shows is listed in [Submission Rules §7.6][srules-7.6], and how the Offline
+point is plotted in [§5.7.3 of the rules][rules-5.7.3]. If MLCommons had to fill in any of your
+power figures, the result is tagged **"MLC Estimated Power"**.
 
 ## Your obligations after publication
 
-- **Retain the system.** Keep the benchmarked system and its configuration available for a
-  possible audit until the result settles, which is the later of the next audit vote or **90
-  days** after finalization.
-- **Keep it as submitted if you're nominated for audit.** Committee members can nominate your
-  result for the quarterly audit vote during the **4 weeks after publication**. From the moment
-  it's nominated you must keep the system in its submitted configuration, even if that runs past
-  the 90 days. If the vote passes you over, the obligation ends. If you're selected, or drawn in
-  the random audit, it lasts until the audit is complete. See
-  [Audits](../understand/how-submission-works.md#audits).
-- **Keep a CoN endpoint reachable.** Standardized CoN submissions must keep the endpoint URL
-  accessible for at least **90 days** after publication, with a point of contact for access requests.
-- **Honour a Preview commitment.** 180 days from first publication to achieve Available status and
-  re-submit. One extension of up to 60 days may be granted, requested at least 30 days before
-  expiry. See [Publication status](../rules/publication-status.md).
-- **Use the right name.** Unqualified "MLPerf Endpoints" means Standardized. Serviced and RDI
-  results must use their qualified names, and Preview results must carry the "Preview" qualifier.
+- **Retain the system** for a possible audit until the result settles: the later of the next audit
+  vote or **90 days** after finalization
+  ([Scope and Standing for Late Concerns][srules-scope-and-standing-for-late-concerns]).
+- **Keep it as submitted if you're nominated for audit.** Nominations are open for 4 weeks after
+  publication, and from nomination the system has to stay in its submitted configuration, even
+  past the 90 days
+  ([§10.2][srules-10.2]).
+  See [Audits](../understand/how-submission-works.md#audits).
+- **Keep a CoN endpoint reachable** for at least **90 days** after publication, with a point of
+  contact
+  ([§7.2.5][srules-7.2.5]).
+- **Honour a Preview commitment:** Available and re-submitted within 180 days of first
+  publication, with one possible extension
+  ([§7.3][srules-7.3]).
+  See [Publication status](../rules/publication-status.md).
+- **Use the right name.** Unqualified "MLPerf Endpoints" means Standardized; Serviced, RDI and
+  Preview results carry qualified names
+  ([§2.2.3][rules-2.2.3],
+  [§7.3.8][srules-7.3.8]).
 
 ## Verify
 

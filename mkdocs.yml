@@ -98,7 +98,11 @@ nav:
       - What is MLPerf Endpoints?: understand/what-is-mlperf-endpoints.md
       - How submission works: understand/how-submission-works.md
       - Divisions and scenarios: understand/divisions-and-scenarios.md
-      - Membership, PRISM and eligibility: understand/eligibility.md
+      - Membership, PRISM and eligibility:
+          - understand/eligibility/index.md
+          - MLCommons CLA process: understand/eligibility/cla-process.md
+          - PRISM API key: understand/eligibility/prism-api-key.md
+          - MLCommons membership: understand/eligibility/membership.md
 
   - Submission Workflow:
       - workflow/index.md
@@ -108,9 +112,10 @@ nav:
       - 3. Plan your Pareto curve: workflow/plan-your-curve.md
       - 4. Run the measurement points: workflow/run-the-points.md
       - 5. Author the disclosure files: workflow/author-disclosures.md
-      - 6. Validate locally: workflow/validate.md
-      - 7. Submit: workflow/submit.md
-      - 8. After you submit: workflow/after-submission.md
+      - 6. Register your runs: workflow/register-runs.md
+      - 7. Validate locally: workflow/validate.md
+      - 8. Submit: workflow/submit.md
+      - 9. After you submit: workflow/after-submission.md
 
   - Rules & Compliance:
       - rules/index.md
@@ -129,7 +134,6 @@ nav:
       - Metrics and regions: reference/metrics-and-regions.md
       - Benchmark runner CLI: reference/cli-inference-endpoint.md
       - Submission CLI: reference/cli-submission.md
-      - Submission checker: reference/cli-checker.md
       - Compliance checks: reference/compliance-checks.md
       - Submission states: reference/submission-states.md
       - Glossary: reference/glossary.md
