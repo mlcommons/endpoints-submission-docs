@@ -18,7 +18,7 @@ Upstream describes what the client can do. These are the settings a submission i
 | Setting | For a submission |
 |---|---|
 | `load_pattern.type` | `concurrency` for every fixed-concurrency point. `max_throughput` only for a dedicated Offline run. `poisson` is never valid |
-| `streaming` | On for every performance run, the Offline point included. The default, `auto`, resolves to off for offline runs |
+| `streaming` | On for every fixed-concurrency point. A dedicated Offline run is exempt, so the default, `auto`, which resolves to off for offline runs, is fine there |
 | `scheduler_random_seed`, `dataloader_random_seed` | From your bound seed set. See [Seeds and salting](../workflow/run-the-points.md#seeds-and-salting) |
 
 !!! danger "Do not modify the source"

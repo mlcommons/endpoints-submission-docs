@@ -54,8 +54,10 @@ This is why [step 3](plan-your-curve.md) suggests planning a spare point.
 
 ## Verify
 
-[`submissions get`][cli-submissions-get] shows status `REVIEW_PENDING`, the division, scenario,
-availability, publication cycle and embargo date you intended, and every run you meant to include.
+[`submissions get`][cli-submissions-get] shows the division, scenario, availability, publication
+mode and embargo date you intended, and every run you meant to include. The status starts at
+`COMPLIANCE_CHECKING` and moves to `REVIEW_PENDING` once the automated compliance check passes.
+There's no publication cycle to choose: it's recorded when the submission publishes.
 
 ## Next
 

@@ -37,8 +37,9 @@ From v1.0 the official result is computed over a **steady-state window**, not th
 the whole-run `total` figures kept as supplementary. What the window excludes and why:
 [§4.4][rules-4.4].
 
-The window is found after the run, from `events.jsonl`, so you don't do anything during the run to
-produce it. It does change how you plan a run, though, because a run can fail to have one.
+The client finds the window from the run's own events if you pass `--steady-state`, or you can find
+it afterwards from `events.jsonl`. Either way it doesn't affect the measurement. It does change how
+you plan a run, though, because a run can fail to have one.
 
 !!! warning "Turn the detector on, and copy its result"
     Since endpoints#514 the client can find the window during the run. It's off by default; pass

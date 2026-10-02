@@ -268,11 +268,12 @@ Indexed by what you see. Search this page for a fragment of your error message.
 
     **Fix:** nothing. `pr_url` and `pr_number` populate once whatever opens it has set them.
 
-??? failure "`submissions create` succeeded but status is not `REVIEW_PENDING`"
-    **Cause:** the final PATCH step failed. Both submission and bundle exist — the CLI treats this
-    as a warning, not a fatal error.
+??? failure "Status is still `COMPLIANCE_CHECKING` after `submissions create`"
+    **Cause:** expected at first. Since `v1.1.0.0` the CLI leaves a new submission in
+    `COMPLIANCE_CHECKING`, and it moves to `REVIEW_PENDING` once the automated compliance check
+    passes. Older CLIs set `REVIEW_PENDING` themselves.
 
-    **Fix:** the status can be set manually. Confirm with `submissions get`.
+    **Fix:** nothing, unless it stays there. Then [ask](support.md).
 
 ## During review
 

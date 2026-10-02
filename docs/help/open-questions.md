@@ -138,7 +138,7 @@ current policy where stated, but are the most likely to move.
 | **Checkpoint residency** `[CKPT-RESIDENCY]` | Whether a component the canonical checkpoint ships, such as an MTP or EAGLE head, must be **resident in accelerator memory** during measurement or only present in the artifact. Leaving it unloaded frees memory for KV cache, an advantage that's currently undisclosed. See [`[CKPT-RESIDENCY]`][rules-ckpt-residency] |
 | **Speculative decoding** | [§2.9.4][rules-2.9.4]'s approved-list model is new for v1.0 and marked tentative. No list is published yet — see **C10** |
 | **Token counting** `[TOK-COUNT]` | Whether stakeholders accept that published token counts may differ from what serving stacks report ([`[TOK-COUNT]`][rules-tok-count]) |
-| **Iteration coalescing** | Whether the server may return several generated tokens in one network message ([§2.9.9 Q2][rules-2.9.9]). **Until resolved: disclose any token-coalescing behaviour and conservatively assume `stream_all_chunks = true` semantics** |
+| **Multi-token stream interval** | Now allowed: the server may group up to N generated tokens into one chunk, as `stream_interval` does in TensorRT-LLM, SGLang and vLLM ([§2.9.7][rules-2.9.7], [§2.9.9 Q2][rules-2.9.9]). Holding tokens past the interval, or sending the whole response as one message, isn't. A larger interval delays TTFT and no metric adjustment is made. Appendix A still lists it as proposed |
 | **Standardized CoN techniques** | The list of allowed techniques for Standardized CoN is still being written ([§2.2.2][rules-2.2.2]) |
 | **Partial Unicode at chunk boundaries** | An open edge case in the tokenizer rules ([§2.8][rules-2.8]) |
 

@@ -55,7 +55,7 @@ Defined in [§6 of the rules][rules-6]. The values at a glance:
 | Steady-state duration ([§6.2][rules-6.2]) | **600 s** Ultra Low; **1,200 s** Low / Medium / High | rule `point-duration` |
 | Completed queries ([§6.4][rules-6.4]) | At least one pass over the dataset | rule `min-query-count` |
 | Samples issued ([§6.4][rules-6.4]) | A whole-number multiple of the dataset size | — |
-| Streaming ([§6.5][rules-6.5]) | `stream_all_chunks = true` | rule `streaming-config` |
+| Streaming ([§6.5][rules-6.5]) | Streaming responses on every fixed-concurrency point; a dedicated Offline run is exempt. `stream_all_chunks` may be either value | rule `streaming-config`, which still requires `stream_all_chunks: true` |
 | Sampling order ([§6.5][rules-6.5]) | Performance: with replacement. Accuracy: without replacement | — |
 
 !!! warning "Section 6 is pending ratification"

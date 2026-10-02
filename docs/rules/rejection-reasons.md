@@ -28,7 +28,7 @@ correct and resubmit as a new submission, losing your cohort slot ([Submission R
 | `shared-path-resolution` fails | `shared_src` / `shared_docs` do not resolve under the submission root | Fix the pointers in every `point.yaml` — [step 5](../workflow/author-disclosures.md) |
 | `seed-set-consistency` / `seed-set-membership` fails | Points record different seed sets, or a set MLCommons never published | Bind **one** published set and record it at every point |
 | Required files missing | A point lacks `point.yaml`, `system_desc.json` or `result_summary.json` | [Step 5](../workflow/author-disclosures.md). The reference client doesn't write them; [`mlperf-sysinfo`](https://docs.mlcommons.org/mlperf-sysinfo/) can capture `system_desc.json` |
-| `approved-drafter` / `drafter-approval-lead-time` fails | A point used speculative decoding with a drafter not on the approved list, or approved too recently | These reject the **points**. With no list published yet, re-run without speculation |
+| `approved-drafter` / `drafter-approval-lead-time` fails | A point used speculative decoding with a drafter not on the approved list, or approved too recently | These reject the **points**. Approved heads exist for the agentic benchmarks only, and the checker's list is still empty, so for now re-run without speculation |
 
 ## The flags, where objections come from
 

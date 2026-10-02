@@ -61,9 +61,8 @@ Two fields need a decision rather than a lookup: `offline` and `dataset_type`.
 !!! warning "Exactly one point carries `offline`"
     For a non-agentic benchmark, one point has to declare `offline: dedicated` or `offline:
     elected`. `elected` is only accepted on the point whose concurrency equals your declared
-    `C_max`. The checker only **warns** when no point declares `offline`, because it can't yet tell
-    an agentic benchmark from a single-turn one, but the rules reject a non-agentic submission
-    without one.
+    `C_max`. The checker fails a curve with no `offline` declaration unless every point uses the
+    `agentic_inference` load pattern, which is how it recognises an agentic benchmark.
 
     A dedicated Offline run sets `concurrency` to the size of the performance dataset and counts
     toward no region ([§5.7.1][rules-5.7.1], [§5.7.2][rules-5.7.2]). The rules don't say what its

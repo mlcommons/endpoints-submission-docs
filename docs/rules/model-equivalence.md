@@ -62,10 +62,12 @@ what disqualifies one, what you can't do with an approved drafter, and the per-p
 all in [§2.9.4][rules-2.9.4]. Tree-structured verification is covered in Q6 of
 [§2.9.9][rules-2.9.9].
 
-!!! warning "No list has been published yet"
-    As of 2026-09-24 there is no approved-drafter list for any benchmark. The checker ships an empty
-    one and reads that as "not permitted anywhere", which is also what the rules say. Until a list
-    is published, run without speculative decoding. Tracked as **C10** in [Open
+!!! warning "Approved heads exist for the agentic benchmarks only"
+    The client's [agentic
+    README](https://github.com/mlcommons/endpoints/blob/main/examples/10_Agentic_Inference/README.md#approved-checkpoints-and-speculative-decoding-heads)
+    lists the approved heads for Kimi K3, and the approved DeepSeek-V4.1-Flash checkpoint ships its
+    own. There's no list for the legacy benchmarks. The checker's bundled list is still empty, so it
+    rejects any point that uses speculative decoding for now. Tracked as **C10** in [Open
     questions](../help/open-questions.md).
 
 What the checker enforces:
@@ -133,5 +135,6 @@ match the reference ([§2.9.2][rules-2.9.2], [§2.9.7][rules-2.9.7]).
 
 --8<-- "draft-rules-warning.md"
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef) and
-`mlcommons/endpoints-submission-cli@main` (f25f71e), 2026-09-24.*
+*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (d2d9da6),
+`mlcommons/endpoints-submission-cli@main` (a42a056, `v1.1.0.0`) and `mlcommons/endpoints@main`
+(f1100cf), 2026-10-02.*
