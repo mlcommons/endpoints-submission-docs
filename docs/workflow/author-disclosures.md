@@ -1,62 +1,73 @@
 # 5. Author the disclosure files
 
-> Produces: `system_desc.json` and `point.yaml` in every run folder, plus the shared `src/` and
-> `docs/` content.
+> Produces: `system_desc.json` and `point.yaml` in every run folder, `system_power.json` once per
+> system, plus the shared `src/` and `docs/` content.
 
 !!! note "Before you begin"
     - Completed [4. Run the measurement points](run-the-points.md)
     - You have one run folder per point
     - Your disclosure content is cleared for publication
 
-!!! danger "No tool generates these files"
-    `system_desc.json` and `point.yaml` are **hand-authored by you** and dropped into each run
-    folder before upload. The reference client does not write them. The submission CLI copies
-    `point.yaml` into the bundle **exactly as written**. It doesn't derive it from `config.yaml` and does
-    not fill in missing fields. Whatever you write is what gets submitted and what gets checked.
+!!! danger "The reference client doesn't write these files"
+    `system_desc.json`, `point.yaml` and `system_power.json` are yours to supply, dropped into run
+    folders before upload. The reference client does not write them, and only `system_desc.json` has
+    a capture tool (see [below](#2-write-system_descjson-for-each-point)). The submission CLI copies
+    `point.yaml` into the bundle **exactly as written**. It doesn't derive it from `config.yaml` and
+    does not fill in missing fields. Whatever you write is what gets submitted and what gets
+    checked.
 
 ## What you'll do
 
 - Write `point.yaml` for every measurement point
 - Write `system_desc.json` for every measurement point
+- Write `system_power.json` once per system
 - Write the shared `src/<implementation>/README.md`
 - Write the shared `docs/` disclosure content
 
 ## Where the files go
 
-Each run folder needs both files at its top level:
+Each run folder needs `system_desc.json` and `point.yaml` at its top level. `system_power.json` goes
+at the top level of at least one run folder per system:
 
 ```
 <run-folder>/
-├── system_desc.json                  # §8.2 — you author this
-├── point.yaml                        # §8.3 — you author this
-├── performance/result_summary.json   # written by the client
-├── accuracy/accuracy_results.json    # written by the client
-├── config.yaml                       # written by the client (optional as of v1.0)
-├── src/<implementation>/             # merged into the bundle's shared src/
+├── system_desc.json                  # §8.2   — you supply (mlperf-sysinfo can capture it)
+├── point.yaml                        # §8.3   — you author
+├── system_power.json                 # §4.5.2 — you author, once per system
+├── config.yaml                       # client — optional as of v1.0
+├── performance/
+│   └── result_summary.json           # client — performance phase
+├── accuracy/
+│   └── accuracy_results.json         # client — accuracy phase
+├── src/
+│   └── <implementation>/             # merged into the bundle's shared src/
+│       └── README.md                 # you author — required
 └── documentation/                    # merged into the bundle's shared docs/
+    ├── software_disclosure.md        # you author
+    └── calibration.adoc              # you author — only if you transformed weights
 ```
 
 ## Steps
 
 ### 1. Write `point.yaml` for each point
 
-This is the §8.3 disclosure the checker validates. It must declare, at minimum:
+This is the measurement-point disclosure the checker validates. The fields it must declare, and what
+each one means, are defined in [§8.3 of the rules][rules-8.3]. Work through that table field by
+field; the [`point.yaml` reference](../reference/point-yaml.md) notes where the checker's accepted
+values and field names differ from it.
 
-| Field | Notes |
-|---|---|
-| `concurrency` | The target level for this point |
-| `region` | Which region it satisfies |
-| `runtime_settings` | Load pattern, `min_duration_ms`, `min_sample_count`, `stream_all_chunks` |
-| `dataset` / `dataset_name` / `dataset_type` / `dataset_link` | Identity and role of the dataset |
-| `warmup` | `duration_s`, `requests_issued`, `requests_completed`, `data_source`, `concurrency`, `initialization_steps` |
-| `division` | Standardized, Serviced or RDI |
-| `max_supported_concurrency` | Your `C_max` |
-| `model_name`, `model_precision`, `link_to_model` | Model identity and lowest weight precision |
-| `link_to_model_transformation` | Calibration / quantization write-up, if any |
-| `seed_set`, `target_cohort` | The set you bound to, and the cohort you target |
-| `shared_src`, `shared_docs` | Must resolve to directories under the submission root |
+Two fields need a decision rather than a lookup: `offline` and `dataset_type`.
 
-Full field list: [`point.yaml` reference](../reference/point-yaml.md).
+!!! warning "Exactly one point carries `offline`"
+    For a non-agentic benchmark, one point has to declare `offline: dedicated` or `offline:
+    elected`. `elected` is only accepted on the point whose concurrency equals your declared
+    `C_max`. The checker fails a curve with no `offline` declaration unless every point uses the
+    `agentic_inference` load pattern, which is how it recognises an agentic benchmark.
+
+    A dedicated Offline run sets `concurrency` to the size of the performance dataset and counts
+    toward no region ([§5.7.1][rules-5.7.1], [§5.7.2][rules-5.7.2]). The rules don't say what its
+    `region` field should hold. `submitters_choice` passes the checker without a placement warning.
+    Tracked as **C7** in [Open questions](../help/open-questions.md).
 
 !!! warning "`dataset_type` does real work"
     The bundle builder must know whether a run is an accuracy or a performance run and **will not
@@ -68,50 +79,83 @@ Full field list: [`point.yaml` reference](../reference/point-yaml.md).
 
 ### 2. Write `system_desc.json` for each point
 
-The §8.2 hardware and software description. Since policies PR #119 there's no per-system file:
-**every Pareto point carries its own copy**, and the checker verifies all points of a curve describe
-the same system.
+The hardware and software description. Since policies PR #119 there's no per-system file: **every
+Pareto point carries its own copy**, and the checker verifies all points of a curve describe the
+same system.
 
-Key fields: `division`, `system_name`, `shortened_system_name` (≤ 20 characters),
-`system_availability_status`, node and accelerator topology, `serving_framework`,
-`inference_backend`, `driver`, `container_link`, `model_name`, `max_supported_concurrency`,
-`endpoint_url`, the parallelism mapping (`tensor_parallel`, `expert_parallel`, `pipeline_parallel`,
-`data_parallel`, `disaggregated`), `batch`, `config_summary` and `tps_utilization`.
-
-Full field list and a copyable template: [`system_desc.json` reference](../reference/system-desc-json.md).
+The fields are defined in [§8.2 of the rules][rules-8.2]. Either capture the file with
+[`mlperf-sysinfo`](https://docs.mlcommons.org/mlperf-sysinfo/), which reads the machine under test
+using its `endpoints` profile, or copy the template in [§8.2.1][rules-8.2.1] and fill it in. Checker
+behaviour and known gaps between the rules and the tooling: [`system_desc.json`
+reference](../reference/system-desc-json.md).
 
 !!! tip "`tps_utilization` is computed, not chosen"
     It is `reported_system_tps / max(reported_system_tps across the curve)`. The checker recomputes
     it against your own curve. You cannot fill this in until every point has run.
 
-### 3. Write the shared `src/` content
+### 3. Write `system_power.json` for each system
+
+This declares the system's provisioned power, which v1.0 divides throughput by. It's per **system**,
+not per point, because provisioned power is fixed for the whole curve. The builder lifts it from
+your run folders to `results/<system>/system_power.json` in the bundle.
+
+The [power model][rules-4.5.2-power-model] and the ways to fill the file are in [§4.5.2 of the
+rules][rules-4.5.2]: either component counts and TDPs, each linked to a public spec sheet, with the
+overhead fraction set by the `cooling` field in `system_desc.json`, or a single published
+provisioned-power figure. The component form looks like this:
+
+```json
+{
+  "cpu":              { "num_cpu": 2,         "tdp_per_cpu": 350,         "link": "https://…" },
+  "accelerator":      { "num_accelerator": 8, "tdp_per_accelerator": 700, "link": "https://…" },
+  "scale_up_network": { "num_switches": 1,    "tdp_per_switch": 3500,     "link": "https://…" }
+}
+```
+
+Count only what's actually installed. Partly populated systems and components run below their rated
+TDP have their own rules in the same section, including the evidence you need for a cap.
+Field-by-field detail and checker behaviour: [`system_power.json`
+reference](../reference/system-power-json.md).
+
+!!! warning "Keep every copy identical"
+    You can put the file in more than one run folder of the same system, but every copy must have
+    the same contents. Two runs of one system that disagree fail the bundle build, because one
+    system can only have one provisioned power.
+
+!!! note "Leaving a value out doesn't mean leaving the file out"
+    The file is required even if you leave values out ([Component Template in
+    §4.5.2][rules-component-template-system_powerjson]). The checker flags each blank component
+    group `power-estimated`, MLCommons fills it in with a deliberately conservative estimate, and
+    the published result is tagged **"MLC Estimated Power"**. The file still has to yield a total:
+    with no `provisioned_power_w` and no group that has both a count and a TDP, the checker fails
+    `power-descriptor`.
+
+### 4. Write the shared `src/` content
 
 `src/<implementation>/` (for example `vllm/`, `trtllm/`, `sglang/`) holds the endpoint interface
-code, infrastructure and cluster setup, and client harness. **A `README.md` is required** in each
-implementation directory, explaining how to build and launch the system under test and reproduce a
-point.
+code, cluster setup and client harness, with a **required `README.md`** on how to build, launch and
+reproduce a point. Like `docs/`, it's written **once** for the whole submission, not per point
+([§8.1][rules-8.1]).
 
-This content is shared across the whole submission and written **once**. It isn't duplicated per
-Pareto point. Adding or withdrawing a point must not require any change under `src/` or `docs/`.
+### 5. Write the shared `docs/` content
 
-### 4. Write the shared `docs/` content
-
-- `software_disclosure.md` — serving framework with version and commit or release tag, accelerator
-  compute library and build, driver version, operating system.
-- `calibration.adoc` — required if you applied any weight transformation. Either describe the recipe
-  in enough detail for an external team to reproduce it, or provide the scripts that implement it.
+- `software_disclosure.md` — the software components listed in
+  [§8.4][rules-8.4].
+- `calibration.adoc` — required if you applied any weight transformation
+  ([§3.3][rules-3.3]).
+  The recipe has to be reproducible from the write-up or the scripts you provide
+  ([§2.2.1][rules-2.2.1]).
 - Anything else a reviewer needs to follow your setup.
 
 !!! warning "Disclosure obligations differ by division"
-    Standardized requires full hardware, software and parallelism disclosure. Serviced requires the
-    advertised model name and version, endpoint URL, pricing model and rates, and rate limits, but
-    but full rack hardware disclosure is optional. See
-    [Requirements you must meet](../rules/requirements.md).
+    Standardized requires full hardware, software and parallelism disclosure; Serviced has its own
+    list and makes full rack hardware optional. See [§2.7][rules-2.7] and, for Serviced,
+    [§2.3.1][rules-2.3.1]. Summary: [Requirements you must meet](../rules/requirements.md).
 
 ## Verify
 
-The fastest check is the checker itself, which is [step 6](validate.md). Before that, confirm
-mechanically that nothing is missing:
+The full check is the checker, in [step 7](validate.md). Before that, confirm mechanically that
+nothing is missing:
 
 ```bash
 for d in run-folders/*/; do
@@ -119,14 +163,16 @@ for d in run-folders/*/; do
     [ -f "$d$f" ] || echo "MISSING: $d$f"
   done
 done
+ls run-folders/*/system_power.json            # at least one per system
+grep -lE '^offline: *(dedicated|elected)' run-folders/*/point.yaml   # one folder, none if agentic
 ```
 
 Then confirm your `shared_src` and `shared_docs` values name directories that will exist under the
-assembled submission root. A point whose pointers don't resolve is incomplete and the submission
-is rejected.
+assembled submission root. A point whose pointers don't resolve is incomplete and the submission is
+rejected.
 
 ## Next
 
-→ [6. Validate locally](validate.md)
+→ [6. Register your runs](register-runs.md)
 
 Problems? See [Troubleshooting](../help/troubleshooting.md#disclosure-files).

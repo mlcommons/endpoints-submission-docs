@@ -1,8 +1,8 @@
 site_name: MLPerf Endpoints — Submitter Documentation
 site_description: How to prepare, validate and submit an MLPerf Endpoints benchmark result.
-site_url: https://anandhu-eng.github.io/endpoints-submission-docs/
-repo_url: https://github.com/anandhu-eng/endpoints-submission-docs
-repo_name: anandhu-eng/endpoints-submission-docs
+site_url: https://mlcommons.github.io/endpoints-submission-docs/
+repo_url: https://github.com/mlcommons/endpoints-submission-docs
+repo_name: mlcommons/endpoints-submission-docs
 edit_uri: ""
 copyright: MLPerf and MLCommons are trademarks of MLCommons Association.
 
@@ -82,7 +82,10 @@ markdown_extensions:
       custom_checkbox: true
   - pymdownx.snippets:
       base_path: ["docs/_includes"]
-      auto_append: ["glossary.md"]
+      # policy-links.md holds reference-style links to rules clauses, so pages can
+      # point at a clause instead of copying its table. The policies branch lives
+      # only in that file: change it there when the rules move to main.
+      auto_append: ["glossary.md", "policy-links.md"]
       check_paths: true
   - toc:
       permalink: true
@@ -95,19 +98,24 @@ nav:
       - What is MLPerf Endpoints?: understand/what-is-mlperf-endpoints.md
       - How submission works: understand/how-submission-works.md
       - Divisions and scenarios: understand/divisions-and-scenarios.md
-      - Membership, PRISM and eligibility: understand/eligibility.md
+      - Membership, PRISM and eligibility:
+          - understand/eligibility/index.md
+          - MLCommons CLA process: understand/eligibility/cla-process.md
+          - PRISM API key: understand/eligibility/prism-api-key.md
+          - MLCommons membership: understand/eligibility/membership.md
 
   - Submission Workflow:
       - workflow/index.md
       - Before you begin: workflow/before-you-begin.md
-      - 1. Register and get a token: workflow/register.md
+      - 1. Get access and an API key: workflow/register.md
       - 2. Install the tools: workflow/install-tools.md
       - 3. Plan your Pareto curve: workflow/plan-your-curve.md
       - 4. Run the measurement points: workflow/run-the-points.md
       - 5. Author the disclosure files: workflow/author-disclosures.md
-      - 6. Validate locally: workflow/validate.md
-      - 7. Submit: workflow/submit.md
-      - 8. After you submit: workflow/after-submission.md
+      - 6. Register your runs: workflow/register-runs.md
+      - 7. Validate locally: workflow/validate.md
+      - 8. Submit: workflow/submit.md
+      - 9. After you submit: workflow/after-submission.md
 
   - Rules & Compliance:
       - rules/index.md
@@ -118,13 +126,14 @@ nav:
 
   - Reference:
       - reference/index.md
+      - Benchmarks and models: reference/benchmarks.md
       - Submission package layout: reference/package-layout.md
       - point.yaml: reference/point-yaml.md
       - system_desc.json: reference/system-desc-json.md
+      - system_power.json: reference/system-power-json.md
       - Metrics and regions: reference/metrics-and-regions.md
       - Benchmark runner CLI: reference/cli-inference-endpoint.md
       - Submission CLI: reference/cli-submission.md
-      - Submission checker: reference/cli-checker.md
       - Compliance checks: reference/compliance-checks.md
       - Submission states: reference/submission-states.md
       - Glossary: reference/glossary.md
