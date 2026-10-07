@@ -61,6 +61,46 @@ git -C endpoints rev-parse HEAD
 
 ### 2. Install the submission tools
 
+=== "pip"
+
+    ```bash
+    pip install endpoints-submission-cli
+    ```
+
+=== "From source"
+
+    ```bash
+    git clone https://github.com/mlcommons/endpoints-submission-cli.git
+    cd endpoints-submission-cli
+    pip install -e ".[dev]"
+    ```
+
+=== "uv"
+
+    ```bash
+    uv sync --extra dev
+    ```
+
+Both `endpoints-submission-cli` and `submission-checker` come from this one package.
+
+Optionally, install the results visualizer to preview your curves locally before you submit:
+
+```bash
+pip install mlperf-viz
+```
+
+See [Results visualizer](../reference/cli-visualizer.md).
+
+### 3. Install `gh`
+
+The [`gh` CLI](https://cli.github.com/) is required for creating, updating and withdrawing
+submissions. Install it and authenticate with `gh auth login`.
+
+### 4. Smoke-test the client against a local server
+
+Before pointing anything at real hardware, confirm the client works end to end against the bundled
+echo server:
+
 ```bash
 pip install endpoints-submission-cli
 ```

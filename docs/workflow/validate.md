@@ -78,9 +78,42 @@ checker rule ID to clause is in [Compliance checks](../reference/compliance-chec
 
 ### 5. Use the programmatic API for CI
 
-The checker can also run from Python; see its [Programmatic
-API](https://github.com/mlcommons/endpoints-submission-cli/blob/main/README.md#programmatic-api).
-Wiring it into CI so every change to your disclosure files is checked is worth the hour it takes.
+```python
+from pathlib import Path
+from submission_checker import SubmissionChecker
+
+report = SubmissionChecker(Path("/submissions/acme_corp")).run()
+
+if not report.passed:
+    for result in report.errors:
+        print(f"[{result.rule}] {result.message}")
+```
+
+`report.warnings` and `report.model_dump_json()` are also available. Wiring this into CI so every
+change to your disclosure files is checked is worth the hour it takes.
+
+### 6. Look at your curves (optional)
+
+The checker tells you whether the submission is valid, not whether the curve looks the way you
+expect. To see it, render the same folder in a local dashboard:
+
+```bash
+pip install mlperf-viz
+mlperf-viz /path/to/submission
+```
+
+It opens the Pareto Explorer in your browser; nothing is uploaded. Each `<System>/<Model>` pair is
+one curve. Flags and formats: [Results visualizer](../reference/cli-visualizer.md).
+
+## Verify
+
+```bash
+submission-checker check /path/to/submission --strict --output checker.json
+echo "exit: $?"
+```
+
+You're ready to submit when the exit code is `0`. Keep `checker.json`, which is useful evidence if a
+reviewer later questions something the checker already passed.
 
 ## Next
 

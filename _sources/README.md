@@ -10,6 +10,7 @@ instead.
 | `policies-*.md`, `policies-seedset.yaml` | mlcommons/endpoints_policies | `v1.0_rules_dev@d2d9da6` | 2026-10-02 |
 | `submission-cli-*.md` | mlcommons/endpoints-submission-cli | `main@a42a056` (after tag `v1.1.0.0`) | 2026-10-02 |
 | `endpoints-*.md` | mlcommons/endpoints | `main@47cc5c8` | 2026-09-13 |
+| `mlperf-viz-README.md` | mlcommons/mlperf-viz (`cli/README.md`) | `cli-v1.1.0@654dca5` | 2026-10-02 |
 
 The 2026-10-02 resync moved the policies snapshots (streaming and the multi-token stream interval,
 `model_name` and `link_config` out of `system_desc.json`, file-name fixes) and the CLI snapshots
