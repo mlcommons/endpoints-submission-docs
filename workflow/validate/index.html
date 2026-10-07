@@ -1056,8 +1056,26 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#6-look-at-your-curves-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Look at your curves (optional)
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verify
+    </span>
+  </a>
   
 </li>
       
@@ -1330,6 +1348,8 @@
       
         
       
+        
+      
     
     
     
@@ -1547,6 +1567,29 @@
   
   <span class="md-ellipsis">
     Submission CLI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/cli-visualizer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Results visualizer
     
   </span>
   
@@ -1886,8 +1929,26 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#6-look-at-your-curves-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Look at your curves (optional)
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verify
+    </span>
+  </a>
   
 </li>
       
@@ -2007,9 +2068,31 @@ passes submissions the server will reject. Check with
 <code>endpoints-submission-cli --version</code>, and upgrade with <code>pip install -U endpoints-submission-cli</code>.</p>
 </div>
 <h3 id="5-use-the-programmatic-api-for-ci">5. Use the programmatic API for CI<a class="headerlink" href="#5-use-the-programmatic-api-for-ci" title="Permanent link">&para;</a></h3>
-<p>The checker can also run from Python; see its <a href="https://github.com/mlcommons/endpoints-submission-cli/blob/main/README.md#programmatic-api">Programmatic
-API</a>.
-Wiring it into CI so every change to your disclosure files is checked is worth the hour it takes.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">submission_checker</span><span class="w"> </span><span class="kn">import</span> <span class="n">SubmissionChecker</span>
+
+<span class="n">report</span> <span class="o">=</span> <span class="n">SubmissionChecker</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">"/submissions/acme_corp"</span><span class="p">))</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">report</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">report</span><span class="o">.</span><span class="n">errors</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"[</span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">rule</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">message</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div>
+<p><code>report.warnings</code> and <code>report.model_dump_json()</code> are also available. Wiring this into CI so every
+change to your disclosure files is checked is worth the hour it takes.</p>
+<h3 id="6-look-at-your-curves-optional">6. Look at your curves (optional)<a class="headerlink" href="#6-look-at-your-curves-optional" title="Permanent link">&para;</a></h3>
+<p>The checker tells you whether the submission is valid, not whether the curve looks the way you
+expect. To see it, render the same folder in a local dashboard:</p>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>mlperf-viz
+mlperf-viz<span class="w"> </span>/path/to/submission
+</code></pre></div>
+<p>It opens the Pareto Explorer in your browser; nothing is uploaded. Each <code>&lt;System&gt;/&lt;Model&gt;</code> pair is
+one curve. Flags and formats: <a href="../../reference/cli-visualizer/">Results visualizer</a>.</p>
+<h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>submission-checker<span class="w"> </span>check<span class="w"> </span>/path/to/submission<span class="w"> </span>--strict<span class="w"> </span>--output<span class="w"> </span>checker.json
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"exit: </span><span class="nv">$?</span><span class="s2">"</span>
+</code></pre></div>
+<p>You're ready to submit when the exit code is <code>0</code>. Keep <code>checker.json</code>, which is useful evidence if a
+reviewer later questions something the checker already passed.</p>
 <h2 id="next">Next<a class="headerlink" href="#next" title="Permanent link">&para;</a></h2>
 <p>→ <a href="../submit/">8. Submit</a></p>
 <p>Problems? See <a href="../../help/troubleshooting/#validation-failures">Troubleshooting</a> and <a href="../../rules/rejection-reasons/">Why submissions
