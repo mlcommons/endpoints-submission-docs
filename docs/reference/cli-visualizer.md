@@ -2,8 +2,9 @@
 
 Renders a submission folder as a local browser dashboard — the Pareto Explorer — so you can look at
 your curves before submitting, or browse published results. It reads the same layout the
-[submission checker](cli-checker.md) expects. It does **not** validate anything: use the checker
-for that.
+[submission
+checker](https://github.com/mlcommons/endpoints-submission-cli/blob/main/README.md#submission-checker)
+expects. It does **not** validate anything: use the checker for that.
 
 Ships as its own package, [`mlperf-viz`](https://pypi.org/project/mlperf-viz/), from
 [`mlcommons/mlperf-viz`](https://github.com/mlcommons/mlperf-viz). Nothing leaves your machine — no

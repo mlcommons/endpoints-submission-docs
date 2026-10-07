@@ -30,7 +30,6 @@ Workflow](../workflow/index.md) instead.
 |---|---|
 | [Benchmark runner CLI](cli-inference-endpoint.md) | `inference-endpoint` — runs the benchmark |
 | [Submission CLI](cli-submission.md) | `endpoints-submission-cli` — registers runs, creates submissions |
-| [Submission checker](cli-checker.md) | `submission-checker` — validates a bundle |
 | [Results visualizer](cli-visualizer.md) | `mlperf-viz` — renders a submission folder, or published results, as a local dashboard |
 
 ## Process
