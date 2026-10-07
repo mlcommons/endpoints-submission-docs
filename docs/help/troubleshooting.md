@@ -22,13 +22,13 @@ Indexed by what you see. Search this page for a fragment of your error message.
        service authenticates against a different surface.
     3. Try `--token` explicitly to rule out a shell-profile problem.
 
-    See [step 1](../workflow/register.md).
+    See [Set your token](../workflow/register-runs.md#set-your-token).
 
 ??? failure "Connection errors, or requests going somewhere unexpected"
     **Cause:** `MLPERF_API_BASE_URL` is set.
 
-    **Fix:** unset it. It defaults to `https://api.mlcommons.org` and should only be overridden for
-    dev or staging environments.
+    **Fix:** unset it. The CLI has the production API built in, and the variable should only be set
+    for dev or staging environments.
     ```bash
     unset MLPERF_API_BASE_URL
     ```
@@ -47,45 +47,50 @@ Indexed by what you see. Search this page for a fragment of your error message.
     **Fix:** for a submission, prefer `uv sync` so your dependency set matches the lockfile. Record
     the commit SHA you built from either way, since you need it for disclosure.
 
-??? failure "Submission commands fail mentioning GitHub"
-    **Cause:** `gh` is missing or unauthenticated. It is required for creating, updating and
-    withdrawing submissions.
-
-    **Fix:** install the [`gh` CLI](https://cli.github.com/) and run `gh auth login`.
-
 ## Running the benchmark
 
 ??? failure "`result_summary.json` shows `complete: false`"
     **Cause:** the run drained out or was interrupted. The metrics are partial.
 
-    **Fix:** the point is **not usable** — re-run it. Check whether you hit
-    `run_timeout_s`, a drain timeout, or `endpoint_response_idle_timeout_s`.
+    **Fix:** the point is **not usable** — re-run it. Check whether you hit `run_timeout_s`, a drain
+    timeout, or `endpoint_response_idle_timeout_s`.
 
-    A `state` of `INTERRUPTED` means the run was aborted; `state: complete` with pending tasks means
-    a drain timeout.
+    A `state` of `"interrupted"` means the run was aborted; `"complete"` with pending tasks means a
+    drain timeout.
+
+??? failure "`streaming-config` fails"
+    **Cause:** the point's `point.yaml` records `stream_all_chunks: false`, which is the default in
+    the client's config templates (`settings.client.stream_all_chunks`).
+
+    **Fix:** re-run with `stream_all_chunks: true`. The rules now allow either value, but checker
+    `v1.1.0.0` still requires `true`. Separately, every fixed-concurrency point needs streaming
+    responses so TTFT and TPOT can be measured. The client's `streaming: auto` turns them on for
+    those runs; a dedicated Offline run doesn't need them.
 
 ??? failure "The run ends far sooner than the region minimum"
     **Cause:** sample-count sizing. With no explicit count and no minimum issue duration, the client
     issues the dataset **once** and stops.
 
-    **Fix:** set `settings.runtime.n_samples_to_issue`, or `min_issue_duration_ms`, so the run
-    sustains 600 s (Ultra Low) or 1,200 s (other regions) of steady state.
+    **Fix:** set `settings.runtime.n_samples_to_issue`, a multiple of the dataset size, so the run
+    sustains 600 s (Ultra Low) or 1,200 s (other regions) of steady state ([§6.2 of the
+    rules][rules-6.2]).
 
     Priority order: `n_samples_to_issue` > Poisson QPS × min issue duration > dataset size.
 
 ??? failure "A percentile lookup in `result_summary.json` returns nothing"
-    **Cause:** percentile keys are **decimal strings** — `"50.0"`, `"90.0"`, `"99.9"`, not `"50"`
-    or `"90"`.
+    **Cause:** percentile keys are **decimal strings** — `"50.0"`, `"90.0"`, `"99.9"`, not `"50"` or
+    `"90"`.
 
     **Fix:** use the decimal form.
 
 ??? failure "Dataset validation fails saying samples cannot be salted"
     **Cause:** salt requires a dict sample with a text `prompt` field. A dataset whose samples carry
-    `messages`, or multimodal content parts, cannot be salted, and the client validates every
-    sample up front rather than shipping an unsalted payload.
+    `messages`, or multimodal content parts, cannot be salted, and the client validates every sample
+    up front rather than shipping an unsalted payload.
 
     **Fix:** use a dataset with a text `prompt`, or disable the warmup salt, but if warmup uses the
-    performance dataset, **salting is mandatory**, so the dataset must support it.
+    performance dataset, **salting is mandatory** ([§6.3.1 of the rules][rules-6.3.1]), so the
+    dataset must support it.
 
 ??? failure "The endpoint stops responding and the run hangs"
     **Cause:** no liveness deadline set.
@@ -97,19 +102,15 @@ Indexed by what you see. Search this page for a fragment of your error message.
         endpoint_response_idle_timeout_s: 300   # >= 300; raise for long requests
     ```
 
-??? failure "`from-config` ignores `--report-dir`"
-    **Cause:** not a bug. `from-config` accepts only `--config`, `--timeout` and `--mode`.
-
-    **Fix:** set `report_dir` in the YAML.
-
 ## Disclosure files
 
 ??? failure "The checker reports missing `point.yaml` or `system_desc.json`"
-    **Cause:** you expected a tool to generate them. Nothing does.
+    **Cause:** you expected the reference client to generate them. It doesn't.
 
-    **Fix:** author both by hand and place them at the top level of every run folder. See
-    [step 5](../workflow/author-disclosures.md),
-    [`point.yaml`](../reference/point-yaml.md) and
+    **Fix:** author `point.yaml` by hand. Capture `system_desc.json` with
+    [`mlperf-sysinfo`](https://docs.mlcommons.org/mlperf-sysinfo/) or write it from the §8.2.1
+    template. Place both at the top level of every run folder. See [step
+    5](../workflow/author-disclosures.md), [`point.yaml`](../reference/point-yaml.md) and
     [`system_desc.json`](../reference/system-desc-json.md).
 
 ??? failure "Fields you set in `config.yaml` do not appear in the submission"
@@ -131,19 +132,63 @@ Indexed by what you see. Search this page for a fragment of your error message.
 
 ## Validation failures
 
-??? failure "`point-count` fails: fewer than 7 points"
-    **Cause:** too few points, or points were withdrawn.
+??? failure "`point-count` fails"
+    **Cause:** too few points, or points were withdrawn. The minimum is 8 when a point declares
+    `offline: dedicated`, and 7 otherwise.
 
     **Fix:** run more. Note withdrawn points do not count toward the minimum and **cannot be
-    replaced**, because there's no `add-run`. If the curve needs a different set of runs, create a new
-    submission.
+    replaced**, because there's no `add-run`. If the curve needs a different set of runs, create a
+    new submission.
+
+??? failure "`offline-point-present` fails because no point declares `offline`"
+    **Cause:** no dedicated Offline run and no elected `C_max` point, on a curve the checker reads as
+    single-turn. It treats a curve as agentic only when every point's load pattern is
+    `agentic_inference`.
+
+    **Fix:** add `offline: elected` to your `C_max` point's `point.yaml`, or run a dedicated Offline
+    point and declare `offline: dedicated`. If the benchmark really is agentic, check the load
+    pattern recorded at every point. See [step 3](../workflow/plan-your-curve.md#6-decide-how-to-meet-the-offline-requirement).
+
+??? failure "`offline-point-present` fails on an `elected` point"
+    **Cause:** `elected` is declared on a point whose concurrency isn't your declared `C_max`.
+
+    **Fix:** elect the point at exactly `max_supported_concurrency`. If you don't have one, run it,
+    or run a dedicated Offline point instead.
+
+??? failure "`offline-ordering` warns"
+    **Cause:** the dedicated Offline run's `system_tps` is below 0.98× your `C_max` point's, or its
+    concurrency is below `C_max`.
+
+    **Fix:** a low throughput usually means the Offline run didn't saturate the system; re-run it
+    with more passes, or elect your `C_max` point instead. A low concurrency means your dataset is
+    smaller than `C_max`, which the rules haven't resolved yet — see **C7** in [Open
+    questions](open-questions.md).
+
+??? failure "`power-descriptor` fails"
+    **Cause:** `results/<system>/system_power.json` is missing, or it states neither a total nor any
+    component group a total can be computed from.
+
+    **Fix:** put a `system_power.json` in at least one run folder of that system. See
+    [`system_power.json`](../reference/system-power-json.md).
+
+??? failure "The build fails saying runs declare different `system_power.json` contents"
+    **Cause:** two run folders of the same system carry different copies.
+
+    **Fix:** make every copy identical, or keep it in one run folder only.
+
+??? failure "`approved-drafter` fails"
+    **Cause:** the point declares `speculative_decoding`, and the drafter isn't on the benchmark's
+    approved list. Approved heads exist only for the agentic benchmarks, and the checker's list is
+    still empty, so every drafter fails for now.
+
+    **Fix:** re-run the point without speculative decoding.
 
 ??? failure "A concurrency-coverage check fails"
     **Cause:** no point in one of Low, Medium or High Concurrency — often because `C_min` changed.
 
     **Fix:**
     ```bash
-    submission-checker regions --max-concurrency <C_max> --min-concurrency <your lowest point>
+    python -c "from submission_checker.cli import main; main()" regions --max-concurrency <C_max> --min-concurrency <your lowest point>
     ```
     Remember `C_min` is **derived from your own lowest point**, so dropping that point moves every
     other boundary. And a point in the 10% margin does **not** satisfy High Concurrency.
@@ -155,11 +200,17 @@ Indexed by what you see. Search this page for a fragment of your error message.
     reviewer files a methodology objection about.
 
 ??? failure "`seed-set-adoption` reports SKIP"
-    **Cause:** the bundled seed-set file carries no cohort keys, so the adoption test cannot run.
+    **Cause:** a checker older than `v1.0.1.0`, whose bundled seed-set file carries no cohort keys.
 
-    **Fix:** none available locally. Confirm the correct seed set with MLCommons, and point
-    `--seed-sets FILE` or `$MLPERF_ENDPOINTS_SEED_SETS` at a newer file if one exists. Tracked as
-    **B4** in [Open questions](open-questions.md).
+    **Fix:** `pip install -U endpoints-submission-cli`. From `v1.0.1.0` the adoption test runs
+    against the published set.
+
+??? failure "`accuracy-coverage` fails"
+    **Cause:** no accuracy results at a point in one of the four mandatory regions, or none at the
+    Offline point.
+
+    **Fix:** the message names the region or the Offline point. Run that accuracy validation. An
+    elected `C_max` point's accuracy run covers both High Concurrency and Offline.
 
 ??? failure "`accuracy-gate` fails"
     **Cause:** the accuracy run missed the benchmark quality target.
@@ -168,13 +219,20 @@ Indexed by what you see. Search this page for a fragment of your error message.
     permitted under [model equivalence](../rules/model-equivalence.md) pushed you below the target;
     dynamic approximate sparsity and aggressive PTQ are both gated on exactly this.
 
-## Submission failures
+## Registering runs
 
 ??? failure "`Run folder error: … is missing required file(s): performance/result_summary.json`"
     **Cause:** a flat run folder with the summary at the top level.
 
     **Fix:** use the layout the reference client writes — the summary belongs under `performance/`.
     Flat layouts are not accepted. See [Submission package layout](../reference/package-layout.md).
+
+??? failure "A run cannot be deleted"
+    **Cause:** it belongs to an active submission.
+
+    **Fix:** `submissions withdraw` first, then `runs delete`.
+
+## Submission failures
 
 ??? failure "The build fails naming a specific run"
     **Cause:** the builder cannot tell whether the run is an accuracy or a performance run. It reads
@@ -186,15 +244,11 @@ Indexed by what you see. Search this page for a fragment of your error message.
     guessing used to file accuracy runs as performance runs and silently drop the accuracy results.
 
 ??? failure "`submissions update --run-ids` is rejected"
-    **Cause:** the list would **add** a run. The post-submission window for adding points was removed.
+    **Cause:** the list would **add** a run. The post-submission window for adding points was
+    removed.
 
     **Fix:** the list may only shrink. To remove one point, use `submissions remove-run`. For a
     different set of runs, create a new submission.
-
-??? failure "A run cannot be deleted"
-    **Cause:** it belongs to an active submission.
-
-    **Fix:** `submissions withdraw` first, then `runs delete`.
 
 ??? failure "The upload failed and you are unsure of the state"
     **Cause:** partial failure. The CLI rolls back automatically — a failed run-archive upload
@@ -211,29 +265,30 @@ Indexed by what you see. Search this page for a fragment of your error message.
 
     **Fix:** nothing. `pr_url` and `pr_number` populate once whatever opens it has set them.
 
-??? failure "`submissions create` succeeded but status is not `REVIEW_PENDING`"
-    **Cause:** the final PATCH step failed. Both submission and bundle exist — the CLI treats this as
-    a warning, not a fatal error.
+??? failure "Status is still `COMPLIANCE_CHECKING` after `submissions create`"
+    **Cause:** expected at first. Since `v1.1.0.0` the CLI leaves a new submission in
+    `COMPLIANCE_CHECKING`, and it moves to `REVIEW_PENDING` once the automated compliance check
+    passes. Older CLIs set `REVIEW_PENDING` themselves.
 
-    **Fix:** the status can be set manually. Confirm with `submissions get`.
+    **Fix:** nothing, unless it stays there. Then [ask](support.md).
 
 ## During review
 
 ??? failure "You missed the 3-business-day response window"
     **Cause:** no one was watching the review thread.
 
-    **Fix:** respond immediately. Penalties are **cumulative and non-reversible** — responding does
-    not undo a penalty already incurred, but it prevents further escalation. At 10 business days the
-    submission is withdrawn.
+    **Fix:** respond immediately. A penalty already incurred stays, but responding stops further
+    escalation. At 10 business days the submission is withdrawn ([Submission Rules
+    §6.3][srules-6.3]).
 
     See [After you submit](../workflow/after-submission.md).
 
 ??? failure "A measurement point turns out to be wrong during review"
     **Cause:** an error found after compliance passed.
 
-    **Fix:** results may **not** be changed during peer review. Your options are to withdraw the
-    point (`submissions remove-run`) or withdraw the submission. Withdrawn points do not count
-    toward the 7-point minimum and cannot be replaced.
+    **Fix:** results may **not** be changed during peer review ([Submission Rules
+    §8.1][srules-8.1]). Withdraw the point (`submissions remove-run`) or the whole submission. A
+    withdrawn point doesn't count toward the minimum and can't be replaced.
 
 ## Still stuck?
 

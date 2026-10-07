@@ -32,21 +32,25 @@ Phase directories exist only for phases that ran:
 
 ### Plus what you author
 
-!!! danger "Two required files are not written by any tool"
-    `runs create` additionally requires **`system_desc.json`** and **`point.yaml`** in the run
-    folder. Neither is an endpoints artifact — you author both and drop them in before upload.
+!!! danger "Three required files are not written by the reference client"
+    `runs create` requires **`system_desc.json`** and **`point.yaml`** in every run folder, and the
+    bundle needs a **`system_power.json`** from at least one run folder per system. None is an
+    endpoints artifact. You author `point.yaml` and `system_power.json`; `system_desc.json` you can
+    capture with [`mlperf-sysinfo`](https://docs.mlcommons.org/mlperf-sysinfo/) or write from the
+    template. Drop them in before upload.
 
 ```
 <run-folder>/
-├── system_desc.json        # you author — hardware/software description
+├── system_desc.json        # you supply — hardware/software description (mlperf-sysinfo)
 ├── point.yaml              # you author — per-point disclosure
+├── system_power.json       # you author — per system; any run folder of that system
 ├── src/<implementation>/   # merged into the bundle's shared src/ (README.md required)
 └── documentation/          # merged into the bundle's shared docs/
 ```
 
 !!! warning "This is the only accepted layout"
-    A flat folder with `result_summary.json` at the top level is rejected:
-    *"Run folder error: … is missing required file(s): performance/result_summary.json"*.
+    A flat folder with `result_summary.json` at the top level is rejected: *"Run folder error: … is
+    missing required file(s): performance/result_summary.json"*.
 
 ### Sizes
 
@@ -73,8 +77,8 @@ complete, ttft, tpot, latency, output_sequence_lengths, input_sequence_lengths,
 legacy_loadgen_window_duration_ns, qps, tps, finish_reason_counts, run_config
 ```
 
-`ttft`, `tpot`, `latency` and the sequence-length entries are stat blocks of
-`{total, min, max, median, avg, std_dev, percentiles, histogram}`.
+`ttft`, `tpot`, `latency` and the sequence-length entries are stat blocks of `{total, min, max,
+median, avg, std_dev, percentiles, histogram}`.
 
 !!! warning "Percentile keys are decimal strings"
     `"50.0"`, `"90.0"`, `"99.9"` — **not** `"50"` / `"90"`. A lookup by integer string returns
@@ -92,7 +96,8 @@ legacy_loadgen_window_duration_ns, qps, tps, finish_reason_counts, run_config
  ]}
 ```
 
-`accuracy_scores` is a **list** of per-dataset entries — index it by `dataset_name`, not by position.
+`accuracy_scores` is a **list** of per-dataset entries — index it by `dataset_name`, not by
+position.
 
 ## The submission bundle
 
@@ -115,8 +120,10 @@ What `endpoints-submission-cli` assembles and uploads.
     │
     └── results/
         └── <system>/                 # e.g. H200-SXM-141GBx8_TRT/
+            ├── system_power.json     # REQUIRED, one per system — provisioned power
             └── <model_name>/         # e.g. deepseek-r1/, gpt-oss-120b/
                 └── r<N>/             # one PARETO POINT per concurrency (r1, r32, r256, …)
+                                      #   a dedicated Offline run's N is the dataset size
                     ├── point.yaml
                     ├── system_desc.json
                     ├── result_summary.json
@@ -127,22 +134,23 @@ What `endpoints-submission-cli` assembles and uploads.
 
 ### Shared versus per-point
 
-**Shared** (`src/`, `docs/`) is written **once per submission**. You don't repeat infrastructure
-code or documentation for each Pareto point. If you need different code for different systems or
-models, add another `src/<implementation>/` or a subdirectory under `docs/`.
+`src/` and `docs/` are written once per submission; only what changes with concurrency lives under
+`r<N>/`. The split, and the `shared_src` / `shared_docs` pointers that tie each point to the shared
+content, are set by [rules §8.1][rules-8.1].
 
-**Per-point** covers only what changes with concurrency: `point.yaml`, the result and metadata JSON
-files, and the optional `server_configs/`.
+!!! note "Unresolvable pointers reject the submission"
+    The checker enforces the pointers with `shared-path-resolution`: a point whose `shared_src` or
+    `shared_docs` doesn't resolve to a directory under the submission root fails it.
 
-!!! note "Adding or withdrawing a point must not touch `src/` or `docs/`"
-    That's why each point names the shared content it used through the `shared_src` and
-    `shared_docs` pointers in its `point.yaml`. If those pointers don't resolve to a directory under
-    the submission root, the point is **incomplete** and the submission is rejected.
+### `system_desc.json` is per point, `system_power.json` is per system
 
-### `system_desc.json` is per point
+Since policies PR #119 **every Pareto point carries its own `system_desc.json`**, and the checker
+verifies that all points of a curve describe the same system.
 
-Since policies PR #119 there is no per-system file — **every Pareto point carries its own
-`system_desc.json`**. The checker verifies that all points of a curve describe the same system.
+`system_power.json` is the one per-system file, because provisioned power is fixed across the whole
+curve. The builder takes it from whichever of the system's run folders supply it and writes it to
+`results/<system>/`. If two run folders of the same system carry different contents, the build
+fails. See [`system_power.json`](system-power-json.md).
 
 ### `cli_metadata.json`
 
@@ -176,5 +184,5 @@ Written inside `<submission_id>/`, not at the organisation level.
     - **`config.yaml` is sanitized.** Report directories contain a `config.yaml` with credentials and
       other secrets replaced by `<redacted>`. Restore them before reusing that file as benchmark input.
 
-*Last verified against: `mlcommons/endpoints-submission-cli@main` (f48ca84) and
-`mlcommons/endpoints_policies@v1.0_rules_dev` (a7ec3cc), 2026-09-19.*
+*Last verified against: `mlcommons/endpoints-submission-cli@main` (f25f71e) and
+`mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef), 2026-09-24.*

@@ -12,8 +12,9 @@
 | Your submission's review thread | Anything about a submission already in review |
 
 !!! note "No response times are published"
-    None of the sources state a support SLA, or a turnaround for PRISM API-creation access. Build
-    slack into your plan rather than assuming same-day answers.
+    None of the sources state a support SLA, or a turnaround for [PRISM API-creation
+    access](../understand/eligibility/prism-api-key.md). Build slack into your plan rather than
+    assuming same-day answers.
 
 ## What to include when asking
 
@@ -22,14 +23,14 @@ A question with these attached gets answered once instead of three times:
 - **Which division and scenario** you are submitting under
 - **Versions** — the `endpoints` commit SHA you built from, and `endpoints-submission-cli --version`
 - **The exact error text**, not a paraphrase
-- **The checker output** — `submission-checker check … --output checker.json`
+- **The checker output** — `endpoints-submission-cli check-submission … --output checker.json`
 - **The relevant `point.yaml`** with secrets removed
 - **What you expected**, and what the rules clause you are reading says
 
 For a run problem, `report.txt` and the non-histogram fields of `result_summary.json` are usually
 enough. **Don't attach `events.jsonl`**, which runs to hundreds of megabytes.
 
-!!! danger "Never paste your PRISM token"
+!!! warning "Never paste your PRISM token"
     Not in an issue, not in a log, not in a config attachment. If you think one has leaked, rotate
     it from the API Keys dashboard immediately. It can be used to withdraw your submissions.
 
@@ -38,10 +39,13 @@ enough. **Don't attach `events.jsonl`**, which runs to hundreds of megabytes.
 Some things are genuinely not published anywhere. If your question is one of these, go straight to
 MLCommons rather than searching further:
 
-- Whether your **organisation** needs MLCommons membership to submit
+- Whether your **organisation** needs [MLCommons membership](../understand/eligibility/membership.md) to submit
 - The **PRISM and Member Central URLs**
-- Which **seed set** a v1.0 submission should bind
-- The **v1.0 supported model list**, accuracy targets, and dataset paths
+- The **official** v1.0 model list and accuracy targets. The
+  [list on this site](../reference/benchmarks.md) is put together from the working group's
+  overview and the tooling
+- The **approved drafter list** for the legacy benchmarks, and when the checker will carry the agentic one
+- Which **load pattern** a dedicated Offline run should use
 - **CoN client locations** and scheduling
 - The **Preview Availability Tracker** and public results URLs
 
@@ -50,17 +54,14 @@ Full list with context: [Open questions](open-questions.md).
 ## During review
 
 Objections are filed and resolved **on the submission's review thread**, not through support
-channels. Meetings are convened only when an objection escalates, a party explicitly requests one
-with a written agenda and specific questions, or the review chair decides a meeting would materially
-accelerate resolution.
+channels. Meetings are the exception ([Submission Rules §6.9][srules-6.9]).
 
-If you think a reviewer has a conflict of interest, raise it with the **review chair**. You can do
-this at any time during review, and the chair decides whether they should step aside.
+If you think a reviewer has a conflict of interest, raise it with the **review chair**, at any time
+during review ([§2.4][srules-2.4]).
 
-If you believe a published result involves **fraud or misrepresentation**, that is a separate route:
-any MLCommons member may raise it by email to any MLCommons working-group chair. It carries no time
-limit. Concerns that do not allege fraud are handled as late objections or audit nominations
-instead.
+An allegation of **fraud or misrepresentation** in a published result goes by email to any MLCommons
+working-group chair ([§8.4][srules-8.4]). Anything short of fraud is a late objection or an audit
+nomination instead.
 
 ## Reporting a documentation problem
 

@@ -1,8 +1,8 @@
 <!--
   PROVENANCE SNAPSHOT — do not edit.
   Upstream : docs/endpoints-cli/getting-started.md
-  Repo     : mlcommons/endpoints-submission-cli @ main@f48ca84
-  Captured : 2026-09-13
+  Repo     : mlcommons/endpoints-submission-cli @ main@a42a056
+  Captured : 2026-10-02
   Purpose  : diff this against upstream to find what drifted since the docs were written.
 -->
 
@@ -62,7 +62,7 @@ The env var and the `--token` flag are supported on every command. The flag take
 | Environment variable | Default | Description |
 |---|---|---|
 | `PRISM_USER_API_TOKEN` | — | API key. Required unless `--token` is passed. |
-| `MLPERF_API_BASE_URL` | `https://api.mlcommons.org` | Base URL of the PRISM Submission API. Override only for dev/staging environments. |
+| `MLPERF_API_BASE_URL` | `https://endpointsapi.mlcommons.org` | Base URL of the PRISM Submission API. Override only for dev/staging environments. |
 
 Add to your shell profile for a persistent setup:
 
