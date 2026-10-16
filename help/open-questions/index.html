@@ -851,7 +851,7 @@
   
   
   <span class="md-ellipsis">
-    3. Plan your Pareto curve
+    3. Plan your Pareto frontier
     
   </span>
   
@@ -2001,7 +2001,7 @@ working group's v1.0 rules overview of 2026-09-22.</p>
   <code>link_config</code>. The rules now say <code>system_desc.json</code> everywhere.</li>
 </ul>
 <p>Checker <code>v1.1.0.0</code> (2026-10-01) knows the agentic models and gates their accuracy, rejects a
-single-turn curve with no Offline point, and follows §4.5.2's power model. That resolves
+single-turn frontier with no Offline point, and follows §4.5.2's power model. That resolves
 <strong>B10</strong>, <strong>B12</strong> and <strong>B15</strong>. The client's agentic example settled the third agentic model as
 DeepSeek-V4.1-Flash and published its targets, which closes <strong>C11</strong>.</p>
 <p>In the CLI, <code>--publication-cycle</code> is gone and a new submission waits in <code>COMPLIANCE_CHECKING</code>
@@ -2220,7 +2220,7 @@ none has been resolved by guesswork.</p>
 <tr>
 <td><strong>C8</strong></td>
 <td><strong>Which benchmarks are agentic, and which are multi-turn</strong></td>
-<td>This now decides a lot: whether you need an Offline point, how many points and accuracy runs you owe, the accuracy gate (every point vs mean-of-N), the primary chart (<code>tps_per_user</code> vs <code>e2e_avg_interactivity</code>), and whether agentic salting flags apply. <em>Partly answered:</em> the 2026-09-22 overview splits the suite into legacy and agentic benchmarks, so you can tell which are agentic, and the checker decides it from the load pattern: a curve run with <code>agentic_inference</code> is agentic. Which benchmarks count as multi-turn for the accuracy rule still isn't stated. Ties to <strong>C1</strong></td>
+<td>This now decides a lot: whether you need an Offline point, how many points and accuracy runs you owe, the accuracy gate (every point vs mean-of-N), the primary chart (<code>tps_per_user</code> vs <code>e2e_avg_interactivity</code>), and whether agentic salting flags apply. <em>Partly answered:</em> the 2026-09-22 overview splits the suite into legacy and agentic benchmarks, so you can tell which are agentic, and the checker decides it from the load pattern: a frontier run with <code>agentic_inference</code> is agentic. Which benchmarks count as multi-turn for the accuracy rule still isn't stated. Ties to <strong>C1</strong></td>
 </tr>
 <tr>
 <td><strong>C9</strong></td>

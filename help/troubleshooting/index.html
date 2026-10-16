@@ -851,7 +851,7 @@
   
   
   <span class="md-ellipsis">
-    3. Plan your Pareto curve
+    3. Plan your Pareto frontier
     
   </span>
   
@@ -2066,7 +2066,7 @@ submission root.</p>
 </details>
 <details class="failure">
 <summary><code>tps-utilization</code> fails</summary>
-<p><strong>Cause:</strong> the value is not <code>system_tps / max(system_tps)</code> across your own curve.</p>
+<p><strong>Cause:</strong> the value is not <code>system_tps / max(system_tps)</code> across your own frontier.</p>
 <p><strong>Fix:</strong> recompute after <strong>every</strong> point has run. You cannot fill it in before then.</p>
 </details>
 <h2 id="validation-failures">Validation failures<a class="headerlink" href="#validation-failures" title="Permanent link">&para;</a></h2>
@@ -2075,13 +2075,13 @@ submission root.</p>
 <p><strong>Cause:</strong> too few points, or points were withdrawn. The minimum is 8 when a point declares
 <code>offline: dedicated</code>, and 7 otherwise.</p>
 <p><strong>Fix:</strong> run more. Note withdrawn points do not count toward the minimum and <strong>cannot be
-replaced</strong>, because there's no <code>add-run</code>. If the curve needs a different set of runs, create a
+replaced</strong>, because there's no <code>add-run</code>. If the frontier needs a different set of runs, create a
 new submission.</p>
 </details>
 <details class="failure">
 <summary><code>offline-point-present</code> fails because no point declares <code>offline</code></summary>
-<p><strong>Cause:</strong> no dedicated Offline run and no elected <code>C_max</code> point, on a curve the checker reads as
-single-turn. It treats a curve as agentic only when every point's load pattern is
+<p><strong>Cause:</strong> no dedicated Offline run and no elected <code>C_max</code> point, on a frontier the checker reads as
+single-turn. It treats a frontier as agentic only when every point's load pattern is
 <code>agentic_inference</code>.</p>
 <p><strong>Fix:</strong> add <code>offline: elected</code> to your <code>C_max</code> point's <code>point.yaml</code>, or run a dedicated Offline
 point and declare <code>offline: dedicated</code>. If the benchmark really is agentic, check the load

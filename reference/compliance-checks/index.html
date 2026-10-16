@@ -851,7 +851,7 @@
   
   
   <span class="md-ellipsis">
-    3. Plan your Pareto curve
+    3. Plan your Pareto frontier
     
   </span>
   
@@ -1546,9 +1546,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#regions-and-curve-structure" class="md-nav__link">
+  <a href="#regions-and-frontier-structure" class="md-nav__link">
     <span class="md-ellipsis">
-      Regions and curve structure
+      Regions and frontier structure
     </span>
   </a>
   
@@ -1896,9 +1896,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#regions-and-curve-structure" class="md-nav__link">
+  <a href="#regions-and-frontier-structure" class="md-nav__link">
     <span class="md-ellipsis">
-      Regions and curve structure
+      Regions and frontier structure
     </span>
   </a>
   
@@ -2140,7 +2140,7 @@ and <code>region-basis</code> (no parsable <code>point.yaml</code>) can also fai
 <tr>
 <td><code>system-description-consistency</code></td>
 <td>§9.1</td>
-<td>Every point of a curve describes the same system</td>
+<td>Every point of a frontier describes the same system</td>
 <td><span class="twemoji" style="color:#f9a825"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.4 6 14 4H5v17h2v-7h5.6l.4 2h7V6z"/></svg></span></td>
 </tr>
 <tr>
@@ -2164,7 +2164,7 @@ and <code>region-basis</code> (no parsable <code>point.yaml</code>) can also fai
 <tr>
 <td><code>tps-utilization</code></td>
 <td>§8.2</td>
-<td>Equals <code>system_tps / max(system_tps)</code> over the point's own curve</td>
+<td>Equals <code>system_tps / max(system_tps)</code> over the point's own frontier</td>
 <td><span class="twemoji" style="color:#f9a825"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.4 6 14 4H5v17h2v-7h5.6l.4 2h7V6z"/></svg></span></td>
 </tr>
 <tr>
@@ -2181,7 +2181,7 @@ and <code>region-basis</code> (no parsable <code>point.yaml</code>) can also fai
 </tr>
 </tbody>
 </table>
-<h2 id="regions-and-curve-structure">Regions and curve structure<a class="headerlink" href="#regions-and-curve-structure" title="Permanent link">&para;</a></h2>
+<h2 id="regions-and-frontier-structure">Regions and frontier structure<a class="headerlink" href="#regions-and-frontier-structure" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
@@ -2237,7 +2237,7 @@ and <code>region-basis</code> (no parsable <code>point.yaml</code>) can also fai
 <tr>
 <td><code>benchmark-type-consistency</code></td>
 <td>§6.1, §9.1</td>
-<td>Every point of the curve uses the same load pattern, so the curve is either agentic or single-turn</td>
+<td>Every point of the frontier uses the same load pattern, so the frontier is either agentic or single-turn</td>
 <td><span class="twemoji" style="color:#f9a825"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.4 6 14 4H5v17h2v-7h5.6l.4 2h7V6z"/></svg></span></td>
 </tr>
 <tr>
@@ -2295,10 +2295,10 @@ Concurrency.</p>
 <div class="admonition note">
 <p class="admonition-title">How the checker tells agentic from single-turn</p>
 <p>Nothing in <code>point.yaml</code> names the benchmark type, so the checker reads it from the load pattern.
-A curve whose points all use <code>agentic_inference</code> is agentic: it may not have an Offline point,
+A frontier whose points all use <code>agentic_inference</code> is agentic: it may not have an Offline point,
 and the minimum is 7 points. Anything else is single-turn, and a missing Offline point fails
 <code>offline-point-present</code>. If the points disagree, <code>benchmark-type-consistency</code> fails and the
-curve is checked as single-turn.</p>
+frontier is checked as single-turn.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title"><code>offline-ordering</code> needs a point at exactly <code>C_max</code></p>

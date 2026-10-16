@@ -851,7 +851,7 @@
   
   
   <span class="md-ellipsis">
-    3. Plan your Pareto curve
+    3. Plan your Pareto frontier
     
   </span>
   
@@ -1922,8 +1922,8 @@ correct and resubmit as a new submission (<a href="https://github.com/mlcommons/
 </tr>
 <tr>
 <td><code>offline-point-present</code> fails</td>
-<td>Nothing declares <code>offline</code> on a single-turn curve, two points do, <code>elected</code> sits on a point that isn't at <code>C_max</code>, or an agentic curve declares one</td>
-<td>Keep exactly one declaration, and elect only the point at your declared <code>C_max</code>. An agentic curve has none — <a href="../../workflow/plan-your-curve/#6-decide-how-to-meet-the-offline-requirement">step 3</a></td>
+<td>Nothing declares <code>offline</code> on a single-turn frontier, two points do, <code>elected</code> sits on a point that isn't at <code>C_max</code>, or an agentic frontier declares one</td>
+<td>Keep exactly one declaration, and elect only the point at your declared <code>C_max</code>. An agentic frontier has none — <a href="../../workflow/plan-your-curve/#6-decide-how-to-meet-the-offline-requirement">step 3</a></td>
 </tr>
 <tr>
 <td><code>power-descriptor</code> fails</td>
@@ -2012,12 +2012,12 @@ stops on any error. Fix them before you submit.</p>
 <tr>
 <td><code>benchmark-type-consistency</code> fails</td>
 <td>Some points use <code>agentic_inference</code> and others don't</td>
-<td>Use one load pattern for the whole curve. Until you do, it's checked as single-turn</td>
+<td>Use one load pattern for the whole frontier. Until you do, it's checked as single-turn</td>
 </tr>
 <tr>
 <td><code>config-consistency-model</code> fails</td>
 <td>Points declare different <code>model_name</code> values in <code>point.yaml</code></td>
-<td>One curve, one model. Fix the name, spelled as in <a href="../../reference/benchmarks/">Benchmarks and models</a></td>
+<td>One frontier, one model. Fix the name, spelled as in <a href="../../reference/benchmarks/">Benchmarks and models</a></td>
 </tr>
 <tr>
 <td><code>concurrency-in-range</code> fails</td>
@@ -2031,13 +2031,13 @@ stops on any error. Fix them before you submit.</p>
 </tr>
 <tr>
 <td><code>tps-utilization</code> fails</td>
-<td>Value is not <code>system_tps / max(system_tps)</code> over your own curve</td>
+<td>Value is not <code>system_tps / max(system_tps)</code> over your own frontier</td>
 <td>Recompute after every point has run</td>
 </tr>
 <tr>
 <td><code>system-description-consistency</code> fails</td>
 <td>Points describe different systems</td>
-<td>One curve, one system. Freeze the stack before the first run</td>
+<td>One frontier, one system. Freeze the stack before the first run</td>
 </tr>
 <tr>
 <td><code>config-consistency-dataset</code> fails</td>
@@ -2122,7 +2122,7 @@ stops on any error. Fix them before you submit.</p>
 </tbody>
 </table>
 <h2 id="rejections-that-come-from-judgement-not-checks">Rejections that come from judgement, not checks<a class="headerlink" href="#rejections-that-come-from-judgement-not-checks" title="Permanent link">&para;</a></h2>
-<p>Reviewers look for what automation cannot see: implausible curve shapes, suspiciously uniform <abbr title="Time To First Token">TTFT</abbr>,
+<p>Reviewers look for what automation cannot see: implausible frontier shapes, suspiciously uniform <abbr title="Time To First Token">TTFT</abbr>,
 fake first tokens, padded token counts, contaminated warmup, Offline reordering across passes, and
 system descriptions that don't match what ran. The full list is <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#92-manual-review-focus-areas">§9.2 of the rules</a>, and
 each concern becomes one of the objection types in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#68-types-of-objections">Submission Rules §6.8</a>, not a

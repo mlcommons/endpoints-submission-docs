@@ -856,7 +856,7 @@
   
   
   <span class="md-ellipsis">
-    3. Plan your Pareto curve
+    3. Plan your Pareto frontier
     
   </span>
   
@@ -2037,7 +2037,7 @@ values and field names differ from it.</p>
 <p class="admonition-title">Exactly one point carries <code>offline</code></p>
 <p>For a non-agentic benchmark, one point has to declare <code>offline: dedicated</code> or <code>offline:
 elected</code>. <code>elected</code> is only accepted on the point whose concurrency equals your declared
-<code>C_max</code>. The checker fails a curve with no <code>offline</code> declaration unless every point uses the
+<code>C_max</code>. The checker fails a frontier with no <code>offline</code> declaration unless every point uses the
 <code>agentic_inference</code> load pattern, which is how it recognises an agentic benchmark.</p>
 <p>A dedicated Offline run sets <code>concurrency</code> to the size of the performance dataset and counts
 toward no region (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#571-definition">§5.7.1</a>, <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#572-relationship-to-maximum-supported-concurrency">§5.7.2</a>). The rules don't say what its
@@ -2055,7 +2055,7 @@ the wrong place and quietly drop their results.</p>
 </div>
 <h3 id="2-write-system_descjson-for-each-point">2. Write <code>system_desc.json</code> for each point<a class="headerlink" href="#2-write-system_descjson-for-each-point" title="Permanent link">&para;</a></h3>
 <p>The hardware and software description. Since policies PR #119 there's no per-system file: <strong>every
-Pareto point carries its own copy</strong>, and the checker verifies all points of a curve describe the
+Pareto point carries its own copy</strong>, and the checker verifies all points of a frontier describe the
 same system.</p>
 <p>The fields are defined in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#82-system-description-system_descjson">§8.2 of the rules</a>. Either capture the file with
 <a href="https://docs.mlcommons.org/mlperf-sysinfo/"><code>mlperf-sysinfo</code></a>, which reads the machine under test
@@ -2064,12 +2064,12 @@ behaviour and known gaps between the rules and the tooling: <a href="../../refer
 reference</a>.</p>
 <div class="admonition tip">
 <p class="admonition-title"><code>tps_utilization</code> is computed, not chosen</p>
-<p>It is <code>reported_system_tps / max(reported_system_tps across the curve)</code>. The checker recomputes
-it against your own curve. You cannot fill this in until every point has run.</p>
+<p>It is <code>reported_system_tps / max(reported_system_tps across the frontier)</code>. The checker recomputes
+it against your own frontier. You cannot fill this in until every point has run.</p>
 </div>
 <h3 id="3-write-system_powerjson-for-each-system">3. Write <code>system_power.json</code> for each system<a class="headerlink" href="#3-write-system_powerjson-for-each-system" title="Permanent link">&para;</a></h3>
 <p>This declares the system's provisioned power, which v1.0 divides throughput by. It's per <strong>system</strong>,
-not per point, because provisioned power is fixed for the whole curve. The builder lifts it from
+not per point, because provisioned power is fixed for the whole frontier. The builder lifts it from
 your run folders to <code>results/&lt;system&gt;/system_power.json</code> in the bundle.</p>
 <p>The <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#power-model">power model</a> and the ways to fill the file are in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#452-proposed-endpoints-v10-normalization-methodology">§4.5.2 of the
 rules</a>: either component counts and TDPs, each linked to a public spec sheet, with the

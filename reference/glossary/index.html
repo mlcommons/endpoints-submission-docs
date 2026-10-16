@@ -851,7 +851,7 @@
   
   
   <span class="md-ellipsis">
-    3. Plan your Pareto curve
+    3. Plan your Pareto frontier
     
   </span>
   
@@ -1897,9 +1897,9 @@
 <p>Terms used across this site. Most also appear as hover tooltips on their first use on any page.</p>
 <h2 id="benchmark-concepts">Benchmark concepts<a class="headerlink" href="#benchmark-concepts" title="Permanent link">&para;</a></h2>
 <dl>
-<dt><strong>Pareto curve</strong></dt>
+<dt><strong>Pareto frontier</strong></dt>
 <dd>The published result: a step function of <code>system_tps</code> against <code>tps_per_user</code> across concurrency
-levels. One curve = one system, one benchmark model, one dataset.</dd>
+levels. One frontier = one system, one benchmark model, one dataset.</dd>
 <dt><strong>Measurement point</strong></dt>
 <dd>One benchmark run at one concurrency level. A submission carries 7–32 of them, 8 when one is a
 dedicated Offline run.</dd>
@@ -1909,7 +1909,7 @@ throughput. Required for non-agentic benchmarks, not allowed for agentic ones. E
 <strong>dedicated</strong> run, whose concurrency is the dataset size, or the <code>C_max</code> point <strong>elected</strong> as
 the Offline result.</dd>
 <dt><strong>Step function</strong></dt>
-<dd>The official curve representation. Each point is a discrete step; between points the curve holds
+<dd>The official frontier representation. Each point is a discrete step; between points the frontier holds
 at the last measured value. No interpolation.</dd>
 <dt><strong>Region of interest (<abbr title="Region of Interest">ROI</abbr>)</strong></dt>
 <dd>One of four concurrency bands — Ultra Low, Low, Medium, High. Named for latency or concurrency,
@@ -1930,7 +1930,7 @@ lowest point in v1.0. Together they set your region boundaries.</dd>
 <dd><code>system_tps</code> divided by the system's provisioned power in kW. The v1.0 normalized metric.</dd>
 <dt><strong>Provisioned power</strong></dt>
 <dd>What a system is built to draw, estimated from the rated power of its CPUs, accelerators and
-scale-up switches plus a cooling-dependent overhead. Fixed for a system across its whole curve.
+scale-up switches plus a cooling-dependent overhead. Fixed for a system across its whole frontier.
 Declared in <code>system_power.json</code>.</dd>
 <dt><strong>MLC Estimated Power</strong></dt>
 <dd>The tag on a result whose power figures were partly or wholly filled in by MLCommons.</dd>
@@ -2020,7 +2020,7 @@ Produces the official token count.</dd>
 <dt><strong>Drafter</strong></dt>
 <dd>The speculative-decoding module (MTP, EAGLE-style head, or a self-speculative pass). Chosen
 from the benchmark's approved list, used unmodified apart from <abbr title="Post-Training Quantization">PTQ</abbr>, and the same across the
-curve.</dd>
+frontier.</dd>
 <dt><strong>Approved drafter list</strong></dt>
 <dd>The per-benchmark, per-round list of drafters a Standardized submission may use. Published for the agentic benchmarks only, in the reference repository's agentic example; the checker's list is still empty.</dd>
 <dt><strong>ConcurrencyScheduler</strong></dt>

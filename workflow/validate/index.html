@@ -856,7 +856,7 @@
   
   
   <span class="md-ellipsis">
-    3. Plan your Pareto curve
+    3. Plan your Pareto frontier
     
   </span>
   
@@ -1057,9 +1057,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#6-look-at-your-curves-optional" class="md-nav__link">
+  <a href="#6-look-at-your-frontiers-optional" class="md-nav__link">
     <span class="md-ellipsis">
-      6. Look at your curves (optional)
+      6. Look at your frontiers (optional)
     </span>
   </a>
   
@@ -1930,9 +1930,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#6-look-at-your-curves-optional" class="md-nav__link">
+  <a href="#6-look-at-your-frontiers-optional" class="md-nav__link">
     <span class="md-ellipsis">
-      6. Look at your curves (optional)
+      6. Look at your frontiers (optional)
     </span>
   </a>
   
@@ -2063,7 +2063,7 @@ checker rule ID to clause is in <a href="../../reference/compliance-checks/">Com
 <p class="admonition-title">Use checker <code>v1.1.0.0</code> or later</p>
 <p>The Offline, power, accuracy-coverage, steady-state and drafter checks arrived in <code>v1.0.1.0</code>
 (2026-09-23). <code>v1.1.0.0</code> (2026-10-01) added the agentic models and their accuracy gates, fails
-a single-turn curve with no Offline point, and follows the rules' power model. An older checker
+a single-turn frontier with no Offline point, and follows the rules' power model. An older checker
 passes submissions the server will reject. Check with
 <code>endpoints-submission-cli --version</code>, and upgrade with <code>pip install -U endpoints-submission-cli</code>.</p>
 </div>
@@ -2079,14 +2079,14 @@ passes submissions the server will reject. Check with
 </code></pre></div>
 <p><code>report.warnings</code> and <code>report.model_dump_json()</code> are also available. Wiring this into CI so every
 change to your disclosure files is checked is worth the hour it takes.</p>
-<h3 id="6-look-at-your-curves-optional">6. Look at your curves (optional)<a class="headerlink" href="#6-look-at-your-curves-optional" title="Permanent link">&para;</a></h3>
-<p>The checker tells you whether the submission is valid, not whether the curve looks the way you
+<h3 id="6-look-at-your-frontiers-optional">6. Look at your frontiers (optional)<a class="headerlink" href="#6-look-at-your-frontiers-optional" title="Permanent link">&para;</a></h3>
+<p>The checker tells you whether the submission is valid, not whether the frontier looks the way you
 expect. To see it, render the same folder in a local dashboard:</p>
 <div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>mlperf-viz
 mlperf-viz<span class="w"> </span>/path/to/submission
 </code></pre></div>
 <p>It opens the Pareto Explorer in your browser; nothing is uploaded. Each <code>&lt;System&gt;/&lt;Model&gt;</code> pair is
-one curve. Flags and formats: <a href="../../reference/cli-visualizer/">Results visualizer</a>.</p>
+one frontier. Flags and formats: <a href="../../reference/cli-visualizer/">Results visualizer</a>.</p>
 <h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code>submission-checker<span class="w"> </span>check<span class="w"> </span>/path/to/submission<span class="w"> </span>--strict<span class="w"> </span>--output<span class="w"> </span>checker.json
 <span class="nb">echo</span><span class="w"> </span><span class="s2">"exit: </span><span class="nv">$?</span><span class="s2">"</span>

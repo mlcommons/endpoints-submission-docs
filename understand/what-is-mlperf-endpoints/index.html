@@ -961,7 +961,7 @@
   
   
   <span class="md-ellipsis">
-    3. Plan your Pareto curve
+    3. Plan your Pareto frontier
     
   </span>
   
@@ -1916,10 +1916,10 @@
 client sends load to your model-serving API over HTTP. What gets tested is the endpoint itself, not
 a framework integration.</p>
 <h2 id="what-it-measures">What it measures<a class="headerlink" href="#what-it-measures" title="Permanent link">&para;</a></h2>
-<p>Endpoints measures a curve, not a single number. MLPerf Inference reports latency or throughput at
+<p>Endpoints measures a frontier, not a single number. MLPerf Inference reports latency or throughput at
 one operating point. Real serving systems don't have one operating point — they have a tradeoff
 between total throughput and per-user speed, and you choose where to sit on it. Endpoints measures
-that whole tradeoff as a Pareto curve across concurrency levels.</p>
+that whole tradeoff as a Pareto frontier across concurrency levels.</p>
 <p>Four dimensions are captured at each measurement point (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#41-primary-metrics">§4.1</a>):</p>
 <table>
 <thead>
@@ -1962,12 +1962,12 @@ regions</a>.</p>
 MLCommons material still shows P95. Extra percentiles in your <code>point.yaml</code> won't be charted.</p>
 </div>
 <h2 id="why-a-step-function">Why a step function<a class="headerlink" href="#why-a-step-function" title="Permanent link">&para;</a></h2>
-<p>The official curve is a <strong>step function</strong>: each point is a step, and the curve holds at the last
+<p>The official frontier is a <strong>step function</strong>: each point is a step, and the frontier holds at the last
 measured value until the next one (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#52-pareto-curve-representation">§5.2</a>). A smooth line would suggest operating points
 you never measured, and the gaps between points are where problems like memory pressure and latency
 spikes tend to show up.</p>
 <h2 id="what-a-submission-actually-is">What a submission actually is<a class="headerlink" href="#what-a-submission-actually-is" title="Permanent link">&para;</a></h2>
-<p>One submission is one <strong>Pareto curve</strong>: one system, one benchmark model, one dataset. For most
+<p>One submission is one <strong>Pareto frontier</strong>: one system, one benchmark model, one dataset. For most
 benchmarks it has <strong>8 to 32</strong> measurement points, structured <code>1 + 3 + 3 + 1</code> (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#53-minimum-submission-requirements">§5.3</a>):</p>
 <ul>
 <li><strong>1</strong> point in the Ultra Low Concurrency region (concurrency 1–32),</li>
@@ -1977,7 +1977,7 @@ benchmarks it has <strong>8 to 32</strong> measurement points, structured <code>
 </ul>
 <p>Agentic benchmarks drop the Offline point, so they need 7.</p>
 <p>Region boundaries differ between submitters. They're calculated from your own minimum and maximum
-concurrency, which is covered in <a href="../../workflow/plan-your-curve/">Plan your Pareto curve</a>. Pick your
+concurrency, which is covered in <a href="../../workflow/plan-your-curve/">Plan your Pareto frontier</a>. Pick your
 maximum badly and you'll have to re-run points.</p>
 <p>Each point is a sustained run: <strong>600 seconds</strong> of steady state at ultra-low concurrency, <strong>1,200
 seconds</strong> elsewhere, not counting warmup (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#62-minimum-run-duration">§6.2</a>).</p>
@@ -1990,7 +1990,7 @@ throughput ceiling. Only throughput counts, and the reported concurrency is the 
 <p>You can either run it as a separate point or, if your <code>C_max</code> point already is your ceiling,
 <strong>elect</strong> that point as the Offline result, which is the 7-point route (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#572-relationship-to-maximum-supported-concurrency">§5.7.2</a>). How
 to choose is in <a href="../../workflow/plan-your-curve/#6-decide-how-to-meet-the-offline-requirement">Plan your Pareto
-curve</a>.</p>
+frontier</a>.</p>
 <h2 id="normalised-by-provisioned-power">Normalised by provisioned power<a class="headerlink" href="#normalised-by-provisioned-power" title="Permanent link">&para;</a></h2>
 <p>A larger system will always post a bigger <code>system_tps</code> than a smaller one. To make results
 comparable across scale, v1.0 also reports <code>system_tps_per_kw</code>: throughput divided by the system's
@@ -2007,7 +2007,7 @@ formats it with the model's official chat template, and counts it once with the 
 (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#28-tokenizer-rules">§2.8</a>). So your published <code>system_tps</code> may differ from the number your serving
 framework reports, which is expected. The tokenizer you use internally doesn't affect your score.</p>
 <h2 id="accuracy-is-a-hard-gate">Accuracy is a hard gate<a class="headerlink" href="#accuracy-is-a-hard-gate" title="Permanent link">&para;</a></h2>
-<p>Each benchmark has a quality target, and you have to hit it at several points on the curve, not once
+<p>Each benchmark has a quality target, and you have to hit it at several points on the frontier, not once
 for the whole submission: the four mandatory region points and the Offline point, so five in all, or
 four for an agentic benchmark (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#53-minimum-submission-requirements">§5.3</a>). Single-turn benchmarks must pass at every one of
 those points; multi-turn benchmarks must pass on the average (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#43-accuracy-metric">§4.3</a>). Throughput is

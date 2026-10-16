@@ -851,7 +851,7 @@
   
   
   <span class="md-ellipsis">
-    3. Plan your Pareto curve
+    3. Plan your Pareto frontier
     
   </span>
   
@@ -2059,7 +2059,7 @@ and how each one is computed are in <a href="https://github.com/mlcommons/endpoi
 <p><code>system_tps_per_kw</code> divides <code>system_tps</code> by the provisioned power from the system's
 <a href="../system-power-json/"><code>system_power.json</code></a>. Definition and scope: <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#453-normalized-metric">rules §4.5.3</a>.</p>
 <p>The denominator is the <strong>provisioned</strong> power of the whole system and is the same at every point, so
-the normalized curve is the throughput curve scaled by one constant.</p>
+the normalized frontier is the throughput frontier scaled by one constant.</p>
 <div class="admonition warning">
 <p class="admonition-title">P90, not P95</p>
 <p>v1.0 uses P90 (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#41-primary-metrics">§4.1</a>). The v0.7 rules used P95, and some public MLCommons material
@@ -2121,7 +2121,7 @@ questions</a>.</p>
 <p>The charts, and which metric goes on each axis, are listed in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#42-derived-and-presentation-metrics">rules §4.2</a>. The primary
 chart plots <code>system_tps</code> against <code>tps_per_user</code>, or against <code>e2e_avg_interactivity</code> for an agentic
 benchmark. Higher is better on both axes.</p>
-<p>The official curve is a <strong>step function</strong> with no interpolation (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#52-pareto-curve-representation">§5.2</a>). How a dedicated
+<p>The official frontier is a <strong>step function</strong> with no interpolation (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#52-pareto-curve-representation">§5.2</a>). How a dedicated
 or elected Offline result is drawn on it is in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#573-presentation">§5.7.3</a>.</p>
 <h2 id="token-counting">Token counting<a class="headerlink" href="#token-counting" title="Permanent link">&para;</a></h2>
 <p>Official token counts, output and <abbr title="Input Sequence Length">ISL</abbr> alike, come from the client applying the model's reference
@@ -2143,7 +2143,7 @@ half-to-even, which is Python's built-in <code>round()</code> and easy to get wr
 <div class="admonition note">
 <p class="admonition-title"><code>C_min</code> is derived in v1.0</p>
 <p>The checker derives <code>C_min</code> from your submission's own points rather than reading a declared
-value, so boundaries differ per curve. Your lowest point silently sets every other boundary.</p>
+value, so boundaries differ per frontier. Your lowest point silently sets every other boundary.</p>
 </div>
 <h3 id="the-10-margin">The 10% margin<a class="headerlink" href="#the-10-margin" title="Permanent link">&para;</a></h3>
 <p>The High Concurrency region carries a margin extending the valid upper bound to <code>ceil(1.10 × C_max)</code>

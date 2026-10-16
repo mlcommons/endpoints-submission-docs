@@ -851,7 +851,7 @@
   
   
   <span class="md-ellipsis">
-    3. Plan your Pareto curve
+    3. Plan your Pareto frontier
     
   </span>
   
@@ -2164,9 +2164,9 @@ content, are set by <a href="https://github.com/mlcommons/endpoints_policies/blo
 </div>
 <h3 id="system_descjson-is-per-point-system_powerjson-is-per-system"><code>system_desc.json</code> is per point, <code>system_power.json</code> is per system<a class="headerlink" href="#system_descjson-is-per-point-system_powerjson-is-per-system" title="Permanent link">&para;</a></h3>
 <p>Since policies PR #119 <strong>every Pareto point carries its own <code>system_desc.json</code></strong>, and the checker
-verifies that all points of a curve describe the same system.</p>
+verifies that all points of a frontier describe the same system.</p>
 <p><code>system_power.json</code> is the one per-system file, because provisioned power is fixed across the whole
-curve. The builder takes it from whichever of the system's run folders supply it and writes it to
+frontier. The builder takes it from whichever of the system's run folders supply it and writes it to
 <code>results/&lt;system&gt;/</code>. If two run folders of the same system carry different contents, the build
 fails. See <a href="../system-power-json/"><code>system_power.json</code></a>.</p>
 <h3 id="cli_metadatajson"><code>cli_metadata.json</code><a class="headerlink" href="#cli_metadatajson" title="Permanent link">&para;</a></h3>
