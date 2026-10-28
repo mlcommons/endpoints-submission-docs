@@ -31,6 +31,20 @@ availability and publication mode, which you decided in [Before you begin](befor
 and the run IDs from step 6. It takes the same path step 8 will,
 without creating anything, so it's the closest local approximation to what Week 0 will do.
 
+If your run archives lack shared source or documentation, add them with
+[`--shared-src` and `--shared-docs`](https://github.com/mlcommons/endpoints-submission-cli/blob/main/README.md).
+Pass the folder that contains your implementation folders to `--shared-src`, and your disclosure
+folder to `--shared-docs`. Both flags can be repeated.
+
+```bash
+endpoints-submission-cli submissions create \
+  --division standardized --scenario cop --availability available \
+  --run-ids RUN_ID --shared-src ./implementations --shared-docs ./disclosures \
+  --dry-run
+```
+
+Use one `--run-ids` per run. Follow the [shared folder layout](../reference/package-layout.md).
+
 The full report, warnings included, goes to a `submission_checker_<timestamp>.log` file in the
 current directory. If a check fails, fix the run folder, [register it
 again](register-runs.md#re-register), and re-run with the new run ID.

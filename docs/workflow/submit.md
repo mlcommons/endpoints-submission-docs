@@ -21,6 +21,10 @@ Run [`submissions create`][cli-submissions-create] with your classification flag
 `--run-ids` per run. The command, its flags, and what it does step by step are in the CLI docs. It
 runs the checker again and aborts before uploading anything if there are errors.
 
+Use the same `--shared-src` and `--shared-docs` folders as in
+[local validation](validate.md#1-dry-run-the-real-pipeline). Keep these flags when you remove
+`--dry-run`.
+
 The two publication flags select one of the publication modes in [Submission Rules
 §6.2][srules-6.2], which says when review starts and when each mode publishes:
 
