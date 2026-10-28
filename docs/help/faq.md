@@ -83,10 +83,6 @@ Process and policy questions that are not errors. For errors, see
 :   Yes. Post-training quantization is permitted under the conditions in
     [§2.9.3 of the rules][rules-2.9.3].
 
-**Can I use speculative decoding?**
-:   Only with a drafter on the benchmark's approved list. The reference repository lists approved speculative-decoding heads for the agentic benchmarks only, in the [agentic example README](https://github.com/mlcommons/endpoints/blob/main/examples/10_Agentic_Inference/README.md). There is none for Llama 3.1 8B, GPT-OSS 120B or DeepSeek-R1. The checker's bundled list is still empty, so for now it rejects any point that uses speculative decoding. See
-    [§2.9.4 of the rules][rules-2.9.4] and **C10** in [Open questions](open-questions.md).
-
 **Can I disable speculative decoding on some points?**
 :   Yes. The drafter is fixed across the frontier, but its configuration can vary per point, including
     off ([§2.9.4][rules-2.9.4]). A drafter that ships in the canonical checkpoint must stay in your

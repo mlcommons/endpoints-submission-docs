@@ -152,11 +152,9 @@ rules, and versions before `v1.1.0.0` don't know the agentic models or their acc
 | `drafter-approval-lead-time` | §2.9.4, §9.1 | It was approved at least two cohorts before `target_cohort` | :material-alert:{ style="color:#ef6c00" } |
 | `drafter-list-registry` | §2.9.4 | Warns when the drafter list itself can't be read | :material-information:{ style="color:#1565c0" } |
 
-!!! warning "The bundled list is empty"
-    The reference repository lists approved heads for the agentic benchmarks only, and the checker
-    hasn't picked them up: it ships an empty list and rejects any point that uses speculative
-    decoding. Point `--approved-drafters FILE` or `$MLPERF_ENDPOINTS_APPROVED_DRAFTERS` at a
-    published list once one exists.
+!!! note "Use the current drafter list"
+    The checker now [bundles approved drafters](https://github.com/mlcommons/endpoints-submission-cli/blob/fda43ef88/src/submission_checker/data/approved_drafters.yaml).
+    Use `$MLPERF_ENDPOINTS_APPROVED_DRAFTERS` to select a newer published list.
 
 !!! note "Amendments are not re-tested for adoption"
     For an amendment, every new or replacement point must match the **original** submission's bound
@@ -215,3 +213,5 @@ rejected](../rules/rejection-reasons.md#rejections-that-come-from-judgement-not-
 
 *Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (d2d9da6) and
 `mlcommons/endpoints-submission-cli@main` (a42a056, `v1.1.0.0`), 2026-10-02.*
+
+*Drafter guidance checked: `endpoints-submission-cli@fda43ef`, 2026-10-28.*

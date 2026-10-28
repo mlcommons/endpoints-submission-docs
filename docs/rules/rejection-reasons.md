@@ -29,7 +29,7 @@ correct and resubmit as a new submission ([Submission Rules §6.1][srules-6.1]).
 | `seed-set-consistency` / `seed-set-membership` fails | Points record different seed sets, or a set MLCommons never published | Bind **one** published set and record it at every point |
 | Required files missing | A point lacks `point.yaml`, `system_desc.json` or `result_summary.json` | [Step 5](../workflow/author-disclosures.md). The reference client doesn't write them; [`mlperf-sysinfo`](https://docs.mlcommons.org/mlperf-sysinfo/) can capture `system_desc.json` |
 | `load-pattern` fails | A point other than a dedicated Offline run used `max_throughput` or `poisson`. This rejects the **point** | Only the fixed-concurrency pattern is valid there. Re-run, or declare `offline: dedicated` if it really is your Offline run |
-| `approved-drafter` / `drafter-approval-lead-time` fails | A point used speculative decoding with a drafter not on the approved list, or approved too recently | These reject the **points**. Approved heads exist for the agentic benchmarks only, and the checker's list is still empty, so for now re-run without speculation |
+| `approved-drafter` / `drafter-approval-lead-time` fails | The drafter is not approved or is too recent | Check the [drafter and approval cohort](model-equivalence.md#speculative-decoding). Re-run with an eligible drafter or without speculation. |
 
 ## Flagged by the rules, but they fail the local check
 
@@ -97,3 +97,5 @@ raised the same way.
 
 *Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (d2d9da6) and
 `mlcommons/endpoints-submission-cli@main` (a42a056, `v1.1.0.0`), 2026-10-02.*
+
+*Drafter guidance checked: `endpoints-submission-cli@fda43ef`, 2026-10-28.*

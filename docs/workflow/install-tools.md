@@ -12,9 +12,9 @@
 - Install the **reference client** ([`mlcommons/endpoints`](https://github.com/mlcommons/endpoints)) — runs the benchmark
 - Install the **submission tools** ([`mlcommons/endpoints-submission-cli`](https://github.com/mlcommons/endpoints-submission-cli)) — registers runs, assembles
   and validates the bundle
-- Confirm all three CLIs respond
+- Check the client and submission tools
 
-There are three distinct CLIs and it is worth fixing which is which now:
+Use these commands:
 
 | CLI | Package | Does |
 |---|---|---|
@@ -56,7 +56,7 @@ There are three distinct CLIs and it is worth fixing which is which now:
 Record the commit SHA you built from — you will need it for disclosure:
 
 ```bash
-git -C endpoints rev-parse HEAD
+git rev-parse HEAD
 ```
 
 ### 2. Install the submission tools
@@ -70,18 +70,17 @@ git -C endpoints rev-parse HEAD
 === "From source"
 
     ```bash
-    git clone https://github.com/mlcommons/endpoints-submission-cli.git
-    cd endpoints-submission-cli
-    pip install -e ".[dev]"
+    git clone https://github.com/mlcommons/endpoints-submission-cli.git ../endpoints-submission-cli
+    pip install -e "../endpoints-submission-cli[dev]"
     ```
 
 === "uv"
 
     ```bash
-    uv sync --extra dev
+    uv tool install endpoints-submission-cli
     ```
 
-Both `endpoints-submission-cli` and `submission-checker` come from this one package.
+Use `endpoints-submission-cli check-submission` to validate a bundle.
 
 Optionally, install the results visualizer to preview your frontiers locally before you submit:
 
@@ -91,23 +90,22 @@ pip install mlperf-viz
 
 See [Results visualizer](../reference/cli-visualizer.md).
 
-### 3. Install `gh`
+### 3. Smoke-test the client against a local server
 
-The [`gh` CLI](https://cli.github.com/) is required for creating, updating and withdrawing
-submissions. Install it and authenticate with `gh auth login`.
-
-### 4. Smoke-test the client against a local server
-
-Before pointing anything at real hardware, confirm the client works end to end against the bundled
-echo server:
+In the `endpoints` checkout, start the echo server:
 
 ```bash
-pip install endpoints-submission-cli
+uv run python -m inference_endpoint.testing.echo_server --host 127.0.0.1 --port 8765
 ```
 
-The compliance checker comes with it, as `endpoints-submission-cli check-submission`. The CLI's
-README still describes a separate `submission-checker` command, but the package doesn't install one
-(**B16** in [Open questions](../help/open-questions.md)).
+In a second terminal, open the same checkout and run:
+
+```bash
+uv run inference-endpoint probe --endpoints http://127.0.0.1:8765 --model test-model --requests 2
+```
+
+Expect two successful responses. Stop the server with Ctrl+C.
+For the pip setup, use the active environment and omit `uv run`.
 
 ## Verify
 
@@ -122,7 +120,7 @@ And the region calculator should produce sensible boundaries — this is the too
 next step:
 
 ```bash
-python -c "from submission_checker.cli import main; main()" regions --max-concurrency 1024 --min-concurrency 16
+uv tool run --from endpoints-submission-cli python -c "from submission_checker.cli import main; main()" regions --max-concurrency 1024 --min-concurrency 16
 ```
 
 ## Next

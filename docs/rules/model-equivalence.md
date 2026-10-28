@@ -62,13 +62,10 @@ what disqualifies one, what you can't do with an approved drafter, and the per-p
 all in [§2.9.4][rules-2.9.4]. Tree-structured verification is covered in Q6 of
 [§2.9.9][rules-2.9.9].
 
-!!! warning "Approved heads exist for the agentic benchmarks only"
-    The client's [agentic
-    README](https://github.com/mlcommons/endpoints/blob/main/examples/10_Agentic_Inference/README.md#approved-checkpoints-and-speculative-decoding-heads)
-    lists the approved heads for Kimi K3, and the approved DeepSeek-V4.1-Flash checkpoint ships its
-    own. There's no list for the legacy benchmarks. The checker's bundled list is still empty, so it
-    rejects any point that uses speculative decoding for now. Tracked as **C10** in [Open
-    questions](../help/open-questions.md).
+!!! note "Check the published drafter list"
+    The checker [bundles approved drafters](https://github.com/mlcommons/endpoints-submission-cli/blob/fda43ef88/src/submission_checker/data/approved_drafters.yaml)
+    for Kimi K3, Qwen3.6-35B-A3B, DeepSeek-V4.1-Flash, DeepSeek-R1 and GPT-OSS-120B.
+    Match the checkpoint and checksum. Check the approval cohort before a run.
 
 What the checker enforces:
 
@@ -97,9 +94,9 @@ disclosed.
     *Clients that pre-tokenize* in [§2.9.5.1][rules-2.9.5.1].
 
 !!! note "Agentic benchmarks salt differently"
-    They use benchmark-specific salting switched on by benchmark-specific flags, which **must be
-    enabled** ([§2.9.5.1][rules-2.9.5.1]). Which flags, for which benchmarks, is not yet published —
-    see [Open questions](../help/open-questions.md).
+    Set `agentic_inference.enable_salt: true` for the three agentic models. See the
+    [reference configuration](https://github.com/mlcommons/endpoints/blob/4b385eb53/examples/10_Agentic_Inference/README.md#salting-mechanism)
+    and [§2.9.5.1][rules-2.9.5.1].
 
 !!! warning "Not portable to MLPerf Inference"
     Code paths that rely on cross-query KV reuse won't carry over to an MLPerf Inference submission
@@ -135,6 +132,5 @@ match the reference ([§2.9.2][rules-2.9.2], [§2.9.7][rules-2.9.7]).
 
 --8<-- "draft-rules-warning.md"
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (d2d9da6),
-`mlcommons/endpoints-submission-cli@main` (a42a056, `v1.1.0.0`) and `mlcommons/endpoints@main`
-(f1100cf), 2026-10-02.*
+*Last verified: 2026-10-28. Sources: `endpoints_policies@4ba8224`,
+`endpoints-submission-cli@fda43ef` and `endpoints@4b385eb`.*

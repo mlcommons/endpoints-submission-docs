@@ -9,6 +9,9 @@ committing accelerator time.
 `endpoints-submission-cli@main` (a42a056, tag `v1.1.0.0`), `endpoints@main` (f1100cf), and the
 working group's v1.0 rules overview of 2026-09-22.
 
+**2026-10-28 update:** C1, C8 and C10 now have published sources. See
+[models](../reference/benchmarks.md) and [drafters](../rules/model-equivalence.md#speculative-decoding).
+
 ??? info "What changed at the 2026-10-02 review"
     The rules moved 10 commits. What matters to a submitter:
 
@@ -84,20 +87,20 @@ none has been resolved by guesswork.
 
 ## C. Content MLCommons must still supply
 
-None of this is available in any source we could find.
+Items still need confirmation unless marked resolved.
 
 | # | Item | Why it blocks you |
 |---|---|---|
-| **C1** | The **official v1.0 model list** and canonical model IDs | *Partly answered.* The working group's 2026-09-22 overview names the suite: Llama 3.1 8B, GPT-OSS 120B and DeepSeek-R1, plus three agentic models. It's collected in [Benchmarks and models](../reference/benchmarks.md). The rules still defer to a list in "the reference repository", published ≥ 6 weeks before a round, and that list doesn't exist yet. The names the checker accepts are on the same page |
+| **C1** | **Model list and IDs** | Resolved. [§3.2][rules-3.2] lists all six models and their reference implementations. See [Benchmarks and models](../reference/benchmarks.md) for checker IDs. |
 | **C2** | **Per-benchmark accuracy targets and tolerances** | Marked `[WIP]` upstream. For the legacy benchmarks the checker applies the MLPerf Inference targets, listed in [Benchmarks and models](../reference/benchmarks.md#accuracy-targets), but nothing says those are the Endpoints targets. For the agentic benchmarks the client's agentic README publishes targets for all three models, and checker `v1.1.0.0` enforces them |
 | **C3** | **Dataset identities and download paths** for performance and accuracy runs | *Mostly answered* in [Benchmarks and models](../reference/benchmarks.md#datasets), from the overview and the client. The GPT-OSS performance set is on MLCommons storage, but the client's README says the LLM task force is still finalizing it. For a dedicated Offline run, the dataset's size is also your Offline concurrency |
 | **C4** | **CoN client locations and scheduling procedure** | Deferred to a separate working-group publication that does not yet exist. CoN submitters cannot plan |
 | **C5** | **The full submission-state list** | Only `REVIEW_PENDING`, `WITHDRAWN`, `FINALIZED` and `PUBLISHED` are documented |
 | **C6** | **Preview Availability Tracker URL** and the public results/visualizer URL | Referenced by the rules; no URL given |
 | **C7** | **The Offline point's loose ends** | [§5.7][rules-5.7] defines the Offline point, but several things you need to run one aren't settled. **Load pattern:** the rules say "the benchmark-defined Offline load pattern" and name no client setting; the reference client's `max_throughput` matches the definition, unconfirmed. **`region` value:** unspecified for a dedicated run; `submitters_choice` passes the checker. **Dataset smaller than `C_max`:** the Offline concurrency is the dataset size and must be ≥ `C_max`, so a large `C_max` can't satisfy both. Open upstream as [`[OFFLINE]` item 2][rules-offline]. **Steady state:** §4.4's scope excludes a dedicated Offline run, which implies `total` metrics; not stated outright. **Duration:** §6.2 applies unchanged, though the run ends when the queue drains. **Pass boundaries:** the event log doesn't mark them, so the no-mixing rule is a manual review item |
-| **C8** | **Which benchmarks are agentic, and which are multi-turn** | This now decides a lot: whether you need an Offline point, how many points and accuracy runs you owe, the accuracy gate (every point vs mean-of-N), the primary chart (`tps_per_user` vs `e2e_avg_interactivity`), and whether agentic salting flags apply. *Partly answered:* the 2026-09-22 overview splits the suite into legacy and agentic benchmarks, so you can tell which are agentic, and the checker decides it from the load pattern: a frontier run with `agentic_inference` is agentic. Which benchmarks count as multi-turn for the accuracy rule still isn't stated. Ties to **C1** |
+| **C8** | **Agentic and multi-turn models** | Resolved. [§3.2][rules-3.2] names the three agentic models. Their [reference](https://github.com/mlcommons/endpoints/blob/4b385eb53/examples/10_Agentic_Inference/README.md#accuracy) defines multi-turn runs and mean-of-four SWE-bench accuracy. |
 | **C9** | **Super-pass size per benchmark** | The steady-state window is measured in super-passes, one full dataset pass unless the benchmark definition says otherwise ([§4.4][rules-4.4]). No benchmark definition is published, so you cannot compute your own floor |
-| **C10** | **Approved drafter lists** | [§2.9.4][rules-2.9.4] allows speculative decoding only with a drafter on the benchmark's published list. The reference repository lists approved heads for the agentic benchmarks only, in its agentic example README; there is none for the legacy benchmarks. The checker still ships an empty list, and a drafter approved now can only be used two cohorts later. Until the checker picks up a list, it rejects any point that uses speculative decoding |
+| **C10** | **Approved drafter lists** | Resolved. The checker bundles drafters for five models. Check the checksum and approval cohort. See [Model equivalence](../rules/model-equivalence.md#speculative-decoding). |
 | **C12** | **How long a registered run lasts** | `runs create` says a run's expiry "defaults to server policy", and the policy isn't published. It's also not stated whether a run can expire once it's part of a submission. Pin every run you intend to submit |
 
 ## D. Rules the working group has not ratified
@@ -136,7 +139,7 @@ current policy where stated, but are the most likely to move.
 | Area | What is unsettled |
 |---|---|
 | **Checkpoint residency** `[CKPT-RESIDENCY]` | Whether a component the canonical checkpoint ships, such as an MTP or EAGLE head, must be **resident in accelerator memory** during measurement or only present in the artifact. Leaving it unloaded frees memory for KV cache, an advantage that's currently undisclosed. See [`[CKPT-RESIDENCY]`][rules-ckpt-residency] |
-| **Speculative decoding** | [§2.9.4][rules-2.9.4]'s approved-list model is new for v1.0 and marked tentative. Approved heads exist for the agentic benchmarks only — see **C10** |
+| **Speculative decoding** | [§2.9.4][rules-2.9.4] remains tentative. Drafter lists are available; see **C10**. |
 | **Token counting** `[TOK-COUNT]` | Whether stakeholders accept that published token counts may differ from what serving stacks report ([`[TOK-COUNT]`][rules-tok-count]) |
 | **Multi-token stream interval** | Now allowed: the server may group up to N generated tokens into one chunk, as `stream_interval` does in TensorRT-LLM, SGLang and vLLM ([§2.9.7][rules-2.9.7], [§2.9.9 Q2][rules-2.9.9]). Holding tokens past the interval, or sending the whole response as one message, isn't. A larger interval delays TTFT and no metric adjustment is made. Appendix A still lists it as proposed |
 | **Standardized CoN techniques** | The list of allowed techniques for Standardized CoN is still being written ([§2.2.2][rules-2.2.2]) |

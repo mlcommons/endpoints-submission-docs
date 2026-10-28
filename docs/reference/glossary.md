@@ -164,7 +164,7 @@ Terms used across this site. Most also appear as hover tooltips on their first u
     frontier.
 
 **Approved drafter list**
-:   The per-benchmark, per-round list of drafters a Standardized submission may use. Published for the agentic benchmarks only, in the reference repository's agentic example; the checker's list is still empty.
+:   The per-benchmark, per-round list of drafters a Standardized submission may use.
 
 **ConcurrencyScheduler**
 :   The reference client's fixed-concurrency load pattern — it keeps a set number of queries in
@@ -207,3 +207,5 @@ Terms used across this site. Most also appear as hover tooltips on their first u
 :   Tensor / Expert / Pipeline / Data parallelism.
 
 *Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef), 2026-09-24.*
+
+*Drafter definition checked: `endpoints_policies@4ba8224`, 2026-10-28.*

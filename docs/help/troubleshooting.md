@@ -177,11 +177,11 @@ Indexed by what you see. Search this page for a fragment of your error message.
     **Fix:** make every copy identical, or keep it in one run folder only.
 
 ??? failure "`approved-drafter` fails"
-    **Cause:** the point declares `speculative_decoding`, and the drafter isn't on the benchmark's
-    approved list. Approved heads exist only for the agentic benchmarks, and the checker's list is
-    still empty, so every drafter fails for now.
+    **Cause:** the drafter does not match an entry in the benchmark's approved list.
 
-    **Fix:** re-run the point without speculative decoding.
+    **Fix:** check the identity and checksum against the
+    [approved list](../rules/model-equivalence.md#speculative-decoding).
+    Use an approved drafter, or re-run without speculative decoding.
 
 ??? failure "A concurrency-coverage check fails"
     **Cause:** no point in one of Low, Medium or High Concurrency — often because `C_min` changed.
