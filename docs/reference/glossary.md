@@ -27,8 +27,9 @@ Terms used across this site. Most also appear as hover tooltips on their first u
     but all four are bounded by concurrency.
 
 **`C_min` / `C_max`**
-:   Minimum and Maximum Supported Concurrency. `C_max` is declared; `C_min` is derived from your
-    lowest point in v1.0. Together they set your region boundaries.
+:   The top of the Ultra Low Concurrency region (1–32) and the Maximum Supported Concurrency.
+    `C_max` is declared; `C_min` is your lowest point unless you declare `c_min_override`. Together
+    they set your region boundaries.
 
 **SUT**
 :   System Under Test.
@@ -42,12 +43,21 @@ Terms used across this site. Most also appear as hover tooltips on their first u
 :   Per-user output rate: `1000 / tpot_p90_ms`.
 
 **`system_tps_per_kw`**
-:   `system_tps` divided by the system's provisioned power in kW. The v1.0 normalized metric.
+:   `system_tps` divided by `point_power_kw`, evaluated per measurement point. The v1.0 normalized
+    metric ([§4.5.3][rules-4.5.3]).
+
+**`point_power_kw`**
+:   The provisioned power scaled by the node fraction `Y_s / N_s` engaged at a point, rounded up to
+    whole nodes. Constant for a single-node system ([§4.5.3][rules-4.5.3]).
+
+**`nodes_used`**
+:   Optional per-point declaration of the nodes engaged, by node type, in `point.yaml`. Omitted means
+    full provisioned power ([§8.3][rules-8.3]; fields in [`point.yaml`](point-yaml.md)).
 
 **Provisioned power**
 :   What a system is built to draw, estimated from the rated power of its CPUs, accelerators and
-    scale-up switches plus a cooling-dependent overhead. Fixed for a system across its whole frontier.
-    Declared in `system_power.json`.
+    scale-up switches plus a cooling-dependent overhead. Fixed for a system; each point scales it by
+    the nodes it engages. Declared in `system_power.json`.
 
 **MLC Estimated Power**
 :   The tag on a result whose power figures were partly or wholly filled in by MLCommons.
@@ -88,6 +98,16 @@ Terms used across this site. Most also appear as hover tooltips on their first u
 
 **Cohort**
 :   A publication batch, `YYYY-MM-C0` (1st Wednesday) or `YYYY-MM-C1` (3rd Wednesday), 08:00 Pacific.
+
+**Publication date**
+:   The first date a submission's results are publicly visible. Normally a cohort date; an embargo
+    is the exception ([Submission Rules §4.5][srules-4.5]).
+
+**Review eligibility date**
+:   The date from which a submission's review timelines are counted: the first date it has passed
+    the automated checks, is in the review repository, and is no longer under a review or
+    provisional-publication embargo ([Submission Rules
+    §4.3][srules-4.3]).
 
 **Publication mode**
 :   Confidential review, confidential review with an embargo, or provisional publication. Chosen
@@ -164,7 +184,9 @@ Terms used across this site. Most also appear as hover tooltips on their first u
     frontier.
 
 **Approved drafter list**
-:   The per-benchmark, per-round list of drafters a Standardized submission may use. Published for the agentic benchmarks only, in the reference repository's agentic example; the checker's list is still empty.
+:   The per-benchmark, per-round list of drafters a Standardized submission may use, kept in the
+    checker's `approved_drafters.yaml` ([§2.9.4][rules-2.9.4]). A native head in an approved
+    checkpoint is approved with that checkpoint and doesn't need its own entry.
 
 **ConcurrencyScheduler**
 :   The reference client's fixed-concurrency load pattern — it keeps a set number of queries in
@@ -206,4 +228,4 @@ Terms used across this site. Most also appear as hover tooltips on their first u
 **TP / EP / PP / DP**
 :   Tensor / Expert / Pipeline / Data parallelism.
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef), 2026-09-24.*
+*Last verified against: `mlcommons/endpoints_policies@main` (4ba8224), 2026-10-30.*

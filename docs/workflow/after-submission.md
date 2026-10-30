@@ -25,7 +25,8 @@ publication mode](../assets/review-cycle.svg)](../assets/review-cycle.svg)
 *Four example submissions, one per publication mode, from [§4.5 of the Submission
 Rules][srules-4.5]. Select the image to open it full size.*
 
-Timelines anchor to the cohort your submission first appears in, not the day you uploaded. The full
+Timelines anchor to your submission's review eligibility date, not the day you uploaded
+([§4.3][srules-4.3]). The full
 schedule is in [§6.5 of the Submission Rules][srules-6.5], and the dispute deadlines in
 [§9.2][srules-9.2].
 
@@ -33,13 +34,14 @@ schedule is in [§6.5 of the Submission Rules][srules-6.5], and the dispute dead
 
 !!! danger "Silence withdraws your submission"
     Penalties start automatically once an objection is filed and don't reverse if you reply late:
-    finalization slips one cohort after 3 business days without a response, two after 6, and the
+    finalization slips one cohort date after 3 business days without a response, two after 6, and the
     submission is **withdrawn** after 10. The schedule, and how business days are counted, is in
     [Submission Rules §6.3][srules-6.3].
 
-A reply only counts if it either acknowledges the issue with a schedule for resolution or contests
-it with evidence ([§6.3][srules-6.3]). A holding reply with no schedule and no argument is not a
-response. What the objector owes you in return is in [§6.4][srules-6.4].
+A reply only counts if it either acknowledges the issue with a reasonable schedule for resolution or
+contests it with evidence ([§6.3][srules-6.3]). A holding reply with no schedule and no argument is
+not a response. If you need longer than you said, post an updated schedule; it can't run past the
+objection resolution window. What the objector owes you in return is in [§6.4][srules-6.4].
 
 ## What reviewers are looking at
 
@@ -69,7 +71,9 @@ A reproducibility objection has to show a deviation beyond the throughput margin
 During peer review you can update run and submission metadata only when the review committee asks
 ([Updating submissions during peer review][srules-updating-submissions-during-peer-review]).
 Non-result content such as documentation, system description metadata and configs that don't match
-the run can be corrected; results can't ([Submission Rules §8.1][srules-8.1]).
+the run can be corrected; results can't ([Submission Rules §8.1][srules-8.1]). Neither can
+`c_min_override`: adding, removing or changing it once peer review starts means a new submission
+(same section).
 
 !!! danger "Results may not be changed during review"
     If a measurement point is wrong, your options are to **withdraw that point** (`submissions
@@ -79,13 +83,16 @@ the run can be corrected; results can't ([Submission Rules §8.1][srules-8.1]).
     shortfall can't be repaired.
 
 After finalization, a wrong result means invalidating the affected points or the submission, and
-non-result corrections need review-chair approval (same section).
+non-result corrections need review-chair approval (same section). You can withdraw voluntarily only
+before finalization; after it, results come down only under a rule such as a failed audit or a
+finding of misrepresentation ([§8.2][srules-8.2]).
 
 ## Finalization and publication
 
 Once every objection is resolved or retracted, the result is finalized, early if that happens before
-the end of Week 3 ([§6.3][srules-6.3]). It's queued for the next available cohort
-([§6.3][srules-6.3]), or held until your embargo date if you declared one ([§4.2][srules-4.2]).
+the peer review window closes, 21 days after your review eligibility date ([§6.3][srules-6.3]). It's
+queued for the next available cohort ([§6.3][srules-6.3]), or held until your embargo date if you
+declared one ([§4.2][srules-4.2]).
 
 What the published entry shows is listed in [Submission Rules §7.6][srules-7.6], and how the Offline
 point is plotted in [§5.7.3 of the rules][rules-5.7.3]. If MLCommons had to fill in any of your

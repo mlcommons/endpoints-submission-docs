@@ -16,7 +16,8 @@ From [§5.3][rules-5.3], [§5.4][rules-5.4] and [§5.6][rules-5.6], with failure
 | :material-alert-octagon:{ style="color:#c62828" } **≥ 8 measurement points** including a dedicated Offline run; **≥ 7** if you elect `C_max` as the Offline result, or for an agentic benchmark | `endpoints-submission-cli check-submission` — rule `point-count` |
 | **≤ 32 measurement points**, Offline included | rule `point-cap` |
 | :material-alert-octagon:{ style="color:#c62828" } **Exactly one Offline point** for a non-agentic benchmark, **none** for an agentic one | rule `offline-point-present` |
-| :material-alert-octagon:{ style="color:#c62828" } **≥ 1 point at concurrency 1–32** (Ultra Low) | rule `ultra-low-concurrency-coverage` |
+| :material-alert-octagon:{ style="color:#c62828" } **≥ 1 point in Ultra Low Concurrency** (1–`C_min`, `C_min` ≤ 32) | rule `ultra-low-concurrency-coverage` |
+| :material-alert-octagon:{ style="color:#c62828" } **`c_min_override`, if used**: an integer in 1–32 that matches a submitted point, the same on every point | rule `c-min-override` (checker `v1.5.1.0` or later) |
 | :material-alert-octagon:{ style="color:#c62828" } **≥ 1 point in each of Low, Medium, High Concurrency** | rules `low-` / `med-` / `high-concurrency-coverage` |
 | :material-alert-octagon:{ style="color:#c62828" } **`C_max` declared and > 32** | rules `system-description-valid` (missing) and `region-computation` (≤ 32) |
 | Every concurrency falls in a valid region (a dedicated Offline run is exempt) | rule `concurrency-in-range` |
@@ -52,8 +53,8 @@ Defined in [§6 of the rules][rules-6]. The values at a glance:
 | Requirement | Value | How to check |
 |---|---|---|
 | Load pattern ([§6.1][rules-6.1]) | Fixed-concurrency for every point except a dedicated Offline run. `poisson` is invalid | rule `load-pattern` |
-| Steady-state duration ([§6.2][rules-6.2]) | **600 s** Ultra Low; **1,200 s** Low / Medium / High | rule `point-duration` |
-| Completed queries ([§6.4][rules-6.4]) | At least one pass over the dataset | rule `min-query-count` |
+| Steady-state duration ([§6.2][rules-6.2]) | **600 s** at concurrency 1–32. Above 32: **1,200 s**, or **2,400 s** for agentic benchmarks | rule `point-duration`, from checker `v1.4.1.0`. Earlier releases go by region and don't check the agentic 2,400 s |
+| Completed queries ([§6.4][rules-6.4]) | At least one pass over the dataset, or the approved subset at concurrency 1–32 | rule `min-query-count` |
 | Samples issued ([§6.4][rules-6.4]) | A whole-number multiple of the dataset size | — |
 | Streaming ([§6.5][rules-6.5]) | Streaming responses on every fixed-concurrency point; a dedicated Offline run is exempt. `stream_all_chunks` may be either value | rule `streaming-config`, which still requires `stream_all_chunks: true` |
 | Sampling order ([§6.5][rules-6.5]) | Performance: with replacement. Accuracy: without replacement | — |
@@ -74,11 +75,24 @@ warmup documentation is grounds for a Methodology objection.
 
 ## Accuracy
 
-Accuracy results are needed at the four mandatory region points plus the Offline point: **5** for
-non-agentic benchmarks, **4** for agentic ([§5.3][rules-5.3]). How they're judged, single-turn per
-point or multi-turn on the average, is in [§4.3][rules-4.3]. Accuracy runs use the same
-configuration and stack as the performance runs, on the un-salted accuracy dataset, and there is no
-tolerance ([Reproducibility Expectations][srules-reproducibility-expectations]).
+Accuracy validation runs are needed at the four mandatory region points plus the Offline point:
+**5** for non-agentic benchmarks, **4** for agentic ([§5.3][rules-5.3]). How they're judged,
+single-turn per point or multi-turn on the average, is in [§4.3][rules-4.3]. That count is fixed:
+submit exactly one validation result per mandatory point, none at the submitter's-choice points,
+because extra results are rejected at automated compliance ([§4.3][rules-4.3], [§9.1][rules-9.1]).
+If you elect your `C_max` point as the Offline result, that point's one run covers both
+([§5.7.2][rules-5.7.2]).
+Accuracy runs use the same configuration and stack as the performance runs, on the un-salted
+accuracy dataset, and there is no tolerance ([Reproducibility
+Expectations][srules-reproducibility-expectations]).
+
+With `c_min_override`, the Ultra Low validation result can come from any point you designate in
+1–`C_min`; without it, it comes from the point at `C_min` ([§4.3][rules-4.3]).
+
+!!! warning "Agentic: inline accuracy at every point"
+    Every agentic point, submitter's-choice points included, also reports an **inline** score from
+    its own performance run, and each must pass on its own. Inline scores don't count toward the
+    four validation runs and aren't part of the SWE-bench mean ([§4.3][rules-4.3]).
 
 | Requirement | How to check |
 |---|---|
@@ -106,22 +120,29 @@ The per-query salt is seeded from the same set and has its own requirements in
 Same model, endpoint configuration, software stack and seed set at **every** point (*Configuration
 consistency* in [§9.1][rules-9.1]). The checker also requires the same dataset
 (`config-consistency-dataset`). Every point's `system_desc.json` must describe the same system, and
-the whole frontier uses one provisioned power figure ([§4.5.3][rules-4.5.3]). If you use speculative
+the whole frontier uses one `system_power.json`, and only the per-point node count may vary
+([§4.5.3][rules-4.5.3]). If you use speculative
 decoding, it's the same drafter at every point. Freeze the stack before the first run.
 
 ## Power normalization
 
 Standardized results, CoP and CoN, are normalised by **provisioned power**, estimated from the rated
-power of CPUs, accelerators and scale-up switches plus a fixed overhead. The model is in [Power
+power of CPUs, accelerators, scale-up switches and, for multi-node systems, scale-out NICs, plus a
+fixed overhead, with scale-out switch power added outside that overhead. The model is in [Power
 Model][rules-4.5.2-power-model], the evidence standard and what MLCommons does with gaps in
-[Methodology][rules-4.5.2-methodology], partial racks and nodes in [§4.5.2.1][rules-4.5.2.1], and
-the metric and why the figure is fixed per system in [§4.5.3][rules-4.5.3]. RDI may report it;
+[Methodology][rules-4.5.2-methodology], partial racks, mixed racks and node rounding in
+[§4.5.2.1][rules-4.5.2.1], and the per-point metric in [§4.5.3][rules-4.5.3]. RDI may report it;
 Serviced is deferred.
+
+Each point is normalized per node set. Run every point with as much of the provisioned hardware
+engaged as fits (data-parallel replication, `DP`); a shortfall goes in `dp_shortfall` in `point.yaml`
+([§4.5.3][rules-4.5.3]). A multi-node, rack-scale or heterogeneous system needs a complete
+`system_power.json`.
 
 | Requirement | How to check |
 |---|---|
 | :material-alert-octagon:{ style="color:#c62828" } `system_power.json` for each system, at `results/<system>/system_power.json` | rule `power-descriptor` |
-| `system_tps_per_kw = system_tps / provisioned_power_kw` | rule `metric-consistency-tps-per-kw` |
+| `system_tps_per_kw = system_tps / point_power_kw` | rule `metric-consistency-tps-per-kw`; the CLI release this page was verified against checks `system_tps / provisioned_power_kw` |
 | Values you leave out are estimated by MLCommons and the result tagged **"MLC Estimated Power"** | rule `power-estimated` warns |
 
 Field names and an example: [`system_power.json`](../reference/system-power-json.md).
@@ -163,5 +184,5 @@ reconstructed response through the model's reference chat template, not from you
 
 --8<-- "draft-rules-warning.md"
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (d2d9da6) and
+*Last verified against: `mlcommons/endpoints_policies@main` (4ba8224), 2026-10-30, and
 `mlcommons/endpoints-submission-cli@main` (a42a056, `v1.1.0.0`), 2026-10-02.*

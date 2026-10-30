@@ -213,5 +213,5 @@ rejected](../rules/rejection-reasons.md#rejections-that-come-from-judgement-not-
     content is in §6.6, §8.5 and §9.1. The clause column above maps to the rules as they actually
     are. Tracked as **B3** in [Open questions](../help/open-questions.md).
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (d2d9da6) and
+*Last verified against: `mlcommons/endpoints_policies@main` (1818269) and
 `mlcommons/endpoints-submission-cli@main` (a42a056, `v1.1.0.0`), 2026-10-02.*

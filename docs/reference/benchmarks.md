@@ -2,6 +2,8 @@
 
 ## The v1.0 suite
 
+The official list, with a link to each reference implementation, is in [rules §3.2][rules-3.2].
+
 | Benchmark | Model on Hugging Face | `model_name` the checker accepts |
 |---|---|---|
 | Llama 3.1 8B | `meta-llama/Llama-3.1-8B-Instruct` | `llama3_1-8b` |
@@ -66,8 +68,10 @@ These targets come from the client's
 [agentic example README](https://github.com/mlcommons/endpoints/blob/main/examples/10_Agentic_Inference/README.md#accuracy),
 and the checker enforces them from `v1.1.0.0`. There are three metrics:
 
-- **Inline accuracy** and **OSL per-turn mean** have to pass at every submitted Pareto point.
+- **Inline accuracy** and **OSL per-turn mean** have to pass at every submitted Pareto point,
+  submitter's-choice points included.
 - **SWE-bench accuracy** is judged on the average of four results, one from each mandatory region.
+  Inline scores aren't part of that average ([§4.3][rules-4.3]).
 
 | Metric | Kimi K3 | Qwen3.6-35B-A3B | DeepSeek-V4.1-Flash |
 |---|---|---|---|
@@ -75,6 +79,6 @@ and the checker enforces them from `v1.1.0.0`. There are three metrics:
 | OSL per-turn mean, in tokens | 425–520 (reference 472) | 344–422 (reference 383) | 793–970 (reference 882) |
 | SWE-bench accuracy | At least 93.5% (reference 94.83%) | At least 69% (reference 71.7%) | At least 96.4% (reference 97.5%) |
 
-*Last verified against: the MLPerf Endpoints v1.0 rules overview (2026-09-22),
-`mlcommons/endpoints@main` (f1100cf), `mlcommons/endpoints-submission-cli@main` (a42a056, tag
-`v1.1.0.0`), and `mlcommons/endpoints_policies@v1.0_rules_dev` (d2d9da6), 2026-10-02.*
+*Last verified against: `mlcommons/endpoints_policies@main` (4ba8224), 2026-10-30; the MLPerf
+Endpoints v1.0 rules overview (2026-09-22), `mlcommons/endpoints@main` (f1100cf) and
+`mlcommons/endpoints-submission-cli@main` (a42a056, tag `v1.1.0.0`), 2026-10-02.*

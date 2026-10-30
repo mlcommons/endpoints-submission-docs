@@ -23,8 +23,8 @@ rather than after step 4, which is where the accelerator time gets spent.
 - [ ] **Accelerator time.** Minimum 8 points for a non-agentic benchmark: one at 600 s of steady
       state, six at 1,200 s, and a dedicated Offline run, plus warmup. Then **five accuracy runs**,
       one at each mandatory region point and one at the Offline point. Electing your `C_max` point
-      as the Offline result saves the separate run. Agentic benchmarks need 7 points and four
-      accuracy runs. You need exclusive access to the system for all of it, and a point that fails
+      as the Offline result saves the separate run. Agentic benchmarks need 7 points (2,400 s each
+      above concurrency 32) and four accuracy runs. You need exclusive access to the system for all of it, and a point that fails
       has to be re-run. See [§5.3][rules-5.3], [§6.2][rules-6.2] and [§4.3][rules-4.3].
 - [ ] **Power data** (Standardized). Public TDP figures for your CPUs, accelerators and scale-up
       switches, each with a link to a spec sheet. Gaps get filled with MLCommons's conservative
@@ -49,9 +49,8 @@ rather than after step 4, which is where the accelerator time gets spent.
       or provisional publication with a "peer review pending" tag. You **can't change it after
       submitting**, so decide now. An embargo on a provisional submission also delays the start of
       review. See [When your results become public](../understand/how-submission-works.md#when-your-results-become-public).
-- [ ] **Speculative decoding?** Only with a drafter on the benchmark's approved list. Heads are
-      approved for the agentic benchmarks only, and the checker's bundled list is still empty, so
-      for now plan without it. See
+- [ ] **Speculative decoding?** Only with a drafter on the benchmark's approved list, or a native
+      head shipped in an approved checkpoint. See
       [Model equivalence](../rules/model-equivalence.md#speculative-decoding).
 - [ ] **Who signs off on disclosure.** Standardized requires publishing your configuration, launch
       scripts and integration code. Get that cleared internally before you run, not after.

@@ -84,7 +84,7 @@ Process and policy questions that are not errors. For errors, see
     [§2.9.3 of the rules][rules-2.9.3].
 
 **Can I use speculative decoding?**
-:   Only with a drafter on the benchmark's approved list. The reference repository lists approved speculative-decoding heads for the agentic benchmarks only, in the [agentic example README](https://github.com/mlcommons/endpoints/blob/main/examples/10_Agentic_Inference/README.md). There is none for Llama 3.1 8B, GPT-OSS 120B or DeepSeek-R1. The checker's bundled list is still empty, so for now it rejects any point that uses speculative decoding. See
+:   Only with a drafter on the benchmark's [approved list](https://github.com/mlcommons/endpoints-submission-cli/blob/main/src/submission_checker/data/approved_drafters.yaml), or a native head that ships in an approved checkpoint. Checker `v1.1.0.0` ships an empty list and rejects every drafter, so use a later release. See
     [§2.9.4 of the rules][rules-2.9.4] and **C10** in [Open questions](open-questions.md).
 
 **Can I disable speculative decoding on some points?**
@@ -130,7 +130,7 @@ Process and policy questions that are not errors. For errors, see
 ## Review
 
 **Who reviews my submission?**
-:   The review committee for your cohort, plus one designated reviewer assigned at random from
+:   The review committee for your submission, plus one designated reviewer assigned at random from
     outside your organisation. See [Submission Rules §2.1][srules-2.1] and [§2.6][srules-2.6].
 
 **Is a competitor reviewing me a conflict of interest?**

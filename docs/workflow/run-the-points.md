@@ -10,7 +10,7 @@
 
 ## What you'll do
 
-- Run each point at **fixed concurrency** for its region's minimum duration
+- Run each point at **fixed concurrency** for its minimum duration
 - Run the dedicated **Offline** point, if you chose one in step 3
 - Run accuracy validations at the four mandatory region points and the Offline point
 - Keep every run folder
@@ -29,7 +29,7 @@ The run requirements are in [§6 of the rules][rules-6], and that's where the va
 | Warmup | [§6.3][rules-6.3] | Your warmup procedure, declared in `point.yaml` |
 | Sampling and streaming | [§6.5][rules-6.5] | Streaming responses on every fixed-concurrency point; a dedicated Offline run is exempt. The rules allow either value of `stream_all_chunks`, but keep it `true`, because checker `v1.1.0.0` still requires it. The rule also fixes the sampling order for performance and accuracy runs |
 | Consistency across points | [§9.1][rules-9.1] | Lock the model, endpoint config, software stack and seed set before the first point |
-| Speculative decoding | [§2.9.4][rules-2.9.4] | Needs a drafter from the benchmark's approved list. Heads are approved for the agentic benchmarks only, and the checker's bundled list is still empty, so **leave it off** for now |
+| Speculative decoding | [§2.9.4][rules-2.9.4] | Needs a drafter on the benchmark's [approved list](https://github.com/mlcommons/endpoints-submission-cli/blob/main/src/submission_checker/data/approved_drafters.yaml), or a native head shipped in an approved checkpoint. Checker `v1.1.0.0` ships an empty list and rejects every drafter, so use a later release |
 
 !!! tip "Run longer than the minimum"
     Your official numbers now come from a **steady-state window** the tooling detects inside the
@@ -70,7 +70,8 @@ Accuracy runs use the **un-salted** dataset. See [§2.9.5.1][rules-2.9.5.1].
     target_cohort: 2026-10-C1
     ```
 
-    Set `A` can be adopted by submissions targeting `2026-10-C1` through the three cohorts after it.
+    How long set `A` stays adoptable is set by [§4.6][srules-4.6]; its current wording is unclear
+    about the last cohort (tracked as **C14** in [Open questions](../help/open-questions.md)).
     Checkers before `v1.0.1.0` don't test adoption at all, so upgrade rather than rely on an older
     one.
 
@@ -132,6 +133,9 @@ You need accuracy results at the four mandatory region points — Ultra Low, Low
 Concurrency — and at the Offline point: five runs, or four for an agentic benchmark. If you elected
 your `C_max` point, its accuracy run counts for both it and Offline.
 
+With `c_min_override`, the Ultra Low run can be at any point you designate in 1–`C_min`
+([§4.3][rules-4.3]).
+
 How each run has to be done is in [§4.3 of the rules][rules-4.3], and it differs between single-turn
 and multi-turn benchmarks. For a **single-turn** benchmark the constraint that catches people is
 ordering: each accuracy run goes **immediately after** its point's performance run, so don't batch
@@ -140,6 +144,12 @@ them up at the end.
 The simplest way to get the ordering right is `--mode both` on each of those points' configs, so one
 invocation writes the performance run and then the accuracy run into the same report directory, with
 `accuracy/accuracy_results.json` alongside `performance/result_summary.json`.
+
+!!! warning "Agentic: every point also needs an inline score"
+    Each agentic performance run, submitter's-choice points included, is scored inline, and every
+    point must pass on its own. Keep that score in the point's `accuracy_results.json` (the
+    `dataset_type: performance` entry); at the four mandatory points the same file also holds the
+    SWE-bench result ([§8.1][rules-8.1]).
 
 !!! danger "Accuracy has no tolerance"
     Throughput results get reproducibility margins. Accuracy doesn't ([Submission Rules

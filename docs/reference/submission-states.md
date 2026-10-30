@@ -42,7 +42,8 @@ Status is coarse; the review phase is what actually governs your obligations.
 | Published | Next cohort, or the embargo date | `PUBLISHED` |
 
 What happens in each phase: [§6.5 of the Submission Rules][srules-6.5]. Under provisional
-publication the clock starts differently, and an embargo delays review too ([§6.2.3][srules-6.2.3]).
+publication the review eligibility date is the provisional publication date, and an embargo delays
+review too ([§6.2.3][srules-6.2.3]).
 
 See [How submission works](../understand/how-submission-works.md) and [After you
 submit](../workflow/after-submission.md).
@@ -57,15 +58,16 @@ Distinct from status. A result can carry:
 | **Preview — Available by [date]** | Preview publication status, with its 180-day deadline |
 | **MLC Estimated Power** | Some or all of the power figures behind `system_tps_per_kw` were filled in by MLCommons |
 | **Invalidated** | Removed from the active results page, retained in the historical archive with a description of the error |
-| **Withdrawn** | Post-finalization withdrawal — removed from active results, retained in the archive |
+| **Withdrawn** | Removed after finalization under a rule (for example a failed audit or misrepresentation) — retained in the archive with the reason |
 
 Where each is defined: *peer review pending* in [§6.2.3][srules-6.2.3], *Preview* in
 [§7.3][srules-7.3], *Invalidated* in [§8.1][srules-8.1] and *Withdrawn* in [§8.2][srules-8.2] of the
 Submission Rules; *MLC Estimated Power* in [rules §4.5.2][rules-4.5.2].
 
 !!! note "Pre-finalization withdrawal leaves no record"
-    Withdrawing before finalization leaves nothing in the archive; withdrawing after leaves a
-    *Withdrawn* entry ([§8.2 of the Submission Rules][srules-8.2]).
+    You can withdraw voluntarily only before finalization, and that leaves nothing in the archive.
+    After finalization, results are removed only under a rule, and most removals stay archived with
+    the reason ([§8.2 of the Submission Rules][srules-8.2]).
 
 ## Where the publication status categories fit
 
@@ -86,5 +88,5 @@ you. Format, components and how it differs from the submission ID: [rules §8.5]
 MLCommons keeps every version of every Pareto frontier, aligned to cohorts: [Versioning and Historical
 Record][srules-versioning-and-historical-record] in the Submission Rules.
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef) and
+*Last verified against: `mlcommons/endpoints_policies@main` (4ba8224), 2026-10-30, and
 `mlcommons/endpoints-submission-cli@main` (f25f71e), 2026-09-24.*

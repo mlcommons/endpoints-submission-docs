@@ -96,7 +96,8 @@ reference](../reference/system-desc-json.md).
 ### 3. Write `system_power.json` for each system
 
 This declares the system's provisioned power, which v1.0 divides throughput by. It's per **system**,
-not per point, because provisioned power is fixed for the whole frontier. The builder lifts it from
+not per point: it is the same for the whole frontier, and only the optional per-point `nodes_used`
+in `point.yaml` scales it ([§4.5.3][rules-4.5.3]). The builder lifts it from
 your run folders to `results/<system>/system_power.json` in the bundle.
 
 The [power model][rules-4.5.2-power-model] and the ways to fill the file are in [§4.5.2 of the

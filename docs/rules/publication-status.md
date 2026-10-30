@@ -14,8 +14,8 @@ The categories are defined in [Submission Rules §7][srules-7]. In short ([§7.1
 | **RDI** | Meets neither | Meets neither |
 
 !!! warning "RDI has a cooling-off period"
-    An RDI component can't come back as Available or Preview until the later of two cohorts after
-    the RDI submission or **221 days** after first publication as RDI ([RDI Cooling-Off
+    An RDI component can't come back as Available or Preview until the later of two cohort dates
+    after first publication as RDI or **221 days** after first publication as RDI ([RDI Cooling-Off
     Period][srules-rdi-cooling-off-period]). Don't use RDI as a way to publish early.
 
 ## Available: the four-point test
@@ -59,13 +59,15 @@ division is always RDI status ([§7.2.5][srules-7.2.5]).
 
 ## Preview, and its clock
 
-You commit to Available within **180 days**, counted from the cohort the result first appears in,
-and corrections don't reset it ([§7.3][srules-7.3], [§7.3.1][srules-7.3.1]).
+You commit to Available within **180 days**, counted from the date of the cohort in which the
+result first appears in the visualizer. Corrections don't reset the clock ([§7.3][srules-7.3],
+[§7.3.1][srules-7.3.1]).
 
 ### Declaring Preview
 
-Set `availability_status` and `target_availability_date` in the system description, and name the
-unavailable components specifically. "Targeting H2 2026" isn't enough ([§7.3.4][srules-7.3.4]).
+Set `"system_availability_status": "Preview"`, plus `target_availability_date` in the system
+description, and name the unavailable components specifically. "Targeting H2 2026" isn't enough
+([§7.3.4][srules-7.3.4]).
 
 ### Software waiver
 
@@ -109,4 +111,4 @@ are publicly documented ([§7.5][srules-7.5]).
 
 --8<-- "draft-rules-warning.md"
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef), 2026-09-24.*
+*Last verified against: `mlcommons/endpoints_policies@main` (1818269), 2026-10-26.*
