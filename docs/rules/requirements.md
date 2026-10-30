@@ -17,7 +17,7 @@ From [§5.3][rules-5.3], [§5.4][rules-5.4] and [§5.6][rules-5.6], with failure
 | **≤ 32 measurement points**, Offline included | rule `point-cap` |
 | :material-alert-octagon:{ style="color:#c62828" } **Exactly one Offline point** for a non-agentic benchmark, **none** for an agentic one | rule `offline-point-present` |
 | :material-alert-octagon:{ style="color:#c62828" } **≥ 1 point in Ultra Low Concurrency** (1–`C_min`, `C_min` ≤ 32) | rule `ultra-low-concurrency-coverage` |
-| :material-alert-octagon:{ style="color:#c62828" } **`c_min_override`, if used**: an integer in 1–32 that matches a submitted point, the same on every point | §9.1 *C_min override* |
+| :material-alert-octagon:{ style="color:#c62828" } **`c_min_override`, if used**: an integer in 1–32 that matches a submitted point, the same on every point | rule `c-min-override` (checker `v1.5.1.0` or later) |
 | :material-alert-octagon:{ style="color:#c62828" } **≥ 1 point in each of Low, Medium, High Concurrency** | rules `low-` / `med-` / `high-concurrency-coverage` |
 | :material-alert-octagon:{ style="color:#c62828" } **`C_max` declared and > 32** | rules `system-description-valid` (missing) and `region-computation` (≤ 32) |
 | Every concurrency falls in a valid region (a dedicated Offline run is exempt) | rule `concurrency-in-range` |
@@ -80,6 +80,8 @@ Accuracy validation runs are needed at the four mandatory region points plus the
 single-turn per point or multi-turn on the average, is in [§4.3][rules-4.3]. That count is fixed:
 submit exactly one validation result per mandatory point, none at the submitter's-choice points,
 because extra results are rejected at automated compliance ([§4.3][rules-4.3], [§9.1][rules-9.1]).
+If you elect your `C_max` point as the Offline result, that point's one run covers both
+([§5.7.2][rules-5.7.2]).
 Accuracy runs use the same configuration and stack as the performance runs, on the un-salted
 accuracy dataset, and there is no tolerance ([Reproducibility
 Expectations][srules-reproducibility-expectations]).
@@ -96,6 +98,7 @@ With `c_min_override`, the Ultra Low validation result can come from any point y
 |---|---|
 | :material-alert-octagon:{ style="color:#c62828" } Accuracy results at every required point | rule `accuracy-coverage` |
 | :material-alert-octagon:{ style="color:#c62828" } The results pass the quality target | rule `accuracy-gate`, or for the agentic models `agentic-accuracy-inline`, `agentic-accuracy-swebench` and `agentic-osl-range` |
+
 !!! question "The targets are not published"
     The per-benchmark targets are marked `[WIP]` in [§2.9.8][rules-2.9.8]. For the legacy benchmarks
     the checker gates against the MLPerf Inference targets (see [Benchmarks and

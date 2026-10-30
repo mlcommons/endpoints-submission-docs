@@ -36,11 +36,11 @@ or a generic spelling on any group:
 | `cpu` | `num_cpu` | `tdp_per_cpu` |
 | `accelerator` | `num_accelerator` | `tdp_per_accelerator` |
 | `scale_up_network`, `scale_out_network` | `num_switches` | `tdp_per_switch` |
-| `scale_out_network` (NICs) | `num_nics` | `tdp_per_nic` |
 | Any group | `count` | `tdp_per_unit` |
 
-The rules also have the scale-out group declare its cabling, passive or active optical. The checker
-shape has no field for it; the Appendix E shape has `scale_out.cabling` ([E.4][rules-e4]).
+The rules also have the scale-out group declare its NICs and its cabling, passive or active
+optical. The checker shape has no field for either, so NIC counts and power are not read; the
+Appendix E shape has `scale_out.nics` and `scale_out.cabling` ([E.4][rules-e4]).
 
 The link goes in `link` or `public_specification`. Count what's installed, as provisioned, not the
 chassis maximum.

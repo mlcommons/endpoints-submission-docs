@@ -58,6 +58,10 @@ to `C_min`, and it has to be in 1–32. You set it one of two ways:
 The override rules (type, range, the same value on every point) are under [Maximum Supported
 Concurrency in §5.4][rules-5.4-cmax].
 
+!!! note "The override needs checker `v1.5.1.0` or later"
+    Earlier releases ignore `c_min_override` and take `C_min` from your lowest point, so their
+    boundaries and coverage results won't match what you declared.
+
 !!! warning "`C_min` moves every other boundary"
     Without an override, dropping your lowest point moves every region boundary, and points that
     were legal may no longer be. With one, you can't add, remove or change it once peer review
