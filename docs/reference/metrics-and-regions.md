@@ -107,8 +107,14 @@ computed from your own `C_min` and `C_max`.
 
 ### Ultra Low Concurrency
 
-Fixed at concurrency **1 to 32 inclusive** for every submission, one point required ([Ultra Low
-Concurrency Region in §5.4][rules-5.4-ultra-low]).
+Concurrency **1 to `C_min`**, with `C_min` at most 32, one point required ([Ultra Low Concurrency
+Region in §5.4][rules-5.4-ultra-low]). `C_min` is your lowest point unless you declare
+`c_min_override` in `system_desc.json`.
+
+!!! note "Duration and dataset rules go by concurrency, not region"
+    The [§6][rules-6] duration and query requirements use a fixed threshold of 32, whatever region
+    a point is in. A point at concurrency 24 in your Low Concurrency region still gets the 1–32
+    values.
 
 ### The three concurrency regions
 
@@ -122,9 +128,9 @@ Don't implement it yourself. Use the checker, which implements it:
 python -c "from submission_checker.cli import main; main()" regions --max-concurrency 1024 --min-concurrency 16
 ```
 
-!!! note "`C_min` is derived in v1.0"
-    The checker derives `C_min` from your submission's own points rather than reading a declared
-    value, so boundaries differ per frontier. Your lowest point silently sets every other boundary.
+!!! note "Your lowest point sets the boundaries"
+    Without `c_min_override`, `C_min` is your lowest point, so dropping or adding a low point moves
+    every boundary. How to choose is in [step 3](../workflow/plan-your-curve.md#2-understand-what-sets-c_min).
 
 ### The 10% margin
 
@@ -153,5 +159,5 @@ How many points you need, and how many carry accuracy results, is set by [rules 
 with the Offline point in [§5.7][rules-5.7] and the 32-point cap in [§5.6][rules-5.6]. [Step
 3](../workflow/plan-your-curve.md) walks through applying them.
 
-*Last verified against: `mlcommons/endpoints_policies@main` (1818269) and
-`mlcommons/endpoints@main` (f1100cf), 2026-10-02.*
+*Last verified against: `mlcommons/endpoints_policies@main` (4ba8224) and
+`mlcommons/endpoints@main` (f1100cf), 2026-10-30.*

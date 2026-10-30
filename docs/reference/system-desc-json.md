@@ -24,6 +24,12 @@ produce the file:
     ([Submission Rules §7.3.7][srules-7.3.7]). `target_availability_date`, an ISO 8601 date, is
     required when it is `Preview` ([Submission Rules §7.3.4][srules-7.3.4]).
 
+!!! note "Optional `c_min_override`"
+    Declares `C_min`, the top of the Ultra Low Concurrency region, instead of taking it from your
+    lowest point. Put the same value in every point's file, or leave it out of all of them. The
+    rules are under [Maximum Supported Concurrency in §5.4][rules-5.4-cmax]; the §8.2.1 template
+    leaves the field out.
+
 !!! warning "`tps_utilization` is computed"
     The checker recomputes it against your own frontier (`tps-utilization`).
 
@@ -46,5 +52,5 @@ produce the file:
 Provisioned power is **not** in this file. It goes in a separate, per-system
 [`system_power.json`](system-power-json.md).
 
-*Last verified against: `mlcommons/endpoints_policies@main` (1818269) and
+*Last verified against: `mlcommons/endpoints_policies@main` (4ba8224), 2026-10-30, and
 `mlcommons/endpoints-submission-cli@main` (a42a056, `v1.1.0.0`), 2026-10-02.*

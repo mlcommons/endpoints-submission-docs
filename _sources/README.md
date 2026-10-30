@@ -7,10 +7,17 @@ instead.
 
 | Snapshot | Upstream | Ref | Captured |
 |---|---|---|---|
-| `policies-*.md`, `policies-seedset.yaml` | mlcommons/endpoints_policies | `v1.0_rules_dev@d2d9da6` | 2026-10-02 |
+| `policies-*.md`, `policies-seedset.yaml` | mlcommons/endpoints_policies | `main@4ba8224` | 2026-10-30 |
 | `submission-cli-*.md` | mlcommons/endpoints-submission-cli | `main@a42a056` (after tag `v1.1.0.0`) | 2026-10-02 |
 | `endpoints-*.md` | mlcommons/endpoints | `main@47cc5c8` | 2026-09-13 |
 | `mlperf-viz-README.md` | mlcommons/mlperf-viz (`cli/README.md`) | `cli-v1.1.0@654dca5` | 2026-10-02 |
+
+The 2026-10-30 resync moved the policies snapshots to `main`, which now carries the published v1.0
+rules (PR 135), and through PR 150: native speculative-decoding heads, the v1.0 model list in §3.2,
+`config.yaml` per point, 2,400 s agentic durations, agentic inline accuracy at every point,
+`c_min_override`, and review-process changes (penalties, the shared review repository, withdrawal
+after finalization). PR 138 only rewrapped the text. The CLI and client snapshots were not
+re-checked.
 
 The 2026-10-02 resync moved the policies snapshots (streaming and the multi-token stream interval,
 `model_name` and `link_config` out of `system_desc.json`, file-name fixes) and the CLI snapshots

@@ -67,13 +67,13 @@ Indexed by what you see. Search this page for a fragment of your error message.
     responses so TTFT and TPOT can be measured. The client's `streaming: auto` turns them on for
     those runs; a dedicated Offline run doesn't need them.
 
-??? failure "The run ends far sooner than the region minimum"
+??? failure "The run ends far sooner than the minimum duration"
     **Cause:** sample-count sizing. With no explicit count and no minimum issue duration, the client
     issues the dataset **once** and stops.
 
     **Fix:** set `settings.runtime.n_samples_to_issue`, a multiple of the dataset size, so the run
-    sustains 600 s (Ultra Low) or 1,200 s (other regions) of steady state ([§6.2 of the
-    rules][rules-6.2]).
+    sustains its minimum steady state: 600 s at concurrency 1–32, otherwise 1,200 s, or 2,400 s for
+    agentic benchmarks ([§6.2 of the rules][rules-6.2]).
 
     Priority order: `n_samples_to_issue` > Poisson QPS × min issue duration > dataset size.
 
@@ -177,21 +177,21 @@ Indexed by what you see. Search this page for a fragment of your error message.
     **Fix:** make every copy identical, or keep it in one run folder only.
 
 ??? failure "`approved-drafter` fails"
-    **Cause:** the point declares `speculative_decoding`, and the drafter isn't on the benchmark's
-    approved list. Approved heads exist only for the agentic benchmarks, and the checker's list is
-    still empty, so every drafter fails for now.
+    **Cause:** the point declares `speculative_decoding`, and the drafter is neither on the
+    benchmark's [approved list](https://github.com/mlcommons/endpoints-submission-cli/blob/main/src/submission_checker/data/approved_drafters.yaml) nor a native head of an approved checkpoint
+    ([§2.9.4][rules-2.9.4]). Checker `v1.1.0.0` ships an empty list, so every drafter fails there.
 
-    **Fix:** re-run the point without speculative decoding.
+    **Fix:** use a later checker release, or re-run the point without speculative decoding.
 
 ??? failure "A concurrency-coverage check fails"
     **Cause:** no point in one of Low, Medium or High Concurrency — often because `C_min` changed.
 
     **Fix:**
     ```bash
-    python -c "from submission_checker.cli import main; main()" regions --max-concurrency <C_max> --min-concurrency <your lowest point>
+    python -c "from submission_checker.cli import main; main()" regions --max-concurrency <C_max> --min-concurrency <C_min>
     ```
-    Remember `C_min` is **derived from your own lowest point**, so dropping that point moves every
-    other boundary. And a point in the 10% margin does **not** satisfy High Concurrency.
+    Unless you declare `c_min_override`, `C_min` is your lowest point, so dropping that point moves
+    every other boundary. And a point in the 10% margin does **not** satisfy High Concurrency.
 
 ??? failure "`region-placement` warns"
     **Cause:** the `region` you declared in `point.yaml` disagrees with the computed one.

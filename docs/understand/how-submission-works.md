@@ -51,8 +51,9 @@ The windows, from [§6.5][srules-6.5]:
 
 This is easy to miss. Once someone files an objection against you, you have **3 business days** (by
 11:59PM PT on the 3rd) to post an initial response, either a resolution schedule or a
-counter-argument with evidence ([§6.3][srules-6.3]). Miss it and penalties apply automatically. They
-add up and can't be reversed:
+counter-argument with evidence ([§6.3][srules-6.3]). Miss it and penalties apply automatically and
+can't be reversed. Each objection is counted separately, and only the most severe penalty applies to
+the submission:
 
 | Business days without your response | Penalty |
 |---|---|
@@ -68,6 +69,11 @@ Organisations with a *finalized* Endpoints result in the lookback window form th
 ([§2.1][srules-2.1]), and each submission also gets one randomly assigned reviewer from that pool,
 never from your own organisation ([§2.6][srules-2.6]). Being a competitor is **not** a conflict of
 interest ([§2.4][srules-2.4]).
+
+Every submission under review sits in a shared review repository. If you aren't on the committee you
+can read the others but can't object to them or file issues on them; raise a concern with the review
+chairs or MLCommons instead. A dummy or unserious submission made to get that access is subject to
+disciplinary action ([§6.10][srules-6.10]).
 
 ## When your results become public
 
@@ -104,4 +110,4 @@ checks is in the [MLPerf Endpoints Audit Guidelines][audit].
 
 --8<-- "precedence-notice.md"
 
-*Last verified against: `mlcommons/endpoints_policies@main` (1818269), 2026-10-26.*
+*Last verified against: `mlcommons/endpoints_policies@main` (4ba8224), 2026-10-30.*

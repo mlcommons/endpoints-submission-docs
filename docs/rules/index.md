@@ -20,8 +20,8 @@ A plain-language summary of the rules that apply to you. **These pages don't cop
 | [`endpoints_submission_rules.md`][srules] | Process: registration, review, cohorts, publication modes, objections, publication status, disputes, audits |
 | [`MLPerf_Endpoints_Audit_Guidelines.md`][audit] | What an auditor checks, and what you provide during an audit |
 
-These links go to the `v1.0_rules_dev` branch, which is where v1.0 is being written. The
-repository's `main` branch still carries the v0.7 text.
+These links go to the `main` branch, which carries the published v1.0 rules. Proposed changes are
+made on `v1.0_rules_dev`.
 
 The two rules documents build on the [MLPerf General Submission
 Rules](https://github.com/mlcommons/policies/blob/master/submission_rules.adoc), and Endpoints wins
@@ -29,4 +29,4 @@ where they conflict ([Submission Rules §1][srules-1]).
 
 --8<-- "draft-rules-warning.md"
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef), 2026-09-24.*
+*Last verified against: `mlcommons/endpoints_policies@main` (4ba8224), 2026-10-30.*

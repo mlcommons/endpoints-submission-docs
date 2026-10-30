@@ -26,7 +26,8 @@
 A non-agentic submission needs at least 8 and at most 32 measurement points, structured `1 + 3 + 3 +
 1`. The minimum is 7 if you elect your `C_max` point as the Offline result, or if the benchmark is
 agentic. Where each point has to go, and the freedom you have in placing the rest, is in [§5.3 of
-the rules][rules-5.3]. The cap is in [§5.6][rules-5.6], and the Offline point counts toward it.
+the rules][rules-5.3]. All seven concurrency points must be distinct. The cap is in
+[§5.6][rules-5.6], and the Offline point counts toward it.
 
 ## Steps
 
@@ -45,15 +46,22 @@ choice is yours; the rules explain what to weigh under [Maximum Supported Concur
 
 ### 2. Understand what sets `C_min`
 
-The [Ultra Low Concurrency region][rules-5.4-ultra-low] is fixed at 1–32 for everyone. `C_min`, the
-value the region calculation uses, is the lowest concurrency level in your own submission, and has
-to fall in 1–32.
+`C_min` is the top of the [Ultra Low Concurrency region][rules-5.4-ultra-low], which runs from 1
+to `C_min`, and it has to be in 1–32. You set it one of two ways:
 
-!!! note "Derived, not declared"
-    In v1.0 the checker **derives** `C_min` from your submitted points. Practical consequence: your
-    lowest point silently changes every other region boundary. If you later drop your lowest point,
-    the boundaries move and points that were legal may no longer be. Decide your lowest point early
-    and keep it.
+- **By default** it's your lowest fixed-concurrency point, and that point is your mandatory Ultra Low
+  point.
+- **With `c_min_override`** in `system_desc.json` you declare it. A point at that concurrency must
+  exist, but any of your points in 1–`C_min` can be the mandatory Ultra Low point, and the others
+  there count as submitter's-choice points.
+
+The override rules (type, range, the same value on every point) are under [Maximum Supported
+Concurrency in §5.4][rules-5.4-cmax].
+
+!!! warning "`C_min` moves every other boundary"
+    Without an override, dropping your lowest point moves every region boundary, and points that
+    were legal may no longer be. With one, you can't add, remove or change it once peer review
+    starts ([Submission Rules §8.1][srules-8.1]). Decide `C_min` before you run.
 
 ### 3. Compute the boundaries
 
@@ -71,7 +79,7 @@ For `C_min = 16`, `C_max = 1024`:
 
 | Region | Range |
 |---|---|
-| Low Latency (1 to `C_min`) | 1 – 16 |
+| Ultra Low Concurrency (1 to `C_min`) | 1 – 16 |
 | Low Concurrency | 17 – 26 |
 | Medium Concurrency | 27 – 117 |
 | High Concurrency | 118 – 1024 |
@@ -79,16 +87,9 @@ For `C_min = 16`, `C_max = 1024`:
 
 </div>
 
-The tool labels the band up to `C_min` "Low Latency". The Ultra Low Concurrency region itself stays
-1–32 for everyone.
+The tool labels the Ultra Low Concurrency band "Low Latency".
 
 Pre-computed boundaries for common combinations are in [Appendix B of the rules][rules-appendix-b].
-
-!!! warning "The rules' Example C is off by one"
-    [§5.4's worked example][rules-5.4-concurrency] for this same pair gives Medium as 27–116 and
-    High as 117–1,024. That's an arithmetic slip in the example. The algorithm, Appendix B and the
-    checker all put 117 in Medium. Trust the tool. Tracked as **B14** in [Open
-    questions](../help/open-questions.md).
 
 ### 4. Choose your points
 

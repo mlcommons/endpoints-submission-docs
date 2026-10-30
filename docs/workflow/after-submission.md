@@ -38,9 +38,10 @@ schedule is in [§6.5 of the Submission Rules][srules-6.5], and the dispute dead
     submission is **withdrawn** after 10. The schedule, and how business days are counted, is in
     [Submission Rules §6.3][srules-6.3].
 
-A reply only counts if it either acknowledges the issue with a schedule for resolution or contests
-it with evidence ([§6.3][srules-6.3]). A holding reply with no schedule and no argument is not a
-response. What the objector owes you in return is in [§6.4][srules-6.4].
+A reply only counts if it either acknowledges the issue with a reasonable schedule for resolution or
+contests it with evidence ([§6.3][srules-6.3]). A holding reply with no schedule and no argument is
+not a response. If you need longer than you said, post an updated schedule; it can't run past the
+objection resolution window. What the objector owes you in return is in [§6.4][srules-6.4].
 
 ## What reviewers are looking at
 
@@ -70,7 +71,9 @@ A reproducibility objection has to show a deviation beyond the throughput margin
 During peer review you can update run and submission metadata only when the review committee asks
 ([Updating submissions during peer review][srules-updating-submissions-during-peer-review]).
 Non-result content such as documentation, system description metadata and configs that don't match
-the run can be corrected; results can't ([Submission Rules §8.1][srules-8.1]).
+the run can be corrected; results can't ([Submission Rules §8.1][srules-8.1]). Neither can
+`c_min_override`: adding, removing or changing it once peer review starts means a new submission
+(same section).
 
 !!! danger "Results may not be changed during review"
     If a measurement point is wrong, your options are to **withdraw that point** (`submissions
@@ -80,7 +83,9 @@ the run can be corrected; results can't ([Submission Rules §8.1][srules-8.1]).
     shortfall can't be repaired.
 
 After finalization, a wrong result means invalidating the affected points or the submission, and
-non-result corrections need review-chair approval (same section).
+non-result corrections need review-chair approval (same section). You can withdraw voluntarily only
+before finalization; after it, results come down only under a rule such as a failed audit or a
+finding of misrepresentation ([§8.2][srules-8.2]).
 
 ## Finalization and publication
 

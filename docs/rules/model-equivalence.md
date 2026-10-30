@@ -57,24 +57,25 @@ four conditions; fine-tuning, pruning and distillation are not ([§2.9.3][rules-
 
 ## Speculative decoding
 
-Allowed only with a drafter on your benchmark's approved list. The list, how drafters get on it,
-what disqualifies one, what you can't do with an approved drafter, and the per-point disclosure are
-all in [§2.9.4][rules-2.9.4]. Tree-structured verification is covered in Q6 of
+Allowed only with a drafter on your benchmark's [approved list](https://github.com/mlcommons/endpoints-submission-cli/blob/main/src/submission_checker/data/approved_drafters.yaml), or a **native head**:
+one the model publisher ships inside an approved checkpoint, which is approved with that checkpoint
+and needs no list entry. The list, how drafters get on it, what disqualifies one, what you can't do
+with a native head or an approved drafter, and the per-point disclosure are all in
+[§2.9.4][rules-2.9.4]. Tree-structured verification is covered in Q6 of
 [§2.9.9][rules-2.9.9].
 
-!!! warning "Approved heads exist for the agentic benchmarks only"
-    The client's [agentic
-    README](https://github.com/mlcommons/endpoints/blob/main/examples/10_Agentic_Inference/README.md#approved-checkpoints-and-speculative-decoding-heads)
-    lists the approved heads for Kimi K3, and the approved DeepSeek-V4.1-Flash checkpoint ships its
-    own. There's no list for the legacy benchmarks. The checker's bundled list is still empty, so it
-    rejects any point that uses speculative decoding for now. Tracked as **C10** in [Open
-    questions](../help/open-questions.md).
+!!! warning "Use a checker that ships the list"
+    Checker `v1.1.0.0` ships an empty list and rejects every drafter. Which approved checkpoints
+    ship a native head is noted in the client's [agentic
+    README](https://github.com/mlcommons/endpoints/blob/main/examples/10_Agentic_Inference/README.md#approved-checkpoints-and-speculative-decoding-heads).
+    Tracked as **C10** in [Open questions](../help/open-questions.md).
 
 What the checker enforces:
 
 - **`approved-drafter`**: the drafter you declare must match a list entry.
 - **`drafter-approval-lead-time`**: a newly approved drafter is usable only from two cohorts after
-  the list update, counted against your `target_cohort`.
+  the list update, counted against your `target_cohort`. A native head counts from its checkpoint's
+  approval cohort.
 
 Both reject the affected **points**, not the whole submission ([§9.1][rules-9.1]). Across the frontier
 it's one drafter; its configuration can vary per point, including switching speculation off. The
@@ -141,6 +142,6 @@ match the reference ([§2.9.2][rules-2.9.2], [§2.9.7][rules-2.9.7]).
 
 --8<-- "draft-rules-warning.md"
 
-*Last verified against: `mlcommons/endpoints_policies@main` (1818269),
+*Last verified against: `mlcommons/endpoints_policies@main` (4ba8224), 2026-10-30;
 `mlcommons/endpoints-submission-cli@main` (a42a056, `v1.1.0.0`) and `mlcommons/endpoints@main`
 (f1100cf), 2026-10-02.*

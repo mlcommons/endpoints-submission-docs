@@ -99,6 +99,12 @@ median, avg, std_dev, percentiles, histogram}`.
 `accuracy_scores` is a **list** of per-dataset entries — index it by `dataset_name`, not by
 position.
 
+!!! note "Agentic points carry two kinds of score"
+    Every agentic point's file holds the inline score from its performance run (the `dataset_type:
+    performance` entry). At the four mandatory accuracy points it also holds the SWE-bench
+    validation result. If you ran them separately, keep both in that point's file
+    ([§8.1][rules-8.1]).
+
 ## The submission bundle
 
 What `endpoints-submission-cli` assembles and uploads.
@@ -128,7 +134,7 @@ What `endpoints-submission-cli` assembles and uploads.
                     ├── system_desc.json
                     ├── result_summary.json
                     ├── accuracy_results.json
-                    ├── config.yaml            # OPTIONAL as of v1.0
+                    ├── config.yaml            # the run's Loadgen configuration (§8.1)
                     └── server_configs/        # OPTIONAL, point-specific, submitter-defined
 ```
 
@@ -185,5 +191,5 @@ Written inside `<submission_id>/`, not at the organisation level.
     - **`config.yaml` is sanitized.** Report directories contain a `config.yaml` with credentials and
       other secrets replaced by `<redacted>`. Restore them before reusing that file as benchmark input.
 
-*Last verified against: `mlcommons/endpoints-submission-cli@main` (f25f71e) and
-`mlcommons/endpoints_policies@main` (1818269), 2026-09-24.*
+*Last verified against: `mlcommons/endpoints-submission-cli@main` (f25f71e), 2026-09-24, and
+`mlcommons/endpoints_policies@main` (4ba8224), 2026-10-30.*

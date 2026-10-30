@@ -27,8 +27,9 @@ Terms used across this site. Most also appear as hover tooltips on their first u
     but all four are bounded by concurrency.
 
 **`C_min` / `C_max`**
-:   Minimum and Maximum Supported Concurrency. `C_max` is declared; `C_min` is derived from your
-    lowest point in v1.0. Together they set your region boundaries.
+:   The top of the Ultra Low Concurrency region (1–32) and the Maximum Supported Concurrency.
+    `C_max` is declared; `C_min` is your lowest point unless you declare `c_min_override`. Together
+    they set your region boundaries.
 
 **SUT**
 :   System Under Test.
@@ -183,7 +184,9 @@ Terms used across this site. Most also appear as hover tooltips on their first u
     frontier.
 
 **Approved drafter list**
-:   The per-benchmark, per-round list of drafters a Standardized submission may use. Published for the agentic benchmarks only, in the reference repository's agentic example; the checker's list is still empty.
+:   The per-benchmark, per-round list of drafters a Standardized submission may use, kept in the
+    checker's `approved_drafters.yaml` ([§2.9.4][rules-2.9.4]). A native head in an approved
+    checkpoint is approved with it and isn't listed.
 
 **ConcurrencyScheduler**
 :   The reference client's fixed-concurrency load pattern — it keeps a set number of queries in
@@ -225,4 +228,4 @@ Terms used across this site. Most also appear as hover tooltips on their first u
 **TP / EP / PP / DP**
 :   Tensor / Expert / Pipeline / Data parallelism.
 
-*Last verified against: `mlcommons/endpoints_policies@main` (1818269), 2026-10-26.*
+*Last verified against: `mlcommons/endpoints_policies@main` (4ba8224), 2026-10-30.*
