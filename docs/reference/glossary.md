@@ -42,12 +42,21 @@ Terms used across this site. Most also appear as hover tooltips on their first u
 :   Per-user output rate: `1000 / tpot_p90_ms`.
 
 **`system_tps_per_kw`**
-:   `system_tps` divided by the system's provisioned power in kW. The v1.0 normalized metric.
+:   `system_tps` divided by `point_power_kw`, evaluated per measurement point. The v1.0 normalized
+    metric ([§4.5.3][rules-4.5.3]).
+
+**`point_power_kw`**
+:   The provisioned power scaled by the node fraction `Y_s / N_s` engaged at a point, rounded up to
+    whole nodes. Constant for a single-node system ([§4.5.3][rules-4.5.3]).
+
+**`nodes_used`**
+:   Optional per-point declaration of the nodes engaged, by node type, in `point.yaml`. Omitted means
+    full provisioned power ([§8.3][rules-8.3]; fields in [`point.yaml`](point-yaml.md)).
 
 **Provisioned power**
 :   What a system is built to draw, estimated from the rated power of its CPUs, accelerators and
-    scale-up switches plus a cooling-dependent overhead. Fixed for a system across its whole frontier.
-    Declared in `system_power.json`.
+    scale-up switches plus a cooling-dependent overhead. Fixed for a system; each point scales it by
+    the nodes it engages. Declared in `system_power.json`.
 
 **MLC Estimated Power**
 :   The tag on a result whose power figures were partly or wholly filled in by MLCommons.
@@ -88,6 +97,16 @@ Terms used across this site. Most also appear as hover tooltips on their first u
 
 **Cohort**
 :   A publication batch, `YYYY-MM-C0` (1st Wednesday) or `YYYY-MM-C1` (3rd Wednesday), 08:00 Pacific.
+
+**Publication date**
+:   The first date a submission's results are publicly visible. Normally a cohort date; an embargo
+    is the exception ([Submission Rules §4.5][srules-4.5]).
+
+**Review eligibility date**
+:   The date from which a submission's review timelines are counted: the first date it has passed
+    the automated checks, is in the review repository, and is no longer under a review or
+    provisional-publication embargo ([Submission Rules
+    §4.3][srules-4.3]).
 
 **Publication mode**
 :   Confidential review, confidential review with an embargo, or provisional publication. Chosen
@@ -206,4 +225,4 @@ Terms used across this site. Most also appear as hover tooltips on their first u
 **TP / EP / PP / DP**
 :   Tensor / Expert / Pipeline / Data parallelism.
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef), 2026-09-24.*
+*Last verified against: `mlcommons/endpoints_policies@main` (1818269), 2026-10-26.*

@@ -34,7 +34,9 @@ yours to tune.
 The full list is under *Disallowed optimizations* in [§2.2.1][rules-2.2.1]. The entries that catch
 people out are response caching (distinct from KV reuse, which is allowed), input-based
 optimization, client-side dispatch manipulation, and speculative decoding with a drafter that isn't
-on the benchmark's approved list ([below](#speculative-decoding)).
+on the benchmark's approved list ([below](#speculative-decoding)). Tuning against the benchmark's
+performance or accuracy dataset also counts as input-based optimization; thresholds must come from
+the published calibration set or a data-independent procedure ([§2.2.1][rules-2.2.1]).
 
 ## Weights
 
@@ -48,12 +50,10 @@ four conditions; fine-tuning, pruning and distillation are not ([§2.9.3][rules-
     EAGLE-style heads included, even ones you don't use ([§2.9.3][rules-2.9.3]). Not using a
     component at run time is fine; removing it from the artifact is not.
 
-!!! question "Residency is undecided"
-    Whether a component present in the checkpoint must also be **resident in accelerator memory**
-    during measurement is an open working-group item, and the freed memory converts directly into
-    KV-cache capacity. Tracked upstream as [`[CKPT-RESIDENCY]`][rules-ckpt-residency], and here
-    under *Likely to affect your optimisation choices* in [Open
-    questions](../help/open-questions.md).
+!!! note "Residency is not required"
+    The artifact must be complete, but you don't have to load every component into accelerator
+    memory for the configuration you measure ([§2.9.3][rules-2.9.3]). What the computation does
+    is still bound by the equivalence rules.
 
 ## Speculative decoding
 
@@ -113,9 +113,15 @@ The test is whether a technique **changes the tokens the model emits for any inp
 | If the technique… | Status | Section |
 |---|---|---|
 | is mathematically equivalent (exact sparse ops, online softmax, softmax elision under greedy) | Permitted, no disclosure | [§2.9.6.2][rules-2.9.6.2] |
+| removes dead code that can't affect the output for any admissible input or checkpoint | Permitted, no disclosure. Removal that rests on the benchmark's data or this checkpoint's weights is disallowed | [§2.9.6.2][rules-2.9.6.2] |
 | implements sparsity the canonical architecture specifies (native sparse attention, MoE routing) | Required | [§2.9.6.3][rules-2.9.6.3] |
 | derives sparsity at run time from scores or activations (the Endpoints-specific delta) | Permitted under the accuracy gate, no benchmark-data calibration, disclosed | [§2.9.6.4][rules-2.9.6.4], [§2.9.6.6][rules-2.9.6.6] |
 | changes structure: attention pattern, normalization, weight-side sparsity, removed experts | Disallowed, whatever accuracy does | [§2.9.6.5][rules-2.9.6.5] |
+
+!!! warning "Report data-dependent dead code in the reference"
+    If you find reference code that is dead only for the benchmark's data or the reference
+    checkpoint's weights, you must report it to the working group whether or not you would use it
+    ([§2.9.6.2][rules-2.9.6.2]).
 
 ## Pre- and post-processing
 
@@ -135,6 +141,6 @@ match the reference ([§2.9.2][rules-2.9.2], [§2.9.7][rules-2.9.7]).
 
 --8<-- "draft-rules-warning.md"
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (d2d9da6),
+*Last verified against: `mlcommons/endpoints_policies@main` (1818269),
 `mlcommons/endpoints-submission-cli@main` (a42a056, `v1.1.0.0`) and `mlcommons/endpoints@main`
 (f1100cf), 2026-10-02.*

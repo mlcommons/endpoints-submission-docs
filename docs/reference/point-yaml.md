@@ -10,7 +10,6 @@ value, and where the tooling adds a condition the rules don't state.
 | Field | What the checker accepts |
 |---|---|
 | `region` | `low_latency`, `low_concurrency`, `med_concurrency`, `high_concurrency` or `submitters_choice` (`region-declared`) |
-
 | `dataset_type` | Any of the §8.3 values, but the bundle builder only uses it when it is exactly `Accuracy` or `Performance`. |
 | `offline` | `dedicated`, `elected` or `none`, or absent. `elected` only on the point whose concurrency equals `max_supported_concurrency` (`offline-point-present`) |
 | `target_cohort` | `YYYY-MM-C0` or `YYYY-MM-C1` (`target-cohort`) |
@@ -20,6 +19,17 @@ value, and where the tooling adds a condition the rules don't state.
     Its `concurrency` is the size of the performance dataset and it counts toward no region, but the
     rules don't say what `region` should hold. `submitters_choice` passes without a placement
     warning. Tracked as **C7** in [Open questions](../help/open-questions.md).
+
+## Per-point power fields
+
+Two optional fields come from [§4.5.3][rules-4.5.3], with their shape in [§8.3][rules-8.3]. This
+page hasn't confirmed what the checker accepts for them.
+
+- `nodes_used`: the nodes engaged at the point, per node set, for per-point power normalization.
+  It can't exceed what `system_power.json` provisions for that node set. A point without it is
+  normalized by the full provisioned power.
+- `dp_shortfall`: only for a point that ran fewer data-parallel replicas than fit, recording why.
+  Reviewers can raise a Methodology objection to it.
 
 ## The `steady_state` block
 
@@ -50,6 +60,6 @@ What it must declare is set by [§6.3.3][rules-6.3.3], and the sub-field names b
 - [Submission package layout](package-layout.md), where this file sits
 - [Metrics and regions](metrics-and-regions.md) — how to determine the right `region` value
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (d2d9da6),
+*Last verified against: `mlcommons/endpoints_policies@main` (1818269),
 `mlcommons/endpoints-submission-cli@main` (a42a056, `v1.1.0.0`) and `mlcommons/endpoints@main`
 (f1100cf), 2026-10-02.*

@@ -32,9 +32,9 @@ There is no submission deadline: submit on any day and the submission enters the
 ([§4.1][srules-4.1]). Results publish in **cohorts** on the 1st and 3rd Wednesday of each month
 (`YYYY-MM-C0` and `YYYY-MM-C1`, [§4.2][srules-4.2]).
 
-To make a cohort, your submission has to pass automated compliance at least one business day before
-that Wednesday, and every review clock counts from the cohort you first appear in, not the day you
-uploaded ([§4.3][srules-4.3]).
+To make a cohort, your submission has to pass automated compliance and peer review at least one
+business day before that Wednesday, and every review clock counts from your submission's **review
+eligibility date**, not the day you uploaded ([§4.3][srules-4.3]).
 
 ## The review phases
 
@@ -43,20 +43,21 @@ The windows, from [§6.5][srules-6.5]:
 | Phase | Window | What happens |
 |---|---|---|
 | **Automated compliance** | Week 0 (may finish in a day) | Any failure **rejects** the submission; you resubmit as a *new* one |
-| **Peer review** | Weeks 1–3 | Objections filed as GitHub issues. **None new after Week 3.** Resolve everything here for early finalization |
+| **Peer review** | Weeks 1–3 (21 days from your review eligibility date) | Objections filed as GitHub issues. **None new after the window closes** (11:59PM PT on day 21, [§6.3][srules-6.3]). Resolve everything here for early finalization |
 | **Objection resolution** | Weeks 4–6 | Carried-over objections must be resolved |
-| **Dispute resolution** | From Week 6, ~5 weeks | Automatic escalation for anything still open; the chair decides |
+| **Dispute resolution** | From day 42 (6 weeks) after your review eligibility date, ~5 weeks | Automatic escalation for anything still open; the chair decides |
 
 ### Your response deadline
 
-This is easy to miss. Once someone files an objection against you, you have **3 business days** to
-post an initial response, either a resolution schedule or a counter-argument with evidence
-([§6.3][srules-6.3]). Miss it and penalties apply automatically. They add up and can't be reversed:
+This is easy to miss. Once someone files an objection against you, you have **3 business days** (by
+11:59PM PT on the 3rd) to post an initial response, either a resolution schedule or a
+counter-argument with evidence ([§6.3][srules-6.3]). Miss it and penalties apply automatically. They
+add up and can't be reversed:
 
 | Business days without your response | Penalty |
 |---|---|
-| 3 | Finalization delayed by **1 cohort** |
-| 6 | Delayed by **2 cohorts** |
+| 3 | Finalization delayed by **1 cohort date** after finalization |
+| 6 | Delayed by **2 cohort dates** after finalization |
 | 10 | Submission is **withdrawn** |
 
 See [After you submit](../workflow/after-submission.md).
@@ -103,4 +104,4 @@ checks is in the [MLPerf Endpoints Audit Guidelines][audit].
 
 --8<-- "precedence-notice.md"
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef), 2026-09-24.*
+*Last verified against: `mlcommons/endpoints_policies@main` (1818269), 2026-10-26.*

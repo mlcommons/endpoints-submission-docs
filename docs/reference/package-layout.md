@@ -147,10 +147,11 @@ content, are set by [rules §8.1][rules-8.1].
 Since policies PR #119 **every Pareto point carries its own `system_desc.json`**, and the checker
 verifies that all points of a frontier describe the same system.
 
-`system_power.json` is the one per-system file, because provisioned power is fixed across the whole
-frontier. The builder takes it from whichever of the system's run folders supply it and writes it to
-`results/<system>/`. If two run folders of the same system carry different contents, the build
-fails. See [`system_power.json`](system-power-json.md).
+`system_power.json` is the one per-system file, because provisioned power and the per-set node
+counts are the same across the whole frontier. A point can scale it with the optional `nodes_used`
+in its `point.yaml` ([§8.3][rules-8.3]). The builder takes it from whichever of the system's run
+folders supply it and writes it to `results/<system>/`. If two run folders of the same system carry
+different contents, the build fails. See [`system_power.json`](system-power-json.md).
 
 ### `cli_metadata.json`
 
@@ -185,4 +186,4 @@ Written inside `<submission_id>/`, not at the organisation level.
       other secrets replaced by `<redacted>`. Restore them before reusing that file as benchmark input.
 
 *Last verified against: `mlcommons/endpoints-submission-cli@main` (f25f71e) and
-`mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef), 2026-09-24.*
+`mlcommons/endpoints_policies@main` (1818269), 2026-09-24.*

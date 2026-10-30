@@ -75,8 +75,8 @@ comparable across scale, v1.0 also reports `system_tps_per_kw`: throughput divid
 **provisioned power** ([§4.5.3][rules-4.5.3]). That's what the system is built to draw, estimated
 from the rated power of its main components plus a fixed overhead ([Power
 Model][rules-4.5.2-power-model]), not what a meter read during the run. You supply the inputs from
-public spec sheets in a `system_power.json` per system. The figure is fixed for the system, so a
-concurrency-1 point is still divided by the power of the whole system.
+public spec sheets in a `system_power.json` per system. Each point is divided by the power of the
+nodes it engages, and by the whole system's power if it doesn't declare them.
 
 This is required for the Standardized division, optional for RDI, and not yet defined for Serviced.
 See [Requirements you must meet](../rules/requirements.md#power-normalization).
@@ -105,4 +105,4 @@ allowed some variation between runs. Accuracy isn't: miss the target and the sub
 
 --8<-- "precedence-notice.md"
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef), 2026-09-24.*
+*Last verified against: `mlcommons/endpoints_policies@main` (1818269), 2026-10-26.*

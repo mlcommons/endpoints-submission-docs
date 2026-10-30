@@ -70,7 +70,8 @@ Accuracy runs use the **un-salted** dataset. See [§2.9.5.1][rules-2.9.5.1].
     target_cohort: 2026-10-C1
     ```
 
-    Set `A` can be adopted by submissions targeting `2026-10-C1` through the three cohorts after it.
+    How long set `A` stays adoptable is set by [§4.6][srules-4.6]; its current wording is unclear
+    about the last cohort (tracked as **C14** in [Open questions](../help/open-questions.md)).
     Checkers before `v1.0.1.0` don't test adoption at all, so upgrade rather than rely on an older
     one.
 

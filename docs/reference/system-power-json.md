@@ -1,7 +1,8 @@
 # `system_power.json`
 
 The provisioned-power descriptor for one system. **One per system**, not per point: provisioned
-power is fixed for the whole frontier. Why it exists and what it's used for: [What is MLPerf
+power and node counts are the same for the whole frontier; a point can scale it with `nodes_used` in
+[`point.yaml`](point-yaml.md). Why it exists and what it's used for: [What is MLPerf
 Endpoints?](../understand/what-is-mlperf-endpoints.md#normalised-by-provisioned-power).
 
 !!! danger "Required, and authored by you"
@@ -23,7 +24,7 @@ to yield a total.
 | `accelerator` | group | GPUs, ASICs and similar |
 | `compute` | group | Optional. CPU and accelerator as one figure, where the vendor publishes them that way. Replaces `cpu` and `accelerator` |
 | `scale_up_network` | group | The high-bandwidth fabric between accelerators — NVLink switches, TPU ICI, UALink over Ethernet. Zero in a system with no switches |
-| `scale_out_network` | group | Optional. Only for multi-node systems with a scale-out fabric. Reported, but not added to the total |
+| `scale_out_network` | group | Only for multi-node systems with a scale-out fabric. Rules §4.5.2 counts it in the total, in two parts (below); the rules' schema makes `scale_out` required ([E.4][rules-e4]) |
 | `overhead_fraction` | number | Optional, and normally left out: the checker takes it from `cooling` in `system_desc.json` (below) |
 
 Each **group** has a count, a rated power per unit in **watts**, and a link to a public
@@ -35,7 +36,11 @@ or a generic spelling on any group:
 | `cpu` | `num_cpu` | `tdp_per_cpu` |
 | `accelerator` | `num_accelerator` | `tdp_per_accelerator` |
 | `scale_up_network`, `scale_out_network` | `num_switches` | `tdp_per_switch` |
+| `scale_out_network` (NICs) | `num_nics` | `tdp_per_nic` |
 | Any group | `count` | `tdp_per_unit` |
+
+The rules also have the scale-out group declare its cabling, passive or active optical. The checker
+shape has no field for it; the Appendix E shape has `scale_out.cabling` ([E.4][rules-e4]).
 
 The link goes in `link` or `public_specification`. Count what's installed, as provisioned, not the
 chassis maximum.
@@ -46,6 +51,20 @@ chassis maximum.
     air. A system whose nodes are cooled differently gets `0.50`. Without a fraction there is no
     total, so `power-descriptor` fails. Passive cooling matches neither value; in that case state
     `overhead_fraction` here.
+
+## Appendix E schema
+
+[Appendix E][rules-appendix-e] now defines a new shape for this file. The checker shape above
+predates it, and this page hasn't confirmed that the checker reads the new one. Two of its
+structural choices are open working-group items ([E.7][rules-e7]), so treat it as provisional. In
+outline: every power figure is a sourced value, with a public source or an MLCommons default, never
+a bare number ([E.1][rules-e1]); the top level names the system and its `cooling`
+([E.2][rules-e2]); there is one entry per set of identical nodes, with its power method and
+components ([E.3][rules-e3], [E.3.1][rules-e3.1]); a `scale_out` object is required, set to
+`{ "present": false }` for a single node ([E.4][rules-e4]); and the checker derives the `computed`
+block ([E.5][rules-e5]). A `declared_provisioned_power` overrides the computed total
+([E.6.2][rules-e6.2]). Default CPU and accelerator TDPs are in [D.2][rules-appendix-d2] and
+[D.3][rules-appendix-d3]; worked examples in [E.6.1][rules-e6.1] and [E.6.2][rules-e6.2].
 
 ## How the total is computed
 
@@ -61,11 +80,18 @@ major    = cpu + accelerator + scale_up_network
            (compute replaces cpu + accelerator when given)
 
 provisioned_power_kw = total_w / 1000
-system_tps_per_kw    = system_tps / provisioned_power_kw
 ```
 
-Scale-out networking isn't part of `major`. Rules §4.5.2 counts it inside the overhead fraction,
-along with storage, power-supply overhead and cooling.
+Each point's `system_tps_per_kw` divides by `point_power_kw`, which is `provisioned_power_kw` scaled
+by the nodes that point engages ([§4.5.3][rules-4.5.3]).
+
+The block above is the checker's behaviour, which this page hasn't confirmed against the rules'
+current scale-out terms. Rules §4.5.2 now adds scale-out **NIC** power to `major`, so the overhead is
+`overhead_fraction × (CPU + Accelerator + Scale-up + Scale-out NICs)`. It also adds scale-out
+**switch** power to the total outside the overhead base.
+Both are zero for a single-node system. Whether the checker implements this is unconfirmed.
+Reference NIC and switch values are in [Appendix D.4][rules-appendix-d4]; default accelerator
+TDPs, where MLCommons has one, are in [Appendix D.3][rules-appendix-d3].
 
 ## Example
 
@@ -88,11 +114,20 @@ These are policy, and live in the rules:
   rated TDP has to show: [§4.5.2, Methodology][rules-4.5.2-methodology].
 - **How to state the power of a partially populated system**, whether a partial rack, a node with
   empty accelerator slots, or a system under a TDP cap: [§4.5.2.1][rules-4.5.2.1]. Linear scaling
-  is allowed only at whole-node granularity.
+  is allowed only at whole-node granularity, over identical nodes, with `Y` rounded up to a whole
+  node. A rack of mixed node types is split into sets of identical nodes, scaled separately and
+  summed.
 - **What MLCommons does with values you leave out**, and the **"MLC Estimated Power"** tag the
   result then carries: [§4.5.2][rules-4.5.2].
 
-Where a published figure is a range, the rules use the upper bound.
+Where a published figure is a range, the rules use the upper bound. Every value needs a public
+source unless it is an MLCommons default, and a published rack or system rating is specific to the
+vendor and SKU that published it ([Component Template][rules-component-template-system_powerjson]).
+
+If the MLCommons formula or a default diverges materially from your actual provisioned power, report
+it to MLCommons, whether it overstates or understates. Knowingly keeping an understated estimate is
+a misrepresentation ([Component Template][rules-component-template-system_powerjson],
+[Submission Rules §8.4][srules-8.4]).
 
 The bundle build also fails if two runs of the same system carry different `system_power.json`
 contents.
@@ -105,5 +140,5 @@ contents.
     - **Pending ratification.** Tier definitions, overhead fractions, reference components and the
       metric's name and units are all marked subject to change.
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (d2d9da6) and
+*Last verified against: `mlcommons/endpoints_policies@main` (1818269) and
 `mlcommons/endpoints-submission-cli@main` (a42a056, `v1.1.0.0`), 2026-10-02.*

@@ -42,7 +42,8 @@ Status is coarse; the review phase is what actually governs your obligations.
 | Published | Next cohort, or the embargo date | `PUBLISHED` |
 
 What happens in each phase: [§6.5 of the Submission Rules][srules-6.5]. Under provisional
-publication the clock starts differently, and an embargo delays review too ([§6.2.3][srules-6.2.3]).
+publication the review eligibility date is the provisional publication date, and an embargo delays
+review too ([§6.2.3][srules-6.2.3]).
 
 See [How submission works](../understand/how-submission-works.md) and [After you
 submit](../workflow/after-submission.md).
@@ -86,5 +87,5 @@ you. Format, components and how it differs from the submission ID: [rules §8.5]
 MLCommons keeps every version of every Pareto frontier, aligned to cohorts: [Versioning and Historical
 Record][srules-versioning-and-historical-record] in the Submission Rules.
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (6b0b1ef) and
+*Last verified against: `mlcommons/endpoints_policies@main` (1818269) and
 `mlcommons/endpoints-submission-cli@main` (f25f71e), 2026-09-24.*

@@ -18,7 +18,9 @@ correct and resubmit as a new submission ([Submission Rules §6.1][srules-6.1]).
 |---|---|---|
 | `point-count` fails | Fewer than 8 points with a dedicated Offline run, or fewer than 7 otherwise | Run more points. Withdrawn points don't count, and there's no way to add a point to a submission — [plan a spare](../workflow/plan-your-curve.md) |
 | `offline-point-present` fails | Nothing declares `offline` on a single-turn frontier, two points do, `elected` sits on a point that isn't at `C_max`, or an agentic frontier declares one | Keep exactly one declaration, and elect only the point at your declared `C_max`. An agentic frontier has none — [step 3](../workflow/plan-your-curve.md#6-decide-how-to-meet-the-offline-requirement) |
-| `power-descriptor` fails | No `system_power.json` for a system, or one with nothing a total can be derived from | Author it — [step 5](../workflow/author-disclosures.md#3-write-system_powerjson-for-each-system) |
+| `power-descriptor` fails | No `system_power.json` for a system, one with nothing a total can be derived from, or (per §9.1) one that doesn't conform to [Appendix E][rules-appendix-e] and its [validation rules][rules-e7] | Author it — [step 5](../workflow/author-disclosures.md#3-write-system_powerjson-for-each-system) |
+| Per-point power checks (§9.1: *Per-point node declaration*, *Per-point denominator*, *Maximal engagement*) | A declared `nodes_used` names an unknown node set, exceeds what is provisioned, or disagrees with the parallelism in `system_desc.json`; a stored `system_tps_per_kw` differs from the recomputed value; or a point engaged fewer replicas than fit without a `dp_shortfall` | Correct `nodes_used`, or declare `dp_shortfall` — [§4.5.3][rules-4.5.3] |
+| *Accuracy run count* (§9.1) | More or fewer accuracy results than required: 5 non-agentic, 4 agentic, one per mandatory point and none at a submitter's-choice point | Keep exactly that set — [§4.3][rules-4.3] |
 | `*-concurrency-coverage` fails | No point in Low, Medium or High Concurrency | Recompute boundaries with the checker's `regions` command ([step 3](../workflow/plan-your-curve.md#3-compute-the-boundaries)) and run the missing region. Remember the 10% margin is **not** High Concurrency |
 | `ultra-low-concurrency-coverage` fails | No point at concurrency ≤ 32 | Run one in 1–32 |
 | `system-description-valid` or `region-computation` fails | `max_supported_concurrency` missing (the first), or ≤ 32 (the second). §9.1 calls this *Max concurrency declared* | Declare a `C_max` > 32 in `system_desc.json` |
@@ -95,5 +97,5 @@ raised the same way.
 
 --8<-- "precedence-notice.md"
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (d2d9da6) and
+*Last verified against: `mlcommons/endpoints_policies@main` (1818269) and
 `mlcommons/endpoints-submission-cli@main` (a42a056, `v1.1.0.0`), 2026-10-02.*

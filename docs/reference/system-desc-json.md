@@ -19,13 +19,19 @@ produce the file:
 - **Copy the template** in [§8.2.1][rules-8.2.1], which includes the nesting of `node_types` and
   `accelerator_info`, and fill it in.
 
+!!! note "Availability fields"
+    `availability_url` is required when `"system_availability_status": "Available"`
+    ([Submission Rules §7.3.7][srules-7.3.7]). `target_availability_date`, an ISO 8601 date, is
+    required when it is `Preview` ([Submission Rules §7.3.4][srules-7.3.4]).
+
 !!! warning "`tps_utilization` is computed"
     The checker recomputes it against your own frontier (`tps-utilization`).
 
 !!! warning "`cooling` sets your power overhead"
     The checker uses `cooling` to pick the overhead fraction for
     [`system_power.json`](system-power-json.md): `0.30` for liquid-cooled, `0.50` for air-cooled.
-    Leave it empty and `power-descriptor` fails.
+    Leave it empty and `power-descriptor` fails. It must also agree with the `cooling` in
+    `system_power.json` ([E.2][rules-e2]).
 
 !!! note "No `model_name` here"
     The benchmark model name goes in `point.yaml` ([§8.3][rules-8.3]). §8.2 no longer lists it, and
@@ -40,5 +46,5 @@ produce the file:
 Provisioned power is **not** in this file. It goes in a separate, per-system
 [`system_power.json`](system-power-json.md).
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (d2d9da6) and
+*Last verified against: `mlcommons/endpoints_policies@main` (1818269) and
 `mlcommons/endpoints-submission-cli@main` (a42a056, `v1.1.0.0`), 2026-10-02.*

@@ -130,7 +130,7 @@ Process and policy questions that are not errors. For errors, see
 ## Review
 
 **Who reviews my submission?**
-:   The review committee for your cohort, plus one designated reviewer assigned at random from
+:   The review committee for your submission, plus one designated reviewer assigned at random from
     outside your organisation. See [Submission Rules §2.1][srules-2.1] and [§2.6][srules-2.6].
 
 **Is a competitor reviewing me a conflict of interest?**

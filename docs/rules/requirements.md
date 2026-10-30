@@ -76,9 +76,11 @@ warmup documentation is grounds for a Methodology objection.
 
 Accuracy results are needed at the four mandatory region points plus the Offline point: **5** for
 non-agentic benchmarks, **4** for agentic ([§5.3][rules-5.3]). How they're judged, single-turn per
-point or multi-turn on the average, is in [§4.3][rules-4.3]. Accuracy runs use the same
-configuration and stack as the performance runs, on the un-salted accuracy dataset, and there is no
-tolerance ([Reproducibility Expectations][srules-reproducibility-expectations]).
+point or multi-turn on the average, is in [§4.3][rules-4.3]. That count is fixed: submit exactly one
+accuracy result per mandatory point, none at the submitter's-choice points, because extra results
+are rejected at automated compliance ([§4.3][rules-4.3], [§9.1][rules-9.1]). Accuracy runs use the
+same configuration and stack as the performance runs, on the un-salted accuracy dataset, and there
+is no tolerance ([Reproducibility Expectations][srules-reproducibility-expectations]).
 
 | Requirement | How to check |
 |---|---|
@@ -106,22 +108,29 @@ The per-query salt is seeded from the same set and has its own requirements in
 Same model, endpoint configuration, software stack and seed set at **every** point (*Configuration
 consistency* in [§9.1][rules-9.1]). The checker also requires the same dataset
 (`config-consistency-dataset`). Every point's `system_desc.json` must describe the same system, and
-the whole frontier uses one provisioned power figure ([§4.5.3][rules-4.5.3]). If you use speculative
+the whole frontier uses one `system_power.json`, and only the per-point node count may vary
+([§4.5.3][rules-4.5.3]). If you use speculative
 decoding, it's the same drafter at every point. Freeze the stack before the first run.
 
 ## Power normalization
 
 Standardized results, CoP and CoN, are normalised by **provisioned power**, estimated from the rated
-power of CPUs, accelerators and scale-up switches plus a fixed overhead. The model is in [Power
+power of CPUs, accelerators, scale-up switches and, for multi-node systems, scale-out NICs, plus a
+fixed overhead, with scale-out switch power added outside that overhead. The model is in [Power
 Model][rules-4.5.2-power-model], the evidence standard and what MLCommons does with gaps in
-[Methodology][rules-4.5.2-methodology], partial racks and nodes in [§4.5.2.1][rules-4.5.2.1], and
-the metric and why the figure is fixed per system in [§4.5.3][rules-4.5.3]. RDI may report it;
+[Methodology][rules-4.5.2-methodology], partial racks, mixed racks and node rounding in
+[§4.5.2.1][rules-4.5.2.1], and the per-point metric in [§4.5.3][rules-4.5.3]. RDI may report it;
 Serviced is deferred.
+
+Each point is normalized per node set. Run every point with as much of the provisioned hardware
+engaged as fits (data-parallel replication, `DP`); a shortfall goes in `dp_shortfall` in `point.yaml`
+([§4.5.3][rules-4.5.3]). A multi-node, rack-scale or heterogeneous system needs a complete
+`system_power.json`.
 
 | Requirement | How to check |
 |---|---|
 | :material-alert-octagon:{ style="color:#c62828" } `system_power.json` for each system, at `results/<system>/system_power.json` | rule `power-descriptor` |
-| `system_tps_per_kw = system_tps / provisioned_power_kw` | rule `metric-consistency-tps-per-kw` |
+| `system_tps_per_kw = system_tps / point_power_kw` | rule `metric-consistency-tps-per-kw`; the CLI release this page was verified against checks `system_tps / provisioned_power_kw` |
 | Values you leave out are estimated by MLCommons and the result tagged **"MLC Estimated Power"** | rule `power-estimated` warns |
 
 Field names and an example: [`system_power.json`](../reference/system-power-json.md).
@@ -163,5 +172,5 @@ reconstructed response through the model's reference chat template, not from you
 
 --8<-- "draft-rules-warning.md"
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (d2d9da6) and
+*Last verified against: `mlcommons/endpoints_policies@main` (1818269) and
 `mlcommons/endpoints-submission-cli@main` (a42a056, `v1.1.0.0`), 2026-10-02.*

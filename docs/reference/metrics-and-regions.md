@@ -15,11 +15,14 @@ and how each one is computed are in [rules §4.1][rules-4.1].
 
 ## Normalized metric
 
-`system_tps_per_kw` divides `system_tps` by the provisioned power from the system's
-[`system_power.json`](system-power-json.md). Definition and scope: [rules §4.5.3][rules-4.5.3].
+`system_tps_per_kw` divides `system_tps` by `point_power_kw`, evaluated per measurement point. It
+is scaled from the provisioned power in the system's [`system_power.json`](system-power-json.md).
+Definition and scope: [rules §4.5.3][rules-4.5.3].
 
-The denominator is the **provisioned** power of the whole system and is the same at every point, so
-the normalized frontier is the throughput frontier scaled by one constant.
+The denominator can differ between points: a point that declares `nodes_used` in
+[`point.yaml`](point-yaml.md) is scaled to the nodes it engages, and a point that omits it uses the
+full provisioned power (`Y_s = N_s` for every node set). A single-node system has the same
+denominator at every point.
 
 !!! warning "P90, not P95"
     v1.0 uses P90 ([§4.1][rules-4.1]). The v0.7 rules used P95, and some public MLCommons material
@@ -150,5 +153,5 @@ How many points you need, and how many carry accuracy results, is set by [rules 
 with the Offline point in [§5.7][rules-5.7] and the 32-point cap in [§5.6][rules-5.6]. [Step
 3](../workflow/plan-your-curve.md) walks through applying them.
 
-*Last verified against: `mlcommons/endpoints_policies@v1.0_rules_dev` (d2d9da6) and
+*Last verified against: `mlcommons/endpoints_policies@main` (1818269) and
 `mlcommons/endpoints@main` (f1100cf), 2026-10-02.*

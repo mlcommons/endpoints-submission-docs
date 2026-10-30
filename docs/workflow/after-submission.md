@@ -25,7 +25,8 @@ publication mode](../assets/review-cycle.svg)](../assets/review-cycle.svg)
 *Four example submissions, one per publication mode, from [§4.5 of the Submission
 Rules][srules-4.5]. Select the image to open it full size.*
 
-Timelines anchor to the cohort your submission first appears in, not the day you uploaded. The full
+Timelines anchor to your submission's review eligibility date, not the day you uploaded
+([§4.3][srules-4.3]). The full
 schedule is in [§6.5 of the Submission Rules][srules-6.5], and the dispute deadlines in
 [§9.2][srules-9.2].
 
@@ -33,7 +34,7 @@ schedule is in [§6.5 of the Submission Rules][srules-6.5], and the dispute dead
 
 !!! danger "Silence withdraws your submission"
     Penalties start automatically once an objection is filed and don't reverse if you reply late:
-    finalization slips one cohort after 3 business days without a response, two after 6, and the
+    finalization slips one cohort date after 3 business days without a response, two after 6, and the
     submission is **withdrawn** after 10. The schedule, and how business days are counted, is in
     [Submission Rules §6.3][srules-6.3].
 
@@ -84,8 +85,9 @@ non-result corrections need review-chair approval (same section).
 ## Finalization and publication
 
 Once every objection is resolved or retracted, the result is finalized, early if that happens before
-the end of Week 3 ([§6.3][srules-6.3]). It's queued for the next available cohort
-([§6.3][srules-6.3]), or held until your embargo date if you declared one ([§4.2][srules-4.2]).
+the peer review window closes, 21 days after your review eligibility date ([§6.3][srules-6.3]). It's
+queued for the next available cohort ([§6.3][srules-6.3]), or held until your embargo date if you
+declared one ([§4.2][srules-4.2]).
 
 What the published entry shows is listed in [Submission Rules §7.6][srules-7.6], and how the Offline
 point is plotted in [§5.7.3 of the rules][rules-5.7.3]. If MLCommons had to fill in any of your
