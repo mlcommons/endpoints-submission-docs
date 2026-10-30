@@ -186,7 +186,7 @@ Terms used across this site. Most also appear as hover tooltips on their first u
 **Approved drafter list**
 :   The per-benchmark, per-round list of drafters a Standardized submission may use, kept in the
     checker's `approved_drafters.yaml` ([§2.9.4][rules-2.9.4]). A native head in an approved
-    checkpoint is approved with it and isn't listed.
+    checkpoint is approved with that checkpoint and doesn't need its own entry.
 
 **ConcurrencyScheduler**
 :   The reference client's fixed-concurrency load pattern — it keeps a set number of queries in

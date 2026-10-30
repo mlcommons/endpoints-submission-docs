@@ -53,7 +53,7 @@ Defined in [§6 of the rules][rules-6]. The values at a glance:
 | Requirement | Value | How to check |
 |---|---|---|
 | Load pattern ([§6.1][rules-6.1]) | Fixed-concurrency for every point except a dedicated Offline run. `poisson` is invalid | rule `load-pattern` |
-| Steady-state duration ([§6.2][rules-6.2]) | **600 s** at concurrency 1–32. Above 32: **1,200 s**, or **2,400 s** for agentic benchmarks | rule `point-duration` |
+| Steady-state duration ([§6.2][rules-6.2]) | **600 s** at concurrency 1–32. Above 32: **1,200 s**, or **2,400 s** for agentic benchmarks | rule `point-duration`, from checker `v1.4.1.0`. Earlier releases go by region and don't check the agentic 2,400 s |
 | Completed queries ([§6.4][rules-6.4]) | At least one pass over the dataset, or the approved subset at concurrency 1–32 | rule `min-query-count` |
 | Samples issued ([§6.4][rules-6.4]) | A whole-number multiple of the dataset size | — |
 | Streaming ([§6.5][rules-6.5]) | Streaming responses on every fixed-concurrency point; a dedicated Offline run is exempt. `stream_all_chunks` may be either value | rule `streaming-config`, which still requires `stream_all_chunks: true` |

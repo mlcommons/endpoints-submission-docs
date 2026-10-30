@@ -58,7 +58,7 @@ These don't stop the checker, but reviewers see them and Weeks 1–3 is when the
 
 | Symptom | Cause | Fix |
 |---|---|---|
-| `point-duration` warns | A point ran under its minimum steady-state duration | Re-run: 600 s at concurrency 1–32, otherwise 1,200 s (2,400 s agentic) |
+| `point-duration` warns | A point ran under its minimum steady-state duration | Re-run: 600 s at concurrency 1–32, otherwise 1,200 s (2,400 s agentic). Checkers before `v1.4.1.0` go by region, so a compliant point at 1–32 can still warn; check your version before re-running |
 | `offline-ordering` warns | Offline `system_tps` under 0.98× the `C_max` point's, or Offline concurrency under `C_max` | Re-run the Offline point so it saturates the system, or elect `C_max` instead |
 | `power-estimated` warns | A component group in `system_power.json` has no count or TDP | Fill it in from a public spec sheet, or accept the "MLC Estimated Power" tag |
 | `region-placement` warns | Declared `region` disagrees with the computed one | Correct the declared value |
