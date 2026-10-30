@@ -1965,13 +1965,13 @@
     classDef bad stroke:#c62828,stroke-width:2px;</code></pre>
 <h2 id="rolling-submission-and-cohorts">Rolling submission and cohorts<a class="headerlink" href="#rolling-submission-and-cohorts" title="Permanent link">&para;</a></h2>
 <p>There is no submission deadline: submit on any day and the submission enters the pipeline on receipt
-(<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#41-rolling-submission-model">§4.1</a>). Results publish in <strong>cohorts</strong> on the 1st and 3rd Wednesday of each month
-(<code>YYYY-MM-C0</code> and <code>YYYY-MM-C1</code>, <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#42-publication-cohorts-and-embargo">§4.2</a>).</p>
-<p>To make a cohort, your submission has to pass automated compliance at least one business day before
-that Wednesday, and every review clock counts from the cohort you first appear in, not the day you
-uploaded (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#43-submission-to-publication-alignment">§4.3</a>).</p>
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#41-rolling-submission-model">§4.1</a>). Results publish in <strong>cohorts</strong> on the 1st and 3rd Wednesday of each month
+(<code>YYYY-MM-C0</code> and <code>YYYY-MM-C1</code>, <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#42-publication-cohorts-and-embargo">§4.2</a>).</p>
+<p>To make a cohort, your submission has to pass automated compliance and peer review at least one
+business day before that Wednesday, and every review clock counts from your submission's <strong>review
+eligibility date</strong>, not the day you uploaded (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#43-submission-to-publication-alignment">§4.3</a>).</p>
 <h2 id="the-review-phases">The review phases<a class="headerlink" href="#the-review-phases" title="Permanent link">&para;</a></h2>
-<p>The windows, from <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#65-review-timeline-summary">§6.5</a>:</p>
+<p>The windows, from <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#65-review-timeline-summary">§6.5</a>:</p>
 <table>
 <thead>
 <tr>
@@ -1988,8 +1988,8 @@ uploaded (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rul
 </tr>
 <tr>
 <td><strong>Peer review</strong></td>
-<td>Weeks 1–3</td>
-<td>Objections filed as GitHub issues. <strong>None new after Week 3.</strong> Resolve everything here for early finalization</td>
+<td>Weeks 1–3 (21 days from your review eligibility date)</td>
+<td>Objections filed as GitHub issues. <strong>None new after the window closes</strong> (11:59PM PT on day 21, <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#63-peer-review-weeks-13">§6.3</a>). Resolve everything here for early finalization</td>
 </tr>
 <tr>
 <td><strong>Objection resolution</strong></td>
@@ -1998,15 +1998,17 @@ uploaded (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rul
 </tr>
 <tr>
 <td><strong>Dispute resolution</strong></td>
-<td>From Week 6, ~5 weeks</td>
+<td>From day 42 (6 weeks) after your review eligibility date, ~5 weeks</td>
 <td>Automatic escalation for anything still open; the chair decides</td>
 </tr>
 </tbody>
 </table>
 <h3 id="your-response-deadline">Your response deadline<a class="headerlink" href="#your-response-deadline" title="Permanent link">&para;</a></h3>
-<p>This is easy to miss. Once someone files an objection against you, you have <strong>3 business days</strong> to
-post an initial response, either a resolution schedule or a counter-argument with evidence
-(<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#63-peer-review-weeks-13">§6.3</a>). Miss it and penalties apply automatically. They add up and can't be reversed:</p>
+<p>This is easy to miss. Once someone files an objection against you, you have <strong>3 business days</strong> (by
+11:59PM PT on the 3rd) to post an initial response, either a resolution schedule or a
+counter-argument with evidence (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#63-peer-review-weeks-13">§6.3</a>). Miss it and penalties apply automatically and
+can't be reversed. Each objection is counted separately, and only the most severe penalty applies to
+the submission:</p>
 <table>
 <thead>
 <tr>
@@ -2017,11 +2019,11 @@ post an initial response, either a resolution schedule or a counter-argument wit
 <tbody>
 <tr>
 <td>3</td>
-<td>Finalization delayed by <strong>1 cohort</strong></td>
+<td>Finalization delayed by <strong>1 cohort date</strong> after finalization</td>
 </tr>
 <tr>
 <td>6</td>
-<td>Delayed by <strong>2 cohorts</strong></td>
+<td>Delayed by <strong>2 cohort dates</strong> after finalization</td>
 </tr>
 <tr>
 <td>10</td>
@@ -2032,12 +2034,16 @@ post an initial response, either a resolution schedule or a counter-argument wit
 <p>See <a href="../../workflow/after-submission/">After you submit</a>.</p>
 <h2 id="who-reviews-you">Who reviews you<a class="headerlink" href="#who-reviews-you" title="Permanent link">&para;</a></h2>
 <p>Organisations with a <em>finalized</em> Endpoints result in the lookback window form the review committee
-(<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#21-structure">§2.1</a>), and each submission also gets one randomly assigned reviewer from that pool,
-never from your own organisation (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#26-peer-review-process">§2.6</a>). Being a competitor is <strong>not</strong> a conflict of
-interest (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#24-conflict-of-interest">§2.4</a>).</p>
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#21-structure">§2.1</a>), and each submission also gets one randomly assigned reviewer from that pool,
+never from your own organisation (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#26-peer-review-process">§2.6</a>). Being a competitor is <strong>not</strong> a conflict of
+interest (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#24-conflict-of-interest">§2.4</a>).</p>
+<p>Every submission under review sits in a shared review repository. If you aren't on the committee you
+can read the others but can't object to them or file issues on them; raise a concern with the review
+chairs or MLCommons instead. A dummy or unserious submission made to get that access is subject to
+disciplinary action (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#610-visibility-of-results-during-review">§6.10</a>).</p>
 <h2 id="when-your-results-become-public">When your results become public<a class="headerlink" href="#when-your-results-become-public" title="Permanent link">&para;</a></h2>
 <p>You pick one of three publication modes when you submit, and you <strong>can't change it afterwards</strong>
-(<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#62-publication-modes">§6.2</a>):</p>
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#62-publication-modes">§6.2</a>):</p>
 <table>
 <thead>
 <tr>
@@ -2070,19 +2076,19 @@ interest (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rul
 </table>
 <p>Use the embargoed mode to time a launch without early numbers going out, and provisional publication
 when you need numbers public before review ends. An embargo under provisional publication also
-delays the start of your review. The details of each mode are in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#621-confidential-review-default">§6.2.1–6.2.3</a>, and
-who can see what during review is in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#610-visibility-of-results-during-review">§6.10</a>.</p>
+delays the start of your review. The details of each mode are in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#621-confidential-review-default">§6.2.1–6.2.3</a>, and
+who can see what during review is in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#610-visibility-of-results-during-review">§6.10</a>.</p>
 <h2 id="after-publication">After publication<a class="headerlink" href="#after-publication" title="Permanent link">&para;</a></h2>
 <p>Published results can't be edited; an error gets the affected points or the submission invalidated
-(<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#81-corrections">§8.1</a>). Others can challenge a result until the <strong>later</strong> of the next audit vote or
-<strong>90 days</strong> after finalization, and you keep the system available for audit until then (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#scope-and-standing-for-late-concerns">Scope and
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#81-corrections">§8.1</a>). Others can challenge a result until the <strong>later</strong> of the next audit vote or
+<strong>90 days</strong> after finalization, and you keep the system available for audit until then (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#scope-and-standing-for-late-concerns">Scope and
 Standing for Late Concerns</a>).</p>
 <h2 id="audits">Audits<a class="headerlink" href="#audits" title="Permanent link">&para;</a></h2>
 <p>MLCommons runs <strong>8 audits a year</strong>: each quarter one drawn at random and one chosen by committee
-vote from nominations (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#10-audit-process">§10</a>). The thing to plan for: <strong>you have to keep the system as
-submitted from the moment it's nominated</strong>, not only once it's picked (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#102-audit-votes">§10.2</a>). What
-an audit asks of you, and what happens if you fail, is in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#105-audit-compliance-and-resolution-rules">§10.5</a>. What the auditor
-checks is in the <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/MLPerf_Endpoints_Audit_Guidelines.md">MLPerf Endpoints Audit Guidelines</a>.</p>
+vote from nominations (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#10-audit-process">§10</a>). The thing to plan for: <strong>you have to keep the system as
+submitted from the moment it's nominated</strong>, not only once it's picked (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#102-audit-votes">§10.2</a>). What
+an audit asks of you, and what happens if you fail, is in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#105-audit-compliance-and-resolution-rules">§10.5</a>. What the auditor
+checks is in the <a href="https://github.com/mlcommons/endpoints_policies/blob/main/MLPerf_Endpoints_Audit_Guidelines.md">MLPerf Endpoints Audit Guidelines</a>.</p>
 <p><strong>Next:</strong> <a href="../divisions-and-scenarios/">Divisions and scenarios</a></p>
 <div class="admonition warning">
 <p class="admonition-title">The policy repository wins</p>
@@ -2091,7 +2097,7 @@ page and <a href="https://github.com/mlcommons/endpoints_policies"><code>mlcommo
 disagree, <strong>the policy repository is correct and this page is a bug</strong>. Please
 <a href="https://github.com/mlcommons/endpoints-submission-docs/issues">report it</a>.</p>
 </div>
-<p><em>Last verified against: <code>mlcommons/endpoints_policies@v1.0_rules_dev</code> (6b0b1ef), 2026-09-24.</em></p>
+<p><em>Last verified against: <code>mlcommons/endpoints_policies@main</code> (4ba8224), 2026-10-30.</em></p>
 
 
 

@@ -1981,15 +1981,35 @@
 <p>What could still change under you, and what this documentation could not confirm. Read this before
 committing accelerator time.</p>
 <div class="admonition danger">
-<p class="admonition-title">These rules are a working draft</p>
-<p>MLPerf Endpoints v1.0 rules are on an active development branch. Sections marked
-<code>[TENTATIVE]</code>, <code>[WIP]</code>, <code>[WG Open Item]</code> or <code>[WG Decision Required]</code> upstream can still
-change. Before committing hardware time to a submission, read
+<p class="admonition-title">These rules can still change</p>
+<p>The MLPerf Endpoints v1.0 rules are published on the policy repository's <code>main</code> branch, and
+working-group changes are still merged into it. Sections marked <code>[TENTATIVE]</code>, <code>[WIP]</code>,
+<code>[WG Open Item]</code> or <code>[WG Decision Required]</code> upstream are the most likely to move. Before
+committing hardware time to a submission, read
 <a href="./">Open questions and WIP rules</a>.</p>
 </div>
-<p><strong>Last reviewed:</strong> 2026-10-02, against <code>endpoints_policies@v1.0_rules_dev</code> (d2d9da6),
+<p><strong>Last reviewed:</strong> 2026-10-30 against <code>endpoints_policies@main</code> (4ba8224); 2026-10-02 against
 <code>endpoints-submission-cli@main</code> (a42a056, tag <code>v1.1.0.0</code>), <code>endpoints@main</code> (f1100cf), and the
 working group's v1.0 rules overview of 2026-09-22.</p>
+<details class="info">
+<summary>What changed at the 2026-10-30 review</summary>
+<p>The v1.0 rules are now published on <code>main</code> (policies PR 135); proposals go to <code>v1.0_rules_dev</code>.
+Changes since then that matter to a submitter:</p>
+<ul>
+<li><strong><code>C_min</code> can be declared</strong> with <code>c_min_override</code> in <code>system_desc.json</code> (§5.4). Duration and
+  dataset rules now go by concurrency (1–32 or above), not region (§6).</li>
+<li><strong>Agentic runs</strong> need 2,400 s of steady state above concurrency 32 (§6.2), and an inline
+  accuracy score that passes at every point (§4.3).</li>
+<li><strong>Native speculative-decoding heads</strong> in an approved checkpoint are approved with it
+  (§2.9.4).</li>
+<li><strong>The model list</strong> is in §3.2, which resolves <strong>C1</strong>. <code>config.yaml</code> is part of each point
+  (§8.1).</li>
+<li><strong>Review:</strong> penalties across objections don't add up, chairs must be MLCommons members, and
+  all submissions under review share one repository (Submission Rules §2.2, §6.3, §6.10).
+  Voluntary withdrawal ends at finalization (§8.2).</li>
+<li><strong>§5.4 Example C</strong> now matches the algorithm, which resolves <strong>B14</strong>.</li>
+</ul>
+</details>
 <details class="info">
 <summary>What changed at the 2026-10-02 review</summary>
 <p>The rules moved 10 commits. What matters to a submitter:</p>
@@ -2042,12 +2062,12 @@ submitter:</p>
 <tr>
 <td><strong>A1</strong></td>
 <td>Must a submitter's <strong>organisation</strong> be an <a href="../../understand/eligibility/membership/">MLCommons member</a>, or is the individual's <abbr title="Contributor License Agreement">CLA</abbr> enough?</td>
-<td><a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#51-registration">Submission Rules §5.1</a> requires the <abbr title="Contributor License Agreement">CLA</abbr> from the individual and has you register with an organisation email, but never makes membership a precondition. <strong>Unresolved — confirm with MLCommons.</strong></td>
+<td><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#51-registration">Submission Rules §5.1</a> requires the <abbr title="Contributor License Agreement">CLA</abbr> from the individual and has you register with an organisation email, but never makes membership a precondition. <strong>Unresolved — confirm with MLCommons.</strong></td>
 </tr>
 <tr>
 <td><strong>A2</strong></td>
 <td>Is there a separate "register for the round" step?</td>
-<td>The eight-week advance registration is overridden (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#51-registration">Submission Rules §5.1</a>) and there are no fixed rounds (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#41-rolling-submission-model">§4.1</a>). Reading: a <abbr title="The MLCommons submission portal that issues API tokens">PRISM</abbr> account plus a scoped API key is the whole of registration. <strong>Confirm.</strong></td>
+<td>The eight-week advance registration is overridden (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#51-registration">Submission Rules §5.1</a>) and there are no fixed rounds (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#41-rolling-submission-model">§4.1</a>). Reading: a <abbr title="The MLCommons submission portal that issues API tokens">PRISM</abbr> account plus a scoped API key is the whole of registration. <strong>Confirm.</strong></td>
 </tr>
 <tr>
 <td><strong>A3</strong></td>
@@ -2057,7 +2077,7 @@ submitter:</p>
 <tr>
 <td><strong>A4</strong></td>
 <td>Who grants API-creation access, and how long does it take?</td>
-<td><a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#51-registration">Submission Rules §5.1</a> says an email follows account creation. No turnaround is stated. <strong>Needed</strong> for planning.</td>
+<td><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#51-registration">Submission Rules §5.1</a> says an email follows account creation. No turnaround is stated. <strong>Needed</strong> for planning.</td>
 </tr>
 </tbody>
 </table>
@@ -2077,13 +2097,13 @@ none has been resolved by guesswork.</p>
 <tr>
 <td><strong>B1</strong></td>
 <td><strong><code>system_info</code> config section</strong></td>
-<td><a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#52-how-to-submit">Submission Rules §5.2</a> tells submitters to run the benchmark "with config.yml having <code>system_info</code> section (if you want to automatically capture the system description)". <strong>No <code>system_info</code> exists anywhere in the reference client's schema</strong>, and the CLI docs state plainly that <code>system_desc.json</code> is submitter-authored and not an endpoints artifact. Either the policy anticipates unshipped work, or the sentence is stale.</td>
+<td><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#52-how-to-submit">Submission Rules §5.2</a> tells submitters to run the benchmark "with config.yml having <code>system_info</code> section (if you want to automatically capture the system description)". <strong>No <code>system_info</code> exists anywhere in the reference client's schema</strong>, and the CLI docs state plainly that <code>system_desc.json</code> is submitter-authored and not an endpoints artifact. Either the policy anticipates unshipped work, or the sentence is stale.</td>
 <td>The tooling — the reference client doesn't capture it. Write <code>system_desc.json</code> yourself or capture it with <a href="https://docs.mlcommons.org/mlperf-sysinfo/"><code>mlperf-sysinfo</code></a></td>
 </tr>
 <tr>
 <td><strong>B2</strong></td>
 <td><strong>Pareto updates</strong></td>
-<td>The technical rules still reference a post-submission update window, for example as the reason for the 10% High Concurrency margin, and link "Submission Rules §8.1 Pareto Updates". <strong>That section no longer exists</strong> — §8.1 is now <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#81-corrections"><em>Corrections</em></a>. The CLI confirms the removal: there is no <code>add-run</code>, and <code>update --run-ids</code> rejects additions.</td>
+<td>The technical rules still reference a post-submission update window, for example as the reason for the 10% High Concurrency margin, and link "Submission Rules §8.1 Pareto Updates". <strong>That section no longer exists</strong> — §8.1 is now <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#81-corrections"><em>Corrections</em></a>. The CLI confirms the removal: there is no <code>add-run</code>, and <code>update --run-ids</code> rejects additions.</td>
 <td>The Submission Rules and the CLI — points are fixed at creation</td>
 </tr>
 <tr>
@@ -2107,7 +2127,7 @@ none has been resolved by guesswork.</p>
 <tr>
 <td><strong>B8</strong></td>
 <td><strong>Which metrics gate a steady-state window</strong></td>
-<td><em>Narrowed.</em> <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#44-reporting-basis-steady-state-window">§4.4</a>'s definition table and the detector documentation now on <code>endpoints@main</code> agree: <strong><abbr title="Time Per Output Token">TPOT</abbr> at P50 and P90</strong>, with <abbr title="Time To First Token">TTFT</abbr> a diagnostic and drift warning only. But the paragraph after that table in §4.4 still says <strong><abbr title="Time To First Token">TTFT</abbr> and <abbr title="Time Per Output Token">TPOT</abbr> at P50/P90</strong>.</td>
+<td><em>Narrowed.</em> <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#44-reporting-basis-steady-state-window">§4.4</a>'s definition table and the detector documentation now on <code>endpoints@main</code> agree: <strong><abbr title="Time Per Output Token">TPOT</abbr> at P50 and P90</strong>, with <abbr title="Time To First Token">TTFT</abbr> a diagnostic and drift warning only. But the paragraph after that table in §4.4 still says <strong><abbr title="Time To First Token">TTFT</abbr> and <abbr title="Time Per Output Token">TPOT</abbr> at P50/P90</strong>.</td>
 <td><abbr title="Time Per Output Token">TPOT</abbr> at P50/P90, but confirm</td>
 </tr>
 <tr>
@@ -2119,26 +2139,32 @@ none has been resolved by guesswork.</p>
 <tr>
 <td><strong>B11</strong></td>
 <td><strong>Who needs <code>system_power.json</code></strong></td>
-<td><a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#45-performance-normalization">§4.5</a>'s scope makes power normalization mandatory for Standardized, optional for <abbr title="Research, Development and Internal">RDI</abbr> and deferred for Serviced. The same section's callout says <em>every submission</em> must include the file, and §9.1's <em>Power descriptor</em> row says Standardized. The checker requires it for every system regardless of division.</td>
+<td><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#45-performance-normalization">§4.5</a>'s scope makes power normalization mandatory for Standardized, optional for <abbr title="Research, Development and Internal">RDI</abbr> and deferred for Serviced. The same section's callout says <em>every submission</em> must include the file, and §9.1's <em>Power descriptor</em> row says Standardized. The checker requires it for every system regardless of division.</td>
 <td>Include it whatever your division</td>
-</tr>
-<tr>
-<td><strong>B13</strong></td>
-<td><strong>"One accuracy run for each of the 5 pareto regions"</strong></td>
-<td><a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#43-accuracy-metric">§4.3</a> now opens with that sentence. There are four regions plus the Offline point, and agentic benchmarks need only four accuracy results. The rest of §4.3 and §5.3 are consistent with each other: <code>N</code> = 5 non-agentic, 4 agentic.</td>
-<td>§5.3 — five or four points</td>
-</tr>
-<tr>
-<td><strong>B14</strong></td>
-<td><strong>§5.4 Example C boundaries</strong></td>
-<td>For <code>C_min</code> = 16, <code>C_max</code> = 1,024, <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#54-regions-of-interest">§5.4</a>'s worked Example C computes <code>2^6.652</code> as 100.4 and gives Medium Concurrency 27–116, High 117–1,024. <code>2^6.652</code> is 100.57, so the reference algorithm in §5.5, Appendix B and the checker's <code>regions</code> command all give Medium 27–117, High 118–1,024. A point at 117 is Medium, not High.</td>
-<td>The algorithm and the checker — 27–117</td>
 </tr>
 <tr>
 <td><strong>B16</strong></td>
 <td><strong>The <code>submission-checker</code> command isn't installed</strong></td>
 <td>The CLI's README documents a <code>submission-checker</code> command with <code>check</code> and <code>regions</code> subcommands, but <code>pyproject.toml</code> has only the <code>endpoints-submission-cli</code> entry point (removed in commit <code>08e8e2a</code>, still absent at <code>v1.1.0.0</code>). Checking is <code>endpoints-submission-cli check-submission</code>; <code>regions</code> has no installed command.</td>
 <td><code>check-submission</code> for checks, and <code>python -c "from submission_checker.cli import main; main()" regions …</code> for boundaries</td>
+</tr>
+<tr>
+<td><strong>B17</strong></td>
+<td><strong><code>value_pj</code> in <code>system_power.json</code></strong></td>
+<td><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#e1-sourced-values">E.1</a> defines a sourced value as <code>value_w</code> or <code>value_kw</code> plus <code>source_type</code> and <code>source</code>, but <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#e31-components">E.3.1</a> gives <code>scale_up_network.energy_per_bit_pj</code> as a sourced value in <code>value_pj</code>, and <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#e7-validation">E.7</a> lists <code>value_pj</code> as a key needing sourcing. E.1 never defines <code>value_pj</code> or its unit handling.</td>
+<td>This site names the key without more detail</td>
+</tr>
+<tr>
+<td><strong>B19</strong></td>
+<td><strong>Objector's silence window in objection resolution</strong></td>
+<td><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#64-objection-resolution-weeks-46">§6.4</a> gives the objecting party 2 business days to respond and says silence after 2 business days is an automatic retraction, but the list of resolved conditions in the same section still says 3 business days, and the <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#65-review-timeline-summary">§6.5</a> table says "silence = objection retracted after 3 days".</td>
+<td>This site doesn't state a silence period; check §6.4</td>
+</tr>
+<tr>
+<td><strong>B18</strong></td>
+<td><strong>Leaving the component block blank when declaring power</strong></td>
+<td><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#e62-component-sum-with-a-published-override">E.6.2</a> says that with a <code>declared_provisioned_power</code> the component block is optional and may be NULL, and shows an example. That example uses <code>"method": "declared"</code>, which <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#e31-components">E.3.1</a> doesn't list for <code>scale_up_network.method</code>; it keeps <code>model</code> and <code>energy_per_bit_pj</code>, but NULLs <code>value_w</code> and <code>source</code>, which <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#e7-validation">E.7</a> rejects; and it leaves <code>published_node_power_w</code> empty. Which fields may be NULL isn't defined.</td>
+<td>This site doesn't describe the NULL form; supply the full component block</td>
 </tr>
 </tbody>
 </table>
@@ -2183,11 +2209,6 @@ none has been resolved by guesswork.</p>
 </thead>
 <tbody>
 <tr>
-<td><strong>C1</strong></td>
-<td>The <strong>official v1.0 model list</strong> and canonical model IDs</td>
-<td><em>Partly answered.</em> The working group's 2026-09-22 overview names the suite: Llama 3.1 8B, GPT-OSS 120B and DeepSeek-R1, plus three agentic models. It's collected in <a href="../../reference/benchmarks/">Benchmarks and models</a>. The rules still defer to a list in "the reference repository", published ≥ 6 weeks before a round, and that list doesn't exist yet. The names the checker accepts are on the same page</td>
-</tr>
-<tr>
 <td><strong>C2</strong></td>
 <td><strong>Per-benchmark accuracy targets and tolerances</strong></td>
 <td>Marked <code>[WIP]</code> upstream. For the legacy benchmarks the checker applies the MLPerf Inference targets, listed in <a href="../../reference/benchmarks/#accuracy-targets">Benchmarks and models</a>, but nothing says those are the Endpoints targets. For the agentic benchmarks the client's agentic README publishes targets for all three models, and checker <code>v1.1.0.0</code> enforces them</td>
@@ -2215,27 +2236,77 @@ none has been resolved by guesswork.</p>
 <tr>
 <td><strong>C7</strong></td>
 <td><strong>The Offline point's loose ends</strong></td>
-<td><a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#57-offline-point">§5.7</a> defines the Offline point, but several things you need to run one aren't settled. <strong>Load pattern:</strong> the rules say "the benchmark-defined Offline load pattern" and name no client setting; the reference client's <code>max_throughput</code> matches the definition, unconfirmed. <strong><code>region</code> value:</strong> unspecified for a dedicated run; <code>submitters_choice</code> passes the checker. <strong>Dataset smaller than <code>C_max</code>:</strong> the Offline concurrency is the dataset size and must be ≥ <code>C_max</code>, so a large <code>C_max</code> can't satisfy both. Open upstream as <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#offline-offline-point-open-items"><code>[OFFLINE]</code> item 2</a>. <strong>Steady state:</strong> §4.4's scope excludes a dedicated Offline run, which implies <code>total</code> metrics; not stated outright. <strong>Duration:</strong> §6.2 applies unchanged, though the run ends when the queue drains. <strong>Pass boundaries:</strong> the event log doesn't mark them, so the no-mixing rule is a manual review item</td>
+<td><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#57-offline-point">§5.7</a> defines the Offline point, but several things you need to run one aren't settled. <strong>Load pattern:</strong> the rules say "the benchmark-defined Offline load pattern" and name no client setting; the reference client's <code>max_throughput</code> matches the definition, unconfirmed. <strong><code>region</code> value:</strong> unspecified for a dedicated run; <code>submitters_choice</code> passes the checker. <strong>Dataset smaller than <code>C_max</code>:</strong> the Offline concurrency is the dataset size and must be ≥ <code>C_max</code>, so a large <code>C_max</code> can't satisfy both. Open upstream as <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#offline-offline-point-open-items"><code>[OFFLINE]</code> item 2</a>. <strong>Steady state:</strong> §4.4's scope excludes a dedicated Offline run, which implies <code>total</code> metrics; not stated outright. <strong>Duration:</strong> §6.2 applies unchanged, though the run ends when the queue drains. <strong>Pass boundaries:</strong> the event log doesn't mark them, so the no-mixing rule is a manual review item</td>
 </tr>
 <tr>
 <td><strong>C8</strong></td>
 <td><strong>Which benchmarks are agentic, and which are multi-turn</strong></td>
-<td>This now decides a lot: whether you need an Offline point, how many points and accuracy runs you owe, the accuracy gate (every point vs mean-of-N), the primary chart (<code>tps_per_user</code> vs <code>e2e_avg_interactivity</code>), and whether agentic salting flags apply. <em>Partly answered:</em> the 2026-09-22 overview splits the suite into legacy and agentic benchmarks, so you can tell which are agentic, and the checker decides it from the load pattern: a frontier run with <code>agentic_inference</code> is agentic. Which benchmarks count as multi-turn for the accuracy rule still isn't stated. Ties to <strong>C1</strong></td>
+<td>This now decides a lot: whether you need an Offline point, how many points and accuracy runs you owe, the accuracy gate (every point vs mean-of-N), the primary chart (<code>tps_per_user</code> vs <code>e2e_avg_interactivity</code>), and whether agentic salting flags apply. <em>Partly answered:</em> the 2026-09-22 overview splits the suite into legacy and agentic benchmarks, so you can tell which are agentic, and the checker decides it from the load pattern: a frontier run with <code>agentic_inference</code> is agentic. Which benchmarks count as multi-turn for the accuracy rule still isn't stated</td>
 </tr>
 <tr>
 <td><strong>C9</strong></td>
 <td><strong>Super-pass size per benchmark</strong></td>
-<td>The steady-state window is measured in super-passes, one full dataset pass unless the benchmark definition says otherwise (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#44-reporting-basis-steady-state-window">§4.4</a>). No benchmark definition is published, so you cannot compute your own floor</td>
+<td>The steady-state window is measured in super-passes, one full dataset pass unless the benchmark definition says otherwise (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#44-reporting-basis-steady-state-window">§4.4</a>). No benchmark definition is published, so you cannot compute your own floor</td>
 </tr>
 <tr>
 <td><strong>C10</strong></td>
-<td><strong>Approved drafter lists</strong></td>
-<td><a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#294-speculative-decoding">§2.9.4</a> allows speculative decoding only with a drafter on the benchmark's published list. The reference repository lists approved heads for the agentic benchmarks only, in its agentic example README; there is none for the legacy benchmarks. The checker still ships an empty list, and a drafter approved now can only be used two cohorts later. Until the checker picks up a list, it rejects any point that uses speculative decoding</td>
+<td><strong>Declaring a native head</strong></td>
+<td><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#294-speculative-decoding">§2.9.4</a> allows a drafter on the <a href="https://github.com/mlcommons/endpoints-submission-cli/blob/main/src/submission_checker/data/approved_drafters.yaml">published list</a> or a native head of an approved checkpoint, and <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#91-automated-checks">§9.1</a> identifies a native head by that checkpoint's model ID and checksum. Which <code>point.yaml</code> fields record a native head isn't stated. Checker <code>v1.1.0.0</code> ships an empty list and rejects every drafter</td>
+</tr>
+<tr>
+<td><strong>C13</strong></td>
+<td><strong>What the drafter lead time counts against</strong></td>
+<td><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#294-speculative-decoding">§2.9.4</a> now counts the two-cohort lead time against the submission's <em>review eligibility date</em>, with wording that reads "two cohorts dates after", while <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#91-automated-checks">§9.1</a> still says "two cohorts before the submission's <code>target_cohort</code>". Which one applies, and whether the two are meant to agree, isn't stated. Docs keep describing the <code>target_cohort</code> check until it's settled</td>
+</tr>
+<tr>
+<td><strong>C14</strong></td>
+<td><strong>Last cohort in which a seed set can be adopted</strong></td>
+<td><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#46-seed-rotation">§4.6</a> says a set is adoptable "until 4 cohort dates have passed", but its example ends a set published in <code>2026-10-C0</code> at the <code>2026-11-C1</code> cohort date, which is fewer than four cohort dates later. It also gives the next set as published in <code>2026-11-C0</code>, while <code>seedset.yaml</code> carries set <code>A</code> for <code>2026-10-C1</code>. The docs don't state a final adoption cohort. <strong>Needed</strong></td>
 </tr>
 <tr>
 <td><strong>C12</strong></td>
 <td><strong>How long a registered run lasts</strong></td>
 <td><code>runs create</code> says a run's expiry "defaults to server policy", and the policy isn't published. It's also not stated whether a run can expire once it's part of a submission. Pin every run you intend to submit</td>
+</tr>
+<tr>
+<td><strong>C15</strong></td>
+<td><strong>Apportioning accelerators among node sets</strong></td>
+<td><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#453-normalized-metric">§4.5.3</a> gives <code>Y_s</code> per node set from <code>accelerators_used_s</code>, but states the engaged total only as <code>DP × A_replica</code> for the whole system. How the engaged accelerators are split among the node sets of a heterogeneous submission isn't stated</td>
+</tr>
+<tr>
+<td><strong>C16</strong></td>
+<td><strong>A partial <code>nodes_used</code> list</strong></td>
+<td><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#83-measurement-point-yaml">§8.3</a> has one <code>nodes_used</code> entry per node type for a heterogeneous system, and <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#91-automated-checks">§9.1</a> sets <code>Y_s = N_s</code> only for a point that doesn't declare <code>nodes_used</code>. Neither covers a list that leaves some node types out</td>
+</tr>
+<tr>
+<td><strong>C17</strong></td>
+<td><strong>What makes a power estimate "materially" wrong</strong></td>
+<td>The <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#component-template-system_powerjson">Component Template</a> requires a submitter to report a materially diverging estimate, in either direction. It gives no threshold, recipient or deadline</td>
+</tr>
+<tr>
+<td><strong>C18</strong></td>
+<td><strong>Peer review before cohort eligibility</strong></td>
+<td><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#43-submission-to-publication-alignment">§4.3</a> now requires a submission to pass automated checks <em>and peer review</em> at least 1 business day before a cohort date, but its next sentence rolls over only submissions that miss automated checks, and <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#63-peer-review-weeks-13">§6.3</a> gives peer review 21 days. What happens to a submission whose review isn't finished isn't stated</td>
+</tr>
+<tr>
+<td><strong>C19</strong></td>
+<td><strong>"Submitter-specified review" embargo</strong></td>
+<td><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#43-submission-to-publication-alignment">§4.3</a> makes the review eligibility date depend on there being no "submitter-specified review or provisional publication embargo". The first term isn't defined, nor how it relates to the <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#42-publication-cohorts-and-embargo">§4.2</a> embargo, nor whether the date is the embargo's end or the first date all conditions hold</td>
+</tr>
+<tr>
+<td><strong>C20</strong></td>
+<td><strong>Review eligibility date under provisional publication</strong></td>
+<td><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#623-provisional-publication">§6.2.3</a> defines it as the date of provisional publication, while <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#43-submission-to-publication-alignment">§4.3</a> defines it as the first date the checks pass, the submission is in the repository and no embargo applies. Without an embargo these can differ, and which governs isn't stated</td>
+</tr>
+<tr>
+<td><strong>C21</strong></td>
+<td><strong>"Delayed by 1 cohort date after finalization"</strong></td>
+<td>The <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#63-peer-review-weeks-13">§6.3</a> non-response penalties no longer say what the delay is counted from, or whether it is measured from finalization or from the next eligible cohort date</td>
+</tr>
+<tr>
+<td><strong>C22</strong></td>
+<td><strong>Counting the <abbr title="Research, Development and Internal">RDI</abbr> cooling-off</strong></td>
+<td><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#rdi-cooling-off-period">§7.4's cooling-off</a> is "at least two cohort dates after the first publication as <abbr title="Research, Development and Internal">RDI</abbr>". Whether a first publication on a cohort date counts as the first of the two isn't stated</td>
 </tr>
 </tbody>
 </table>
@@ -2253,27 +2324,27 @@ current policy where stated, but are the most likely to move.</p>
 <tbody>
 <tr>
 <td><strong>Run requirements</strong></td>
-<td>All of <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#6-run-requirements-per-measurement-point">§6</a> is pending ratification: minimum durations, query counts, dataset-subset rules and the warmup model. See <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#run-req-run-requirements-ratification"><code>[RUN-REQ]</code></a></td>
+<td>All of <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#6-run-requirements-per-measurement-point">§6</a> is pending ratification: minimum durations, query counts, dataset-subset rules and the warmup model. See <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#run-req-run-requirements-ratification"><code>[RUN-REQ]</code></a></td>
 </tr>
 <tr>
 <td><strong>Offline point</strong></td>
-<td><a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#57-offline-point">§5.7</a> is new for v1.0 and marked pending ratification. Agentic Offline is deferred to a later version. See <strong>C7</strong> for the details that aren't settled</td>
+<td><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#57-offline-point">§5.7</a> is new for v1.0 and marked pending ratification. Agentic Offline is deferred to a later version. See <strong>C7</strong> for the details that aren't settled</td>
 </tr>
 <tr>
 <td><strong>Accuracy targets</strong></td>
-<td>Per-benchmark tolerance values are <code>[WIP]</code> (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#298-accuracy-gate">§2.9.8</a>)</td>
+<td>Per-benchmark tolerance values are <code>[WIP]</code> (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#298-accuracy-gate">§2.9.8</a>)</td>
 </tr>
 <tr>
 <td><strong>Steady-state reporting</strong></td>
-<td><a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#44-reporting-basis-steady-state-window">§4.4</a> carries its own pending-ratification note: whether the 4 super-pass floor rises, and whether a run where no steady state is found is declared <strong>invalid</strong> rather than merely reported-with-flags. The second matters most — it decides whether a run that fails detection is a failed run or just a weaker number. See also <strong>B8</strong> and <strong>B9</strong></td>
+<td><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#44-reporting-basis-steady-state-window">§4.4</a> carries its own pending-ratification note: whether the 4 super-pass floor rises, and whether a run where no steady state is found is declared <strong>invalid</strong> rather than merely reported-with-flags. The second matters most — it decides whether a run that fails detection is a failed run or just a weaker number. See also <strong>B8</strong> and <strong>B9</strong></td>
 </tr>
 <tr>
 <td><strong>Reproducibility margins</strong></td>
-<td>The 10% and 5% throughput margins are proposals requiring ratification (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#reproducibility-expectations">Submission Rules §6.6</a>)</td>
+<td>The 10% and 5% throughput margins are proposals requiring ratification (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#reproducibility-expectations">Submission Rules §6.6</a>)</td>
 </tr>
 <tr>
 <td><strong>Latency comparison method</strong></td>
-<td><strong>None exists.</strong> Until one is ratified, latency alone can't carry a reproducibility objection or block a Preview-to-Available transition. See <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#reproducibility-expectations">Submission Rules §6.6</a> and <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#733-performance-continuity-requirement">§7.3.3</a></td>
+<td><strong>None exists.</strong> Until one is ratified, latency alone can't carry a reproducibility objection or block a Preview-to-Available transition. See <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#reproducibility-expectations">Submission Rules §6.6</a> and <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#733-performance-continuity-requirement">§7.3.3</a></td>
 </tr>
 </tbody>
 </table>
@@ -2288,11 +2359,11 @@ current policy where stated, but are the most likely to move.</p>
 <tbody>
 <tr>
 <td><strong>Power normalization</strong> <code>[POWER-NORM]</code></td>
-<td>All of <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#45-performance-normalization">§4.5</a> is pending ratification, including tier definitions, overhead fractions and the name of <code>system_tps_per_kw</code>. v1.0 uses Tier 3, the component sum. See <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#power-norm-power-normalization-open-items"><code>[POWER-NORM]</code></a></td>
+<td>All of <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#45-performance-normalization">§4.5</a> is pending ratification, including tier definitions, overhead fractions and the name of <code>system_tps_per_kw</code>. v1.0 uses Tier 3, the component sum. Two <code>system_power.json</code> schema choices are also open: per-value sourcing and the node-set array (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#e7-validation">E.7</a>). See <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#power-norm-power-normalization-open-items"><code>[POWER-NORM]</code></a></td>
 </tr>
 <tr>
 <td><strong>Serviced normalization</strong></td>
-<td>Deferred to a later version, and whether <abbr title="Research, Development and Internal">RDI</abbr> stays optional is to be confirmed (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#power-norm-power-normalization-open-items"><code>[POWER-NORM]</code></a>)</td>
+<td>Deferred to a later version, and whether <abbr title="Research, Development and Internal">RDI</abbr> stays optional is to be confirmed (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#power-norm-power-normalization-open-items"><code>[POWER-NORM]</code></a>)</td>
 </tr>
 </tbody>
 </table>
@@ -2307,15 +2378,15 @@ current policy where stated, but are the most likely to move.</p>
 <tbody>
 <tr>
 <td><strong>Custom SKUs</strong> <code>[CUSTOM-SKU]</code></td>
-<td>How to classify hardware in production at hyperscalers but not orderable by any comparable customer. <strong>Defaults to <abbr title="Research, Development and Internal">RDI</abbr> until decided.</strong> Options are in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#open-question-hardware-not-orderable-by-any-comparable-customer">Submission Rules §7.5</a></td>
+<td>How to classify hardware in production at hyperscalers but not orderable by any comparable customer. <strong>Defaults to <abbr title="Research, Development and Internal">RDI</abbr> until decided.</strong> Options are in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#open-question-hardware-not-orderable-by-any-comparable-customer">Submission Rules §7.5</a></td>
 </tr>
 <tr>
 <td><strong><abbr title="Research, Development and Internal">RDI</abbr> comparability</strong> <code>[RDI-COMP]</code></td>
-<td>Whether <abbr title="Research, Development and Internal">RDI</abbr> results should share charts with Available and Preview, as they do now (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#rdi-comp-comparability-across-publication-status-categories"><code>[RDI-COMP]</code></a>)</td>
+<td>Whether <abbr title="Research, Development and Internal">RDI</abbr> results should share charts with Available and Preview, as they do now (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#rdi-comp-comparability-across-publication-status-categories"><code>[RDI-COMP]</code></a>)</td>
 </tr>
 <tr>
 <td><strong>Serviced requirements</strong> <code>[SERVICED-REQ]</code></td>
-<td>Required versus optional fields for APIs, API versioning, and a possible permanent reproducibility disclaimer (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#serviced-req-serviced-division-requirements"><code>[SERVICED-REQ]</code></a>)</td>
+<td>Required versus optional fields for APIs, API versioning, and a possible permanent reproducibility disclaimer (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#serviced-req-serviced-division-requirements"><code>[SERVICED-REQ]</code></a>)</td>
 </tr>
 </tbody>
 </table>
@@ -2329,28 +2400,28 @@ current policy where stated, but are the most likely to move.</p>
 </thead>
 <tbody>
 <tr>
-<td><strong>Checkpoint residency</strong> <code>[CKPT-RESIDENCY]</code></td>
-<td>Whether a component the canonical checkpoint ships, such as an MTP or EAGLE head, must be <strong>resident in accelerator memory</strong> during measurement or only present in the artifact. Leaving it unloaded frees memory for <abbr title="Key/Value">KV</abbr> cache, an advantage that's currently undisclosed. See <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#ckpt-residency-checkpoint-component-residency"><code>[CKPT-RESIDENCY]</code></a></td>
+<td><strong>Speculative decoding</strong></td>
+<td><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#294-speculative-decoding">§2.9.4</a>'s approved-list model is new for v1.0 and marked tentative — see <strong>C10</strong></td>
 </tr>
 <tr>
-<td><strong>Speculative decoding</strong></td>
-<td><a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#294-speculative-decoding">§2.9.4</a>'s approved-list model is new for v1.0 and marked tentative. Approved heads exist for the agentic benchmarks only — see <strong>C10</strong></td>
+<td><strong>Loaded component set</strong></td>
+<td>Not loading every checkpoint component to the accelerator is allowed (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#293-model-weight-rules">§2.9.3</a>). Whether the loaded set must be disclosed per point for components other than speculative-decoding heads is left to the working group (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#ckpt-residency-checkpoint-component-residency"><code>[CKPT-RESIDENCY]</code></a>)</td>
 </tr>
 <tr>
 <td><strong>Token counting</strong> <code>[TOK-COUNT]</code></td>
-<td>Whether stakeholders accept that published token counts may differ from what serving stacks report (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#tok-count-reference-chat-template-tokenization-and-reported-throughput"><code>[TOK-COUNT]</code></a>)</td>
+<td>Whether stakeholders accept that published token counts may differ from what serving stacks report (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#tok-count-reference-chat-template-tokenization-and-reported-throughput"><code>[TOK-COUNT]</code></a>)</td>
 </tr>
 <tr>
 <td><strong>Multi-token stream interval</strong></td>
-<td>Now allowed: the server may group up to N generated tokens into one chunk, as <code>stream_interval</code> does in TensorRT-LLM, SGLang and vLLM (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#297-post-processing-equivalence">§2.9.7</a>, <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#299-qa-model-equivalence-clarifications">§2.9.9 Q2</a>). Holding tokens past the interval, or sending the whole response as one message, isn't. A larger interval delays <abbr title="Time To First Token">TTFT</abbr> and no metric adjustment is made. Appendix A still lists it as proposed</td>
+<td>Now allowed: the server may group up to N generated tokens into one chunk, as <code>stream_interval</code> does in TensorRT-LLM, SGLang and vLLM (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#297-post-processing-equivalence">§2.9.7</a>, <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#299-qa-model-equivalence-clarifications">§2.9.9 Q2</a>). Holding tokens past the interval, or sending the whole response as one message, isn't. A larger interval delays <abbr title="Time To First Token">TTFT</abbr> and no metric adjustment is made. Appendix A still lists it as proposed</td>
 </tr>
 <tr>
 <td><strong>Standardized <abbr title="Client over Network">CoN</abbr> techniques</strong></td>
-<td>The list of allowed techniques for Standardized <abbr title="Client over Network">CoN</abbr> is still being written (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#222-client-over-network-con--additional-rules">§2.2.2</a>)</td>
+<td>The list of allowed techniques for Standardized <abbr title="Client over Network">CoN</abbr> is still being written (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#222-client-over-network-con--additional-rules">§2.2.2</a>)</td>
 </tr>
 <tr>
 <td><strong>Partial Unicode at chunk boundaries</strong></td>
-<td>An open edge case in the tokenizer rules (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#28-tokenizer-rules">§2.8</a>)</td>
+<td>An open edge case in the tokenizer rules (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#28-tokenizer-rules">§2.8</a>)</td>
 </tr>
 </tbody>
 </table>
@@ -2365,31 +2436,23 @@ current policy where stated, but are the most likely to move.</p>
 <tbody>
 <tr>
 <td><strong>Embargo versus cohort cadence</strong></td>
-<td>Embargoed results publish on the embargo date, not a cohort date, which under provisional publication can make a result public <em>earlier</em> than its next cohort. The working group is deciding whether that's intended (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#45-review-cycle-example">Submission Rules §4.5</a>)</td>
-</tr>
-<tr>
-<td><strong>Late objections</strong></td>
-<td>The whole late-objection policy is <code>[WIP — pending WG approval]</code> (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#66-late-objections-post-week-6">Submission Rules §6.6</a>)</td>
+<td>Embargoed results publish on the embargo date, not a cohort date, which under provisional publication can make a result public <em>earlier</em> than its next cohort. The working group is deciding whether that's intended (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#45-review-cycle-example">Submission Rules §4.5</a>)</td>
 </tr>
 <tr>
 <td><strong>Dispute resolution</strong></td>
-<td>The panel, deadlines and 8-week backstop need ratification, and quorum, confidentiality and a standing roster of neutrals are unspecified (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#95-status">Submission Rules §9.5</a>)</td>
+<td>The panel, deadlines and 8-week backstop need ratification, and quorum, confidentiality and a standing roster of neutrals are unspecified (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#95-status">Submission Rules §9.5</a>)</td>
 </tr>
 <tr>
 <td><strong>Audit votes</strong></td>
-<td>The <strong>quorum</strong> is undecided; the rest of the vote is settled (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#102-audit-votes">Submission Rules §10.2</a>)</td>
+<td>The <strong>quorum</strong> is undecided; the rest of the vote is settled (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#102-audit-votes">Submission Rules §10.2</a>)</td>
 </tr>
 <tr>
 <td><strong>Random audit selection</strong></td>
-<td>The reroll-on-repeat proposal needs working-group approval (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#103-random-audit-selection">Submission Rules §10.3</a>). The selection text is adapted from MLPerf Inference and still talks about rounds and a withdrawal deadline, which don't map cleanly onto rolling cohorts</td>
+<td>The reroll-on-repeat proposal needs working-group approval (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#103-random-audit-selection">Submission Rules §10.3</a>). The selection text is adapted from MLPerf Inference and still talks about rounds and a withdrawal deadline, which don't map cleanly onto rolling cohorts</td>
 </tr>
 <tr>
 <td><strong>Audit nominations</strong></td>
-<td>§10.1 now fixes one voted audit per quarter, but the note under <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#104-audit-nomination-on-reproducibility-grounds">§10.4</a> still asks whether nominated audits count against the capacity "or are additional to chair-selected audits", and whether a nominating member bears any audit cost</td>
-</tr>
-<tr>
-<td><strong>Review chair membership</strong></td>
-<td>Whether the review chair must be an MLCommons member (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#22-review-chair">Submission Rules §2.2</a>)</td>
+<td>§10.1 now fixes one voted audit per quarter, but the note under <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#104-audit-nomination-on-reproducibility-grounds">§10.4</a> still asks whether nominated audits count against the capacity "or are additional to chair-selected audits", and whether a nominating member bears any audit cost</td>
 </tr>
 </tbody>
 </table>

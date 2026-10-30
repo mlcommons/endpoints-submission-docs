@@ -1893,7 +1893,7 @@
 <li><strong>Division</strong> — how much you can change the model, and how much you have to disclose.</li>
 <li><strong>Scenario</strong> — who runs the client that sends load to your endpoint.</li>
 </ul>
-<p>A submission declares exactly <strong>one</strong> division (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#2-divisions-and-deployment-scenarios">§2 of the rules</a>).</p>
+<p>A submission declares exactly <strong>one</strong> division (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#2-divisions-and-deployment-scenarios">§2 of the rules</a>).</p>
 <div class="admonition note">
 <p class="admonition-title">Division is not the same as publication status</p>
 <p>Division (Standardized / Serviced / <abbr title="Research, Development and Internal">RDI</abbr>) is about model equivalence and disclosure. Publication
@@ -1907,7 +1907,7 @@ today. They are <strong>independent</strong>, except that the <abbr title="Resea
     A --&gt;|No| B{Can you meet strict model&lt;br/&gt;equivalence and full&lt;br/&gt;software disclosure?}
     B --&gt;|Yes| T[Standardized&lt;br/&gt;CoP or CoN]
     B --&gt;|No — experimental,&lt;br/&gt;pre-release or internal| R[RDI]</code></pre>
-<p>The division summary from <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#25-division-summary">§2.5</a>, with power and naming added:</p>
+<p>The division summary from <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#25-division-summary">§2.5</a>, with power and naming added:</p>
 <table>
 <thead>
 <tr>
@@ -1976,7 +1976,7 @@ today. They are <strong>independent</strong>, except that the <abbr title="Resea
 </table>
 <h3 id="standardized">Standardized<a class="headerlink" href="#standardized" title="Permanent link">&para;</a></h3>
 <p>The main division, equivalent to <em>Closed</em> in MLPerf Inference: strict model equivalence and full
-disclosure (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#22-standardized-division">§2.2</a>). Optimisation rules are a <strong>disallowed list</strong>, so anything not banned
+disclosure (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#22-standardized-division">§2.2</a>). Optimisation rules are a <strong>disallowed list</strong>, so anything not banned
 is allowed. Read <a href="../../rules/model-equivalence/">Model equivalence</a> in full before you start tuning.
 Your serving stack has to meet the <strong>Available</strong> definition but doesn't have to be open source.</p>
 <p>Standardized results are also normalised by provisioned power, in both <abbr title="Client on Prem">CoP</abbr> and <abbr title="Client over Network">CoN</abbr>. That means
@@ -1986,24 +1986,24 @@ gathering public power ratings for your CPUs, accelerators and switches before y
 <p>For benchmarking commercial Gen AI APIs that anyone can buy; there's no MLPerf Inference equivalent.
 The requirements are about the <em>service</em>, not the hardware: general access, disclosure of model,
 URL, pricing and rate limits, reproducibility over time, and audit and accuracy tests. You may
-modify the model with disclosure, but response caching is not allowed (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#231-rules">§2.3.1</a>).</p>
+modify the model with disclosure, but response caching is not allowed (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#231-rules">§2.3.1</a>).</p>
 <div class="admonition danger">
 <p class="admonition-title">The endpoint must be the one your paying customers use</p>
 <p>No capacity-reserved, dedicated or otherwise privileged endpoint. A submission found to have
 used one is subject to withdrawal <strong>regardless of when it is discovered</strong>, and your terms of
-service must permit third-party benchmarking (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#725-division-specific-available-requirements">Submission Rules §7.2.5</a>).</p>
+service must permit third-party benchmarking (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#725-division-specific-available-requirements">Submission Rules §7.2.5</a>).</p>
 </div>
 <h3 id="rdi-research-development-and-internal"><abbr title="Research, Development and Internal">RDI</abbr> (Research, Development and Internal)<a class="headerlink" href="#rdi-research-development-and-internal" title="Permanent link">&para;</a></h3>
 <p>The role <em>Open</em> plays in MLPerf Inference: experimental, pre-release or internal systems, with no
 audit, compliance tests or code visibility. You still use the standard datasets, metrics and base
-model, and report achieved accuracy (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#241-rules">§2.4.1</a>).</p>
+model, and report achieved accuracy (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#241-rules">§2.4.1</a>).</p>
 <div class="admonition warning">
 <p class="admonition-title"><abbr title="Research, Development and Internal">RDI</abbr> has a cooling-off period</p>
 <p>An <abbr title="Research, Development and Internal">RDI</abbr> component can't later be submitted as Available or Preview for at least <strong>221 days</strong>. See
 <a href="../../rules/publication-status/">Publication status</a>.</p>
 </div>
 <h2 id="choosing-a-scenario">Choosing a scenario<a class="headerlink" href="#choosing-a-scenario" title="Permanent link">&para;</a></h2>
-<p>From <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#213-scenario-summary">§2.1.3</a>:</p>
+<p>From <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#213-scenario-summary">§2.1.3</a>:</p>
 <table>
 <thead>
 <tr>
@@ -2041,9 +2041,9 @@ model, and report achieved accuracy (<a href="https://github.com/mlcommons/endpo
 </tbody>
 </table>
 <p><strong>Client on Prem.</strong> You run the reference client (<code>inference_endpoint</code>) unmodified, configured only
-through its YAML, and document your network topology (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#211-client-on-prem-cop">§2.1.1</a>).</p>
+through its YAML, and document your network topology (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#211-client-on-prem-cop">§2.1.1</a>).</p>
 <p><strong>Client over Network.</strong> MLCommons runs the client against your public endpoint, and you provide
-containers and code to replicate the server elsewhere (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#212-client-over-network-con">§2.1.2</a>).</p>
+containers and code to replicate the server elsewhere (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#212-client-over-network-con">§2.1.2</a>).</p>
 <div class="admonition warning">
 <p class="admonition-title"><abbr title="Client over Network">CoN</abbr> logistics are not published yet</p>
 <p>The specific MLCommons client locations, network requirements and scheduling procedure for <abbr title="Client over Network">CoN</abbr>

@@ -1974,14 +1974,14 @@
 </div>
 <h2 id="what-youll-do">What you'll do<a class="headerlink" href="#what-youll-do" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Run each point at <strong>fixed concurrency</strong> for its region's minimum duration</li>
+<li>Run each point at <strong>fixed concurrency</strong> for its minimum duration</li>
 <li>Run the dedicated <strong>Offline</strong> point, if you chose one in step 3</li>
 <li>Run accuracy validations at the four mandatory region points and the Offline point</li>
 <li>Keep every run folder</li>
 </ul>
 <p>This is the expensive step. Everything up to now took minutes. This takes days.</p>
 <h2 id="the-binding-run-constraints">The binding run constraints<a class="headerlink" href="#the-binding-run-constraints" title="Permanent link">&para;</a></h2>
-<p>The run requirements are in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#6-run-requirements-per-measurement-point">§6 of the rules</a>, and that's where the values are.</p>
+<p>The run requirements are in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#6-run-requirements-per-measurement-point">§6 of the rules</a>, and that's where the values are.</p>
 <table>
 <thead>
 <tr>
@@ -1993,38 +1993,38 @@
 <tbody>
 <tr>
 <td>Load pattern</td>
-<td><a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#61-load-pattern">§6.1</a></td>
+<td><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#61-load-pattern">§6.1</a></td>
 <td><code>settings.load_pattern.type</code>: <code>concurrency</code> for every point, <code>max_throughput</code> for a dedicated Offline run (<a href="#run-the-offline-point">below</a>)</td>
 </tr>
 <tr>
 <td>Minimum duration</td>
-<td><a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#62-minimum-run-duration">§6.2</a></td>
+<td><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#62-minimum-run-duration">§6.2</a></td>
 <td>Run length. It's measured over the steady-state window's issue time, not wall clock</td>
 </tr>
 <tr>
 <td>Minimum completed queries</td>
-<td><a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#64-minimum-completed-queries">§6.4</a></td>
+<td><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#64-minimum-completed-queries">§6.4</a></td>
 <td>Sample count: whole passes over the dataset</td>
 </tr>
 <tr>
 <td>Warmup</td>
-<td><a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#63-warmup-period">§6.3</a></td>
+<td><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#63-warmup-period">§6.3</a></td>
 <td>Your warmup procedure, declared in <code>point.yaml</code></td>
 </tr>
 <tr>
 <td>Sampling and streaming</td>
-<td><a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#65-dataset-considerations">§6.5</a></td>
+<td><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#65-dataset-considerations">§6.5</a></td>
 <td>Streaming responses on every fixed-concurrency point; a dedicated Offline run is exempt. The rules allow either value of <code>stream_all_chunks</code>, but keep it <code>true</code>, because checker <code>v1.1.0.0</code> still requires it. The rule also fixes the sampling order for performance and accuracy runs</td>
 </tr>
 <tr>
 <td>Consistency across points</td>
-<td><a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#91-automated-checks">§9.1</a></td>
+<td><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#91-automated-checks">§9.1</a></td>
 <td>Lock the model, endpoint config, software stack and seed set before the first point</td>
 </tr>
 <tr>
 <td>Speculative decoding</td>
-<td><a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#294-speculative-decoding">§2.9.4</a></td>
-<td>Needs a drafter from the benchmark's approved list. Heads are approved for the agentic benchmarks only, and the checker's bundled list is still empty, so <strong>leave it off</strong> for now</td>
+<td><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#294-speculative-decoding">§2.9.4</a></td>
+<td>Needs a drafter on the benchmark's <a href="https://github.com/mlcommons/endpoints-submission-cli/blob/main/src/submission_checker/data/approved_drafters.yaml">approved list</a>, or a native head shipped in an approved checkpoint. Checker <code>v1.1.0.0</code> ships an empty list and rejects every drafter, so use a later release</td>
 </tr>
 </tbody>
 </table>
@@ -2047,13 +2047,13 @@ is done.</p>
 <p>Your submission binds to exactly <strong>one seed set</strong> when it first appears in a
 <a href="../../understand/how-submission-works/#rolling-submission-and-cohorts">cohort</a>, and every point must
 record that same set. Seed rotation never forces you to re-run. The binding and adoption window are
-in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#46-seed-rotation">Submission Rules §4.6</a>.</p>
+in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#46-seed-rotation">Submission Rules §4.6</a>.</p>
 <p>The seeds also drive the per-query <strong>salt</strong>, which is what makes cross-query <abbr title="Key/Value">KV</abbr>-cache reuse legal.
-Accuracy runs use the <strong>un-salted</strong> dataset. See <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#2951-salting-mechanism">§2.9.5.1</a>.</p>
+Accuracy runs use the <strong>un-salted</strong> dataset. See <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#2951-salting-mechanism">§2.9.5.1</a>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warmup must not use performance-dataset samples</p>
 <p>Warmup can't use performance-dataset samples in any form; the accuracy dataset is fine
-(<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#631-prohibited-warmup-data">§6.3.1</a>). If your client does use the performance dataset during warmup,
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#631-prohibited-warmup-data">§6.3.1</a>). If your client does use the performance dataset during warmup,
 <strong>salting must be enabled</strong>, and the salting flag is <strong>not on by default</strong>.</p>
 </div>
 <div class="admonition success">
@@ -2065,7 +2065,8 @@ real.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">seed_set</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A</span>
 <span class="nt">target_cohort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2026-10-C1</span>
 </code></pre></div>
-<p>Set <code>A</code> can be adopted by submissions targeting <code>2026-10-C1</code> through the three cohorts after it.
+<p>How long set <code>A</code> stays adoptable is set by <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#46-seed-rotation">§4.6</a>; its current wording is unclear
+about the last cohort (tracked as <strong>C14</strong> in <a href="../../help/open-questions/">Open questions</a>).
 Checkers before <code>v1.0.1.0</code> don't test adoption at all, so upgrade rather than rely on an older
 one.</p>
 </div>
@@ -2107,7 +2108,7 @@ writes its own run folder.</p>
 result. An elected point is run exactly like the others in step 1; you only declare it differently
 in <a href="../author-disclosures/">step 5</a>.</p>
 <p>A dedicated Offline run gives the system the whole performance dataset at once instead of holding a
-target concurrency (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#571-definition">§5.7.1</a>). The reference client's pattern for that is
+target concurrency (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#571-definition">§5.7.1</a>). The reference client's pattern for that is
 <strong><code>max_throughput</code></strong>, which issues every query at t=0.</p>
 <div class="admonition question">
 <p class="admonition-title">Confirm the pattern name</p>
@@ -2123,32 +2124,41 @@ the rules exempt a dedicated Offline run from the streaming requirement, since i
 <code>system_tps</code>. Keep <code>stream_all_chunks: true</code> anyway, because checker <code>v1.1.0.0</code> still checks it
 at every point.</p>
 </div>
-<p>Everything else in the constraints table still applies (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#573-presentation">§5.7.3</a>). What's different
+<p>Everything else in the constraints table still applies (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#573-presentation">§5.7.3</a>). What's different
 about Offline, including the <abbr title="Time To First Token">TTFT</abbr> exemption and the limit on reordering, is in
-<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#571-definition">§5.7.1</a>. In practice:</p>
+<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#571-definition">§5.7.1</a>. In practice:</p>
 <ul>
 <li><strong>Size it for duration.</strong> An Offline run ends when the queue drains, not on a clock, but the
   minimum run duration still applies. Issue enough passes over the dataset that it lasts at least
   1,200 seconds.</li>
 <li><strong>Don't let passes mix.</strong> Reordering has to stay inside one pass over the dataset, and reviewers
   look for it: batches full of repeated copies of the same sample are the giveaway.</li>
-<li><strong>Check it against your <code>C_max</code> point</strong> (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#572-relationship-to-maximum-supported-concurrency">§5.7.2</a>) as soon as both have run, while
+<li><strong>Check it against your <code>C_max</code> point</strong> (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#572-relationship-to-maximum-supported-concurrency">§5.7.2</a>) as soon as both have run, while
   you can still re-run cheaply.</li>
 </ul>
 <h3 id="3-run-the-accuracy-validations">3. Run the accuracy validations<a class="headerlink" href="#3-run-the-accuracy-validations" title="Permanent link">&para;</a></h3>
 <p>You need accuracy results at the four mandatory region points — Ultra Low, Low, Medium and High
 Concurrency — and at the Offline point: five runs, or four for an agentic benchmark. If you elected
 your <code>C_max</code> point, its accuracy run counts for both it and Offline.</p>
-<p>How each run has to be done is in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#43-accuracy-metric">§4.3 of the rules</a>, and it differs between single-turn
+<p>With <code>c_min_override</code>, the Ultra Low run can be at any point you designate in 1–<code>C_min</code>
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#43-accuracy-metric">§4.3</a>).</p>
+<p>How each run has to be done is in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#43-accuracy-metric">§4.3 of the rules</a>, and it differs between single-turn
 and multi-turn benchmarks. For a <strong>single-turn</strong> benchmark the constraint that catches people is
 ordering: each accuracy run goes <strong>immediately after</strong> its point's performance run, so don't batch
 them up at the end.</p>
 <p>The simplest way to get the ordering right is <code>--mode both</code> on each of those points' configs, so one
 invocation writes the performance run and then the accuracy run into the same report directory, with
 <code>accuracy/accuracy_results.json</code> alongside <code>performance/result_summary.json</code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Agentic: every point also needs an inline score</p>
+<p>Each agentic performance run, submitter's-choice points included, is scored inline, and every
+point must pass on its own. Keep that score in the point's <code>accuracy_results.json</code> (the
+<code>dataset_type: performance</code> entry); at the four mandatory points the same file also holds the
+SWE-bench result (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#81-directory-structure">§8.1</a>).</p>
+</div>
 <div class="admonition danger">
 <p class="admonition-title">Accuracy has no tolerance</p>
-<p>Throughput results get reproducibility margins. Accuracy doesn't (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#reproducibility-expectations">Submission Rules
+<p>Throughput results get reproducibility margins. Accuracy doesn't (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#reproducibility-expectations">Submission Rules
 §6.6</a>). Miss the quality target and the submission is
 rejected.</p>
 </div>
@@ -2158,7 +2168,7 @@ layout</a>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warmup logs must be retained</p>
 <p>Warmup requests don't count toward any metric, but their logs must be <strong>kept for reviewers</strong>
-(<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#632-discard-policy">§6.3.2</a>).</p>
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#632-discard-policy">§6.3.2</a>).</p>
 </div>
 <h2 id="next">Next<a class="headerlink" href="#next" title="Permanent link">&para;</a></h2>
 <p>→ <a href="../author-disclosures/">5. Author the disclosure files</a></p>

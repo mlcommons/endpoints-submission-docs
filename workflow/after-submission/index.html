@@ -1995,33 +1995,35 @@ reviewers than by failing a technical check at Week 0.</p>
 </table>
 <p><a href="../../assets/review-cycle.svg"><img alt="MLPerf Endpoints submission and review cycle, tracing four example submissions through each
 publication mode" src="../../assets/review-cycle.svg" /></a></p>
-<p><em>Four example submissions, one per publication mode, from <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#45-review-cycle-example">§4.5 of the Submission
+<p><em>Four example submissions, one per publication mode, from <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#45-review-cycle-example">§4.5 of the Submission
 Rules</a>. Select the image to open it full size.</em></p>
-<p>Timelines anchor to the cohort your submission first appears in, not the day you uploaded. The full
-schedule is in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#65-review-timeline-summary">§6.5 of the Submission Rules</a>, and the dispute deadlines in
-<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#92-escalation-path">§9.2</a>.</p>
+<p>Timelines anchor to your submission's review eligibility date, not the day you uploaded
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#43-submission-to-publication-alignment">§4.3</a>). The full
+schedule is in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#65-review-timeline-summary">§6.5 of the Submission Rules</a>, and the dispute deadlines in
+<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#92-escalation-path">§9.2</a>.</p>
 <h2 id="the-response-clock">The response clock<a class="headerlink" href="#the-response-clock" title="Permanent link">&para;</a></h2>
 <div class="admonition danger">
 <p class="admonition-title">Silence withdraws your submission</p>
 <p>Penalties start automatically once an objection is filed and don't reverse if you reply late:
-finalization slips one cohort after 3 business days without a response, two after 6, and the
+finalization slips one cohort date after 3 business days without a response, two after 6, and the
 submission is <strong>withdrawn</strong> after 10. The schedule, and how business days are counted, is in
-<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#63-peer-review-weeks-13">Submission Rules §6.3</a>.</p>
+<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#63-peer-review-weeks-13">Submission Rules §6.3</a>.</p>
 </div>
-<p>A reply only counts if it either acknowledges the issue with a schedule for resolution or contests
-it with evidence (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#63-peer-review-weeks-13">§6.3</a>). A holding reply with no schedule and no argument is not a
-response. What the objector owes you in return is in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#64-objection-resolution-weeks-46">§6.4</a>.</p>
+<p>A reply only counts if it either acknowledges the issue with a reasonable schedule for resolution or
+contests it with evidence (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#63-peer-review-weeks-13">§6.3</a>). A holding reply with no schedule and no argument is
+not a response. If you need longer than you said, post an updated schedule; it can't run past the
+objection resolution window. What the objector owes you in return is in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#64-objection-resolution-weeks-46">§6.4</a>.</p>
 <h2 id="what-reviewers-are-looking-at">What reviewers are looking at<a class="headerlink" href="#what-reviewers-are-looking-at" title="Permanent link">&para;</a></h2>
-<p>The minimum scope of a review is in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#scope-of-review">Submission Rules §2.6</a>. Human reviewers
-concentrate on what automation can't check, listed in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#92-manual-review-focus-areas">§9.2 of the rules</a>: frontier shape,
+<p>The minimum scope of a review is in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#scope-of-review">Submission Rules §2.6</a>. Human reviewers
+concentrate on what automation can't check, listed in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#92-manual-review-focus-areas">§9.2 of the rules</a>: frontier shape,
 suspicious metric distributions, <abbr title="Time To First Token">TTFT</abbr> and token-count gaming, warmup data, Offline pass boundaries,
 and whether your system description matches what ran.</p>
 <h2 id="objection-types-and-what-they-cost-you">Objection types and what they cost you<a class="headerlink" href="#objection-types-and-what-they-cost-you" title="Permanent link">&para;</a></h2>
-<p>Every objection has a type, and the type sets its severity (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#68-types-of-objections">Submission Rules §6.8</a>).
+<p>Every objection has a type, and the type sets its severity (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#68-types-of-objections">Submission Rules §6.8</a>).
 Division and availability objections usually end in <strong>reclassification</strong> rather than withdrawal, and
 cosmetic ones don't block finalization.</p>
 <p>A reproducibility objection has to show a deviation beyond the throughput margins in
-<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#reproducibility-expectations">Reproducibility Expectations</a>: 10% for an independent re-run,
+<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#reproducibility-expectations">Reproducibility Expectations</a>: 10% for an independent re-run,
 5% on the exact same system.</p>
 <div class="admonition warning">
 <p class="admonition-title">Latency cannot carry an objection on its own</p>
@@ -2031,9 +2033,11 @@ group ratifies a method, a reproducibility objection can't rest on latency alone
 <p><strong>Accuracy always has to pass.</strong> No margin, at any stage.</p>
 <h2 id="what-you-may-and-may-not-change">What you may and may not change<a class="headerlink" href="#what-you-may-and-may-not-change" title="Permanent link">&para;</a></h2>
 <p>During peer review you can update run and submission metadata only when the review committee asks
-(<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#updating-submissions-during-peer-review">Updating submissions during peer review</a>).
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#updating-submissions-during-peer-review">Updating submissions during peer review</a>).
 Non-result content such as documentation, system description metadata and configs that don't match
-the run can be corrected; results can't (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#81-corrections">Submission Rules §8.1</a>).</p>
+the run can be corrected; results can't (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#81-corrections">Submission Rules §8.1</a>). Neither can
+<code>c_min_override</code>: adding, removing or changing it once peer review starts means a new submission
+(same section).</p>
 <div class="admonition danger">
 <p class="admonition-title">Results may not be changed during review</p>
 <p>If a measurement point is wrong, your options are to <strong>withdraw that point</strong> (<code>submissions
@@ -2043,34 +2047,37 @@ point to a submission (<a href="../submit/#points-fixed-at-creation">step 8</a>)
 shortfall can't be repaired.</p>
 </div>
 <p>After finalization, a wrong result means invalidating the affected points or the submission, and
-non-result corrections need review-chair approval (same section).</p>
+non-result corrections need review-chair approval (same section). You can withdraw voluntarily only
+before finalization; after it, results come down only under a rule such as a failed audit or a
+finding of misrepresentation (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#82-withdrawal">§8.2</a>).</p>
 <h2 id="finalization-and-publication">Finalization and publication<a class="headerlink" href="#finalization-and-publication" title="Permanent link">&para;</a></h2>
 <p>Once every objection is resolved or retracted, the result is finalized, early if that happens before
-the end of Week 3 (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#63-peer-review-weeks-13">§6.3</a>). It's queued for the next available cohort
-(<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#63-peer-review-weeks-13">§6.3</a>), or held until your embargo date if you declared one (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#42-publication-cohorts-and-embargo">§4.2</a>).</p>
-<p>What the published entry shows is listed in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#76-results-table-content">Submission Rules §7.6</a>, and how the Offline
-point is plotted in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#573-presentation">§5.7.3 of the rules</a>. If MLCommons had to fill in any of your
+the peer review window closes, 21 days after your review eligibility date (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#63-peer-review-weeks-13">§6.3</a>). It's
+queued for the next available cohort (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#63-peer-review-weeks-13">§6.3</a>), or held until your embargo date if you
+declared one (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#42-publication-cohorts-and-embargo">§4.2</a>).</p>
+<p>What the published entry shows is listed in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#76-results-table-content">Submission Rules §7.6</a>, and how the Offline
+point is plotted in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#573-presentation">§5.7.3 of the rules</a>. If MLCommons had to fill in any of your
 power figures, the result is tagged <strong>"MLC Estimated Power"</strong>.</p>
 <h2 id="your-obligations-after-publication">Your obligations after publication<a class="headerlink" href="#your-obligations-after-publication" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>Retain the system</strong> for a possible audit until the result settles: the later of the next audit
   vote or <strong>90 days</strong> after finalization
-  (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#scope-and-standing-for-late-concerns">Scope and Standing for Late Concerns</a>).</li>
+  (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#scope-and-standing-for-late-concerns">Scope and Standing for Late Concerns</a>).</li>
 <li><strong>Keep it as submitted if you're nominated for audit.</strong> Nominations are open for 4 weeks after
   publication, and from nomination the system has to stay in its submitted configuration, even
   past the 90 days
-  (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#102-audit-votes">§10.2</a>).
+  (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#102-audit-votes">§10.2</a>).
   See <a href="../../understand/how-submission-works/#audits">Audits</a>.</li>
 <li><strong>Keep a Standardized <abbr title="Client over Network">CoN</abbr> endpoint reachable</strong> for at least <strong>90 days</strong> after publication, with a point of
   contact
-  (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#725-division-specific-available-requirements">§7.2.5</a>).</li>
+  (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#725-division-specific-available-requirements">§7.2.5</a>).</li>
 <li><strong>Honour a Preview commitment:</strong> Available and re-submitted within 180 days of first
   publication, with one possible extension
-  (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#73-preview">§7.3</a>).
+  (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#73-preview">§7.3</a>).
   See <a href="../../rules/publication-status/">Publication status</a>.</li>
 <li><strong>Use the right name.</strong> Unqualified "MLPerf Endpoints" means Standardized; Serviced, <abbr title="Research, Development and Internal">RDI</abbr> and
   Preview results carry qualified names
-  (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#223-result-naming">§2.2.3</a>, <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#232-result-naming">§2.3.2</a>, <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#242-result-naming">§2.4.2</a>, <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#738-permitted-uses-of-preview-results">§7.3.8</a>).</li>
+  (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#223-result-naming">§2.2.3</a>, <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#232-result-naming">§2.3.2</a>, <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#242-result-naming">§2.4.2</a>, <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#738-permitted-uses-of-preview-results">§7.3.8</a>).</li>
 </ul>
 <h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code>endpoints-submission-cli<span class="w"> </span>submissions<span class="w"> </span>get<span class="w"> </span>--submission-id<span class="w"> </span>&lt;submission-id&gt;

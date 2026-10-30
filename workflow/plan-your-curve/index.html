@@ -2018,42 +2018,55 @@ region.</p>
 <ul>
 <li>Choose <code>C_max</code>, your Maximum Supported Concurrency</li>
 <li>Compute your region boundaries with the checker's <code>regions</code> command</li>
-<li>Pick at least 7 concurrency levels that satisfy the <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#53-minimum-submission-requirements"><code>1 + 3 + 3</code> coverage rule</a></li>
+<li>Pick at least 7 concurrency levels that satisfy the <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#53-minimum-submission-requirements"><code>1 + 3 + 3</code> coverage rule</a></li>
 <li>Decide how you'll meet the Offline requirement: a dedicated run, or electing your <code>C_max</code> point</li>
 <li>Sanity-check the count against the 32-point cap</li>
 </ul>
 <h2 id="the-coverage-rule">The coverage rule<a class="headerlink" href="#the-coverage-rule" title="Permanent link">&para;</a></h2>
 <p>A non-agentic submission needs at least 8 and at most 32 measurement points, structured <code>1 + 3 + 3 +
 1</code>. The minimum is 7 if you elect your <code>C_max</code> point as the Offline result, or if the benchmark is
-agentic. Where each point has to go, and the freedom you have in placing the rest, is in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#53-minimum-submission-requirements">§5.3 of
-the rules</a>. The cap is in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#56-maximum-point-cap">§5.6</a>, and the Offline point counts toward it.</p>
+agentic. Where each point has to go, and the freedom you have in placing the rest, is in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#53-minimum-submission-requirements">§5.3 of
+the rules</a>. All seven concurrency points must be distinct. The cap is in
+<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#56-maximum-point-cap">§5.6</a>, and the Offline point counts toward it.</p>
 <h2 id="steps">Steps<a class="headerlink" href="#steps" title="Permanent link">&para;</a></h2>
 <h3 id="1-choose-c_max">1. Choose <code>C_max</code><a class="headerlink" href="#1-choose-c_max" title="Permanent link">&para;</a></h3>
 <p><code>C_max</code> is the highest concurrency you choose to benchmark. It sets the top of the High Concurrency
 region, so it's the extent of your published frontier. It must be <strong>greater than 32</strong>. Beyond that the
-choice is yours; the rules explain what to weigh under <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#maximum-supported-concurrency">Maximum Supported Concurrency in
+choice is yours; the rules explain what to weigh under <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#maximum-supported-concurrency">Maximum Supported Concurrency in
 §5.4</a>.</p>
 <div class="admonition warning">
 <p class="admonition-title"><code>C_max</code> ≤ 33 needs working-group approval</p>
 <p>At that point all three concurrency regions collapse to roughly one level each. You must notify
 the working group with written justification, and they may request more information before
-accepting the submission. See Boundary Edge Cases under <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#concurrency-regions">Concurrency Regions in
+accepting the submission. See Boundary Edge Cases under <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#concurrency-regions">Concurrency Regions in
 §5.4</a>.</p>
 </div>
 <h3 id="2-understand-what-sets-c_min">2. Understand what sets <code>C_min</code><a class="headerlink" href="#2-understand-what-sets-c_min" title="Permanent link">&para;</a></h3>
-<p>The <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#low-latency-region">Ultra Low Concurrency region</a> is fixed at 1–32 for everyone. <code>C_min</code>, the
-value the region calculation uses, is the lowest concurrency level in your own submission, and has
-to fall in 1–32.</p>
+<p><code>C_min</code> is the top of the <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#low-latency-region">Ultra Low Concurrency region</a>, which runs from 1
+to <code>C_min</code>, and it has to be in 1–32. You set it one of two ways:</p>
+<ul>
+<li><strong>By default</strong> it's your lowest fixed-concurrency point, and that point is your mandatory Ultra Low
+  point.</li>
+<li><strong>With <code>c_min_override</code></strong> in <code>system_desc.json</code> you declare it. A point at that concurrency must
+  exist, but any of your points in 1–<code>C_min</code> can be the mandatory Ultra Low point, and the others
+  there count as submitter's-choice points.</li>
+</ul>
+<p>The override rules (type, range, the same value on every point) are under <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#maximum-supported-concurrency">Maximum Supported
+Concurrency in §5.4</a>.</p>
 <div class="admonition note">
-<p class="admonition-title">Derived, not declared</p>
-<p>In v1.0 the checker <strong>derives</strong> <code>C_min</code> from your submitted points. Practical consequence: your
-lowest point silently changes every other region boundary. If you later drop your lowest point,
-the boundaries move and points that were legal may no longer be. Decide your lowest point early
-and keep it.</p>
+<p class="admonition-title">The override needs checker <code>v1.5.1.0</code> or later</p>
+<p>Earlier releases ignore <code>c_min_override</code> and take <code>C_min</code> from your lowest point, so their
+boundaries and coverage results won't match what you declared.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title"><code>C_min</code> moves every other boundary</p>
+<p>Without an override, dropping your lowest point moves every region boundary, and points that
+were legal may no longer be. With one, you can't add, remove or change it once peer review
+starts (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#81-corrections">Submission Rules §8.1</a>). Decide <code>C_min</code> before you run.</p>
 </div>
 <h3 id="3-compute-the-boundaries">3. Compute the boundaries<a class="headerlink" href="#3-compute-the-boundaries" title="Permanent link">&para;</a></h3>
 <p>Beyond Ultra Low Concurrency, the space up to <code>C_max</code> is divided into three equal regions in log-2
-space. The reference algorithm is in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#55-region-boundary-reference-algorithm">§5.5 of the rules</a>. To calculate it easily, use the
+space. The reference algorithm is in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#55-region-boundary-reference-algorithm">§5.5 of the rules</a>. To calculate it easily, use the
 tool:</p>
 <div class="highlight"><pre><span></span><code>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">"from submission_checker.cli import main; main()"</span><span class="w"> </span>regions<span class="w"> </span>--max-concurrency<span class="w"> </span><span class="m">1024</span><span class="w"> </span>--min-concurrency<span class="w"> </span><span class="m">16</span>
 </code></pre></div>
@@ -2068,7 +2081,7 @@ tool:</p>
 </thead>
 <tbody>
 <tr>
-<td>Low Latency (1 to <code>C_min</code>)</td>
+<td>Ultra Low Concurrency (1 to <code>C_min</code>)</td>
 <td>1 – 16</td>
 </tr>
 <tr>
@@ -2090,18 +2103,10 @@ tool:</p>
 </tbody>
 </table>
 </div>
-<p>The tool labels the band up to <code>C_min</code> "Low Latency". The Ultra Low Concurrency region itself stays
-1–32 for everyone.</p>
-<p>Pre-computed boundaries for common combinations are in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#appendix-b-quick-reference-region-boundary-table">Appendix B of the rules</a>.</p>
-<div class="admonition warning">
-<p class="admonition-title">The rules' Example C is off by one</p>
-<p><a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#concurrency-regions">§5.4's worked example</a> for this same pair gives Medium as 27–116 and
-High as 117–1,024. That's an arithmetic slip in the example. The algorithm, Appendix B and the
-checker all put 117 in Medium. Trust the tool. Tracked as <strong>B14</strong> in <a href="../../help/open-questions/">Open
-questions</a>.</p>
-</div>
+<p>The tool labels the Ultra Low Concurrency band "Low Latency".</p>
+<p>Pre-computed boundaries for common combinations are in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#appendix-b-quick-reference-region-boundary-table">Appendix B of the rules</a>.</p>
 <h3 id="4-choose-your-points">4. Choose your points<a class="headerlink" href="#4-choose-your-points" title="Permanent link">&para;</a></h3>
-<p>The rules give a worked 7-point set for three system sizes, under <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#concurrency-regions">Concurrency Regions in
+<p>The rules give a worked 7-point set for three system sizes, under <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#concurrency-regions">Concurrency Regions in
 §5.4</a>. Use them as a starting shape, with two caveats. They predate the
 Offline point, so add a dedicated Offline run on top or elect the <code>C_max</code> point. And the large-scale
 and mid-range sets stop short of their <code>C_max</code>, which is fine for region coverage but causes trouble
@@ -2109,7 +2114,7 @@ when you <a href="#6-decide-how-to-meet-the-offline-requirement">decide how to m
 requirement</a>.</p>
 <h3 id="5-note-the-10-margin">5. Note the 10% margin<a class="headerlink" href="#5-note-the-10-margin" title="Permanent link">&para;</a></h3>
 <p>The High Concurrency region carries a <strong>10% margin</strong> above <code>C_max</code>, extending the valid upper bound
-to <code>ceil(1.10 × C_max)</code> (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#concurrency-regions">Concurrency Regions in §5.4</a>).</p>
+to <code>ceil(1.10 × C_max)</code> (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#concurrency-regions">Concurrency Regions in §5.4</a>).</p>
 <div class="admonition warning">
 <p class="admonition-title">The margin does not satisfy coverage</p>
 <p>A point in the margin is valid, but the margin is its own region. It does <strong>not</strong> count as your
@@ -2119,13 +2124,13 @@ existed to allow adding points after submission, and that window has been remove
 </div>
 <h3 id="6-decide-how-to-meet-the-offline-requirement">6. Decide how to meet the Offline requirement<a class="headerlink" href="#6-decide-how-to-meet-the-offline-requirement" title="Permanent link">&para;</a></h3>
 <p>Skip this step if your benchmark is agentic.</p>
-<p>For every other benchmark you need one Offline result. <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#572-relationship-to-maximum-supported-concurrency">§5.7.2 of the rules</a> gives two
+<p>For every other benchmark you need one Offline result. <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#572-relationship-to-maximum-supported-concurrency">§5.7.2 of the rules</a> gives two
 ways to supply it: a <strong>dedicated Offline run</strong>, or <strong>electing your <code>C_max</code> point</strong> as the Offline
 result.</p>
 <h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
 <p>Write your planned levels down and name the region each one falls in, using the boundaries you
-computed above. Then check the plan against the minimum submission requirements in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#53-minimum-submission-requirements">§5.3 of the
-rules</a> and the point-count, region-coverage and Offline checks in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#91-automated-checks">§9.1</a>.</p>
+computed above. Then check the plan against the minimum submission requirements in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#53-minimum-submission-requirements">§5.3 of the
+rules</a> and the point-count, region-coverage and Offline checks in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#91-automated-checks">§9.1</a>.</p>
 <div class="admonition tip">
 <p class="admonition-title">Budget a spare</p>
 <p>Withdrawn points do <strong>not</strong> count toward the minimum, and the shortfall cannot be repaired by

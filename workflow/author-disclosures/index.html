@@ -2029,7 +2029,7 @@ at the top level of at least one run folder per system:</p>
 <h2 id="steps">Steps<a class="headerlink" href="#steps" title="Permanent link">&para;</a></h2>
 <h3 id="1-write-pointyaml-for-each-point">1. Write <code>point.yaml</code> for each point<a class="headerlink" href="#1-write-pointyaml-for-each-point" title="Permanent link">&para;</a></h3>
 <p>This is the measurement-point disclosure the checker validates. The fields it must declare, and what
-each one means, are defined in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#83-measurement-point-yaml">§8.3 of the rules</a>. Work through that table field by
+each one means, are defined in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#83-measurement-point-yaml">§8.3 of the rules</a>. Work through that table field by
 field; the <a href="../../reference/point-yaml/"><code>point.yaml</code> reference</a> notes where the checker's accepted
 values and field names differ from it.</p>
 <p>Two fields need a decision rather than a lookup: <code>offline</code> and <code>dataset_type</code>.</p>
@@ -2040,7 +2040,7 @@ elected</code>. <code>elected</code> is only accepted on the point whose concurr
 <code>C_max</code>. The checker fails a frontier with no <code>offline</code> declaration unless every point uses the
 <code>agentic_inference</code> load pattern, which is how it recognises an agentic benchmark.</p>
 <p>A dedicated Offline run sets <code>concurrency</code> to the size of the performance dataset and counts
-toward no region (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#571-definition">§5.7.1</a>, <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#572-relationship-to-maximum-supported-concurrency">§5.7.2</a>). The rules don't say what its
+toward no region (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#571-definition">§5.7.1</a>, <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#572-relationship-to-maximum-supported-concurrency">§5.7.2</a>). The rules don't say what its
 <code>region</code> field should hold. <code>submitters_choice</code> passes the checker without a placement warning.
 Tracked as <strong>C7</strong> in <a href="../../help/open-questions/">Open questions</a>.</p>
 </div>
@@ -2057,9 +2057,9 @@ the wrong place and quietly drop their results.</p>
 <p>The hardware and software description. Since policies PR #119 there's no per-system file: <strong>every
 Pareto point carries its own copy</strong>, and the checker verifies all points of a frontier describe the
 same system.</p>
-<p>The fields are defined in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#82-system-description-system_descjson">§8.2 of the rules</a>. Either capture the file with
+<p>The fields are defined in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#82-system-description-system_descjson">§8.2 of the rules</a>. Either capture the file with
 <a href="https://docs.mlcommons.org/mlperf-sysinfo/"><code>mlperf-sysinfo</code></a>, which reads the machine under test
-using its <code>endpoints</code> profile, or copy the template in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#821-template-structure">§8.2.1</a> and fill it in. Checker
+using its <code>endpoints</code> profile, or copy the template in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#821-template-structure">§8.2.1</a> and fill it in. Checker
 behaviour and known gaps between the rules and the tooling: <a href="../../reference/system-desc-json/"><code>system_desc.json</code>
 reference</a>.</p>
 <div class="admonition tip">
@@ -2069,9 +2069,10 @@ it against your own frontier. You cannot fill this in until every point has run.
 </div>
 <h3 id="3-write-system_powerjson-for-each-system">3. Write <code>system_power.json</code> for each system<a class="headerlink" href="#3-write-system_powerjson-for-each-system" title="Permanent link">&para;</a></h3>
 <p>This declares the system's provisioned power, which v1.0 divides throughput by. It's per <strong>system</strong>,
-not per point, because provisioned power is fixed for the whole frontier. The builder lifts it from
+not per point: it is the same for the whole frontier, and only the optional per-point <code>nodes_used</code>
+in <code>point.yaml</code> scales it (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#453-normalized-metric">§4.5.3</a>). The builder lifts it from
 your run folders to <code>results/&lt;system&gt;/system_power.json</code> in the bundle.</p>
-<p>The <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#power-model">power model</a> and the ways to fill the file are in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#452-proposed-endpoints-v10-normalization-methodology">§4.5.2 of the
+<p>The <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#power-model">power model</a> and the ways to fill the file are in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#452-proposed-endpoints-v10-normalization-methodology">§4.5.2 of the
 rules</a>: either component counts and TDPs, each linked to a public spec sheet, with the
 overhead fraction set by the <code>cooling</code> field in <code>system_desc.json</code>, or a single published
 provisioned-power figure. The component form looks like this:</p>
@@ -2093,7 +2094,7 @@ system can only have one provisioned power.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Leaving a value out doesn't mean leaving the file out</p>
-<p>The file is required even if you leave values out (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#component-template-system_powerjson">Component Template in
+<p>The file is required even if you leave values out (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#component-template-system_powerjson">Component Template in
 §4.5.2</a>). The checker flags each blank component
 group <code>power-estimated</code>, MLCommons fills it in with a deliberately conservative estimate, and
 the published result is tagged <strong>"MLC Estimated Power"</strong>. The file still has to yield a total:
@@ -2104,22 +2105,22 @@ with no <code>provisioned_power_w</code> and no group that has both a count and 
 <p><code>src/&lt;implementation&gt;/</code> (for example <code>vllm/</code>, <code>trtllm/</code>, <code>sglang/</code>) holds the endpoint interface
 code, cluster setup and client harness, with a <strong>required <code>README.md</code></strong> on how to build, launch and
 reproduce a point. Like <code>docs/</code>, it's written <strong>once</strong> for the whole submission, not per point
-(<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#81-directory-structure">§8.1</a>).</p>
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#81-directory-structure">§8.1</a>).</p>
 <h3 id="5-write-the-shared-docs-content">5. Write the shared <code>docs/</code> content<a class="headerlink" href="#5-write-the-shared-docs-content" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>software_disclosure.md</code> — the software components listed in
-  <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#84-software-disclosure">§8.4</a>.</li>
+  <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#84-software-disclosure">§8.4</a>.</li>
 <li><code>calibration.adoc</code> — required if you applied any weight transformation
-  (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#33-weight-transformations">§3.3</a>).
+  (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#33-weight-transformations">§3.3</a>).
   The recipe has to be reproducible from the write-up or the scripts you provide
-  (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#221-general-rules">§2.2.1</a>).</li>
+  (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#221-general-rules">§2.2.1</a>).</li>
 <li>Anything else a reviewer needs to follow your setup.</li>
 </ul>
 <div class="admonition warning">
 <p class="admonition-title">Disclosure obligations differ by division</p>
 <p>Standardized requires full hardware, software and parallelism disclosure; Serviced has its own
-list and makes full rack hardware optional. See <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#27-transparency-requirements">§2.7</a> and, for Serviced,
-<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#231-rules">§2.3.1</a>. Summary: <a href="../../rules/requirements/">Requirements you must meet</a>.</p>
+list and makes full rack hardware optional. See <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#27-transparency-requirements">§2.7</a> and, for Serviced,
+<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#231-rules">§2.3.1</a>. Summary: <a href="../../rules/requirements/">Requirements you must meet</a>.</p>
 </div>
 <h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
 <p>The full check is the checker, in <a href="../validate/">step 7</a>. Before that, confirm mechanically that

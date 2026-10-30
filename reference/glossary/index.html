@@ -1915,8 +1915,9 @@ at the last measured value. No interpolation.</dd>
 <dd>One of four concurrency bands — Ultra Low, Low, Medium, High. Named for latency or concurrency,
 but all four are bounded by concurrency.</dd>
 <dt><strong><code>C_min</code> / <code>C_max</code></strong></dt>
-<dd>Minimum and Maximum Supported Concurrency. <code>C_max</code> is declared; <code>C_min</code> is derived from your
-lowest point in v1.0. Together they set your region boundaries.</dd>
+<dd>The top of the Ultra Low Concurrency region (1–32) and the Maximum Supported Concurrency.
+<code>C_max</code> is declared; <code>C_min</code> is your lowest point unless you declare <code>c_min_override</code>. Together
+they set your region boundaries.</dd>
 <dt><strong><abbr title="System Under Test">SUT</abbr></strong></dt>
 <dd>System Under Test.</dd>
 </dl>
@@ -1927,11 +1928,18 @@ lowest point in v1.0. Together they set your region boundaries.</dd>
 <dt><strong><code>tps_per_user</code></strong></dt>
 <dd>Per-user output rate: <code>1000 / tpot_p90_ms</code>.</dd>
 <dt><strong><code>system_tps_per_kw</code></strong></dt>
-<dd><code>system_tps</code> divided by the system's provisioned power in kW. The v1.0 normalized metric.</dd>
+<dd><code>system_tps</code> divided by <code>point_power_kw</code>, evaluated per measurement point. The v1.0 normalized
+metric (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#453-normalized-metric">§4.5.3</a>).</dd>
+<dt><strong><code>point_power_kw</code></strong></dt>
+<dd>The provisioned power scaled by the node fraction <code>Y_s / N_s</code> engaged at a point, rounded up to
+whole nodes. Constant for a single-node system (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#453-normalized-metric">§4.5.3</a>).</dd>
+<dt><strong><code>nodes_used</code></strong></dt>
+<dd>Optional per-point declaration of the nodes engaged, by node type, in <code>point.yaml</code>. Omitted means
+full provisioned power (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#83-measurement-point-yaml">§8.3</a>; fields in <a href="../point-yaml/"><code>point.yaml</code></a>).</dd>
 <dt><strong>Provisioned power</strong></dt>
 <dd>What a system is built to draw, estimated from the rated power of its CPUs, accelerators and
-scale-up switches plus a cooling-dependent overhead. Fixed for a system across its whole frontier.
-Declared in <code>system_power.json</code>.</dd>
+scale-up switches plus a cooling-dependent overhead. Fixed for a system; each point scales it by
+the nodes it engages. Declared in <code>system_power.json</code>.</dd>
 <dt><strong>MLC Estimated Power</strong></dt>
 <dd>The tag on a result whose power figures were partly or wholly filled in by MLCommons.</dd>
 <dt><strong><abbr title="Time To First Token">TTFT</abbr></strong></dt>
@@ -1963,6 +1971,14 @@ your public endpoint.</dd>
 division.</dd>
 <dt><strong>Cohort</strong></dt>
 <dd>A publication batch, <code>YYYY-MM-C0</code> (1st Wednesday) or <code>YYYY-MM-C1</code> (3rd Wednesday), 08:00 Pacific.</dd>
+<dt><strong>Publication date</strong></dt>
+<dd>The first date a submission's results are publicly visible. Normally a cohort date; an embargo
+is the exception (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#45-review-cycle-example">Submission Rules §4.5</a>).</dd>
+<dt><strong>Review eligibility date</strong></dt>
+<dd>The date from which a submission's review timelines are counted: the first date it has passed
+the automated checks, is in the review repository, and is no longer under a review or
+provisional-publication embargo (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#43-submission-to-publication-alignment">Submission Rules
+§4.3</a>).</dd>
 <dt><strong>Publication mode</strong></dt>
 <dd>Confidential review, confidential review with an embargo, or provisional publication. Chosen
 at submission; irrevocable.</dd>
@@ -2022,7 +2038,9 @@ Produces the official token count.</dd>
 from the benchmark's approved list, used unmodified apart from <abbr title="Post-Training Quantization">PTQ</abbr>, and the same across the
 frontier.</dd>
 <dt><strong>Approved drafter list</strong></dt>
-<dd>The per-benchmark, per-round list of drafters a Standardized submission may use. Published for the agentic benchmarks only, in the reference repository's agentic example; the checker's list is still empty.</dd>
+<dd>The per-benchmark, per-round list of drafters a Standardized submission may use, kept in the
+checker's <code>approved_drafters.yaml</code> (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#294-speculative-decoding">§2.9.4</a>). A native head in an approved
+checkpoint is approved with that checkpoint and doesn't need its own entry.</dd>
 <dt><strong>ConcurrencyScheduler</strong></dt>
 <dd>The reference client's fixed-concurrency load pattern — it keeps a set number of queries in
 flight, issuing a replacement as each one completes. §6.1 says "the benchmark-defined
@@ -2055,7 +2073,7 @@ tool-call execution.</dd>
 <dt><strong><abbr title="Tensor Parallelism">TP</abbr> / <abbr title="Expert Parallelism">EP</abbr> / <abbr title="Pipeline Parallelism">PP</abbr> / <abbr title="Data Parallelism">DP</abbr></strong></dt>
 <dd>Tensor / Expert / Pipeline / Data parallelism.</dd>
 </dl>
-<p><em>Last verified against: <code>mlcommons/endpoints_policies@v1.0_rules_dev</code> (6b0b1ef), 2026-09-24.</em></p>
+<p><em>Last verified against: <code>mlcommons/endpoints_policies@main</code> (4ba8224), 2026-10-30.</em></p>
 
 
 

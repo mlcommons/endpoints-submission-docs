@@ -1367,6 +1367,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#per-point-power-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      Per-point power fields
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#the-steady_state-block" class="md-nav__link">
     <span class="md-ellipsis">
       The steady_state block
@@ -1815,6 +1824,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#per-point-power-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      Per-point power fields
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#the-steady_state-block" class="md-nav__link">
     <span class="md-ellipsis">
       The steady_state block
@@ -1860,7 +1878,7 @@
 <h1 id="pointyaml"><code>point.yaml</code><a class="headerlink" href="#pointyaml" title="Permanent link">&para;</a></h1>
 <p>Authored in <a href="../../workflow/author-disclosures/">step 5</a>.</p>
 <h2 id="fields">Fields<a class="headerlink" href="#fields" title="Permanent link">&para;</a></h2>
-<p>This page lists the values the checker accepts for the <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#83-measurement-point-yaml">§8.3</a> fields it validates by
+<p>This page lists the values the checker accepts for the <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#83-measurement-point-yaml">§8.3</a> fields it validates by
 value, and where the tooling adds a condition the rules don't state.</p>
 <table>
 <thead>
@@ -1874,21 +1892,43 @@ value, and where the tooling adds a condition the rules don't state.</p>
 <td><code>region</code></td>
 <td><code>low_latency</code>, <code>low_concurrency</code>, <code>med_concurrency</code>, <code>high_concurrency</code> or <code>submitters_choice</code> (<code>region-declared</code>)</td>
 </tr>
+<tr>
+<td><code>dataset_type</code></td>
+<td>Any of the §8.3 values, but the bundle builder only uses it when it is exactly <code>Accuracy</code> or <code>Performance</code>.</td>
+</tr>
+<tr>
+<td><code>offline</code></td>
+<td><code>dedicated</code>, <code>elected</code> or <code>none</code>, or absent. <code>elected</code> only on the point whose concurrency equals <code>max_supported_concurrency</code> (<code>offline-point-present</code>)</td>
+</tr>
+<tr>
+<td><code>target_cohort</code></td>
+<td><code>YYYY-MM-C0</code> or <code>YYYY-MM-C1</code> (<code>target-cohort</code>)</td>
+</tr>
+<tr>
+<td><code>shared_src</code>, <code>shared_docs</code></td>
+<td>Must resolve to directories under the submission root.</td>
+</tr>
 </tbody>
 </table>
-<p>| <code>dataset_type</code> | Any of the §8.3 values, but the bundle builder only uses it when it is exactly <code>Accuracy</code> or <code>Performance</code>. |
-| <code>offline</code> | <code>dedicated</code>, <code>elected</code> or <code>none</code>, or absent. <code>elected</code> only on the point whose concurrency equals <code>max_supported_concurrency</code> (<code>offline-point-present</code>) |
-| <code>target_cohort</code> | <code>YYYY-MM-C0</code> or <code>YYYY-MM-C1</code> (<code>target-cohort</code>) |
-| <code>shared_src</code>, <code>shared_docs</code> | Must resolve to directories under the submission root. |</p>
 <div class="admonition note">
 <p class="admonition-title"><code>region</code> on a dedicated Offline run</p>
 <p>Its <code>concurrency</code> is the size of the performance dataset and it counts toward no region, but the
 rules don't say what <code>region</code> should hold. <code>submitters_choice</code> passes without a placement
 warning. Tracked as <strong>C7</strong> in <a href="../../help/open-questions/">Open questions</a>.</p>
 </div>
+<h2 id="per-point-power-fields">Per-point power fields<a class="headerlink" href="#per-point-power-fields" title="Permanent link">&para;</a></h2>
+<p>Two optional fields come from <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#453-normalized-metric">§4.5.3</a>, with their shape in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#83-measurement-point-yaml">§8.3</a>. This
+page hasn't confirmed what the checker accepts for them.</p>
+<ul>
+<li><code>nodes_used</code>: the nodes engaged at the point, per node set, for per-point power normalization.
+  It can't exceed what <code>system_power.json</code> provisions for that node set. A point without it is
+  normalized by the full provisioned power.</li>
+<li><code>dp_shortfall</code>: only for a point that ran fewer data-parallel replicas than fit, recording why.
+  Reviewers can raise a Methodology objection to it.</li>
+</ul>
 <h2 id="the-steady_state-block">The <code>steady_state</code> block<a class="headerlink" href="#the-steady_state-block" title="Permanent link">&para;</a></h2>
-<p>What the block records is defined in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#83-measurement-point-yaml">§8.3</a>, and how the status and verdict are decided
-in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#44-reporting-basis-steady-state-window">§4.4</a>. Background: <a href="../metrics-and-regions/#what-your-numbers-are-measured-over">What your numbers are measured
+<p>What the block records is defined in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#83-measurement-point-yaml">§8.3</a>, and how the status and verdict are decided
+in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#44-reporting-basis-steady-state-window">§4.4</a>. Background: <a href="../metrics-and-regions/#what-your-numbers-are-measured-over">What your numbers are measured
 over</a>.</p>
 <p>Two things the checker reads that §8.3 doesn't name: the <code>window</code> sub-keys are <code>super_pass_start</code>,
 <code>super_pass_end</code>, <code>super_pass_size</code>, <code>n_samples</code> and <code>duration_s</code>, and the block also carries a
@@ -1904,14 +1944,14 @@ sits outside the rules' steady-state scope too. Tracked as <strong>B9</strong> i
 questions</a>.</p>
 </div>
 <h2 id="the-warmup-block">The <code>warmup</code> block<a class="headerlink" href="#the-warmup-block" title="Permanent link">&para;</a></h2>
-<p>What it must declare is set by <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#633-documentation-requirements">§6.3.3</a>, and the sub-field names by <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#83-measurement-point-yaml">§8.3</a>.</p>
+<p>What it must declare is set by <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#633-documentation-requirements">§6.3.3</a>, and the sub-field names by <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#83-measurement-point-yaml">§8.3</a>.</p>
 <h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../system-desc-json/"><code>system_desc.json</code></a> — the other file you author per point</li>
 <li><a href="../package-layout/">Submission package layout</a>, where this file sits</li>
 <li><a href="../metrics-and-regions/">Metrics and regions</a> — how to determine the right <code>region</code> value</li>
 </ul>
-<p><em>Last verified against: <code>mlcommons/endpoints_policies@v1.0_rules_dev</code> (d2d9da6),
+<p><em>Last verified against: <code>mlcommons/endpoints_policies@main</code> (1818269),
 <code>mlcommons/endpoints-submission-cli@main</code> (a42a056, <code>v1.1.0.0</code>) and <code>mlcommons/endpoints@main</code>
 (f1100cf), 2026-10-02.</em></p>
 

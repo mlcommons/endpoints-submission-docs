@@ -2071,7 +2071,7 @@ page and <a href="https://github.com/mlcommons/endpoints_policies"><code>mlcommo
 disagree, <strong>the policy repository is correct and this page is a bug</strong>. Please
 <a href="https://github.com/mlcommons/endpoints-submission-docs/issues">report it</a>.</p>
 </div>
-<p>The categories are defined in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#7-publication">Submission Rules §7</a>. In short (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#71-results-categories">§7.1</a>):</p>
+<p>The categories are defined in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#7-publication">Submission Rules §7</a>. In short (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#71-results-categories">§7.1</a>):</p>
 <table>
 <thead>
 <tr>
@@ -2100,84 +2100,87 @@ disagree, <strong>the policy repository is correct and this page is a bug</stron
 </table>
 <div class="admonition warning">
 <p class="admonition-title"><abbr title="Research, Development and Internal">RDI</abbr> has a cooling-off period</p>
-<p>An <abbr title="Research, Development and Internal">RDI</abbr> component can't come back as Available or Preview until the later of two cohorts after
-the <abbr title="Research, Development and Internal">RDI</abbr> submission or <strong>221 days</strong> after first publication as <abbr title="Research, Development and Internal">RDI</abbr> (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#rdi-cooling-off-period"><abbr title="Research, Development and Internal">RDI</abbr> Cooling-Off
+<p>An <abbr title="Research, Development and Internal">RDI</abbr> component can't come back as Available or Preview until the later of two cohort dates
+after first publication as <abbr title="Research, Development and Internal">RDI</abbr> or <strong>221 days</strong> after first publication as <abbr title="Research, Development and Internal">RDI</abbr> (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#rdi-cooling-off-period"><abbr title="Research, Development and Internal">RDI</abbr> Cooling-Off
 Period</a>). Don't use <abbr title="Research, Development and Internal">RDI</abbr> as a way to publish early.</p>
 </div>
 <h2 id="available-the-four-point-test">Available: the four-point test<a class="headerlink" href="#available-the-four-point-test" title="Permanent link">&para;</a></h2>
 <p>Pricing, shipment to a third party, public evidence that it ships <strong>today</strong>, and reasonable
 availability to other buyers, for every component that substantially determines performance, judged
-on the balance of evidence (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#72-available">§7.2</a>).</p>
+on the balance of evidence (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#72-available">§7.2</a>).</p>
 <h3 id="proof-of-shipment-not-announcement">Proof of shipment, not announcement<a class="headerlink" href="#proof-of-shipment-not-announcement" title="Permanent link">&para;</a></h3>
 <div class="admonition danger">
 <p class="admonition-title">Announcements don't count</p>
 <p>Keynotes, "coming soon" pages, soft-launch press releases and catalogue previews are not
-sufficient on their own. What does count is listed in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#721-public-evidence--proof-of-shipment-not-announcement">§7.2.1</a>.</p>
+sufficient on their own. What does count is listed in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#721-public-evidence--proof-of-shipment-not-announcement">§7.2.1</a>.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Your own <abbr title="Generally Available">GA</abbr> definition also binds you</p>
 <p>If your organisation has a formal internal definition of general availability, the submitted
-system has to meet it as well as the rules' criteria (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#721-public-evidence--proof-of-shipment-not-announcement">§7.2.1</a>).</p>
+system has to meet it as well as the rules' criteria (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#721-public-evidence--proof-of-shipment-not-announcement">§7.2.1</a>).</p>
 </div>
 <h3 id="reasonably-available">Reasonably available<a class="headerlink" href="#reasonably-available" title="Permanent link">&para;</a></h3>
 <p>No blocking competitors and no "early access" gating; supply and lead times aren't governed by the
-rules (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#722-reasonably-available">§7.2.2</a>). Reproducing an MLPerf result gives no one a priority allocation.</p>
+rules (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#722-reasonably-available">§7.2.2</a>). Reproducing an MLPerf result gives no one a priority allocation.</p>
 <h3 id="available-software-stack">Available software stack<a class="headerlink" href="#available-software-stack" title="Permanent link">&para;</a></h3>
 <p>Each category of software (frameworks, inference servers, compute libraries, drivers, quantization
-tools, OS patches) has its own availability rule in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#723-available-software-stack">§7.2.3</a>, along with when a
+tools, OS patches) has its own availability rule in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#723-available-software-stack">§7.2.3</a>, along with when a
 labelled beta qualifies. Private binary drops and private kernel patches don't. Your own submission
 code isn't part of the stack; it goes in your source package.</p>
 <h3 id="available-models">Available models<a class="headerlink" href="#available-models" title="Permanent link">&para;</a></h3>
 <p>Weights under a licence that prohibits commercial deployment can't be Available
-(<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#724-available-models">§7.2.4</a>).</p>
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#724-available-models">§7.2.4</a>).</p>
 <h3 id="division-specific-additions">Division-specific additions<a class="headerlink" href="#division-specific-additions" title="Permanent link">&para;</a></h3>
 <p>Standardized <abbr title="Client over Network">CoN</abbr> keeps its endpoint reachable for 90 days after publication; Serviced has to be at
 full <abbr title="Generally Available">GA</abbr> tier on the same endpoint paying customers use, with terms that allow benchmarking; the <abbr title="Research, Development and Internal">RDI</abbr>
-division is always <abbr title="Research, Development and Internal">RDI</abbr> status (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#725-division-specific-available-requirements">§7.2.5</a>).</p>
+division is always <abbr title="Research, Development and Internal">RDI</abbr> status (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#725-division-specific-available-requirements">§7.2.5</a>).</p>
 <h2 id="preview-and-its-clock">Preview, and its clock<a class="headerlink" href="#preview-and-its-clock" title="Permanent link">&para;</a></h2>
-<p>You commit to Available within <strong>180 days</strong>, counted from the cohort the result first appears in,
-and corrections don't reset it (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#73-preview">§7.3</a>, <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#731-preview-window-and-clock">§7.3.1</a>).</p>
+<p>You commit to Available within <strong>180 days</strong>, counted from the date of the cohort in which the
+result first appears in the visualizer. Corrections don't reset the clock (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#73-preview">§7.3</a>,
+<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#731-preview-window-and-clock">§7.3.1</a>).</p>
 <h3 id="declaring-preview">Declaring Preview<a class="headerlink" href="#declaring-preview" title="Permanent link">&para;</a></h3>
-<p>Set <code>availability_status</code> and <code>target_availability_date</code> in the system description, and name the
-unavailable components specifically. "Targeting H2 2026" isn't enough (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#734-declaration-requirements">§7.3.4</a>).</p>
+<p>Set <code>"system_availability_status": "Preview"</code>, plus <code>target_availability_date</code> in the system
+description, and name the unavailable components specifically. "Targeting H2 2026" isn't enough
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#734-declaration-requirements">§7.3.4</a>).</p>
 <h3 id="software-waiver">Software waiver<a class="headerlink" href="#software-waiver" title="Permanent link">&para;</a></h3>
 <p>The software-stack requirement is waived only for software that supports newly developed hardware
-(<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#732-software-waiver-for-preview">§7.3.2</a>).</p>
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#732-software-waiver-for-preview">§7.3.2</a>).</p>
 <h3 id="performance-continuity">Performance continuity<a class="headerlink" href="#performance-continuity" title="Permanent link">&para;</a></h3>
 <p>The Available re-submission has to match the Preview result, with 5% allowed on throughput and no
-percentage band on latency (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#733-performance-continuity-requirement">§7.3.3</a>).</p>
+percentage band on latency (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#733-performance-continuity-requirement">§7.3.3</a>).</p>
 <h3 id="expiry-and-extensions">Expiry and extensions<a class="headerlink" href="#expiry-and-extensions" title="Permanent link">&para;</a></h3>
 <p>With no Available re-submission and no extension, the Preview result is removed at the next cohort
-(<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#735-preview-tracker-and-expiration">§7.3.5</a>).</p>
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#735-preview-tracker-and-expiration">§7.3.5</a>).</p>
 <div class="admonition danger">
 <p class="admonition-title">One extension only</p>
 <p>One extension of up to 60 days, requested at least 30 days before expiry
-(<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#736-extensions">§7.3.6</a>). A second is denied and the result is invalidated.</p>
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#736-extensions">§7.3.6</a>). A second is denied and the result is invalidated.</p>
 </div>
 <h3 id="transitioning-to-available">Transitioning to Available<a class="headerlink" href="#transitioning-to-available" title="Permanent link">&para;</a></h3>
 <p>A new Available submission through normal review, re-run if the configuration changed materially
-(<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#737-transition-to-available">§7.3.7</a>).</p>
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#737-transition-to-available">§7.3.7</a>).</p>
 <h3 id="referencing-preview-results">Referencing Preview results<a class="headerlink" href="#referencing-preview-results" title="Permanent link">&para;</a></h3>
 <p>Always call them <strong>"MLPerf Endpoints Preview"</strong>, with the standard footnote
-(<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#738-permitted-uses-of-preview-results">§7.3.8</a>).</p>
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#738-permitted-uses-of-preview-results">§7.3.8</a>).</p>
 <h2 id="custom-skus">Custom SKUs<a class="headerlink" href="#custom-skus" title="Permanent link">&para;</a></h2>
 <p>A custom SKU can be Available if it has shipped, similar customers can buy it, and its differences
-are publicly documented (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#75-custom-sku-classification-custom-sku">§7.5</a>).</p>
+are publicly documented (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#75-custom-sku-classification-custom-sku">§7.5</a>).</p>
 <div class="admonition question">
 <p class="admonition-title">Hardware no comparable customer can order</p>
 <p>Silicon in production at a hyperscaler but not orderable by any comparable customer is an open
 working-group item. <strong>Until decided, it defaults to <abbr title="Research, Development and Internal">RDI</abbr></strong>, with the 221-day cooling-off
-attached. Tracked upstream as <code>[CUSTOM-SKU]</code> (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#open-question-hardware-not-orderable-by-any-comparable-customer">Open
+attached. Tracked upstream as <code>[CUSTOM-SKU]</code> (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#open-question-hardware-not-orderable-by-any-comparable-customer">Open
 Question</a>).</p>
 </div>
 <div class="admonition danger">
-<p class="admonition-title">These rules are a working draft</p>
-<p>MLPerf Endpoints v1.0 rules are on an active development branch. Sections marked
-<code>[TENTATIVE]</code>, <code>[WIP]</code>, <code>[WG Open Item]</code> or <code>[WG Decision Required]</code> upstream can still
-change. Before committing hardware time to a submission, read
+<p class="admonition-title">These rules can still change</p>
+<p>The MLPerf Endpoints v1.0 rules are published on the policy repository's <code>main</code> branch, and
+working-group changes are still merged into it. Sections marked <code>[TENTATIVE]</code>, <code>[WIP]</code>,
+<code>[WG Open Item]</code> or <code>[WG Decision Required]</code> upstream are the most likely to move. Before
+committing hardware time to a submission, read
 <a href="../../help/open-questions/">Open questions and WIP rules</a>.</p>
 </div>
-<p><em>Last verified against: <code>mlcommons/endpoints_policies@v1.0_rules_dev</code> (6b0b1ef), 2026-09-24.</em></p>
+<p><em>Last verified against: <code>mlcommons/endpoints_policies@main</code> (1818269), 2026-10-26.</em></p>
 
 
 

@@ -2013,8 +2013,8 @@ disagree, <strong>the policy repository is correct and this page is a bug</stron
 <a href="https://github.com/mlcommons/endpoints-submission-docs/issues">report it</a>.</p>
 </div>
 <h2 id="frontier-structure">Frontier structure<a class="headerlink" href="#frontier-structure" title="Permanent link">&para;</a></h2>
-<p>From <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#53-minimum-submission-requirements">§5.3</a>, <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#54-regions-of-interest">§5.4</a> and <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#56-maximum-point-cap">§5.6</a>, with failure actions from
-<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#91-automated-checks">§9.1</a>.</p>
+<p>From <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#53-minimum-submission-requirements">§5.3</a>, <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#54-regions-of-interest">§5.4</a> and <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#56-maximum-point-cap">§5.6</a>, with failure actions from
+<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#91-automated-checks">§9.1</a>.</p>
 <table>
 <thead>
 <tr>
@@ -2036,8 +2036,12 @@ disagree, <strong>the policy repository is correct and this page is a bug</stron
 <td>rule <code>offline-point-present</code></td>
 </tr>
 <tr>
-<td><span class="twemoji" style="color:#c62828"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 13h-2V7h2m-2 8h2v2h-2m4.73-14H8.27L3 8.27v7.46L8.27 21h7.46L21 15.73V8.27z"/></svg></span> <strong>≥ 1 point at concurrency 1–32</strong> (Ultra Low)</td>
+<td><span class="twemoji" style="color:#c62828"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 13h-2V7h2m-2 8h2v2h-2m4.73-14H8.27L3 8.27v7.46L8.27 21h7.46L21 15.73V8.27z"/></svg></span> <strong>≥ 1 point in Ultra Low Concurrency</strong> (1–<code>C_min</code>, <code>C_min</code> ≤ 32)</td>
 <td>rule <code>ultra-low-concurrency-coverage</code></td>
+</tr>
+<tr>
+<td><span class="twemoji" style="color:#c62828"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 13h-2V7h2m-2 8h2v2h-2m4.73-14H8.27L3 8.27v7.46L8.27 21h7.46L21 15.73V8.27z"/></svg></span> <strong><code>c_min_override</code>, if used</strong>: an integer in 1–32 that matches a submitted point, the same on every point</td>
+<td>rule <code>c-min-override</code> (checker <code>v1.5.1.0</code> or later)</td>
 </tr>
 <tr>
 <td><span class="twemoji" style="color:#c62828"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 13h-2V7h2m-2 8h2v2h-2m4.73-14H8.27L3 8.27v7.46L8.27 21h7.46L21 15.73V8.27z"/></svg></span> <strong>≥ 1 point in each of Low, Medium, High Concurrency</strong></td>
@@ -2062,10 +2066,10 @@ regions</a>.</p>
 anything else is checked as single-turn, where a missing Offline point fails.</p>
 </div>
 <h2 id="the-offline-point">The Offline point<a class="headerlink" href="#the-offline-point" title="Permanent link">&para;</a></h2>
-<p>Required for non-agentic benchmarks, and not allowed for agentic ones (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#57-offline-point">§5.7</a>). You
+<p>Required for non-agentic benchmarks, and not allowed for agentic ones (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#57-offline-point">§5.7</a>). You
 either make a <strong>dedicated</strong> Offline run or <strong>elect</strong> your <code>C_max</code> point; both are defined in
-<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#572-relationship-to-maximum-supported-concurrency">§5.7.2</a>, and what an Offline run is (dataset-sized concurrency, no <abbr title="Time To First Token">TTFT</abbr> requirement,
-reordering only within a pass) is in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#571-definition">§5.7.1</a>. What the checker does with it:</p>
+<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#572-relationship-to-maximum-supported-concurrency">§5.7.2</a>, and what an Offline run is (dataset-sized concurrency, no <abbr title="Time To First Token">TTFT</abbr> requirement,
+reordering only within a pass) is in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#571-definition">§5.7.1</a>. What the checker does with it:</p>
 <table>
 <thead>
 <tr>
@@ -2091,7 +2095,7 @@ reordering only within a pass) is in <a href="https://github.com/mlcommons/endpo
 <p>A dedicated run counts toward no region. An elected point keeps its own region and reports latency
 like any other point.</p>
 <h2 id="per-point-run-requirements">Per-point run requirements<a class="headerlink" href="#per-point-run-requirements" title="Permanent link">&para;</a></h2>
-<p>Defined in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#6-run-requirements-per-measurement-point">§6 of the rules</a>. The values at a glance:</p>
+<p>Defined in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#6-run-requirements-per-measurement-point">§6 of the rules</a>. The values at a glance:</p>
 <table>
 <thead>
 <tr>
@@ -2102,32 +2106,32 @@ like any other point.</p>
 </thead>
 <tbody>
 <tr>
-<td>Load pattern (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#61-load-pattern">§6.1</a>)</td>
+<td>Load pattern (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#61-load-pattern">§6.1</a>)</td>
 <td>Fixed-concurrency for every point except a dedicated Offline run. <code>poisson</code> is invalid</td>
 <td>rule <code>load-pattern</code></td>
 </tr>
 <tr>
-<td>Steady-state duration (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#62-minimum-run-duration">§6.2</a>)</td>
-<td><strong>600 s</strong> Ultra Low; <strong>1,200 s</strong> Low / Medium / High</td>
-<td>rule <code>point-duration</code></td>
+<td>Steady-state duration (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#62-minimum-run-duration">§6.2</a>)</td>
+<td><strong>600 s</strong> at concurrency 1–32. Above 32: <strong>1,200 s</strong>, or <strong>2,400 s</strong> for agentic benchmarks</td>
+<td>rule <code>point-duration</code>, from checker <code>v1.4.1.0</code>. Earlier releases go by region and don't check the agentic 2,400 s</td>
 </tr>
 <tr>
-<td>Completed queries (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#64-minimum-completed-queries">§6.4</a>)</td>
-<td>At least one pass over the dataset</td>
+<td>Completed queries (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#64-minimum-completed-queries">§6.4</a>)</td>
+<td>At least one pass over the dataset, or the approved subset at concurrency 1–32</td>
 <td>rule <code>min-query-count</code></td>
 </tr>
 <tr>
-<td>Samples issued (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#64-minimum-completed-queries">§6.4</a>)</td>
+<td>Samples issued (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#64-minimum-completed-queries">§6.4</a>)</td>
 <td>A whole-number multiple of the dataset size</td>
 <td>—</td>
 </tr>
 <tr>
-<td>Streaming (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#65-dataset-considerations">§6.5</a>)</td>
+<td>Streaming (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#65-dataset-considerations">§6.5</a>)</td>
 <td>Streaming responses on every fixed-concurrency point; a dedicated Offline run is exempt. <code>stream_all_chunks</code> may be either value</td>
 <td>rule <code>streaming-config</code>, which still requires <code>stream_all_chunks: true</code></td>
 </tr>
 <tr>
-<td>Sampling order (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#65-dataset-considerations">§6.5</a>)</td>
+<td>Sampling order (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#65-dataset-considerations">§6.5</a>)</td>
 <td>Performance: with replacement. Accuracy: without replacement</td>
 <td>—</td>
 </tr>
@@ -2141,17 +2145,30 @@ ratification, though they are stated as locked and Task Force-approved for the v
 </div>
 <h2 id="warmup">Warmup<a class="headerlink" href="#warmup" title="Permanent link">&para;</a></h2>
 <p>Optional, capped at 24 hours per point, and it must not use performance-dataset samples; if the
-client does use the performance dataset, salting must be enabled (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#631-prohibited-warmup-data">§6.3.1</a>). Every
-point declares six warmup fields (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#633-documentation-requirements">§6.3.3</a>), checked by rule <code>warmup-present</code>. Salting
+client does use the performance dataset, salting must be enabled (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#631-prohibited-warmup-data">§6.3.1</a>). Every
+point declares six warmup fields (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#633-documentation-requirements">§6.3.3</a>), checked by rule <code>warmup-present</code>. Salting
 is <strong>not</strong> on by default in the client, so if your warmup uses the performance dataset you have to
 turn it on yourself; rule <code>warmup-salt</code> then warns, and reviewers may ask about it. Incomplete
 warmup documentation is grounds for a Methodology objection.</p>
 <h2 id="accuracy">Accuracy<a class="headerlink" href="#accuracy" title="Permanent link">&para;</a></h2>
-<p>Accuracy results are needed at the four mandatory region points plus the Offline point: <strong>5</strong> for
-non-agentic benchmarks, <strong>4</strong> for agentic (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#53-minimum-submission-requirements">§5.3</a>). How they're judged, single-turn per
-point or multi-turn on the average, is in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#43-accuracy-metric">§4.3</a>. Accuracy runs use the same
-configuration and stack as the performance runs, on the un-salted accuracy dataset, and there is no
-tolerance (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#reproducibility-expectations">Reproducibility Expectations</a>).</p>
+<p>Accuracy validation runs are needed at the four mandatory region points plus the Offline point:
+<strong>5</strong> for non-agentic benchmarks, <strong>4</strong> for agentic (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#53-minimum-submission-requirements">§5.3</a>). How they're judged,
+single-turn per point or multi-turn on the average, is in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#43-accuracy-metric">§4.3</a>. That count is fixed:
+submit exactly one validation result per mandatory point, none at the submitter's-choice points,
+because extra results are rejected at automated compliance (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#43-accuracy-metric">§4.3</a>, <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#91-automated-checks">§9.1</a>).
+If you elect your <code>C_max</code> point as the Offline result, that point's one run covers both
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#572-relationship-to-maximum-supported-concurrency">§5.7.2</a>).
+Accuracy runs use the same configuration and stack as the performance runs, on the un-salted
+accuracy dataset, and there is no tolerance (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#reproducibility-expectations">Reproducibility
+Expectations</a>).</p>
+<p>With <code>c_min_override</code>, the Ultra Low validation result can come from any point you designate in
+1–<code>C_min</code>; without it, it comes from the point at <code>C_min</code> (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#43-accuracy-metric">§4.3</a>).</p>
+<div class="admonition warning">
+<p class="admonition-title">Agentic: inline accuracy at every point</p>
+<p>Every agentic point, submitter's-choice points included, also reports an <strong>inline</strong> score from
+its own performance run, and each must pass on its own. Inline scores don't count toward the
+four validation runs and aren't part of the SWE-bench mean (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#43-accuracy-metric">§4.3</a>).</p>
+</div>
 <table>
 <thead>
 <tr>
@@ -2172,7 +2189,7 @@ tolerance (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_ru
 </table>
 <div class="admonition question">
 <p class="admonition-title">The targets are not published</p>
-<p>The per-benchmark targets are marked <code>[WIP]</code> in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#298-accuracy-gate">§2.9.8</a>. For the legacy benchmarks
+<p>The per-benchmark targets are marked <code>[WIP]</code> in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#298-accuracy-gate">§2.9.8</a>. For the legacy benchmarks
 the checker gates against the MLPerf Inference targets (see <a href="../../reference/benchmarks/#accuracy-targets">Benchmarks and
 models</a>). For the agentic benchmarks it uses the
 targets in the client's agentic README. Tracked as <strong>C2</strong> in <a href="../../help/open-questions/">Open
@@ -2180,24 +2197,30 @@ questions</a>.</p>
 </div>
 <h2 id="seeds">Seeds<a class="headerlink" href="#seeds" title="Permanent link">&para;</a></h2>
 <p><span class="twemoji" style="color:#c62828"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 13h-2V7h2m-2 8h2v2h-2m4.73-14H8.27L3 8.27v7.46L8.27 21h7.46L21 15.73V8.27z"/></svg></span> Every point records the <strong>same</strong> published seed
-set, adopted within its window and bound for the life of the submission (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#46-seed-rotation">Submission Rules
+set, adopted within its window and bound for the life of the submission (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#46-seed-rotation">Submission Rules
 §4.6</a>). The checker tests this as <code>seed-set-consistency</code> and <code>seed-set-membership</code>; the
-exact test, including the rule for amendments, is the <em>Seed-set validity</em> row of <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#91-automated-checks">§9.1</a>.
+exact test, including the rule for amendments, is the <em>Seed-set validity</em> row of <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#91-automated-checks">§9.1</a>.
 The per-query salt is seeded from the same set and has its own requirements in
-<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#2951-salting-mechanism">§2.9.5.1</a>.</p>
+<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#2951-salting-mechanism">§2.9.5.1</a>.</p>
 <h2 id="consistency-across-the-frontier">Consistency across the frontier<a class="headerlink" href="#consistency-across-the-frontier" title="Permanent link">&para;</a></h2>
 <p>Same model, endpoint configuration, software stack and seed set at <strong>every</strong> point (<em>Configuration
-consistency</em> in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#91-automated-checks">§9.1</a>). The checker also requires the same dataset
+consistency</em> in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#91-automated-checks">§9.1</a>). The checker also requires the same dataset
 (<code>config-consistency-dataset</code>). Every point's <code>system_desc.json</code> must describe the same system, and
-the whole frontier uses one provisioned power figure (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#453-normalized-metric">§4.5.3</a>). If you use speculative
+the whole frontier uses one <code>system_power.json</code>, and only the per-point node count may vary
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#453-normalized-metric">§4.5.3</a>). If you use speculative
 decoding, it's the same drafter at every point. Freeze the stack before the first run.</p>
 <h2 id="power-normalization">Power normalization<a class="headerlink" href="#power-normalization" title="Permanent link">&para;</a></h2>
 <p>Standardized results, <abbr title="Client on Prem">CoP</abbr> and <abbr title="Client over Network">CoN</abbr>, are normalised by <strong>provisioned power</strong>, estimated from the rated
-power of CPUs, accelerators and scale-up switches plus a fixed overhead. The model is in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#power-model">Power
+power of CPUs, accelerators, scale-up switches and, for multi-node systems, scale-out NICs, plus a
+fixed overhead, with scale-out switch power added outside that overhead. The model is in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#power-model">Power
 Model</a>, the evidence standard and what MLCommons does with gaps in
-<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#methodology">Methodology</a>, partial racks and nodes in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#4521-rack-level-node-scaling">§4.5.2.1</a>, and
-the metric and why the figure is fixed per system in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#453-normalized-metric">§4.5.3</a>. <abbr title="Research, Development and Internal">RDI</abbr> may report it;
+<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#methodology">Methodology</a>, partial racks, mixed racks and node rounding in
+<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#4521-rack-level-node-scaling">§4.5.2.1</a>, and the per-point metric in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#453-normalized-metric">§4.5.3</a>. <abbr title="Research, Development and Internal">RDI</abbr> may report it;
 Serviced is deferred.</p>
+<p>Each point is normalized per node set. Run every point with as much of the provisioned hardware
+engaged as fits (data-parallel replication, <code>DP</code>); a shortfall goes in <code>dp_shortfall</code> in <code>point.yaml</code>
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#453-normalized-metric">§4.5.3</a>). A multi-node, rack-scale or heterogeneous system needs a complete
+<code>system_power.json</code>.</p>
 <table>
 <thead>
 <tr>
@@ -2211,8 +2234,8 @@ Serviced is deferred.</p>
 <td>rule <code>power-descriptor</code></td>
 </tr>
 <tr>
-<td><code>system_tps_per_kw = system_tps / provisioned_power_kw</code></td>
-<td>rule <code>metric-consistency-tps-per-kw</code></td>
+<td><code>system_tps_per_kw = system_tps / point_power_kw</code></td>
+<td>rule <code>metric-consistency-tps-per-kw</code>; the CLI release this page was verified against checks <code>system_tps / provisioned_power_kw</code></td>
 </tr>
 <tr>
 <td>Values you leave out are estimated by MLCommons and the result tagged <strong>"MLC Estimated Power"</strong></td>
@@ -2224,27 +2247,27 @@ Serviced is deferred.</p>
 <div class="admonition warning">
 <p class="admonition-title">Section 4.5 is pending ratification</p>
 <p>The tiers, overhead fractions, reference components and even the metric's name and units are
-marked as subject to change (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#45-performance-normalization">§4.5</a>).</p>
+marked as subject to change (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#45-performance-normalization">§4.5</a>).</p>
 </div>
 <h2 id="disclosure-by-division">Disclosure by division<a class="headerlink" href="#disclosure-by-division" title="Permanent link">&para;</a></h2>
 <p>What each division has to disclose (source code, hardware, parallelism mapping, software stack) is
-tabulated in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#27-transparency-requirements">§2.7 Transparency Requirements</a>. The minimum software list for Standardized
-and <abbr title="Research, Development and Internal">RDI</abbr> is in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#84-software-disclosure">§8.4</a>. Serviced additionally discloses pricing and rate limits
-(<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#231-rules">§2.3.1</a>).</p>
+tabulated in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#27-transparency-requirements">§2.7 Transparency Requirements</a>. The minimum software list for Standardized
+and <abbr title="Research, Development and Internal">RDI</abbr> is in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#84-software-disclosure">§8.4</a>. Serviced additionally discloses pricing and rate limits
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#231-rules">§2.3.1</a>).</p>
 <h2 id="reproducibility">Reproducibility<a class="headerlink" href="#reproducibility" title="Permanent link">&para;</a></h2>
 <p>Standardized must be reproducible by a third party on a third-party system; Serviced on the public
-endpoint; <abbr title="Research, Development and Internal">RDI</abbr> has no requirement (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#26-reproducibility-requirements">§2.6</a>). The variability margins reviewers apply (10%
-independent re-run, 5% same system, throughput only) are in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#reproducibility-expectations">Reproducibility
+endpoint; <abbr title="Research, Development and Internal">RDI</abbr> has no requirement (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#26-reproducibility-requirements">§2.6</a>). The variability margins reviewers apply (10%
+independent re-run, 5% same system, throughput only) are in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#reproducibility-expectations">Reproducibility
 Expectations</a>.</p>
 <h2 id="tokenization">Tokenization<a class="headerlink" href="#tokenization" title="Permanent link">&para;</a></h2>
 <p>Official output token counts come from the <strong>client-side reference tokenizer</strong>, applied once to the
 reconstructed response through the model's reference chat template, not from your serving stack
-(<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#28-tokenizer-rules">§2.8</a>). Visible output, tool calls and reasoning all count.</p>
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#28-tokenizer-rules">§2.8</a>). Visible output, tool calls and reasoning all count.</p>
 <div class="admonition danger">
 <p class="admonition-title">Padding and duplication invalidate the point</p>
 <p>Duplicating content across response fields, or padding any field, to inflate token counts
-invalidates the affected measurement point (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#28-tokenizer-rules">§2.8</a>). Reviewers also look for leading
-content emitted only to stop the <abbr title="Time To First Token">TTFT</abbr> clock (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#92-manual-review-focus-areas">§9.2</a>).</p>
+invalidates the affected measurement point (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#28-tokenizer-rules">§2.8</a>). Reviewers also look for leading
+content emitted only to stop the <abbr title="Time To First Token">TTFT</abbr> clock (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#92-manual-review-focus-areas">§9.2</a>).</p>
 </div>
 <h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
 <ul>
@@ -2253,13 +2276,14 @@ content emitted only to stop the <abbr title="Time To First Token">TTFT</abbr> c
 <li><a href="../../reference/compliance-checks/">Compliance checks</a> — rule ID to clause cross-walk</li>
 </ul>
 <div class="admonition danger">
-<p class="admonition-title">These rules are a working draft</p>
-<p>MLPerf Endpoints v1.0 rules are on an active development branch. Sections marked
-<code>[TENTATIVE]</code>, <code>[WIP]</code>, <code>[WG Open Item]</code> or <code>[WG Decision Required]</code> upstream can still
-change. Before committing hardware time to a submission, read
+<p class="admonition-title">These rules can still change</p>
+<p>The MLPerf Endpoints v1.0 rules are published on the policy repository's <code>main</code> branch, and
+working-group changes are still merged into it. Sections marked <code>[TENTATIVE]</code>, <code>[WIP]</code>,
+<code>[WG Open Item]</code> or <code>[WG Decision Required]</code> upstream are the most likely to move. Before
+committing hardware time to a submission, read
 <a href="../../help/open-questions/">Open questions and WIP rules</a>.</p>
 </div>
-<p><em>Last verified against: <code>mlcommons/endpoints_policies@v1.0_rules_dev</code> (d2d9da6) and
+<p><em>Last verified against: <code>mlcommons/endpoints_policies@main</code> (4ba8224), 2026-10-30, and
 <code>mlcommons/endpoints-submission-cli@main</code> (a42a056, <code>v1.1.0.0</code>), 2026-10-02.</em></p>
 
 

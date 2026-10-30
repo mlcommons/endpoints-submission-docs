@@ -1993,7 +1993,7 @@ Versions before <code>v1.0.1.0</code> lack the Offline, power, accuracy-coverage
 rules, and versions before <code>v1.1.0.0</code> don't know the agentic models or their accuracy targets.</p>
 <div class="admonition danger">
 <p class="admonition-title">Week 0 failures reject the submission</p>
-<p>A submission that fails any automated check by the end of Week 0 is rejected (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#61-automated-compliance-week-0">§6.1 of the
+<p>A submission that fails any automated check by the end of Week 0 is rejected (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#61-automated-compliance-week-0">§6.1 of the
 Submission Rules</a>). You resubmit as a <strong>new</strong> submission — there is no in-place
 patching, and you lose your cohort slot.</p>
 </div>
@@ -2288,7 +2288,7 @@ and <code>region-basis</code> (no parsable <code>point.yaml</code>) can also fai
 <p class="admonition-title">The 10% margin does not satisfy High Concurrency</p>
 <p>A point in <code>C_max + 1 … ceil(1.10 × C_max)</code> is in its own region. It passes
 <code>concurrency-in-range</code> but does <strong>not</strong> count toward <code>high-concurrency-coverage</code>. The rules say
-a dedicated Offline run counts toward no region (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#572-relationship-to-maximum-supported-concurrency">§5.7.2</a>), but the checker's
+a dedicated Offline run counts toward no region (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#572-relationship-to-maximum-supported-concurrency">§5.7.2</a>), but the checker's
 coverage checks don't exclude it: a dedicated run at exactly <code>C_max</code> is counted as High
 Concurrency.</p>
 </div>
@@ -2642,7 +2642,7 @@ seed set. The four-cohort adoption test is not reapplied using the amendment's l
 </tr>
 </tbody>
 </table>
-<p><strong>Accuracy has no variability allowance</strong> at any stage (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#reproducibility-expectations">Reproducibility
+<p><strong>Accuracy has no variability allowance</strong> at any stage (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#reproducibility-expectations">Reproducibility
 Expectations</a> in the Submission Rules).</p>
 <div class="admonition note">
 <p class="admonition-title">Agentic models have their own accuracy rules</p>
@@ -2664,7 +2664,7 @@ families. Those sections are not present in the current rules document — the c
 content is in §6.6, §8.5 and §9.1. The clause column above maps to the rules as they actually
 are. Tracked as <strong>B3</strong> in <a href="../../help/open-questions/">Open questions</a>.</p>
 </div>
-<p><em>Last verified against: <code>mlcommons/endpoints_policies@v1.0_rules_dev</code> (d2d9da6) and
+<p><em>Last verified against: <code>mlcommons/endpoints_policies@main</code> (1818269) and
 <code>mlcommons/endpoints-submission-cli@main</code> (a42a056, <code>v1.1.0.0</code>), 2026-10-02.</em></p>
 
 

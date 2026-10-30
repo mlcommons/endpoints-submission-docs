@@ -2010,12 +2010,12 @@ responses so <abbr title="Time To First Token">TTFT</abbr> and <abbr title="Time
 those runs; a dedicated Offline run doesn't need them.</p>
 </details>
 <details class="failure">
-<summary>The run ends far sooner than the region minimum</summary>
+<summary>The run ends far sooner than the minimum duration</summary>
 <p><strong>Cause:</strong> sample-count sizing. With no explicit count and no minimum issue duration, the client
 issues the dataset <strong>once</strong> and stops.</p>
 <p><strong>Fix:</strong> set <code>settings.runtime.n_samples_to_issue</code>, a multiple of the dataset size, so the run
-sustains 600 s (Ultra Low) or 1,200 s (other regions) of steady state (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#62-minimum-run-duration">§6.2 of the
-rules</a>).</p>
+sustains its minimum steady state: 600 s at concurrency 1–32, otherwise 1,200 s, or 2,400 s for
+agentic benchmarks (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#62-minimum-run-duration">§6.2 of the rules</a>).</p>
 <p>Priority order: <code>n_samples_to_issue</code> &gt; Poisson QPS × min issue duration &gt; dataset size.</p>
 </details>
 <details class="failure">
@@ -2030,7 +2030,7 @@ rules</a>).</p>
 <code>messages</code>, or multimodal content parts, cannot be salted, and the client validates every sample
 up front rather than shipping an unsalted payload.</p>
 <p><strong>Fix:</strong> use a dataset with a text <code>prompt</code>, or disable the warmup salt, but if warmup uses the
-performance dataset, <strong>salting is mandatory</strong> (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#631-prohibited-warmup-data">§6.3.1 of the rules</a>), so the
+performance dataset, <strong>salting is mandatory</strong> (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#631-prohibited-warmup-data">§6.3.1 of the rules</a>), so the
 dataset must support it.</p>
 </details>
 <details class="failure">
@@ -2116,19 +2116,19 @@ component group a total can be computed from.</p>
 </details>
 <details class="failure">
 <summary><code>approved-drafter</code> fails</summary>
-<p><strong>Cause:</strong> the point declares <code>speculative_decoding</code>, and the drafter isn't on the benchmark's
-approved list. Approved heads exist only for the agentic benchmarks, and the checker's list is
-still empty, so every drafter fails for now.</p>
-<p><strong>Fix:</strong> re-run the point without speculative decoding.</p>
+<p><strong>Cause:</strong> the point declares <code>speculative_decoding</code>, and the drafter is neither on the
+benchmark's <a href="https://github.com/mlcommons/endpoints-submission-cli/blob/main/src/submission_checker/data/approved_drafters.yaml">approved list</a> nor a native head of an approved checkpoint
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#294-speculative-decoding">§2.9.4</a>). Checker <code>v1.1.0.0</code> ships an empty list, so every drafter fails there.</p>
+<p><strong>Fix:</strong> use a later checker release, or re-run the point without speculative decoding.</p>
 </details>
 <details class="failure">
 <summary>A concurrency-coverage check fails</summary>
 <p><strong>Cause:</strong> no point in one of Low, Medium or High Concurrency — often because <code>C_min</code> changed.</p>
 <p><strong>Fix:</strong>
-<div class="highlight"><pre><span></span><code>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">"from submission_checker.cli import main; main()"</span><span class="w"> </span>regions<span class="w"> </span>--max-concurrency<span class="w"> </span>&lt;C_max&gt;<span class="w"> </span>--min-concurrency<span class="w"> </span>&lt;your<span class="w"> </span>lowest<span class="w"> </span>point&gt;
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">"from submission_checker.cli import main; main()"</span><span class="w"> </span>regions<span class="w"> </span>--max-concurrency<span class="w"> </span>&lt;C_max&gt;<span class="w"> </span>--min-concurrency<span class="w"> </span>&lt;C_min&gt;
 </code></pre></div>
-Remember <code>C_min</code> is <strong>derived from your own lowest point</strong>, so dropping that point moves every
-other boundary. And a point in the 10% margin does <strong>not</strong> satisfy High Concurrency.</p>
+Unless you declare <code>c_min_override</code>, <code>C_min</code> is your lowest point, so dropping that point moves
+every other boundary. And a point in the 10% margin does <strong>not</strong> satisfy High Concurrency.</p>
 </details>
 <details class="failure">
 <summary><code>region-placement</code> warns</summary>
@@ -2211,14 +2211,14 @@ passes. Older CLIs set <code>REVIEW_PENDING</code> themselves.</p>
 <summary>You missed the 3-business-day response window</summary>
 <p><strong>Cause:</strong> no one was watching the review thread.</p>
 <p><strong>Fix:</strong> respond immediately. A penalty already incurred stays, but responding stops further
-escalation. At 10 business days the submission is withdrawn (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#63-peer-review-weeks-13">Submission Rules
+escalation. At 10 business days the submission is withdrawn (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#63-peer-review-weeks-13">Submission Rules
 §6.3</a>).</p>
 <p>See <a href="../../workflow/after-submission/">After you submit</a>.</p>
 </details>
 <details class="failure">
 <summary>A measurement point turns out to be wrong during review</summary>
 <p><strong>Cause:</strong> an error found after compliance passed.</p>
-<p><strong>Fix:</strong> results may <strong>not</strong> be changed during peer review (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#81-corrections">Submission Rules
+<p><strong>Fix:</strong> results may <strong>not</strong> be changed during peer review (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#81-corrections">Submission Rules
 §8.1</a>). Withdraw the point (<code>submissions remove-run</code>) or the whole submission. A
 withdrawn point doesn't count toward the minimum and can't be replaced.</p>
 </details>

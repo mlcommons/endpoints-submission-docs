@@ -1905,21 +1905,21 @@ fault. The fix is to improve that page and delete the entry, not to grow this on
 <dl>
 <dt><strong>Do I have to be an MLCommons member to submit?</strong></dt>
 <dd><strong>Unconfirmed.</strong> The rules require the <a href="../../understand/eligibility/cla-process/">MLCommons <abbr title="Contributor License Agreement">CLA</abbr></a> from the <em>individual</em> making the
-submission (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#51-registration">Submission Rules §5.1</a>), but no clause makes <a href="../../understand/eligibility/membership/">organisational
+submission (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#51-registration">Submission Rules §5.1</a>), but no clause makes <a href="../../understand/eligibility/membership/">organisational
 membership</a> a precondition. Ask MLCommons before
 planning around either answer. See <a href="../../understand/eligibility/">Membership, <abbr title="The MLCommons submission portal that issues API tokens">PRISM</abbr> and
 eligibility</a> and <strong>A1</strong> in <a href="../open-questions/">Open
 questions</a>.</dd>
 <dt><strong>Does everyone in my organisation need to sign the <abbr title="Contributor License Agreement">CLA</abbr>?</strong></dt>
 <dd>No. Only the individual making the submission signs it
-(<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#51-registration">Submission Rules §5.1</a>).</dd>
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#51-registration">Submission Rules §5.1</a>).</dd>
 <dt><strong>Is there a registration deadline?</strong></dt>
 <dd>No. The general MLPerf eight-week advance registration doesn't apply
-(<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#51-registration">Submission Rules §5.1</a>). Registration is having a <a href="../../understand/eligibility/prism-api-key/"><abbr title="The MLCommons submission portal that issues API tokens">PRISM</abbr> API
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#51-registration">Submission Rules §5.1</a>). Registration is having a <a href="../../understand/eligibility/prism-api-key/"><abbr title="The MLCommons submission portal that issues API tokens">PRISM</abbr> API
 key</a>.</dd>
 <dt><strong>When is the submission deadline?</strong></dt>
 <dd>There isn't one; submissions are rolling. What matters is the <strong>cohort cutoff</strong>: automated
-checks must pass at least one business day before a publication date (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#43-submission-to-publication-alignment">Submission Rules
+checks must pass at least one business day before a publication date (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#43-submission-to-publication-alignment">Submission Rules
 §4.3</a>).</dd>
 </dl>
 <h2 id="scope-of-a-submission">Scope of a submission<a class="headerlink" href="#scope-of-a-submission" title="Permanent link">&para;</a></h2>
@@ -1930,12 +1930,12 @@ can carry several systems and models, and each becomes its own result.</dd>
 <dt><strong>How many points do I need?</strong></dt>
 <dd>For a non-agentic benchmark, 8 to 32: <code>1 + 3 + 3</code> fixed-concurrency points plus an Offline
 point. If you elect your <code>C_max</code> point as the Offline result, 7 is enough. Agentic benchmarks
-need 7 and have no Offline point. See <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#53-minimum-submission-requirements">§5.3 of the rules</a> and <a href="../../workflow/plan-your-curve/">Plan your Pareto
+need 7 and have no Offline point. See <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#53-minimum-submission-requirements">§5.3 of the rules</a> and <a href="../../workflow/plan-your-curve/">Plan your Pareto
 frontier</a>.</dd>
 <dt><strong>Do I really need a separate Offline run?</strong></dt>
 <dd>No. You can elect your <code>C_max</code> point as the Offline result instead, provided you have a point
 at exactly <code>C_max</code>. You give up whatever extra throughput an unpaced run might have shown, and
-save a run plus its accuracy validation. See <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#572-relationship-to-maximum-supported-concurrency">§5.7.2 of the rules</a> and <a href="../../workflow/plan-your-curve/#6-decide-how-to-meet-the-offline-requirement">step
+save a run plus its accuracy validation. See <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#572-relationship-to-maximum-supported-concurrency">§5.7.2 of the rules</a> and <a href="../../workflow/plan-your-curve/#6-decide-how-to-meet-the-offline-requirement">step
 3</a>.</dd>
 <dt><strong>Can I add points after submitting?</strong></dt>
 <dd><strong>No.</strong> The post-submission window for adding measurement points was removed. There is no
@@ -1943,95 +1943,95 @@ save a run plus its accuracy validation. See <a href="https://github.com/mlcommo
 rules still mention the old window; see <strong>B2</strong> in <a href="../open-questions/">Open questions</a>.</dd>
 <dt><strong>Can I remove a bad point?</strong></dt>
 <dd>Yes, with <code>submissions remove-run</code> during peer review. But withdrawn points do <strong>not</strong> count
-toward the minimum (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#81-corrections">Submission Rules §8.1</a>) and the shortfall <strong>cannot be
+toward the minimum (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#81-corrections">Submission Rules §8.1</a>) and the shortfall <strong>cannot be
 repaired</strong> by adding a replacement. This is why planning a spare point matters.</dd>
 <dt><strong>Do I need an accuracy run per point?</strong></dt>
 <dd>No. You need one at five points: the four mandatory region points and the Offline point, or
-four for agentic benchmarks (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#53-minimum-submission-requirements">§5.3 of the rules</a>). How each must pass, single-turn
-versus multi-turn, is in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#43-accuracy-metric">§4.3</a>.</dd>
+four for agentic benchmarks (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#53-minimum-submission-requirements">§5.3 of the rules</a>). How each must pass, single-turn
+versus multi-turn, is in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#43-accuracy-metric">§4.3</a>.</dd>
 </dl>
 <h2 id="rules">Rules<a class="headerlink" href="#rules" title="Permanent link">&para;</a></h2>
 <dl>
 <dt><strong>Is response caching allowed?</strong></dt>
 <dd>No. Every request must execute the forward pass
-(<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#299-qa-model-equivalence-clarifications">§2.9.9 Q1 of the rules</a>).</dd>
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#299-qa-model-equivalence-clarifications">§2.9.9 Q1 of the rules</a>).</dd>
 <dt><strong>Is <abbr title="Key/Value">KV</abbr>-cache reuse across queries allowed?</strong></dt>
 <dd><strong>Yes</strong>, on a per-query salted token stream. This is the main difference from MLPerf Inference.
-See <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#295-kv-cache-rules">§2.9.5 of the rules</a> and <a href="../../rules/model-equivalence/#kv-cache-the-big-difference">Model
+See <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#295-kv-cache-rules">§2.9.5 of the rules</a> and <a href="../../rules/model-equivalence/#kv-cache-the-big-difference">Model
 equivalence</a>.</dd>
 <dt><strong>Can I use a different serving framework than the reference?</strong></dt>
 <dd>Yes, if it conforms to the rest of the rules and meets the Available definition
-(<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#299-qa-model-equivalence-clarifications">§2.9.9 Q3 of the rules</a>).</dd>
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#299-qa-model-equivalence-clarifications">§2.9.9 Q3 of the rules</a>).</dd>
 <dt><strong>Can I quantize?</strong></dt>
 <dd>Yes. Post-training quantization is permitted under the conditions in
-<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#293-model-weight-rules">§2.9.3 of the rules</a>.</dd>
+<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#293-model-weight-rules">§2.9.3 of the rules</a>.</dd>
 <dt><strong>Can I use speculative decoding?</strong></dt>
-<dd>Only with a drafter on the benchmark's approved list. The reference repository lists approved speculative-decoding heads for the agentic benchmarks only, in the <a href="https://github.com/mlcommons/endpoints/blob/main/examples/10_Agentic_Inference/README.md">agentic example README</a>. There is none for Llama 3.1 8B, GPT-OSS 120B or DeepSeek-R1. The checker's bundled list is still empty, so for now it rejects any point that uses speculative decoding. See
-<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#294-speculative-decoding">§2.9.4 of the rules</a> and <strong>C10</strong> in <a href="../open-questions/">Open questions</a>.</dd>
+<dd>Only with a drafter on the benchmark's <a href="https://github.com/mlcommons/endpoints-submission-cli/blob/main/src/submission_checker/data/approved_drafters.yaml">approved list</a>, or a native head that ships in an approved checkpoint. Checker <code>v1.1.0.0</code> ships an empty list and rejects every drafter, so use a later release. See
+<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#294-speculative-decoding">§2.9.4 of the rules</a> and <strong>C10</strong> in <a href="../open-questions/">Open questions</a>.</dd>
 <dt><strong>Can I disable speculative decoding on some points?</strong></dt>
 <dd>Yes. The drafter is fixed across the frontier, but its configuration can vary per point, including
-off (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#294-speculative-decoding">§2.9.4</a>). A drafter that ships in the canonical checkpoint must stay in your
-derived checkpoint (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#293-model-weight-rules">§2.9.3</a>).</dd>
+off (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#294-speculative-decoding">§2.9.4</a>). A drafter that ships in the canonical checkpoint must stay in your
+derived checkpoint (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#293-model-weight-rules">§2.9.3</a>).</dd>
 <dt><strong>Do I have to report power?</strong></dt>
 <dd>For Standardized, yes, as provisioned power rather than a meter reading
-(<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#45-performance-normalization">§4.5 of the rules</a>). The checker wants a <code>system_power.json</code> for every system
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#45-performance-normalization">§4.5 of the rules</a>). The checker wants a <code>system_power.json</code> for every system
 whatever your division (<strong>B11</strong> in <a href="../open-questions/">Open questions</a>). See <a href="../../rules/requirements/#power-normalization">Power
 normalization</a>.</dd>
 <dt><strong>Does passing the accuracy gate make an optimisation legal?</strong></dt>
-<dd>No. Accuracy is <strong>necessary, not sufficient</strong> (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#298-accuracy-gate">§2.9.8 of the rules</a>).</dd>
+<dd>No. Accuracy is <strong>necessary, not sufficient</strong> (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#298-accuracy-gate">§2.9.8 of the rules</a>).</dd>
 </dl>
 <h2 id="publication">Publication<a class="headerlink" href="#publication" title="Permanent link">&para;</a></h2>
 <dl>
 <dt><strong>Can I publish before review finishes?</strong></dt>
-<dd>Yes, by opting in to provisional publication at submission time. <strong>The choice is irrevocable</strong> (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#62-publication-modes">Submission Rules §6.2</a>). Provisional publication itself is in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#623-provisional-publication">§6.2.3</a>.</dd>
+<dd>Yes, by opting in to provisional publication at submission time. <strong>The choice is irrevocable</strong> (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#62-publication-modes">Submission Rules §6.2</a>). Provisional publication itself is in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#623-provisional-publication">§6.2.3</a>.</dd>
 <dt><strong>Can I delay publication?</strong></dt>
 <dd>Yes, with an embargo date declared at submission. What it holds back depends on your
-publication mode; see <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#publication-embargo">Submission Rules §4.2</a> and
-<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#62-publication-modes">§6.2</a>.</dd>
+publication mode; see <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#publication-embargo">Submission Rules §4.2</a> and
+<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#62-publication-modes">§6.2</a>.</dd>
 <dt><strong>Can I be audited?</strong></dt>
 <dd>Yes. From the moment you're nominated you must keep the system as submitted. See
-<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#10-audit-process">Submission Rules §10</a> and <a href="../../understand/how-submission-works/#audits">Audits</a>.</dd>
+<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#10-audit-process">Submission Rules §10</a> and <a href="../../understand/how-submission-works/#audits">Audits</a>.</dd>
 <dt><strong>What happens if my Preview system does not become available in time?</strong></dt>
 <dd>The result is <strong>invalidated and removed</strong> at the next cohort, unless you got the one extension
-allowed. See <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#735-preview-tracker-and-expiration">Submission Rules §7.3.5</a> and <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#736-extensions">§7.3.6</a>.</dd>
+allowed. See <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#735-preview-tracker-and-expiration">Submission Rules §7.3.5</a> and <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#736-extensions">§7.3.6</a>.</dd>
 <dt><strong>Can I relabel a Preview result as Available without re-running?</strong></dt>
 <dd>Only if the hardware and software configuration did not change materially. If it did, you must
-re-run (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#737-transition-to-available">Submission Rules §7.3.7</a>).</dd>
+re-run (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#737-transition-to-available">Submission Rules §7.3.7</a>).</dd>
 <dt><strong>Can I fix an error in a published result?</strong></dt>
 <dd>No. The affected points or the whole submission are invalidated instead
-(<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#81-corrections">Submission Rules §8.1</a>).</dd>
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#81-corrections">Submission Rules §8.1</a>).</dd>
 </dl>
 <h2 id="review">Review<a class="headerlink" href="#review" title="Permanent link">&para;</a></h2>
 <dl>
 <dt><strong>Who reviews my submission?</strong></dt>
-<dd>The review committee for your cohort, plus one designated reviewer assigned at random from
-outside your organisation. See <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#21-structure">Submission Rules §2.1</a> and <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#26-peer-review-process">§2.6</a>.</dd>
+<dd>The review committee for your submission, plus one designated reviewer assigned at random from
+outside your organisation. See <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#21-structure">Submission Rules §2.1</a> and <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#26-peer-review-process">§2.6</a>.</dd>
 <dt><strong>Is a competitor reviewing me a conflict of interest?</strong></dt>
 <dd>No, and neither are CSP/OEM/ODM partnerships
-(<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#24-conflict-of-interest">Submission Rules §2.4</a>).</dd>
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#24-conflict-of-interest">Submission Rules §2.4</a>).</dd>
 <dt><strong>How fast do I have to respond to an objection?</strong></dt>
 <dd><strong>3 business days</strong>, with local public holidays exempt. Penalties escalate to withdrawal at 10
-business days and are non-reversible (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#63-peer-review-weeks-13">Submission Rules §6.3</a>).</dd>
+business days and are non-reversible (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#63-peer-review-weeks-13">Submission Rules §6.3</a>).</dd>
 <dt><strong>Can I improve my results during review?</strong></dt>
 <dd>Only <strong>when the review committee requests it</strong>, and any improvement to performance metrics must
-be justified (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#updating-submissions-during-peer-review">Submission Rules §6.3</a>).</dd>
+be justified (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#updating-submissions-during-peer-review">Submission Rules §6.3</a>).</dd>
 <dt><strong>What if someone objects after review closes?</strong></dt>
 <dd>Only on limited grounds, and reproducibility isn't one of them: a reproducibility concern
-becomes an audit nomination instead. See <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#66-late-objections-post-week-6">Submission Rules §6.6</a>.</dd>
+becomes an audit nomination instead. See <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#66-late-objections-post-week-6">Submission Rules §6.6</a>.</dd>
 <dt><strong>How long does my result stay challengeable?</strong></dt>
 <dd>Until the later of the next audit vote or <strong>90 days</strong> after finalization. You must keep the
-system available for audit until then, and longer if you're nominated (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#scope-and-standing-for-late-concerns">Submission Rules
+system available for audit until then, and longer if you're nominated (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#scope-and-standing-for-late-concerns">Submission Rules
 §6.6</a>).</dd>
 </dl>
 <h2 id="naming-and-messaging">Naming and messaging<a class="headerlink" href="#naming-and-messaging" title="Permanent link">&para;</a></h2>
 <dl>
 <dt><strong>What do I call my result?</strong></dt>
 <dd>Unqualified "MLPerf Endpoints" means <strong>Standardized</strong>. Serviced, <abbr title="Research, Development and Internal">RDI</abbr> and Preview results carry a
-qualifier. See <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#223-result-naming">§2.2.3</a>, <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#232-result-naming">§2.3.2</a> and <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#242-result-naming">§2.4.2</a> of the
-rules, and <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#738-permitted-uses-of-preview-results">Submission Rules §7.3.8</a>.</dd>
+qualifier. See <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#223-result-naming">§2.2.3</a>, <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#232-result-naming">§2.3.2</a> and <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#242-result-naming">§2.4.2</a> of the
+rules, and <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#738-permitted-uses-of-preview-results">Submission Rules §7.3.8</a>.</dd>
 <dt><strong>Do I have to say anything when quoting a provisional result?</strong></dt>
 <dd>Yes, the MLCommons footnote saying results are preliminary
-(<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#623-provisional-publication">Submission Rules §6.2.3</a>).</dd>
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#623-provisional-publication">Submission Rules §6.2.3</a>).</dd>
 </dl>
 
 

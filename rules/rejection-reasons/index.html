@@ -1904,8 +1904,8 @@ supplies real data, this page should be rewritten from support threads and revie
 and speculative entries deleted.</p>
 </div>
 <h2 id="the-hard-stops">The hard stops<a class="headerlink" href="#the-hard-stops" title="Permanent link">&para;</a></h2>
-<p>These have a failure action of <strong>reject</strong> in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#91-automated-checks">§9.1</a>. There is no patching in place: you
-correct and resubmit as a new submission (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#61-automated-compliance-week-0">Submission Rules §6.1</a>).</p>
+<p>These have a failure action of <strong>reject</strong> in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#91-automated-checks">§9.1</a>. There is no patching in place: you
+correct and resubmit as a new submission (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#61-automated-compliance-week-0">Submission Rules §6.1</a>).</p>
 <table>
 <thead>
 <tr>
@@ -1927,8 +1927,23 @@ correct and resubmit as a new submission (<a href="https://github.com/mlcommons/
 </tr>
 <tr>
 <td><code>power-descriptor</code> fails</td>
-<td>No <code>system_power.json</code> for a system, or one with nothing a total can be derived from</td>
+<td>No <code>system_power.json</code> for a system, one with nothing a total can be derived from, or (per §9.1) one that doesn't conform to <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#appendix-e-system_powerjson-field-reference">Appendix E</a> and its <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#e7-validation">validation rules</a></td>
 <td>Author it — <a href="../../workflow/author-disclosures/#3-write-system_powerjson-for-each-system">step 5</a></td>
+</tr>
+<tr>
+<td>Per-point power checks (§9.1: <em>Per-point node declaration</em>, <em>Per-point denominator</em>, <em>Maximal engagement</em>)</td>
+<td>A declared <code>nodes_used</code> names an unknown node set, exceeds what is provisioned, or disagrees with the parallelism in <code>system_desc.json</code>; a stored <code>system_tps_per_kw</code> differs from the recomputed value; or a point engaged fewer replicas than fit without a <code>dp_shortfall</code></td>
+<td>Correct <code>nodes_used</code>, or declare <code>dp_shortfall</code> — <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#453-normalized-metric">§4.5.3</a></td>
+</tr>
+<tr>
+<td><em>Accuracy run count</em> (§9.1)</td>
+<td>More or fewer accuracy validation results than required: 5 non-agentic, 4 agentic, one per mandatory point and none at a submitter's-choice point. An elected <code>C_max</code> point's run also covers Offline. Agentic inline scores don't count</td>
+<td>Keep exactly that set — <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#43-accuracy-metric">§4.3</a></td>
+</tr>
+<tr>
+<td><em>C_min override</em> (§9.1)</td>
+<td><code>c_min_override</code> isn't an integer in 1–32, matches no submitted point, or isn't the same on every point</td>
+<td>Fix or drop it on every point — <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#maximum-supported-concurrency">§5.4</a></td>
 </tr>
 <tr>
 <td><code>*-concurrency-coverage</code> fails</td>
@@ -1937,8 +1952,8 @@ correct and resubmit as a new submission (<a href="https://github.com/mlcommons/
 </tr>
 <tr>
 <td><code>ultra-low-concurrency-coverage</code> fails</td>
-<td>No point at concurrency ≤ 32</td>
-<td>Run one in 1–32</td>
+<td>No point in Ultra Low Concurrency (1–<code>C_min</code>)</td>
+<td>Run one there — <a href="../../workflow/plan-your-curve/#2-understand-what-sets-c_min">step 3</a></td>
 </tr>
 <tr>
 <td><code>system-description-valid</code> or <code>region-computation</code> fails</td>
@@ -1952,7 +1967,7 @@ correct and resubmit as a new submission (<a href="https://github.com/mlcommons/
 </tr>
 <tr>
 <td><code>agentic-accuracy-inline</code> / <code>agentic-accuracy-swebench</code> / <code>agentic-osl-range</code> fails</td>
-<td>An agentic model missed its inline accuracy or output-length range at a point, or its mean SWE-bench score across the four regions is too low</td>
+<td>An agentic point has a missing or failing inline score or output length, or the mean SWE-bench score across the four regions is too low</td>
 <td>No tolerance. Fix the configuration and re-run — <a href="../../reference/benchmarks/#agentic-benchmarks">targets</a></td>
 </tr>
 <tr>
@@ -1982,13 +1997,13 @@ correct and resubmit as a new submission (<a href="https://github.com/mlcommons/
 </tr>
 <tr>
 <td><code>approved-drafter</code> / <code>drafter-approval-lead-time</code> fails</td>
-<td>A point used speculative decoding with a drafter not on the approved list, or approved too recently</td>
-<td>These reject the <strong>points</strong>. Approved heads exist for the agentic benchmarks only, and the checker's list is still empty, so for now re-run without speculation</td>
+<td>A point used a drafter that isn't on the <a href="https://github.com/mlcommons/endpoints-submission-cli/blob/main/src/submission_checker/data/approved_drafters.yaml">approved list</a> or a native head of an approved checkpoint, or was approved too recently</td>
+<td>These reject the <strong>points</strong>. Checker <code>v1.1.0.0</code> ships an empty list; use a later release, or re-run without speculation</td>
 </tr>
 </tbody>
 </table>
 <h2 id="flagged-by-the-rules-but-they-fail-the-local-check">Flagged by the rules, but they fail the local check<a class="headerlink" href="#flagged-by-the-rules-but-they-fail-the-local-check" title="Permanent link">&para;</a></h2>
-<p><a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#91-automated-checks">§9.1</a> only flags these, but the checker reports them as errors, and <code>submissions create</code>
+<p><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#91-automated-checks">§9.1</a> only flags these, but the checker reports them as errors, and <code>submissions create</code>
 stops on any error. Fix them before you submit.</p>
 <table>
 <thead>
@@ -2022,7 +2037,7 @@ stops on any error. Fix them before you submit.</p>
 <tr>
 <td><code>concurrency-in-range</code> fails</td>
 <td>A point sits outside every valid region</td>
-<td>Recompute boundaries — remember <code>C_min</code> is <strong>derived from your own lowest point</strong></td>
+<td>Recompute boundaries — <code>C_min</code> is your lowest point unless you declare <code>c_min_override</code>, which checkers before <code>v1.5.1.0</code> ignore</td>
 </tr>
 <tr>
 <td><code>warmup-present</code> fails</td>
@@ -2064,8 +2079,8 @@ stops on any error. Fix them before you submit.</p>
 <tbody>
 <tr>
 <td><code>point-duration</code> warns</td>
-<td>A point ran under its region's minimum steady-state duration</td>
-<td>Re-run at 600 s (Ultra Low) or 1,200 s</td>
+<td>A point ran under its minimum steady-state duration</td>
+<td>Re-run: 600 s at concurrency 1–32, otherwise 1,200 s (2,400 s agentic). Checkers before <code>v1.4.1.0</code> go by region, so a compliant point at 1–32 can still warn; check your version before re-running</td>
 </tr>
 <tr>
 <td><code>offline-ordering</code> warns</td>
@@ -2124,21 +2139,21 @@ stops on any error. Fix them before you submit.</p>
 <h2 id="rejections-that-come-from-judgement-not-checks">Rejections that come from judgement, not checks<a class="headerlink" href="#rejections-that-come-from-judgement-not-checks" title="Permanent link">&para;</a></h2>
 <p>Reviewers look for what automation cannot see: implausible frontier shapes, suspiciously uniform <abbr title="Time To First Token">TTFT</abbr>,
 fake first tokens, padded token counts, contaminated warmup, Offline reordering across passes, and
-system descriptions that don't match what ran. The full list is <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#92-manual-review-focus-areas">§9.2 of the rules</a>, and
-each concern becomes one of the objection types in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#68-types-of-objections">Submission Rules §6.8</a>, not a
+system descriptions that don't match what ran. The full list is <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#92-manual-review-focus-areas">§9.2 of the rules</a>, and
+each concern becomes one of the objection types in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#68-types-of-objections">Submission Rules §6.8</a>, not a
 checker rule. Power figures without a public, verifiable source
-(<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#methodology">Methodology</a>), the wrong division and the wrong availability status are
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#methodology">Methodology</a>), the wrong division and the wrong availability status are
 raised the same way.</p>
 <div class="admonition tip">
 <p class="admonition-title">Division and availability objections usually mean reclassification</p>
 <p>The committee may let you reclassify (Available to Preview, or to a different division) rather
-than withdraw (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#68-types-of-objections">Submission Rules §6.8</a>). That's the usual outcome.</p>
+than withdraw (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#68-types-of-objections">Submission Rules §6.8</a>). That's the usual outcome.</p>
 </div>
 <h2 id="the-rejection-nobody-plans-for">The rejection nobody plans for<a class="headerlink" href="#the-rejection-nobody-plans-for" title="Permanent link">&para;</a></h2>
 <div class="admonition danger">
 <p class="admonition-title">Not responding</p>
 <p>At <strong>10 business days</strong> without a response to a filed objection, your submission is
-<strong>withdrawn</strong> (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#63-peer-review-weeks-13">Submission Rules §6.3</a>). No rule was broken, no metric was wrong.
+<strong>withdrawn</strong> (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#63-peer-review-weeks-13">Submission Rules §6.3</a>). No rule was broken, no metric was wrong.
 This is the cheapest failure to avoid and it needs exactly one thing: a named person who is
 watching the review thread for six weeks. See <a href="../../workflow/after-submission/">After you
 submit</a>.</p>
@@ -2150,7 +2165,7 @@ page and <a href="https://github.com/mlcommons/endpoints_policies"><code>mlcommo
 disagree, <strong>the policy repository is correct and this page is a bug</strong>. Please
 <a href="https://github.com/mlcommons/endpoints-submission-docs/issues">report it</a>.</p>
 </div>
-<p><em>Last verified against: <code>mlcommons/endpoints_policies@v1.0_rules_dev</code> (d2d9da6) and
+<p><em>Last verified against: <code>mlcommons/endpoints_policies@main</code> (4ba8224), 2026-10-30, and
 <code>mlcommons/endpoints-submission-cli@main</code> (a42a056, <code>v1.1.0.0</code>), 2026-10-02.</em></p>
 
 

@@ -1812,15 +1812,28 @@
 </div>
 <p>The checker verifies that every point of a frontier describes the <strong>same</strong> system.</p>
 <h2 id="fields-and-template">Fields and template<a class="headerlink" href="#fields-and-template" title="Permanent link">&para;</a></h2>
-<p>The fields, and what each one means, are defined in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#82-system-description-system_descjson">rules §8.2</a>. There are two ways to
+<p>The fields, and what each one means, are defined in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#82-system-description-system_descjson">rules §8.2</a>. There are two ways to
 produce the file:</p>
 <ul>
 <li><strong>Capture it with <a href="https://docs.mlcommons.org/mlperf-sysinfo/"><code>mlperf-sysinfo</code></a>.</strong> It reads the
   machine under test and writes <code>system_desc.json</code> using its <code>endpoints</code> profile. How to install and
   run it is in its docs.</li>
-<li><strong>Copy the template</strong> in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#821-template-structure">§8.2.1</a>, which includes the nesting of <code>node_types</code> and
+<li><strong>Copy the template</strong> in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#821-template-structure">§8.2.1</a>, which includes the nesting of <code>node_types</code> and
   <code>accelerator_info</code>, and fill it in.</li>
 </ul>
+<div class="admonition note">
+<p class="admonition-title">Availability fields</p>
+<p><code>availability_url</code> is required when <code>"system_availability_status": "Available"</code>
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#737-transition-to-available">Submission Rules §7.3.7</a>). <code>target_availability_date</code>, an ISO 8601 date, is
+required when it is <code>Preview</code> (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#734-declaration-requirements">Submission Rules §7.3.4</a>).</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Optional <code>c_min_override</code></p>
+<p>Declares <code>C_min</code>, the top of the Ultra Low Concurrency region, instead of taking it from your
+lowest point. Put the same value in every point's file, or leave it out of all of them. The
+rules are under <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#maximum-supported-concurrency">Maximum Supported Concurrency in §5.4</a>; the §8.2.1 template
+leaves the field out.</p>
+</div>
 <div class="admonition warning">
 <p class="admonition-title"><code>tps_utilization</code> is computed</p>
 <p>The checker recomputes it against your own frontier (<code>tps-utilization</code>).</p>
@@ -1829,11 +1842,12 @@ produce the file:</p>
 <p class="admonition-title"><code>cooling</code> sets your power overhead</p>
 <p>The checker uses <code>cooling</code> to pick the overhead fraction for
 <a href="../system-power-json/"><code>system_power.json</code></a>: <code>0.30</code> for liquid-cooled, <code>0.50</code> for air-cooled.
-Leave it empty and <code>power-descriptor</code> fails.</p>
+Leave it empty and <code>power-descriptor</code> fails. It must also agree with the <code>cooling</code> in
+<code>system_power.json</code> (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#e2-top-level-fields">E.2</a>).</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">No <code>model_name</code> here</p>
-<p>The benchmark model name goes in <code>point.yaml</code> (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#83-measurement-point-yaml">§8.3</a>). §8.2 no longer lists it, and
+<p>The benchmark model name goes in <code>point.yaml</code> (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#83-measurement-point-yaml">§8.3</a>). §8.2 no longer lists it, and
 the checker ignores a <code>model_name</code> left in this file.</p>
 </div>
 <div class="admonition question">
@@ -1844,7 +1858,7 @@ before relying on it.</p>
 </div>
 <p>Provisioned power is <strong>not</strong> in this file. It goes in a separate, per-system
 <a href="../system-power-json/"><code>system_power.json</code></a>.</p>
-<p><em>Last verified against: <code>mlcommons/endpoints_policies@v1.0_rules_dev</code> (d2d9da6) and
+<p><em>Last verified against: <code>mlcommons/endpoints_policies@main</code> (4ba8224), 2026-10-30, and
 <code>mlcommons/endpoints-submission-cli@main</code> (a42a056, <code>v1.1.0.0</code>), 2026-10-02.</em></p>
 
 

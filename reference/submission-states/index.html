@@ -1984,8 +1984,9 @@ source. Tracked as <strong>C5</strong> in <a href="../../help/open-questions/">O
 </tr>
 </tbody>
 </table>
-<p>What happens in each phase: <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#65-review-timeline-summary">§6.5 of the Submission Rules</a>. Under provisional
-publication the clock starts differently, and an embargo delays review too (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#623-provisional-publication">§6.2.3</a>).</p>
+<p>What happens in each phase: <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#65-review-timeline-summary">§6.5 of the Submission Rules</a>. Under provisional
+publication the review eligibility date is the provisional publication date, and an embargo delays
+review too (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#623-provisional-publication">§6.2.3</a>).</p>
 <p>See <a href="../../understand/how-submission-works/">How submission works</a> and <a href="../../workflow/after-submission/">After you
 submit</a>.</p>
 <h2 id="tags-a-published-result-can-carry">Tags a published result can carry<a class="headerlink" href="#tags-a-published-result-can-carry" title="Permanent link">&para;</a></h2>
@@ -2016,17 +2017,18 @@ submit</a>.</p>
 </tr>
 <tr>
 <td><strong>Withdrawn</strong></td>
-<td>Post-finalization withdrawal — removed from active results, retained in the archive</td>
+<td>Removed after finalization under a rule (for example a failed audit or misrepresentation) — retained in the archive with the reason</td>
 </tr>
 </tbody>
 </table>
-<p>Where each is defined: <em>peer review pending</em> in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#623-provisional-publication">§6.2.3</a>, <em>Preview</em> in
-<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#73-preview">§7.3</a>, <em>Invalidated</em> in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#81-corrections">§8.1</a> and <em>Withdrawn</em> in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#82-withdrawal">§8.2</a> of the
-Submission Rules; <em>MLC Estimated Power</em> in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#452-proposed-endpoints-v10-normalization-methodology">rules §4.5.2</a>.</p>
+<p>Where each is defined: <em>peer review pending</em> in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#623-provisional-publication">§6.2.3</a>, <em>Preview</em> in
+<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#73-preview">§7.3</a>, <em>Invalidated</em> in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#81-corrections">§8.1</a> and <em>Withdrawn</em> in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#82-withdrawal">§8.2</a> of the
+Submission Rules; <em>MLC Estimated Power</em> in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#452-proposed-endpoints-v10-normalization-methodology">rules §4.5.2</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Pre-finalization withdrawal leaves no record</p>
-<p>Withdrawing before finalization leaves nothing in the archive; withdrawing after leaves a
-<em>Withdrawn</em> entry (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#82-withdrawal">§8.2 of the Submission Rules</a>).</p>
+<p>You can withdraw voluntarily only before finalization, and that leaves nothing in the archive.
+After finalization, results are removed only under a rule, and most removals stay archived with
+the reason (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#82-withdrawal">§8.2 of the Submission Rules</a>).</p>
 </div>
 <h2 id="where-the-publication-status-categories-fit">Where the publication status categories fit<a class="headerlink" href="#where-the-publication-status-categories-fit" title="Permanent link">&para;</a></h2>
 <p><code>Available</code>, <code>Preview</code> and <code>RDI</code> are <strong>publication status</strong>, not submission state. A submission has
@@ -2035,11 +2037,11 @@ one of each. See <a href="../../rules/publication-status/">Publication status</a
 <div class="highlight"><pre><span></span><code>&lt;major&gt;.&lt;minor&gt;.&lt;cohort&gt;.&lt;model_id&gt;.&lt;dataset_id&gt;.&lt;entry&gt;
 </code></pre></div>
 <p>Assigned by MLCommons at publication and never reused. It is not the submission ID the CLI shows
-you. Format, components and how it differs from the submission ID: <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#85-result-id">rules §8.5</a>.</p>
+you. Format, components and how it differs from the submission ID: <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#85-result-id">rules §8.5</a>.</p>
 <h2 id="historical-record">Historical record<a class="headerlink" href="#historical-record" title="Permanent link">&para;</a></h2>
-<p>MLCommons keeps every version of every Pareto frontier, aligned to cohorts: <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_submission_rules.md#versioning-and-historical-record">Versioning and Historical
+<p>MLCommons keeps every version of every Pareto frontier, aligned to cohorts: <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_submission_rules.md#versioning-and-historical-record">Versioning and Historical
 Record</a> in the Submission Rules.</p>
-<p><em>Last verified against: <code>mlcommons/endpoints_policies@v1.0_rules_dev</code> (6b0b1ef) and
+<p><em>Last verified against: <code>mlcommons/endpoints_policies@main</code> (4ba8224), 2026-10-30, and
 <code>mlcommons/endpoints-submission-cli@main</code> (f25f71e), 2026-09-24.</em></p>
 
 

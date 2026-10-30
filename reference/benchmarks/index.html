@@ -1889,6 +1889,7 @@
 
 <h1 id="benchmarks-and-models">Benchmarks and models<a class="headerlink" href="#benchmarks-and-models" title="Permanent link">&para;</a></h1>
 <h2 id="the-v10-suite">The v1.0 suite<a class="headerlink" href="#the-v10-suite" title="Permanent link">&para;</a></h2>
+<p>The official list, with a link to each reference implementation, is in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#32-supported-models">rules §3.2</a>.</p>
 <table>
 <thead>
 <tr>
@@ -1968,7 +1969,7 @@
 </tbody>
 </table>
 <p>The Offline column is there because a dedicated Offline run reports one full pass over the
-performance dataset as its concurrency (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#571-definition">§5.7.1</a>). If your <code>C_max</code> is larger than that
+performance dataset as its concurrency (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#571-definition">§5.7.1</a>). If your <code>C_max</code> is larger than that
 number, read <strong>C7</strong> in <a href="../../help/open-questions/">Open questions</a> before you plan.</p>
 <p>Where to get them:</p>
 <ul>
@@ -1985,7 +1986,7 @@ number, read <strong>C7</strong> in <a href="../../help/open-questions/">Open qu
 <li><strong>SWE-bench Verified</strong>: from Hugging Face, loaded by the client's SWE-bench scorer.</li>
 </ul>
 <h2 id="accuracy-targets">Accuracy targets<a class="headerlink" href="#accuracy-targets" title="Permanent link">&para;</a></h2>
-<p>Rules <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#43-accuracy-metric">§4.3</a> leaves the quality target to each benchmark's definition, and those
+<p>Rules <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#43-accuracy-metric">§4.3</a> leaves the quality target to each benchmark's definition, and those
 definitions aren't published.</p>
 <h3 id="legacy-benchmarks">Legacy benchmarks<a class="headerlink" href="#legacy-benchmarks" title="Permanent link">&para;</a></h3>
 <p>The checker enforces the MLPerf Inference targets, carried over unchanged. Every score has to reach
@@ -2058,8 +2059,10 @@ definitions aren't published.</p>
 <a href="https://github.com/mlcommons/endpoints/blob/main/examples/10_Agentic_Inference/README.md#accuracy">agentic example README</a>,
 and the checker enforces them from <code>v1.1.0.0</code>. There are three metrics:</p>
 <ul>
-<li><strong>Inline accuracy</strong> and <strong><abbr title="Output Sequence Length">OSL</abbr> per-turn mean</strong> have to pass at every submitted Pareto point.</li>
-<li><strong>SWE-bench accuracy</strong> is judged on the average of four results, one from each mandatory region.</li>
+<li><strong>Inline accuracy</strong> and <strong><abbr title="Output Sequence Length">OSL</abbr> per-turn mean</strong> have to pass at every submitted Pareto point,
+  submitter's-choice points included.</li>
+<li><strong>SWE-bench accuracy</strong> is judged on the average of four results, one from each mandatory region.
+  Inline scores aren't part of that average (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#43-accuracy-metric">§4.3</a>).</li>
 </ul>
 <table>
 <thead>
@@ -2091,9 +2094,9 @@ and the checker enforces them from <code>v1.1.0.0</code>. There are three metric
 </tr>
 </tbody>
 </table>
-<p><em>Last verified against: the MLPerf Endpoints v1.0 rules overview (2026-09-22),
-<code>mlcommons/endpoints@main</code> (f1100cf), <code>mlcommons/endpoints-submission-cli@main</code> (a42a056, tag
-<code>v1.1.0.0</code>), and <code>mlcommons/endpoints_policies@v1.0_rules_dev</code> (d2d9da6), 2026-10-02.</em></p>
+<p><em>Last verified against: <code>mlcommons/endpoints_policies@main</code> (4ba8224), 2026-10-30; the MLPerf
+Endpoints v1.0 rules overview (2026-09-22), <code>mlcommons/endpoints@main</code> (f1100cf) and
+<code>mlcommons/endpoints-submission-cli@main</code> (a42a056, tag <code>v1.1.0.0</code>), 2026-10-02.</em></p>
 
 
 

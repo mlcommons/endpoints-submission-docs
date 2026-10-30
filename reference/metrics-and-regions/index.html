@@ -2049,32 +2049,35 @@ Endpoints?</a>. Applied in <a href="../../workflow/plan-your-curve/">step
 3</a>.</p>
 <h2 id="primary-metrics">Primary metrics<a class="headerlink" href="#primary-metrics" title="Permanent link">&para;</a></h2>
 <p>Captured at each measurement point, at a specific concurrency level. The metrics, their field names
-and how each one is computed are in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#41-primary-metrics">rules §4.1</a>.</p>
+and how each one is computed are in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#41-primary-metrics">rules §4.1</a>.</p>
 <div class="admonition note">
 <p class="admonition-title"><abbr title="Time To First Token">TTFT</abbr> doesn't apply to a dedicated Offline run</p>
-<p><code>ttft_p90_ms</code> isn't required for a dedicated Offline run (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#571-definition">§5.7.1</a>). An elected
+<p><code>ttft_p90_ms</code> isn't required for a dedicated Offline run (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#571-definition">§5.7.1</a>). An elected
 <code>C_max</code> point reports <abbr title="Time To First Token">TTFT</abbr> as normal.</p>
 </div>
 <h2 id="normalized-metric">Normalized metric<a class="headerlink" href="#normalized-metric" title="Permanent link">&para;</a></h2>
-<p><code>system_tps_per_kw</code> divides <code>system_tps</code> by the provisioned power from the system's
-<a href="../system-power-json/"><code>system_power.json</code></a>. Definition and scope: <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#453-normalized-metric">rules §4.5.3</a>.</p>
-<p>The denominator is the <strong>provisioned</strong> power of the whole system and is the same at every point, so
-the normalized frontier is the throughput frontier scaled by one constant.</p>
+<p><code>system_tps_per_kw</code> divides <code>system_tps</code> by <code>point_power_kw</code>, evaluated per measurement point. It
+is scaled from the provisioned power in the system's <a href="../system-power-json/"><code>system_power.json</code></a>.
+Definition and scope: <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#453-normalized-metric">rules §4.5.3</a>.</p>
+<p>The denominator can differ between points: a point that declares <code>nodes_used</code> in
+<a href="../point-yaml/"><code>point.yaml</code></a> is scaled to the nodes it engages, and a point that omits it uses the
+full provisioned power (<code>Y_s = N_s</code> for every node set). A single-node system has the same
+denominator at every point.</p>
 <div class="admonition warning">
 <p class="admonition-title">P90, not P95</p>
-<p>v1.0 uses P90 (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#41-primary-metrics">§4.1</a>). The v0.7 rules used P95, and some public MLCommons material
+<p>v1.0 uses P90 (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#41-primary-metrics">§4.1</a>). The v0.7 rules used P95, and some public MLCommons material
 still shows P95.</p>
 </div>
 <div class="admonition danger">
 <p class="admonition-title">The first token must be genuine</p>
 <p>Padding the start of a response to stop the <abbr title="Time To First Token">TTFT</abbr> clock early is not allowed, and manual
-reviewers look for it (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#41-primary-metrics">§4.1</a>, <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#92-manual-review-focus-areas">§9.2</a>).</p>
+reviewers look for it (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#41-primary-metrics">§4.1</a>, <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#92-manual-review-focus-areas">§9.2</a>).</p>
 </div>
-<p><abbr title="Time Per Output Token">TPOT</abbr> is counted differently from <code>system_tps</code>: see the last bullets of <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#28-tokenizer-rules">§2.8</a>.</p>
+<p><abbr title="Time Per Output Token">TPOT</abbr> is counted differently from <code>system_tps</code>: see the last bullets of <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#28-tokenizer-rules">§2.8</a>.</p>
 <h2 id="what-your-numbers-are-measured-over">What your numbers are measured over<a class="headerlink" href="#what-your-numbers-are-measured-over" title="Permanent link">&para;</a></h2>
 <p>From v1.0 the official result is computed over a <strong>steady-state window</strong>, not the whole run, with
 the whole-run <code>total</code> figures kept as supplementary. What the window excludes and why:
-<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#44-reporting-basis-steady-state-window">§4.4</a>.</p>
+<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#44-reporting-basis-steady-state-window">§4.4</a>.</p>
 <p>The client finds the window from the run's own events if you pass <code>--steady-state</code>, or you can find
 it afterwards from <code>events.jsonl</code>. Either way it doesn't affect the measurement. It does change how
 you plan a run, though, because a run can fail to have one.</p>
@@ -2090,10 +2093,10 @@ client doesn't compute steady state for agentic or Offline runs. Tracked as <str
 <a href="../../help/open-questions/">Open questions</a>.</p>
 </div>
 <h3 id="when-the-steady-state-result-counts-as-official">When the steady-state result counts as official<a class="headerlink" href="#when-the-steady-state-result-counts-as-official" title="Permanent link">&para;</a></h3>
-<p><a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#44-reporting-basis-steady-state-window">Rules §4.4</a> sets the conditions and defines super-passes, the coverage <code>status</code> values
+<p><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#44-reporting-basis-steady-state-window">Rules §4.4</a> sets the conditions and defines super-passes, the coverage <code>status</code> values
 and the detector's verdicts. In outline: the window has to span at least 4 super-passes (by default,
 one super-pass is one pass over the dataset), every gating metric has to be flat, and the window's
-issue-time span has to meet the <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#62-minimum-run-duration">minimum run duration</a> for the point's region. When any
+issue-time span has to meet the <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#62-minimum-run-duration">minimum run duration</a> for the point's region. When any
 of that fails, the point's official result falls back to the whole-run <code>total</code> metrics.</p>
 <div class="admonition tip">
 <p class="admonition-title">What this means in practice</p>
@@ -2103,7 +2106,7 @@ ramp-up, drain and all — which is worse than what your system actually does.</
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Only fixed-concurrency points are in scope</p>
-<p>The Scope paragraph of <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#44-reporting-basis-steady-state-window">§4.4</a> leaves <code>MaxThroughput</code>, <code>Poisson</code> and single-pass
+<p>The Scope paragraph of <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#44-reporting-basis-steady-state-window">§4.4</a> leaves <code>MaxThroughput</code>, <code>Poisson</code> and single-pass
 agentic workloads out. That leaves a dedicated Offline run reporting its whole-run <code>total</code>
 metrics. The rules imply this rather than stating it. Tracked in <a href="../../help/open-questions/">Open
 questions</a> under <strong>C7</strong>.</p>
@@ -2118,36 +2121,43 @@ is <em>invalid</em> rather than merely reported-with-flags. See <a href="../../h
 questions</a>.</p>
 </div>
 <h2 id="publication-charts">Publication charts<a class="headerlink" href="#publication-charts" title="Permanent link">&para;</a></h2>
-<p>The charts, and which metric goes on each axis, are listed in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#42-derived-and-presentation-metrics">rules §4.2</a>. The primary
+<p>The charts, and which metric goes on each axis, are listed in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#42-derived-and-presentation-metrics">rules §4.2</a>. The primary
 chart plots <code>system_tps</code> against <code>tps_per_user</code>, or against <code>e2e_avg_interactivity</code> for an agentic
 benchmark. Higher is better on both axes.</p>
-<p>The official frontier is a <strong>step function</strong> with no interpolation (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#52-pareto-curve-representation">§5.2</a>). How a dedicated
-or elected Offline result is drawn on it is in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#573-presentation">§5.7.3</a>.</p>
+<p>The official frontier is a <strong>step function</strong> with no interpolation (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#52-pareto-curve-representation">§5.2</a>). How a dedicated
+or elected Offline result is drawn on it is in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#573-presentation">§5.7.3</a>.</p>
 <h2 id="token-counting">Token counting<a class="headerlink" href="#token-counting" title="Permanent link">&para;</a></h2>
 <p>Official token counts, output and <abbr title="Input Sequence Length">ISL</abbr> alike, come from the client applying the model's reference
 tokenizer once, through its reference chat template. Your server's own tokenizer doesn't affect
-scoring. What is counted, and how <abbr title="Input Sequence Length">ISL</abbr> is built: <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#28-tokenizer-rules">rules §2.8</a>.</p>
+scoring. What is counted, and how <abbr title="Input Sequence Length">ISL</abbr> is built: <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#28-tokenizer-rules">rules §2.8</a>.</p>
 <h2 id="region-boundaries">Region boundaries<a class="headerlink" href="#region-boundaries" title="Permanent link">&para;</a></h2>
 <p>The concurrency space is divided into four regions. Boundaries are <strong>specific to your submission</strong>:
 computed from your own <code>C_min</code> and <code>C_max</code>.</p>
 <h3 id="ultra-low-concurrency">Ultra Low Concurrency<a class="headerlink" href="#ultra-low-concurrency" title="Permanent link">&para;</a></h3>
-<p>Fixed at concurrency <strong>1 to 32 inclusive</strong> for every submission, one point required (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#low-latency-region">Ultra Low
-Concurrency Region in §5.4</a>).</p>
+<p>Concurrency <strong>1 to <code>C_min</code></strong>, with <code>C_min</code> at most 32, one point required (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#low-latency-region">Ultra Low Concurrency
+Region in §5.4</a>). <code>C_min</code> is your lowest point unless you declare
+<code>c_min_override</code> in <code>system_desc.json</code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Duration and dataset rules go by concurrency, not region</p>
+<p>The <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#6-run-requirements-per-measurement-point">§6</a> duration and query requirements use a fixed threshold of 32, whatever region
+a point is in. A point at concurrency 24 in your Low Concurrency region still gets the 1–32
+values.</p>
+</div>
 <h3 id="the-three-concurrency-regions">The three concurrency regions<a class="headerlink" href="#the-three-concurrency-regions" title="Permanent link">&para;</a></h3>
 <p>Beyond <code>C_min</code>, the space up to <code>C_max</code> is divided into three equal regions <strong>in log-2 space</strong>. The
-reference algorithm, including the 10% margin, is in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#55-region-boundary-reference-algorithm">rules §5.5</a>. Rounding is
+reference algorithm, including the 10% margin, is in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#55-region-boundary-reference-algorithm">rules §5.5</a>. Rounding is
 half-to-even, which is Python's built-in <code>round()</code> and easy to get wrong by hand.</p>
 <p>Don't implement it yourself. Use the checker, which implements it:</p>
 <div class="highlight"><pre><span></span><code>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">"from submission_checker.cli import main; main()"</span><span class="w"> </span>regions<span class="w"> </span>--max-concurrency<span class="w"> </span><span class="m">1024</span><span class="w"> </span>--min-concurrency<span class="w"> </span><span class="m">16</span>
 </code></pre></div>
 <div class="admonition note">
-<p class="admonition-title"><code>C_min</code> is derived in v1.0</p>
-<p>The checker derives <code>C_min</code> from your submission's own points rather than reading a declared
-value, so boundaries differ per frontier. Your lowest point silently sets every other boundary.</p>
+<p class="admonition-title">Your lowest point sets the boundaries</p>
+<p>Without <code>c_min_override</code>, <code>C_min</code> is your lowest point, so dropping or adding a low point moves
+every boundary. How to choose is in <a href="../../workflow/plan-your-curve/#2-understand-what-sets-c_min">step 3</a>.</p>
 </div>
 <h3 id="the-10-margin">The 10% margin<a class="headerlink" href="#the-10-margin" title="Permanent link">&para;</a></h3>
 <p>The High Concurrency region carries a margin extending the valid upper bound to <code>ceil(1.10 × C_max)</code>
-(<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#concurrency-regions">Concurrency Regions in §5.4</a>).</p>
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#concurrency-regions">Concurrency Regions in §5.4</a>).</p>
 <div class="admonition warning">
 <p class="admonition-title">The margin is its own region</p>
 <p>A point in the margin is legal but does <strong>not</strong> satisfy High Concurrency coverage. The rules
@@ -2155,18 +2165,18 @@ still say the margin is there for adding points after submission, but the Submis
 longer provide that window.</p>
 </div>
 <h3 id="edge-cases">Edge cases<a class="headerlink" href="#edge-cases" title="Permanent link">&para;</a></h3>
-<p>The rules cover <code>C_max</code> ≤ 33, very large <code>C_max</code> and boundary collisions at the end of <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#concurrency-regions">Concurrency
+<p>The rules cover <code>C_max</code> ≤ 33, very large <code>C_max</code> and boundary collisions at the end of <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#concurrency-regions">Concurrency
 Regions in §5.4</a>. The one that needs action from you is <code>C_max</code> ≤ 33: you
 must notify the working group with written justification.</p>
 <h2 id="pre-computed-boundaries">Pre-computed boundaries<a class="headerlink" href="#pre-computed-boundaries" title="Permanent link">&para;</a></h2>
-<p>A quick-reference table for common <code>C_min</code> and <code>C_max</code> combinations is in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#appendix-b-quick-reference-region-boundary-table">Appendix B of the
+<p>A quick-reference table for common <code>C_min</code> and <code>C_max</code> combinations is in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#appendix-b-quick-reference-region-boundary-table">Appendix B of the
 rules</a>. For any other combination, run the checker's <code>regions</code> command, as above.</p>
 <h2 id="point-counts">Point counts<a class="headerlink" href="#point-counts" title="Permanent link">&para;</a></h2>
-<p>How many points you need, and how many carry accuracy results, is set by <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#53-minimum-submission-requirements">rules §5.3</a>,
-with the Offline point in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#57-offline-point">§5.7</a> and the 32-point cap in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#56-maximum-point-cap">§5.6</a>. <a href="../../workflow/plan-your-curve/">Step
+<p>How many points you need, and how many carry accuracy results, is set by <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#53-minimum-submission-requirements">rules §5.3</a>,
+with the Offline point in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#57-offline-point">§5.7</a> and the 32-point cap in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#56-maximum-point-cap">§5.6</a>. <a href="../../workflow/plan-your-curve/">Step
 3</a> walks through applying them.</p>
-<p><em>Last verified against: <code>mlcommons/endpoints_policies@v1.0_rules_dev</code> (d2d9da6) and
-<code>mlcommons/endpoints@main</code> (f1100cf), 2026-10-02.</em></p>
+<p><em>Last verified against: <code>mlcommons/endpoints_policies@main</code> (4ba8224) and
+<code>mlcommons/endpoints@main</code> (f1100cf), 2026-10-30.</em></p>
 
 
 

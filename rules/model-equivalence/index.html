@@ -1988,8 +1988,8 @@ page and <a href="https://github.com/mlcommons/endpoints_policies"><code>mlcommo
 disagree, <strong>the policy repository is correct and this page is a bug</strong>. Please
 <a href="https://github.com/mlcommons/endpoints-submission-docs/issues">report it</a>.</p>
 </div>
-<p>The rules themselves are in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#29-model-equivalence-rules-standardized-division">§2.9 of the rules</a>, with the disallowed list in
-<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#221-general-rules">§2.2.1</a>. This page tells you which part to read for which decision, and adds what the
+<p>The rules themselves are in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#29-model-equivalence-rules-standardized-division">§2.9 of the rules</a>, with the disallowed list in
+<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#221-general-rules">§2.2.1</a>. This page tells you which part to read for which decision, and adds what the
 checker does.</p>
 <div class="admonition warning">
 <p class="admonition-title">Check your assumptions here</p>
@@ -2000,79 +2000,80 @@ assumptions on all three.</p>
 </div>
 <h2 id="the-framing-disallowed-only">The framing: disallowed-only<a class="headerlink" href="#the-framing-disallowed-only" title="Permanent link">&para;</a></h2>
 <p>Anything not on the disallowed list, and not in conflict with §2.9, is permitted
-(<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#221-general-rules">§2.2.1</a>, including the note on why). You don't need permission for a technique that
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#221-general-rules">§2.2.1</a>, including the note on why). You don't need permission for a technique that
 isn't banned, but you do need to pass the accuracy gate and meet the disclosure requirements.</p>
 <h2 id="parameters-the-benchmark-fixes">Parameters the benchmark fixes<a class="headerlink" href="#parameters-the-benchmark-fixes" title="Permanent link">&para;</a></h2>
 <p>Sampling parameters and anything else the reference implementation marks as fixed must not be
-changed (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#291-reference-implementation">§2.9.1</a>). This was made explicit in 2026-09. It doesn't narrow what was
+changed (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#291-reference-implementation">§2.9.1</a>). This was made explicit in 2026-09. It doesn't narrow what was
 already allowed; it closes the reading that a parameter not otherwise mentioned in the rules was
 yours to tune.</p>
 <h2 id="always-disallowed">Always disallowed<a class="headerlink" href="#always-disallowed" title="Permanent link">&para;</a></h2>
-<p>The full list is under <em>Disallowed optimizations</em> in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#221-general-rules">§2.2.1</a>. The entries that catch
+<p>The full list is under <em>Disallowed optimizations</em> in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#221-general-rules">§2.2.1</a>. The entries that catch
 people out are response caching (distinct from <abbr title="Key/Value">KV</abbr> reuse, which is allowed), input-based
 optimization, client-side dispatch manipulation, and speculative decoding with a drafter that isn't
-on the benchmark's approved list (<a href="#speculative-decoding">below</a>).</p>
+on the benchmark's approved list (<a href="#speculative-decoding">below</a>). Tuning against the benchmark's
+performance or accuracy dataset also counts as input-based optimization; thresholds must come from
+the published calibration set or a data-independent procedure (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#221-general-rules">§2.2.1</a>).</p>
 <h2 id="weights">Weights<a class="headerlink" href="#weights" title="Permanent link">&para;</a></h2>
 <p>Start from the canonical weights. Post-training quantization is the permitted transformation, under
-four conditions; fine-tuning, pruning and distillation are not (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#293-model-weight-rules">§2.9.3</a>).</p>
+four conditions; fine-tuning, pruning and distillation are not (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#293-model-weight-rules">§2.9.3</a>).</p>
 <h3 id="the-checkpoint-must-stay-complete">The checkpoint must stay complete<a class="headerlink" href="#the-checkpoint-must-stay-complete" title="Permanent link">&para;</a></h3>
 <div class="admonition danger">
 <p class="admonition-title">You may not strip components from the derived checkpoint</p>
 <p>A derived checkpoint must keep every component the reference checkpoint ships, MTP and
-EAGLE-style heads included, even ones you don't use (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#293-model-weight-rules">§2.9.3</a>). Not using a
+EAGLE-style heads included, even ones you don't use (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#293-model-weight-rules">§2.9.3</a>). Not using a
 component at run time is fine; removing it from the artifact is not.</p>
 </div>
-<div class="admonition question">
-<p class="admonition-title">Residency is undecided</p>
-<p>Whether a component present in the checkpoint must also be <strong>resident in accelerator memory</strong>
-during measurement is an open working-group item, and the freed memory converts directly into
-<abbr title="Key/Value">KV</abbr>-cache capacity. Tracked upstream as <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#ckpt-residency-checkpoint-component-residency"><code>[CKPT-RESIDENCY]</code></a>, and here
-under <em>Likely to affect your optimisation choices</em> in <a href="../../help/open-questions/">Open
-questions</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Residency is not required</p>
+<p>The artifact must be complete, but you don't have to load every component into accelerator
+memory for the configuration you measure (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#293-model-weight-rules">§2.9.3</a>). What the computation does
+is still bound by the equivalence rules.</p>
 </div>
 <h2 id="speculative-decoding">Speculative decoding<a class="headerlink" href="#speculative-decoding" title="Permanent link">&para;</a></h2>
-<p>Allowed only with a drafter on your benchmark's approved list. The list, how drafters get on it,
-what disqualifies one, what you can't do with an approved drafter, and the per-point disclosure are
-all in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#294-speculative-decoding">§2.9.4</a>. Tree-structured verification is covered in Q6 of
-<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#299-qa-model-equivalence-clarifications">§2.9.9</a>.</p>
+<p>Allowed only with a drafter on your benchmark's <a href="https://github.com/mlcommons/endpoints-submission-cli/blob/main/src/submission_checker/data/approved_drafters.yaml">approved list</a>, or a <strong>native head</strong>:
+one the model publisher ships inside an approved checkpoint, which is approved with that checkpoint
+and needs no list entry. The list, how drafters get on it, what disqualifies one, what you can't do
+with a native head or an approved drafter, and the per-point disclosure are all in
+<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#294-speculative-decoding">§2.9.4</a>. Tree-structured verification is covered in Q6 of
+<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#299-qa-model-equivalence-clarifications">§2.9.9</a>.</p>
 <div class="admonition warning">
-<p class="admonition-title">Approved heads exist for the agentic benchmarks only</p>
-<p>The client's <a href="https://github.com/mlcommons/endpoints/blob/main/examples/10_Agentic_Inference/README.md#approved-checkpoints-and-speculative-decoding-heads">agentic
-README</a>
-lists the approved heads for Kimi K3, and the approved DeepSeek-V4.1-Flash checkpoint ships its
-own. There's no list for the legacy benchmarks. The checker's bundled list is still empty, so it
-rejects any point that uses speculative decoding for now. Tracked as <strong>C10</strong> in <a href="../../help/open-questions/">Open
-questions</a>.</p>
+<p class="admonition-title">Use a checker that ships the list</p>
+<p>Checker <code>v1.1.0.0</code> ships an empty list and rejects every drafter. Which approved checkpoints
+ship a native head is noted in the client's <a href="https://github.com/mlcommons/endpoints/blob/main/examples/10_Agentic_Inference/README.md#approved-checkpoints-and-speculative-decoding-heads">agentic
+README</a>.
+Tracked as <strong>C10</strong> in <a href="../../help/open-questions/">Open questions</a>.</p>
 </div>
 <p>What the checker enforces:</p>
 <ul>
 <li><strong><code>approved-drafter</code></strong>: the drafter you declare must match a list entry.</li>
 <li><strong><code>drafter-approval-lead-time</code></strong>: a newly approved drafter is usable only from two cohorts after
-  the list update, counted against your <code>target_cohort</code>.</li>
+  the list update, counted against your <code>target_cohort</code>. A native head counts from its checkpoint's
+  approval cohort.</li>
 </ul>
-<p>Both reject the affected <strong>points</strong>, not the whole submission (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#91-automated-checks">§9.1</a>). Across the frontier
+<p>Both reject the affected <strong>points</strong>, not the whole submission (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#91-automated-checks">§9.1</a>). Across the frontier
 it's one drafter; its configuration can vary per point, including switching speculation off. The
-drafter's details go in the <code>speculative_decoding</code> block of <code>point.yaml</code> (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#83-measurement-point-yaml">§8.3</a>).</p>
+drafter's details go in the <code>speculative_decoding</code> block of <code>point.yaml</code> (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#83-measurement-point-yaml">§8.3</a>).</p>
 <h2 id="kv-cache-the-big-difference"><abbr title="Key/Value">KV</abbr> cache: the big difference<a class="headerlink" href="#kv-cache-the-big-difference" title="Permanent link">&para;</a></h2>
 <div class="admonition success">
 <p class="admonition-title">Cross-query <abbr title="Key/Value">KV</abbr> reuse is permitted in Endpoints</p>
 <p>Sharing <abbr title="Key/Value">KV</abbr> state across requests, including prefix caching of the shared system prompt, is
-allowed. MLPerf Inference prohibits it (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#295-kv-cache-rules">§2.9.5</a>).</p>
+allowed. MLPerf Inference prohibits it (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#295-kv-cache-rules">§2.9.5</a>).</p>
 </div>
 <p>A per-query salt between system prompt and user context is what keeps this sound; its requirements
-are in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#2951-salting-mechanism">§2.9.5.1</a>. Accuracy runs use the un-salted dataset, and you don't have to
+are in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#2951-salting-mechanism">§2.9.5.1</a>. Accuracy runs use the un-salted dataset, and you don't have to
 switch <abbr title="Key/Value">KV</abbr> reuse off for them. Reduced-precision <abbr title="Key/Value">KV</abbr> and non-reference compression have to be
 disclosed.</p>
 <div class="admonition danger">
 <p class="admonition-title">Pre-tokenizing clients must salt the token stream</p>
 <p>If your client sends <code>input_tokens</code>, the salt has to be in the token stream the system receives.
 Salting only a <code>prompt</code> text field is non-compliant. The two conforming approaches are under
-<em>Clients that pre-tokenize</em> in <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#2951-salting-mechanism">§2.9.5.1</a>.</p>
+<em>Clients that pre-tokenize</em> in <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#2951-salting-mechanism">§2.9.5.1</a>.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Agentic benchmarks salt differently</p>
 <p>They use benchmark-specific salting switched on by benchmark-specific flags, which <strong>must be
-enabled</strong> (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#2951-salting-mechanism">§2.9.5.1</a>). Which flags, for which benchmarks, is not yet published —
+enabled</strong> (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#2951-salting-mechanism">§2.9.5.1</a>). Which flags, for which benchmarks, is not yet published —
 see <a href="../../help/open-questions/">Open questions</a>.</p>
 </div>
 <div class="admonition warning">
@@ -2082,7 +2083,7 @@ without disabling it.</p>
 </div>
 <h2 id="sparsity-and-approximate-computation">Sparsity and approximate computation<a class="headerlink" href="#sparsity-and-approximate-computation" title="Permanent link">&para;</a></h2>
 <p>The test is whether a technique <strong>changes the tokens the model emits for any input</strong>
-(<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#2961-scope-and-operative-test">§2.9.6.1</a>). Where that puts a technique:</p>
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#2961-scope-and-operative-test">§2.9.6.1</a>). Where that puts a technique:</p>
 <table>
 <thead>
 <tr>
@@ -2095,28 +2096,39 @@ without disabling it.</p>
 <tr>
 <td>is mathematically equivalent (exact sparse ops, online softmax, softmax elision under greedy)</td>
 <td>Permitted, no disclosure</td>
-<td><a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#2962-exact-sparse-execution-and-softmax-elision">§2.9.6.2</a></td>
+<td><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#2962-exact-sparse-execution-and-softmax-elision">§2.9.6.2</a></td>
+</tr>
+<tr>
+<td>removes dead code that can't affect the output for any admissible input or checkpoint</td>
+<td>Permitted, no disclosure. Removal that rests on the benchmark's data or this checkpoint's weights is disallowed</td>
+<td><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#2962-exact-sparse-execution-and-softmax-elision">§2.9.6.2</a></td>
 </tr>
 <tr>
 <td>implements sparsity the canonical architecture specifies (native sparse attention, <abbr title="Mixture of Experts">MoE</abbr> routing)</td>
 <td>Required</td>
-<td><a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#2963-canonical-architectural-sparsity">§2.9.6.3</a></td>
+<td><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#2963-canonical-architectural-sparsity">§2.9.6.3</a></td>
 </tr>
 <tr>
 <td>derives sparsity at run time from scores or activations (the Endpoints-specific delta)</td>
 <td>Permitted under the accuracy gate, no benchmark-data calibration, disclosed</td>
-<td><a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#2964-dynamic-approximate-sparsity">§2.9.6.4</a>, <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#2966-disclosure">§2.9.6.6</a></td>
+<td><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#2964-dynamic-approximate-sparsity">§2.9.6.4</a>, <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#2966-disclosure">§2.9.6.6</a></td>
 </tr>
 <tr>
 <td>changes structure: attention pattern, normalization, weight-side sparsity, removed experts</td>
 <td>Disallowed, whatever accuracy does</td>
-<td><a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#2965-disallowed">§2.9.6.5</a></td>
+<td><a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#2965-disallowed">§2.9.6.5</a></td>
 </tr>
 </tbody>
 </table>
+<div class="admonition warning">
+<p class="admonition-title">Report data-dependent dead code in the reference</p>
+<p>If you find reference code that is dead only for the benchmark's data or the reference
+checkpoint's weights, you must report it to the working group whether or not you would use it
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#2962-exact-sparse-execution-and-softmax-elision">§2.9.6.2</a>).</p>
+</div>
 <h2 id="pre-and-post-processing">Pre- and post-processing<a class="headerlink" href="#pre-and-post-processing" title="Permanent link">&para;</a></h2>
 <p>Tokenization, chat template, truncation, detokenization, stop handling and sampling all have to
-match the reference (<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#292-pre-processing-equivalence">§2.9.2</a>, <a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#297-post-processing-equivalence">§2.9.7</a>).</p>
+match the reference (<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#292-pre-processing-equivalence">§2.9.2</a>, <a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#297-post-processing-equivalence">§2.9.7</a>).</p>
 <div class="admonition warning">
 <p class="admonition-title">Chat-template flags count too</p>
 <p>Since 2026-09 the rule names the template's <strong>flags</strong> explicitly, such as <code>enable_thinking</code>.
@@ -2127,16 +2139,17 @@ modification, not a serving-side setting.</p>
 <div class="admonition danger">
 <p class="admonition-title">It is not a general override</p>
 <p>Hitting the quality target doesn't make a banned technique model equivalent
-(<a href="https://github.com/mlcommons/endpoints_policies/blob/v1.0_rules_dev/endpoints_rules.md#298-accuracy-gate">§2.9.8</a>).</p>
+(<a href="https://github.com/mlcommons/endpoints_policies/blob/main/endpoints_rules.md#298-accuracy-gate">§2.9.8</a>).</p>
 </div>
 <div class="admonition danger">
-<p class="admonition-title">These rules are a working draft</p>
-<p>MLPerf Endpoints v1.0 rules are on an active development branch. Sections marked
-<code>[TENTATIVE]</code>, <code>[WIP]</code>, <code>[WG Open Item]</code> or <code>[WG Decision Required]</code> upstream can still
-change. Before committing hardware time to a submission, read
+<p class="admonition-title">These rules can still change</p>
+<p>The MLPerf Endpoints v1.0 rules are published on the policy repository's <code>main</code> branch, and
+working-group changes are still merged into it. Sections marked <code>[TENTATIVE]</code>, <code>[WIP]</code>,
+<code>[WG Open Item]</code> or <code>[WG Decision Required]</code> upstream are the most likely to move. Before
+committing hardware time to a submission, read
 <a href="../../help/open-questions/">Open questions and WIP rules</a>.</p>
 </div>
-<p><em>Last verified against: <code>mlcommons/endpoints_policies@v1.0_rules_dev</code> (d2d9da6),
+<p><em>Last verified against: <code>mlcommons/endpoints_policies@main</code> (4ba8224), 2026-10-30;
 <code>mlcommons/endpoints-submission-cli@main</code> (a42a056, <code>v1.1.0.0</code>) and <code>mlcommons/endpoints@main</code>
 (f1100cf), 2026-10-02.</em></p>
 
