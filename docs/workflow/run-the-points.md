@@ -23,7 +23,7 @@ The run requirements are in [§6 of the rules][rules-6], and that's where the va
 
 | Requirement | Rule | Where you set it |
 |---|---|---|
-| Load pattern | [§6.1][rules-6.1] | `settings.load_pattern.type`: `concurrency` for every point, `max_throughput` for a dedicated Offline run ([below](#run-the-offline-point)) |
+| Load pattern | [§6.1][rules-6.1] | `settings.load_pattern.type`: `concurrency` for single-turn points, `agentic_inference` for agentic points, `max_throughput` for a dedicated Offline run ([below](#run-the-offline-point)) |
 | Minimum duration | [§6.2][rules-6.2] | Run length. It's measured over the steady-state window's issue time, not wall clock |
 | Minimum completed queries | [§6.4][rules-6.4] | Sample count: whole passes over the dataset |
 | Warmup | [§6.3][rules-6.3] | Your warmup procedure, declared in `point.yaml` |

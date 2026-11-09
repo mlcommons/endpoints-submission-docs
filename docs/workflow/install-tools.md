@@ -12,9 +12,9 @@
 - Install the **reference client** ([`mlcommons/endpoints`](https://github.com/mlcommons/endpoints)) — runs the benchmark
 - Install the **submission tools** ([`mlcommons/endpoints-submission-cli`](https://github.com/mlcommons/endpoints-submission-cli)) — registers runs, assembles
   and validates the bundle
-- Confirm all three CLIs respond
+- Check the client and submission tools
 
-There are three distinct CLIs and it is worth fixing which is which now:
+Use these commands:
 
 | CLI | Package | Does |
 |---|---|---|
@@ -31,7 +31,7 @@ There are three distinct CLIs and it is worth fixing which is which now:
     modification**, built from a commit the review committee can access. Anything you want to change
     goes in the YAML config. Review can detect modifications ([§2.1.1 of the rules][rules-2.1.1]).
 
-=== "uv (recommended)"
+=== "uv"
 
     ```bash
     git clone https://github.com/mlcommons/endpoints.git
@@ -56,32 +56,34 @@ There are three distinct CLIs and it is worth fixing which is which now:
 Record the commit SHA you built from — you will need it for disclosure:
 
 ```bash
-git -C endpoints rev-parse HEAD
+git rev-parse HEAD
 ```
 
 ### 2. Install the submission tools
 
+Use the `uv` tab for an isolated tool installation. For `pip` or `From source`, keep the virtual
+environment from step 1 active so later Python commands can import the checker.
+
+=== "uv"
+
+    ```bash
+    uv tool install endpoints-submission-cli
+    ```
+
 === "pip"
 
     ```bash
-    pip install endpoints-submission-cli
+    python -m pip install endpoints-submission-cli
     ```
 
 === "From source"
 
     ```bash
-    git clone https://github.com/mlcommons/endpoints-submission-cli.git
-    cd endpoints-submission-cli
-    pip install -e ".[dev]"
+    git clone https://github.com/mlcommons/endpoints-submission-cli.git ../endpoints-submission-cli
+    python -m pip install -e "../endpoints-submission-cli"
     ```
 
-=== "uv"
-
-    ```bash
-    uv sync --extra dev
-    ```
-
-Both `endpoints-submission-cli` and `submission-checker` come from this one package.
+Use `endpoints-submission-cli check-submission` to validate a bundle.
 
 Optionally, install the results visualizer to preview your frontiers locally before you submit:
 
@@ -91,39 +93,57 @@ pip install mlperf-viz
 
 See [Results visualizer](../reference/cli-visualizer.md).
 
-### 3. Install `gh`
+### 3. Smoke-test the client against a local server
 
-The [`gh` CLI](https://cli.github.com/) is required for creating, updating and withdrawing
-submissions. Install it and authenticate with `gh auth login`.
-
-### 4. Smoke-test the client against a local server
-
-Before pointing anything at real hardware, confirm the client works end to end against the bundled
-echo server:
+In the `endpoints` checkout, start the echo server:
 
 ```bash
-pip install endpoints-submission-cli
+uv run python -m inference_endpoint.testing.echo_server --host 127.0.0.1 --port 8765
 ```
 
-The compliance checker comes with it, as `endpoints-submission-cli check-submission`. The CLI's
-README still describes a separate `submission-checker` command, but the package doesn't install one
-(**B16** in [Open questions](../help/open-questions.md)).
+In a second terminal, open the same checkout and run:
+
+```bash
+uv run inference-endpoint probe --endpoints http://127.0.0.1:8765 --model test-model --requests 2
+```
+
+Expect two successful responses. Stop the server with Ctrl+C.
+For the pip setup, activate the same venv in both terminals and omit `uv run`.
 
 ## Verify
 
 Both must respond:
 
-```bash
-uv run inference-endpoint --version
-endpoints-submission-cli --version
-```
+=== "uv"
+
+    ```bash
+    uv run inference-endpoint --version
+    uv tool run --from endpoints-submission-cli endpoints-submission-cli --version
+    ```
+
+=== "pip / From source"
+
+    In the active venv:
+
+    ```bash
+    inference-endpoint --version
+    endpoints-submission-cli --version
+    ```
 
 And the region calculator should produce sensible boundaries — this is the tool you will use in the
 next step:
 
-```bash
-python -c "from submission_checker.cli import main; main()" regions --max-concurrency 1024 --min-concurrency 16
-```
+=== "uv"
+
+    ```bash
+    uv tool run --from endpoints-submission-cli python -c "from submission_checker.cli import main; main()" regions --max-concurrency 1024 --min-concurrency 16
+    ```
+
+=== "pip / From source"
+
+    ```bash
+    python -c "from submission_checker.cli import main; main()" regions --max-concurrency 1024 --min-concurrency 16
+    ```
 
 ## Next
 

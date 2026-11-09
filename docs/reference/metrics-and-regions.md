@@ -124,9 +124,19 @@ half-to-even, which is Python's built-in `round()` and easy to get wrong by hand
 
 Don't implement it yourself. Use the checker, which implements it:
 
-```bash
-python -c "from submission_checker.cli import main; main()" regions --max-concurrency 1024 --min-concurrency 16
-```
+=== "uv"
+
+    ```bash
+    uv tool run --from endpoints-submission-cli python -c "from submission_checker.cli import main; main()" regions --max-concurrency 1024 --min-concurrency 16
+    ```
+
+=== "pip / From source"
+
+    In the venv where you installed the submission tools:
+
+    ```bash
+    python -c "from submission_checker.cli import main; main()" regions --max-concurrency 1024 --min-concurrency 16
+    ```
 
 !!! note "Your lowest point sets the boundaries"
     Without `c_min_override`, `C_min` is your lowest point, so dropping or adding a low point moves

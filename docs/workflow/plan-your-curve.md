@@ -73,9 +73,19 @@ Beyond Ultra Low Concurrency, the space up to `C_max` is divided into three equa
 space. The reference algorithm is in [§5.5 of the rules][rules-5.5]. To calculate it easily, use the
 tool:
 
-```bash
-python -c "from submission_checker.cli import main; main()" regions --max-concurrency 1024 --min-concurrency 16
-```
+=== "uv"
+
+    ```bash
+    uv tool run --from endpoints-submission-cli python -c "from submission_checker.cli import main; main()" regions --max-concurrency 1024 --min-concurrency 16
+    ```
+
+=== "pip / From source"
+
+    In the venv where you installed the submission tools:
+
+    ```bash
+    python -c "from submission_checker.cli import main; main()" regions --max-concurrency 1024 --min-concurrency 16
+    ```
 
 <div class="result" markdown>
 

@@ -187,9 +187,19 @@ Indexed by what you see. Search this page for a fragment of your error message.
     **Cause:** no point in one of Low, Medium or High Concurrency — often because `C_min` changed.
 
     **Fix:**
-    ```bash
-    python -c "from submission_checker.cli import main; main()" regions --max-concurrency <C_max> --min-concurrency <C_min>
-    ```
+    === "uv"
+
+        ```bash
+        uv tool run --from endpoints-submission-cli python -c "from submission_checker.cli import main; main()" regions --max-concurrency <C_max> --min-concurrency <C_min>
+        ```
+
+    === "pip / From source"
+
+        In the venv where you installed the submission tools:
+
+        ```bash
+        python -c "from submission_checker.cli import main; main()" regions --max-concurrency <C_max> --min-concurrency <C_min>
+        ```
     Unless you declare `c_min_override`, `C_min` is your lowest point, so dropping that point moves
     every other boundary. And a point in the 10% margin does **not** satisfy High Concurrency.
 
