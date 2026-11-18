@@ -1,8 +1,8 @@
 <!--
   PROVENANCE SNAPSHOT — do not edit.
   Upstream : endpoints_policies/endpoints_rules.md
-  Repo     : mlcommons/endpoints_policies @ main@4ba8224
-  Captured : 2026-10-30
+  Repo     : mlcommons/endpoints_policies @ main@e6f032f
+  Captured : 2026-11-18
   Purpose  : diff this against upstream to find what drifted since the docs were written.
 -->
 
@@ -2747,23 +2747,40 @@ published Pareto curve: one system, one benchmark model, one dataset. It is cons
 <major-version>.<minor-version>.<cohort-number>.<model_id>.<dataset_id>.<entry-number>
 ```
 
+The ID of a provisionally published result also ends in `.p` (see Provisional results below).
+
 | Component | Description |
 |---|---|
 | `major-version` | Major version of the MLPerf Endpoints rules under which the result was submitted (e.g., `1` for v1.0). |
 | `minor-version` | Minor version of the same (e.g., `0` for v1.0). |
-| `cohort-number` | Cohort Number for this submission (e.g., `0` for the first cohort of a given version, `1` for the second, etc.)
+| `cohort-number` | Cohort Number for this submission (e.g., `0` for the first cohort of a given version, `1` for the second, etc.). For a provisionally published result, the number of the first cohort date on or after the day (Pacific Time) it first became publicly visible (see Provisional results below). |
 | `model_id` | Benchmark model identifier from the round's supported model list ([§3.2](#32-supported-models)). Must match `model_name` in `point.yaml` ([§8.3](#83-measurement-point-yaml)). |
 | `dataset_id` | Identifier of the dataset used for the performance and accuracy runs, as named in the benchmark definition ([§3.1](#31-benchmark-definition)) and recorded in each point's `dataset` field ([§8.3](#83-measurement-point-yaml)). |
-| `entry-number` | Sequence number assigned at publication, unique within the preceding four components. |
+| `entry-number` | Sequence number assigned at publication, unique within the preceding four components. A provisional ID and the official ID it becomes share one entry number. |
 
-Example: `1.0.0.deepseek-r1.mmlu-pro.7` — the seventh published DeepSeek-R1 result on MMLU-Pro under
-the v1.0 rules.
+Example: `1.0.0.deepseek-r1.mmlu-pro.7` — the seventh DeepSeek-R1 result on MMLU-Pro published in
+the first v1.0 cohort.
 
-Result IDs are assigned by MLCommons at publication; they are not chosen by the submitter and are
-not part of the submitted bundle. They are stable and never reused — a result that is superseded,
-withdrawn, or invalidated retains its result ID in the historical record, and the replacement result
-receives a new entry number (see
-[Submission Rules §8.1](endpoints_submission_rules.md#versioning-and-historical-record)).
+**Provisional results.** A result published provisionally
+([Submission Rules §6.2.3](endpoints_submission_rules.md#623-provisional-publication)) receives its
+result ID when it first becomes publicly visible, with `.p` appended to the entry number — for
+example `1.0.1.deepseek-r1.mmlu-pro.2.p`. When the "peer review pending" tag is removed, the `.p` is
+dropped and the rest of the ID is unchanged: `1.0.1.deepseek-r1.mmlu-pro.2`. The ID with `.p` is kept
+in the historical record and continues to refer to the same result. Its `cohort-number` is that of
+the first cohort date on or after the day it first became public, so it is earlier than the cohort
+of its official publication. Withdrawing points or updating the submission during review does not
+change the ID. Any citation of an ID ending in `.p` carries the footnote required by
+[Submission Rules §6.2.3](endpoints_submission_rules.md#623-provisional-publication).
+
+Result IDs are assigned by MLCommons at publication, including provisional publication; they are not
+chosen by the submitter and are not part of the submitted bundle. They are stable and never reused.
+A result that is superseded, invalidated, or removed keeps its ID wherever it remains in the
+historical record
+([Submission Rules §8](endpoints_submission_rules.md#versioning-and-historical-record)), and a
+replacement result receives a new entry number. A result removed entirely, including a provisional
+result withdrawn or removed before finalization for any reason
+([Submission Rules §8.2](endpoints_submission_rules.md#82-withdrawal)), has its ID retired: it is
+never issued to another result, and numbering for its first four components continues past it.
 
 ---
 

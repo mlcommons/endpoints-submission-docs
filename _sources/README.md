@@ -7,7 +7,7 @@ instead.
 
 | Snapshot | Upstream | Ref | Captured |
 |---|---|---|---|
-| `policies-*.md`, `policies-seedset.yaml` | mlcommons/endpoints_policies | `main@4ba8224` | 2026-10-30 |
+| `policies-*.md`, `policies-seedset.yaml` | mlcommons/endpoints_policies | `main@e6f032f` | 2026-11-18 |
 | `submission-cli-*.md` | mlcommons/endpoints-submission-cli | `main@a42a056` (after tag `v1.1.0.0`) | 2026-10-02 |
 | `endpoints-*.md` | mlcommons/endpoints | `main@47cc5c8` | 2026-09-13 |
 | `mlperf-viz-README.md` | mlcommons/mlperf-viz (`cli/README.md`) | `cli-v1.1.0@654dca5` | 2026-10-02 |
