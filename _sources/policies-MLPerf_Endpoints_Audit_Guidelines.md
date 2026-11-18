@@ -1,8 +1,8 @@
 <!--
   PROVENANCE SNAPSHOT — do not edit.
   Upstream : endpoints_policies/MLPerf_Endpoints_Audit_Guidelines.md
-  Repo     : mlcommons/endpoints_policies @ main@4ba8224
-  Captured : 2026-10-30
+  Repo     : mlcommons/endpoints_policies @ main@e6f032f
+  Captured : 2026-11-18
   Purpose  : diff this against upstream to find what drifted since the docs were written.
 -->
 

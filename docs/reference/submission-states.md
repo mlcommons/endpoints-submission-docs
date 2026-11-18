@@ -64,9 +64,10 @@ Where each is defined: *peer review pending* in [§6.2.3][srules-6.2.3], *Previe
 [§7.3][srules-7.3], *Invalidated* in [§8.1][srules-8.1] and *Withdrawn* in [§8.2][srules-8.2] of the
 Submission Rules; *MLC Estimated Power* in [rules §4.5.2][rules-4.5.2].
 
-!!! note "Pre-finalization withdrawal leaves no record"
-    You can withdraw voluntarily only before finalization, and that leaves nothing in the archive.
-    After finalization, results are removed only under a rule, and most removals stay archived with
+!!! note "Pre-finalization withdrawal leaves almost no record"
+    You can withdraw voluntarily only before finalization, and that leaves nothing in the archive,
+    except that any result ID already issued at provisional publication is retired and never
+    reused ([§8.5][rules-8.5]). After finalization, results are removed only under a rule, and most removals stay archived with
     the reason ([§8.2 of the Submission Rules][srules-8.2]).
 
 ## Where the publication status categories fit
@@ -83,10 +84,18 @@ one of each. See [Publication status](../rules/publication-status.md).
 Assigned by MLCommons at publication and never reused. It is not the submission ID the CLI shows
 you. Format, components and how it differs from the submission ID: [rules §8.5][rules-8.5].
 
+A provisionally published result gets its ID when it first becomes public, and the ID ends in `.p`
+while the *peer review pending* tag is on. The `.p` is dropped when the tag is removed and the rest
+of the ID stays the same ([§8.5][rules-8.5], [§6.2.3][srules-6.2.3]). The `.p` ID stays in the
+historical record and keeps referring to the same result; withdrawing points or updating during
+review doesn't change it. Its cohort number is the one for when it first became public, so it can be
+earlier than the official publication's (see [B21](../help/open-questions.md)). Any citation of a
+`.p` ID needs the footnote required by [§6.2.3][srules-6.2.3].
+
 ## Historical record
 
 MLCommons keeps every version of every Pareto frontier, aligned to cohorts: [Versioning and Historical
 Record][srules-versioning-and-historical-record] in the Submission Rules.
 
-*Last verified against: `mlcommons/endpoints_policies@main` (4ba8224), 2026-10-30, and
+*Last verified against: `mlcommons/endpoints_policies@main` (e6f032f), 2026-10-30, and
 `mlcommons/endpoints-submission-cli@main` (f25f71e), 2026-09-24.*
