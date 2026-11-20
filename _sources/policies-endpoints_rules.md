@@ -1,8 +1,8 @@
 <!--
   PROVENANCE SNAPSHOT — do not edit.
   Upstream : endpoints_policies/endpoints_rules.md
-  Repo     : mlcommons/endpoints_policies @ main@4ba8224
-  Captured : 2026-10-30
+  Repo     : mlcommons/endpoints_policies @ main@44ae377
+  Captured : 2026-11-20
   Purpose  : diff this against upstream to find what drifted since the docs were written.
 -->
 
@@ -235,10 +235,9 @@ treatment of sparse and approximate execution, and
 - Retraining, fine-tuning, LoRA, adapter layers, RLHF, or any gradient-based weight update — applied
   to the canonical model or to any draft model used in speculative decoding (see
   [§2.9.4](#294-speculative-decoding)).
-- **Speculative decoding** using a drafter or algorithm other than one approved for the benchmark —
-  governed by the approval process and eligibility requirements in
-  [§2.9.4](#294-speculative-decoding). (Per-point *configuration* of an approved drafter may vary;
-  see §2.9.4.)
+- **Speculative decoding** with a drafter not approved for the benchmark, or that changes the
+  target's output distribution — see [§2.9.4](#294-speculative-decoding). (Per-point
+  *configuration* of an approved drafter may vary; see §2.9.4.)
 - Response caching: returning a cached response *verbatim* to a request that matches a previous
   request, bypassing the forward pass. Every request must execute the forward pass. (Note: this is
   distinct from cross-query KV-cache reuse, which still executes the forward pass on a per-query,
@@ -687,8 +686,7 @@ re-run the submission with the component enabled.
 
 Declining to *use* a component at run time is a separate matter, governed by
 [§2.9.4](#294-speculative-decoding): a submission MAY disable speculative decoding at some or all
-measurement points, provided the drafter remains present in the submitted checkpoint and the
-per-point configuration is declared in the submission YAML.
+measurement points, provided the drafter remains present in the submitted checkpoint.
 
 Statically removing weights that *do* participate in the forward pass for some inputs is pruning,
 and is disallowed above and in [§2.9.6.5](#2965-disallowed).
@@ -764,8 +762,6 @@ The following are **not allowed** with a native head:
   checkpoint — or added after the approved revision, is not native and requires an entry on the
   approved list.
 - **Modifying the head**, other than *PTQ on drafter weights* below.
-- **Using it as a different kind of drafter** than its publisher documents (e.g., running an MTP
-  head as an EAGLE-style head). Per-point configuration may vary as for any approved drafter.
 - **A head the WG has excluded** for failing *Drafter eligibility* below.
 
 **Drafter eligibility.** The following disqualify a drafter from the approved list:
@@ -798,15 +794,31 @@ A list entry identifies a drafter in one of two ways:
   by the target checksum together with the exit-layer and any other configuration defining the draft
   pass. See [§2.9.9 Q7](#299-qa-model-equivalence-clarifications).
 
+**Exact verification.** Speculative decoding MUST NOT change the target's output distribution under
+the benchmark's sampling parameters ([§2.9.1](#291-reference-implementation)). Under greedy decoding
+this means token-for-token identical output; under sampling (temperature > 0), identical in
+distribution, not token for token.
+
+- Exact procedures include, but are not limited to, speculative (rejection) sampling
+  ([Leviathan et al.](https://arxiv.org/abs/2211.17192), [Chen et al.](https://arxiv.org/abs/2302.01318)),
+  block verification ([Sun et al.](https://arxiv.org/abs/2403.10444)), and sample-and-match. For any
+  procedure, the submitter must be able to show exactness on review (e.g., by citing a proof).
+- How drafts are proposed (length, tree shape, greedy or sampled) and how many are verified per step
+  are configuration, provided that choice for a position does not depend on the token drafted there
+  or later ([DSpark](https://arxiv.org/abs/2607.05147), App. A).
+
 The following are **also disallowed** at run time:
 
-- **Approximate speculative-decoding methods that alter the output distribution.** The verification
-  step MUST NOT introduce acceptance criteria that would cause the model to accept tokens the target
-  would not have generated. Outputs MUST be token-for-token identical to what the target model would
-  generate without speculation.
-- **Approximating, skipping, or replacing the verification step**, including replacing the target
-  with a secondary drafter for verification. The target model in the verification step MUST be the
-  canonical model with the permitted transformations of [§2.9.3](#293-model-weight-rules) applied.
+- **Lossy acceptance.** Any acceptance rule that is not exact (e.g., probability thresholds, typical
+  acceptance, top-k membership), including re-drawing random numbers to raise acceptance.
+- **Verifying against a different distribution.** Sampling parameters other than the benchmark's
+  (e.g., greedy match when the benchmark samples), or a verifier other than the target with the
+  permitted transformations of [§2.9.3](#293-model-weight-rules).
+- **Emitting unverified tokens.** Skipping verification, forcing an acceptance count or rate, or
+  accepting on drafter confidence alone.
+- **Cross-request drafter state.** Drafts built from other requests, earlier responses, or the
+  benchmark dataset (e.g., shared n-gram or suffix caches), beyond the prefix reuse that
+  [§2.9.5](#295-kv-cache-rules) permits.
 - **Modifying an approved drafter.** Fine-tuning, LoRA, adapter layers, RLHF, continued
   pre-training, or any other gradient-based update to a drafter by the submitter. The drafter is
   used as published on the approved list; a modified drafter is no longer that drafter, and is
@@ -815,14 +827,13 @@ The following are **also disallowed** at run time:
 
 **Disclosure and run-time requirements:**
 
-- The drafter identity (name, version, source URL), precision, algorithm, and per-point
-  configuration MUST be declared in the submission YAML.
+- The drafter (approved-list entry or native head) and its precision MUST be declared in the
+  submission YAML.
 - All measurement points on a submission's pareto curve for a given benchmark MUST use the same
-  drafter (same head, same algorithm). Different **configurations** of the same drafter (e.g.,
-  varying `speculative-num-steps` or `speculative-eagle-topk`) are permitted across pareto points,
-  including disabling speculation entirely at some points. The drafter itself is fixed across the
-  curve. The configuration values used at each point MUST be declared in the submission YAML, and
-  any dynamic variation within a single point's run MUST be reported as a distribution.
+  drafter. Its **configuration** (e.g., draft length, verification procedure, adaptive
+  verification) may vary across points, including disabling speculation. It is disclosed with the
+  point's deployment configuration ([§2.7](#27-transparency-requirements)); no separate
+  declaration is required.
 
 **PTQ on drafter weights.** The drafter weights MAY be post-training quantized under the same
 conditions as the canonical model ([§2.9.3](#293-model-weight-rules)): calibration-only, using only
@@ -836,14 +847,14 @@ drafter — no list entry and no native head of an approved checkpoint
 ([§2.9.1](#291-reference-implementation)) — speculative decoding is not available for that benchmark
 at all.
 
-**Model equivalence for drafters.** No drafter-specific equivalence standard applies. A
-speculative-decoding submission is model equivalent on the same two general tests as any other
-optimization:
+**Model equivalence for drafters.** No drafter-specific equivalence standard applies. When using
+speculative-decoding in a submission, the drafter must comply with all model equivalence rules specified in this section. 
+In addition:
 
 - The **submission** must meet the accuracy quality target ([§2.9.8](#298-accuracy-gate)) with its
-  speculative-decoding configuration in force. Because exact verification requires token-for-token
-  identity with the unspeculated target, a compliant configuration does not move accuracy; a failure
-  here indicates the verification requirement above was not met.
+  speculative-decoding configuration in force. Because exact verification preserves the target's
+  output distribution, a compliant configuration does not change expected accuracy; a failure here
+  suggests the verification requirement above was not met.
 - The drafter must be free of **input-based optimization**, per the eligibility criteria above and [§2.2.1](#221-general-rules).
 
 #### 2.9.5 KV Cache Rules
@@ -1075,7 +1086,7 @@ Methods in this category are subject to all of the following:
   weight transformations remain governed by [§2.9.3](#293-model-weight-rules).
 
 **Interaction with speculative decoding.** Where the target model uses an approximate method under
-this section, the token-for-token identity requirement of [§2.9.4](#294-speculative-decoding) is
+this section, the exact-verification requirement of [§2.9.4](#294-speculative-decoding) is
 evaluated against the submission's own target-model configuration: the drafter and verification step
 must introduce no divergence beyond the disclosed approximation.
 
@@ -1216,8 +1227,7 @@ sparsity, and expert removal are all in [§2.9.6](#296-sparsity-and-approximate-
 **Q6: Is tree-structured verification attention permitted for speculative decoding?**
 A: Yes, as an implementation detail of the exact-verification requirement in
 [§2.9.4](#294-speculative-decoding) — not an exception to it. Any tree/DFlash-style verification
-attention is fine provided the target-output-distribution guarantee still holds (token-for-token
-identical to the unspeculated target).
+attention is fine provided verification stays exact.
 
 **Q7: Does a drafter implemented as a truncated forward pass through a subset of the target model's own layers (self-speculative / early-exit, no separate weights) satisfy the open-weight requirement in [§2.9.4](#294-speculative-decoding)?**
 A: Yes. There are no separate weights to disclose — the target model's own public checksum already
@@ -1225,6 +1235,11 @@ establishes this. It must still appear on the benchmark's approved drafter list,
 **configuration-identified** drafter: the target checksum together with the exit-layer and any other
 configuration that defines the draft pass, rather than a separate weight checksum. The approval
 process and eligibility criteria of [§2.9.4](#294-speculative-decoding) apply to it unchanged.
+
+**Q8: Is DSpark-style speculation (sampled drafts, block verification, confidence-based verify
+length) permitted?**
+A: Yes, under the conditions of [§2.9.4](#294-speculative-decoding). Under temperature > 0, outputs
+match the unspeculated target in distribution, not token for token.
 
 ---
 
@@ -2747,23 +2762,40 @@ published Pareto curve: one system, one benchmark model, one dataset. It is cons
 <major-version>.<minor-version>.<cohort-number>.<model_id>.<dataset_id>.<entry-number>
 ```
 
+The ID of a provisionally published result also ends in `.p` (see Provisional results below).
+
 | Component | Description |
 |---|---|
 | `major-version` | Major version of the MLPerf Endpoints rules under which the result was submitted (e.g., `1` for v1.0). |
 | `minor-version` | Minor version of the same (e.g., `0` for v1.0). |
-| `cohort-number` | Cohort Number for this submission (e.g., `0` for the first cohort of a given version, `1` for the second, etc.)
+| `cohort-number` | Cohort Number for this submission (e.g., `0` for the first cohort of a given version, `1` for the second, etc.). For a provisionally published result, the number of the first cohort date on or after the day (Pacific Time) it first became publicly visible (see Provisional results below). |
 | `model_id` | Benchmark model identifier from the round's supported model list ([§3.2](#32-supported-models)). Must match `model_name` in `point.yaml` ([§8.3](#83-measurement-point-yaml)). |
 | `dataset_id` | Identifier of the dataset used for the performance and accuracy runs, as named in the benchmark definition ([§3.1](#31-benchmark-definition)) and recorded in each point's `dataset` field ([§8.3](#83-measurement-point-yaml)). |
-| `entry-number` | Sequence number assigned at publication, unique within the preceding four components. |
+| `entry-number` | Sequence number assigned at publication, unique within the preceding four components. A provisional ID and the official ID it becomes share one entry number. |
 
-Example: `1.0.0.deepseek-r1.mmlu-pro.7` — the seventh published DeepSeek-R1 result on MMLU-Pro under
-the v1.0 rules.
+Example: `1.0.0.deepseek-r1.mmlu-pro.7` — the seventh DeepSeek-R1 result on MMLU-Pro published in
+the first v1.0 cohort.
 
-Result IDs are assigned by MLCommons at publication; they are not chosen by the submitter and are
-not part of the submitted bundle. They are stable and never reused — a result that is superseded,
-withdrawn, or invalidated retains its result ID in the historical record, and the replacement result
-receives a new entry number (see
-[Submission Rules §8.1](endpoints_submission_rules.md#versioning-and-historical-record)).
+**Provisional results.** A result published provisionally
+([Submission Rules §6.2.3](endpoints_submission_rules.md#623-provisional-publication)) receives its
+result ID when it first becomes publicly visible, with `.p` appended to the entry number — for
+example `1.0.1.deepseek-r1.mmlu-pro.2.p`. When the "peer review pending" tag is removed, the `.p` is
+dropped and the rest of the ID is unchanged: `1.0.1.deepseek-r1.mmlu-pro.2`. The ID with `.p` is kept
+in the historical record and continues to refer to the same result. Its `cohort-number` is that of
+the first cohort date on or after the day it first became public, so it is earlier than the cohort
+of its official publication. Withdrawing points or updating the submission during review does not
+change the ID. Any citation of an ID ending in `.p` carries the footnote required by
+[Submission Rules §6.2.3](endpoints_submission_rules.md#623-provisional-publication).
+
+Result IDs are assigned by MLCommons at publication, including provisional publication; they are not
+chosen by the submitter and are not part of the submitted bundle. They are stable and never reused.
+A result that is superseded, invalidated, or removed keeps its ID wherever it remains in the
+historical record
+([Submission Rules §8](endpoints_submission_rules.md#versioning-and-historical-record)), and a
+replacement result receives a new entry number. A result removed entirely, including a provisional
+result withdrawn or removed before finalization for any reason
+([Submission Rules §8.2](endpoints_submission_rules.md#82-withdrawal)), has its ID retired: it is
+never issued to another result, and numbering for its first four components continues past it.
 
 ---
 

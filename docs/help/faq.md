@@ -88,8 +88,8 @@ Process and policy questions that are not errors. For errors, see
     [§2.9.4 of the rules][rules-2.9.4] and **C10** in [Open questions](open-questions.md).
 
 **Can I disable speculative decoding on some points?**
-:   Yes. The drafter is fixed across the frontier, but its configuration can vary per point, including
-    off ([§2.9.4][rules-2.9.4]). A drafter that ships in the canonical checkpoint must stay in your
+:   Yes. The drafter is fixed across the frontier, but its configuration (including verification
+    procedure) can vary per point, including off ([§2.9.4][rules-2.9.4]). A drafter that ships in the canonical checkpoint must stay in your
     derived checkpoint ([§2.9.3][rules-2.9.3]).
 
 **Do I have to report power?**
