@@ -60,8 +60,16 @@ four conditions; fine-tuning, pruning and distillation are not ([§2.9.3][rules-
 Allowed only with a drafter on your benchmark's [approved list](https://github.com/mlcommons/endpoints-submission-cli/blob/main/src/submission_checker/data/approved_drafters.yaml), or a **native head**:
 one the model publisher ships inside an approved checkpoint, which is approved with that checkpoint
 and needs no list entry. The list, how drafters get on it, what disqualifies one, what you can't do
-with a native head or an approved drafter, and the per-point disclosure are all in
-[§2.9.4][rules-2.9.4]. Tree-structured verification is covered in Q6 of
+with a native head or an approved drafter, and the disclosure are all in
+[§2.9.4][rules-2.9.4]. Verification must be exact: the target's output distribution can't change, so
+sampled runs match in distribution rather than token for token. Lossy acceptance, verifying against
+a different distribution, emitting unverified tokens and drafter state carried across requests are
+all disallowed. Across the frontier it's one drafter; its configuration can vary per point,
+including switching speculation off. The drafter and its precision are declared in the submission
+YAML, and the configuration is disclosed with the point's deployment configuration
+([§2.7][rules-2.7]). The drafter must also meet every equivalence rule in
+[§2.9][rules-2.9], including the accuracy gate. Tree-structured verification is
+covered in Q6 and DSpark-style sampled drafts with block verification in Q8 of
 [§2.9.9][rules-2.9.9].
 
 !!! warning "Use a checker that ships the list"
@@ -77,9 +85,8 @@ What the checker enforces:
   the list update, counted against your `target_cohort`. A native head counts from its checkpoint's
   approval cohort.
 
-Both reject the affected **points**, not the whole submission ([§9.1][rules-9.1]). Across the frontier
-it's one drafter; its configuration can vary per point, including switching speculation off. The
-drafter's details go in the `speculative_decoding` block of `point.yaml` ([§8.3][rules-8.3]).
+Both reject the affected **points**, not the whole submission ([§9.1][rules-9.1]). The drafter's
+details go in the `speculative_decoding` block of `point.yaml`.
 
 ## KV cache: the big difference
 
@@ -142,6 +149,6 @@ match the reference ([§2.9.2][rules-2.9.2], [§2.9.7][rules-2.9.7]).
 
 --8<-- "draft-rules-warning.md"
 
-*Last verified against: `mlcommons/endpoints_policies@main` (4ba8224), 2026-10-30;
+*Last verified against: `mlcommons/endpoints_policies@main` (44ae377), 2026-10-30;
 `mlcommons/endpoints-submission-cli@main` (a42a056, `v1.1.0.0`) and `mlcommons/endpoints@main`
 (f1100cf), 2026-10-02.*

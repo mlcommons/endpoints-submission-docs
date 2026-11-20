@@ -1,15 +1,33 @@
 # PROVENANCE SNAPSHOT — do not edit.
 # Upstream : endpoints_policies/seedset.yaml
-# Repo     : mlcommons/endpoints_policies @ main@4ba8224
-# Captured : 2026-10-30
+# Repo     : mlcommons/endpoints_policies @ main@44ae377
+# Captured : 2026-11-20
 # Purpose  : the published v1.0 seed set (PR #117). Compare against the checker's mirror at
 #            endpoints-submission-cli/src/submission_checker/data/seed_sets.yaml.
 
+# MLPerf Endpoints published seed sets (Submission Rules §4.6 Seed Rotation).
+#
+# Maintained by .github/workflows/rotate-seed-sets.yml. A set is published every
+# 2 cohorts and is adoptable for 4 (its own cohort and the three after).
+#
+# Sets are never removed: §4.6 keeps a submission bound to its set for the full
+# Pareto-update window, and the checker's seed-set-membership row fails any
+# submission whose set is absent here. A retired set simply stops appearing in
+# any current adoption window.
+#
+# Each set carries its own `cohorts:` window. Without it the checker applies the
+# file-level `cohort-id` to every set, which would re-date the older ones.
 cohort:
   version: 1.0
-  cohort-id: 2026-10-C1
+  cohort-id: 2026-11-C0        # the newest set's first adoptable cohort
   seed_sets:                              # a submission selects exactly one, by id
     - id: A
       scheduler_rng_seed:    10487924139932647040
       sample_index_rng_seed: 586478644936801402
       model_seed:            9315206023656308754
+      cohorts: [2026-10-C1, 2026-11-C0, 2026-11-C1, 2026-12-C0]
+    - id: B
+      scheduler_rng_seed:    17312635550606430962
+      sample_index_rng_seed: 6679150691998295617
+      model_seed:            2538075066783666738
+      cohorts: [2026-11-C0, 2026-11-C1, 2026-12-C0, 2026-12-C1]
